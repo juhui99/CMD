@@ -566,6 +566,7 @@ public class BoardListController {
 
     }
 
+
     @GetMapping("/commentDelete")  //댓글 삭제
     public String commentDelete(@RequestParam("bno") int bno, @RequestParam("kind") String kind, @RequestParam("realm") String realm, @RequestParam("writer") String writer,@RequestParam("commentSequence") int commentSequence, Model model, HttpSession session, RedirectAttributes redirect,HttpServletRequest request) throws Exception{
         String pageNumber = null;
