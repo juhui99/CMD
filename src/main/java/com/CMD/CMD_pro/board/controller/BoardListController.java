@@ -527,6 +527,7 @@ public class BoardListController {
         redirect.addAttribute("realm",form.getBoard_realm());
         redirect.addAttribute("pageNumber",pageNumber);
         return "redirect:/view";
+
     }
 
 
@@ -584,6 +585,11 @@ public class BoardListController {
         redirect.addAttribute("pageNumber",pageNumber);
         return "redirect:/view";
 
+    }
+
+    @GetMapping("/cmd_community")
+    public String cmd_community() throws Exception{
+        return "cmd_community";
     }
 
 
