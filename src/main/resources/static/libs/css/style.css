@@ -1,0 +1,141 @@
+
+
+body{
+    margin: 0 auto;
+}    
+.header-box{
+    width: 100%;
+    height: 80px;
+    display: flex;
+    justify-content: space-between;
+    background-color: white;
+    border-bottom: 1.5px solid #03305e81;;
+    font-weight: 300;
+}
+.logo {
+    display: flex;
+}
+
+.search{
+    margin: 5px auto;
+    display: flex;
+}
+.keyword{
+    margin: 25px auto;
+    display: flex;
+}
+
+/* 메뉴 네비게이션 */
+.menu-navbar{
+    width:100%;
+     border-bottom: 1.5px solid #03305e81;;
+}
+.navbar-nav {
+    width: 80%;
+    height: auto;
+    display: flex;
+    
+}
+
+.navbar-nav li{
+    margin: 2px 20px;
+    text-align: center;
+    font-weight: 200;
+}
+
+.navbar-nav a{
+    text-decoration: none;
+    color: black;
+}
+
+.dropdown-menu a{
+    font-weight: 100;
+}
+
+.login-box{
+    display: flex;
+    list-style: none;
+    width: 20%;
+    height: auto;
+    margin: auto;
+    float: right;
+}
+
+.login-box li{
+    text-align: center;
+    font-weight: 100;
+}
+
+.login-box a{
+    text-decoration: none;
+    color: black;
+}
+
+
+
+
+/* 푸터 박스 */
+.footer-box{
+    padding: 50px 50px;
+    display: flex;
+    width: 100%;
+    height: auto;
+    color: black;
+    background-color: white;
+    border-top: 1.5px solid #03305e81;
+    border-bottom: 1.5px solid #03305e81;
+}
+
+.author{
+    height: auto;
+    padding-left: 20px;
+    width: 50%;
+    line-height: 10px;
+    border-left: 1.5px solid #03305e81;
+}
+.link{
+    height: auto;
+    width: 50%;
+    margin: auto;
+    padding-left: 20px;
+    border-left: 1.5px solid #03305e81;
+}
+
+.link li{
+    list-style: none;
+    padding-top: 20px;
+}
+.link i{
+    font-size: 20px;
+    color: black;
+}
+
+.eyebrow{
+    width: 100%;
+    padding: 0.5% 30px ;
+    color: black;
+    height: auto;
+}
+
+
+body {
+    margin: 0 auto;
+}
+
+.community{
+    margin-top: 40px;
+    margin-bottom: 10%;  
+    width: 100%;
+    height: auto;
+}
+
+p{
+    font-weight: 340;
+    padding: 10px 0px 10px 0px;   
+}
+
+.dropdown:hover .dropdown-menu {
+    display: block;
+    margin-top: 0; 
+
+ }

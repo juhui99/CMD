@@ -1,0 +1,49 @@
+body {
+    margin: 0 auto;
+}
+
+.community{
+    margin-top: 40px;
+    margin-bottom: 10%;  
+    width: 100%;
+    height: auto;
+}
+
+h1{
+    font-size: 50px;
+    font-weight: 300;
+    padding: 20px 0px 5px 0px;
+    border-bottom: 3px solid #03305e81;;
+    border-radius: 20px;
+    margin: auto 27%;
+}
+
+#comm{
+    font-weight: 450;
+    padding: 20px 30px;
+}
+
+h6 {
+    font-size: 20px;
+    font-weight: 360;
+    padding: 10px 0px 5px 0px;
+}
+
+h4{
+    font-size: 25px;
+    font-weight: 300;
+    padding: 10px 0px 10px 0px;
+}
+p{
+    font-weight: 340;
+    padding: 10px 0px 10px 0px; 
+    
+}
+span{
+    font-weight: 500 !important;
+}
+
+h2{
+    font-size: 20px;
+    font-weight: 400;
+}
