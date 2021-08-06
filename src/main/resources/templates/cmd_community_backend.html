@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/css/style.css">    
+    <link rel="stylesheet" href="/css/bootstrap.css">
+    <link rel="stylesheet" href="/css/community.css">
+    <link rel="stylesheet" href="/css/community-sub.css">
+    <script src="https://kit.fontawesome.com/717793cb2b.js" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <title>CMD</title>
+</head> 
+<style>
+  h1{ margin: auto 38%; }
+</style>
+<body>  
+    <div class="container">
+      <div class="header-box">
+        <div class="logo"><a href="cmdev.html"><img src="/img/CMD-logo.png" alt="logo"  height="100%"></a></div>
+        <div class="search">
+          <nav class="navbar navbar-expand-sm  navbar-dark">
+            <form class="form-inline" action="/action_page.php">
+              <input class="form-control mr-sm-2" type="text" placeholder="Search">
+              <button class="btn btn-success" type="submit">Search</button>
+            </form>
+          </nav>
+        </div>
+        <div class="keyword">실시간 검색</div>
+      </div>
+  
+      <div class="menu-navbar">
+      <nav class="navbar navbar-expand-sm ">
+        <!-- Links -->
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" href="cmdev.html">메인</a>
+          </li>
+          <!-- Dropdown -->
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="cmd_community.html" >
+              커뮤니티
+            </a>
+            <div class="dropdown-menu">
+              <a class="dropdown-item" href="cmd_community_frontend.html">Frontend</a>
+              <a class="dropdown-item" href="cmd_community_backend.html">Backend</a>
+              <a class="dropdown-item" href="cmd_community_DBA.html">DBA</a>
+              <a class="dropdown-item" href="cmd_community_AI.html">A.I</a>
+              <a class="dropdown-item" href="cmd_community_wh.html">White-Hat</a>   
+            </div>
+            </li>
+  
+          <li class="nav-item">
+            <a class="nav-link" href="#">채팅</a>
+          </li>
+  
+          <li class="nav-item">
+            <a class="nav-link" href="cmd_loadmap.html">로드맵</a>
+          </li>
+  
+  
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+                D-MBTI
+              </a>
+              <div class="dropdown-menu">
+                <a class="dropdown-item" href="#">D-MBTI 하기</a>
+                <a class="dropdown-item" href="#">D-MBTI 통계</a>
+              </div>
+              </li>
+  
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+                  설문조사
+                </a>
+                <div class="dropdown-menu">
+                  <a class="dropdown-item" href="#">설문조사 하기</a>
+                  <a class="dropdown-item" href="#">설문조사 통계</a>
+                </div>
+                </li>
+                </ul>
+                <ul class="login-box">
+                  <li class="nav-item">
+                    <a class="nav-link" href="#"><i class="far fa-user"></i> 로그인</a></li>
+                </ul>
+                </nav>
+    </div>
+    
+        <div class="community_backend_info">
+            <h1 class="text-center">Backend</h1>
+            <h6 class="text-center">< 백엔드(Back end)개발자는 ></h6>
+            <p class="text-center">
+              <span>프론트엔드, 백엔드의 완전한 분리 구조를 지향하는 업무 스타일의 개발 방식으로서 백엔드의 DB와 API 서버 개발을 맡고,
+                <br> 이와 다른 방식의 업무 스타일 직군으로는 웹퍼블리셔(UI 개발)와 개발자(서버 개발자)의 업무 분리 방식이 있습니다.
+                <br> 이 경우는 주로 서버사이드가 클라이언트를 감싸는 방식이고, 전반적인 비지니스 로직은 개발자가 맡습니다.
+                <br>좀 더 들어가면 MVC에서 Model, Controller가 백엔드의 소관입니다.</span>
+            </p>
+        </div>
+        <div class="community_backend_box">
+          <h2 class="text-center">게시판</h2>
+          <!-- Nav pills -->
+          
+          <ul class="nav nav-pills" role="tablist">
+            <li class="nav-item" id="comm">
+              <a class="nav-link " data-toggle="pill" href="#home">HOT 게시판</a>
+            </li>
+            <li class="nav-item" id="comm">
+              <a class="nav-link " data-toggle="pill" href="#menu1">정보 & 팁 게시판</a>
+            </li>
+            <li class="nav-item" id="comm">
+              <a class="nav-link" data-toggle="pill" href="#menu2">자유 게시판</a>
+            </li>
+            <li class="nav-item" id="comm">
+              <a class="nav-link" data-toggle="pill" href="#menu3">질문 게시판</a>
+            </li>
+            <li class="nav-item" id="comm">
+              <a class="nav-link" data-toggle="pill" href="#menu4">협업 게시판</a>
+            </li>
+            <li class="nav-item" id="comm">
+              <a class="nav-link" data-toggle="pill" href="#menu5">로드맵 공유 게시판</a>
+            </li>
+          </ul>
+        
+          <!-- Tab panes -->
+          <div class="tab-content">
+            <div id="home" class="container tab-pane active"><br>
+              <h3>HOT 게시판</h3>
+              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+            </div>
+            <div id="menu1" class="container tab-pane fade"><br>
+              <h3>정보 & 팁 게시판</h3>
+              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+            </div>
+            <div id="menu2" class="container tab-pane fade"><br>
+              <h3>자유 게시판</h3>
+              <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+            </div>
+            <div id="menu3" class="container tab-pane fade"><br>
+              <h3>질문 게시판</h3>
+              <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.</p>
+            </div>
+            <div id="menu4" class="container tab-pane fade"><br>
+              <h3>협업 게시판</h3>
+              <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.</p>
+            </div>
+            <div id="menu5" class="container tab-pane fade"><br>
+              <h3>로드맵 공유 게시판</h3>
+              <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.</p>
+            </div>
+          </div>
+         </div>
+        
+         <div class="footer-box">
+            <div class="author">
+              <p><b>Creators - </b>KimLeeEum</p>
+              <p><b>email - </b>energizun1001@gamil.com</p>
+              <p><b>Domain - </b>www.cmdev.com</p>
+            </div>
+            <div class="link">
+              <ul>
+                <li><a href="https://github.com/" target="_blank"><i class="fab fa-github"> GitHub</i></a></li>
+                <li><a href="https://stackoverflow.com/" target="_blank"><i class="fab fa-stack-overflow"> Stack-Overflow</i></a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="eyebrow"><p>@2021 prod by 김이음</p></div>
+    </div>
+</body>
+</html>
