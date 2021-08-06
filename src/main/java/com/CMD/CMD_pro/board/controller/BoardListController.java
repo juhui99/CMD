@@ -588,8 +588,13 @@ public class BoardListController {
     }
 
     @GetMapping("/cmd_community")
-    public String cmd_community() throws Exception{
+    public String cmdCommunity() throws Exception{
         return "cmd_community";
+    }
+
+    @GetMapping("/cmd_community_frontend")
+    public String cmdCommunityFrontend() throws Exception{
+        return "cmd_community_frontend";
     }
 
 
