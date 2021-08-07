@@ -55,7 +55,7 @@ public class UserController {
             if(user.getUser_pwd().equals(userPassword)){
                 HttpSession session = request.getSession();
                 session.setAttribute("id",userID);
-                return "mainpage";
+                return "cmdev";
             }
             model.addAttribute("msg","비밀번호가 틀립니다.");
             model.addAttribute("url","login");
@@ -71,6 +71,6 @@ public class UserController {
     @GetMapping("/logoutAction")
     public String LogoutAction(HttpSession session){
         session.invalidate();
-        return "login";
+        return "cmdev";
     }
 }

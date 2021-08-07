@@ -9,6 +9,7 @@ public class CommentForm {
     private String board_realm;
     private int c_bno;
     private String pageNumber;
+    private String option;
 
     public int getBoard_bno() {
         return board_bno;
@@ -72,5 +73,13 @@ public class CommentForm {
 
     public void setPageNumber(String pageNumber) {
         this.pageNumber = pageNumber;
+    }
+
+    public String getOption() {
+        return option;
+    }
+
+    public void setOption(String option) {
+        this.option = option;
     }
 }

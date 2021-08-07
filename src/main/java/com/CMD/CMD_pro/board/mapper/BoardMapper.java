@@ -68,4 +68,8 @@ public interface BoardMapper {
     public void CommentDelete(@Param("commentSequence") int commentSequence) throws Exception;
 
     public void CommentSetDelete(@Param("bno") int bno) throws Exception;
+
+    public List<BoardVO> TotalHotTopicList(@Param("realm") String realm) throws Exception;
+
+
 }

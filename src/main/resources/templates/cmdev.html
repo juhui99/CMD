@@ -1,10 +1,12 @@
 <!doctype html>
 <html lang="ko">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://thymeleaf.org">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="/css/style.css"> 
-    <link rel="stylesheet" href="/css/bootstrap.css">
+    <link rel="stylesheet" href="/libs/css/style.css">
+    <link rel="stylesheet" href="/libs/css/bootstrap.css">
     
     <script src="https://kit.fontawesome.com/717793cb2b.js" crossorigin="anonymous"></script>
     <title>CMD</title>
@@ -12,8 +14,57 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<style>
+  <script type="text/javascript">
+    $(document).ready(function (){
+      $(".board").css("display","none");
+
+
+      $(".frontend").hover(function () {
+        $(".frontend_board").css("display","block");
+        $(".backend_board").css("display","none");
+        $(".DBA_board").css("display","none");
+        $(".AI_board").css("display","none");
+        $(".WH_board").css("display","none");
+
+      });
+      $(".backend").hover(function () {
+        $(".backend_board").css("display","block");
+        $(".frontend_board").css("display","none");
+        $(".DBA_board").css("display","none");
+        $(".AI_board").css("display","none");
+        $(".WH_board").css("display","none");
+      });
+      $(".DBA").hover(function () {
+        $(".DBA_board").css("display","block");
+        $(".backend_board").css("display","none");
+        $(".frontend_board").css("display","none");
+        $(".AI_board").css("display","none");
+        $(".WH_board").css("display","none");
+      });
+      $(".AI").hover(function () {
+        $(".AI_board").css("display","block");
+        $(".DBA_board").css("display","none");
+        $(".backend_board").css("display","none");
+        $(".frontend_board").css("display","none");
+        $(".WH_board").css("display","none");
+      });
+      $(".WH").hover(function () {
+        $(".WH_board").css("display","block");
+        $(".AI_board").css("display","none");
+        $(".DBA_board").css("display","none");
+        $(".backend_board").css("display","none");
+        $(".frontend_board").css("display","none");
+
+      });
+    });
+  </script>
+
+  <style>
   /* Make the image fully responsive */
+
+  .frontend_board {display: none;}
+
+
   .carousel{
     margin: 4%auto;
   }
@@ -68,7 +119,7 @@
 <body>
   <div class="container">
     <div class="header-box">
-      <div class="logo"><a href="cmdev.html"><img src="/img/CMD-logo.png" alt="logo"  height="100%"></a></div>
+      <div class="logo"><a href="/main"><img src="/img/CMD-logo.png" alt="logo"  height="100%"></a></div>
       <div class="search">
         <nav class="navbar navbar-expand-sm  navbar-dark">
           <form class="form-inline" action="/action_page.php">
@@ -89,15 +140,46 @@
         </li>
         <!-- Dropdown -->
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="cmd_community.html" >
+          <a class="nav-link dropdown-toggle" href="/cmd_community" >
             커뮤니티
           </a>
           <div class="dropdown-menu">
-            <a class="dropdown-item" href="cmd_community_frontend.html">Frontend</a>
-            <a class="dropdown-item" href="cmd_community_backend.html">Backend</a>
-            <a class="dropdown-item" href="cmd_community_DBA.html">DBA</a>
-            <a class="dropdown-item" href="cmd_community_AI.html">A.I</a>
-            <a class="dropdown-item" href="cmd_community_wh.html">White-Hat</a>   
+            <a class="dropdown-item frontend" href="/cmdDetail?realm=Frontend">Frontend</a>
+            <a class="dropdown-item frontend_board board" style="color: #003366d2; font-size: 13px;" href="/totalHotTopic?kind=HOT게시판&realm=Frontend">HOT게시판</a>
+            <a class="dropdown-item frontend_board board" style="color: #003366d2; font-size: 13px;" href="/board?kind=정보팁게시판&realm=Frontend">정보&팁게시판</a>
+            <a class="dropdown-item frontend_board board" style="color: #003366d2; font-size: 13px;" href="/board?kind=자유게시판&realm=Frontend">자유게시판</a>
+            <a class="dropdown-item frontend_board board" style="color: #003366d2; font-size: 13px;" href="/board?kind=질문게시판&realm=Frontend">질문게시판</a>
+            <a class="dropdown-item frontend_board board" style="color: #003366d2; font-size: 13px;" href="/board?kind=협업게시판&realm=Frontend">협업게시판</a>
+            <a class="dropdown-item frontend_board board" style="color: #003366d2; font-size: 13px;" href="/board?kind=로드맵공유게시판&realm=Frontend">로드맵공유게시판</a>
+            <a class="dropdown-item backend" href="/cmdDetail?realm=Backend">Backend</a>
+            <a class="dropdown-item backend_board board" style="color: #003366d2; font-size: 13px;" href="/totalHotTopic?kind=HOT게시판&realm=Backend">HOT게시판</a>
+            <a class="dropdown-item backend_board board" style="color: #003366d2; font-size: 13px;" href="/board?kind=정보팁게시판&realm=Backend">정보&팁게시판</a>
+            <a class="dropdown-item backend_board board" style="color: #003366d2; font-size: 13px;" href="/board?kind=자유게시판&realm=Backend">자유게시판</a>
+            <a class="dropdown-item backend_board board" style="color: #003366d2; font-size: 13px;" href="/board?kind=질문게시판&realm=Backend">질문게시판</a>
+            <a class="dropdown-item backend_board board" style="color: #003366d2; font-size: 13px;" href="/board?kind=협업게시판&realm=Backend">협업게시판</a>
+            <a class="dropdown-item backend_board board" style="color: #003366d2; font-size: 13px;" href="/board?kind=로드맵공유게시판&realm=Backend">로드맵공유게시판</a>
+            <a class="dropdown-item DBA" href="/cmdDetail?realm=DBA">DBA</a>
+            <a class="dropdown-item DBA_board board" style="color: #003366d2; font-size: 13px;" href="/totalHotTopic?kind=HOT게시판&realm=DBA">HOT게시판</a>
+            <a class="dropdown-item DBA_board board" style="color: #003366d2; font-size: 13px;" href="/board?kind=정보팁게시판&realm=DBA">정보&팁게시판</a>
+            <a class="dropdown-item DBA_board board" style="color: #003366d2; font-size: 13px;" href="/board?kind=자유게시판&realm=DBA">자유게시판</a>
+            <a class="dropdown-item DBA_board board" style="color: #003366d2; font-size: 13px;" href="/board?kind=질문게시판&realm=DBA">질문게시판</a>
+            <a class="dropdown-item DBA_board board" style="color: #003366d2; font-size: 13px;" href="/board?kind=협업게시판&realm=DBA">협업게시판</a>
+            <a class="dropdown-item DBA_board board" style="color: #003366d2; font-size: 13px;" href="/board?kind=로드맵공유게시판&realm=DBA">로드맵공유게시판</a>
+            <a class="dropdown-item AI" href="/cmdDetail?realm=AI">A.I</a>
+            <a class="dropdown-item AI_board board" style="color: #003366d2; font-size: 13px;" href="/totalHotTopic?kind=HOT게시판&realm=AI">HOT게시판</a>
+            <a class="dropdown-item AI_board board" style="color: #003366d2; font-size: 13px;" href="/board?kind=정보팁게시판&realm=AI">정보&팁게시판</a>
+            <a class="dropdown-item AI_board board" style="color: #003366d2; font-size: 13px;" href="/board?kind=자유게시판&realm=AI">자유게시판</a>
+            <a class="dropdown-item AI_board board" style="color: #003366d2; font-size: 13px;" href="/board?kind=질문게시판&realm=AI">질문게시판</a>
+            <a class="dropdown-item AI_board board" style="color: #003366d2; font-size: 13px;" href="/board?kind=협업게시판&realm=AI">협업게시판</a>
+            <a class="dropdown-item AI_board board" style="color: #003366d2; font-size: 13px;" href="/board?kind=로드맵공유게시판&realm=AI">로드맵공유게시판</a>
+            <a class="dropdown-item WH" href="/cmdDetail?realm=WhiteHat">White-Hat</a>
+            <a class="dropdown-item WH_board board" style="color: #003366d2; font-size: 13px;" href="/totalHotTopic?kind=HOT게시판&realm=WhiteHat">HOT게시판</a>
+            <a class="dropdown-item WH_board board" style="color: #003366d2; font-size: 13px;" href="/board?kind=정보팁게시판&realm=WhiteHat">정보&팁게시판</a>
+            <a class="dropdown-item WH_board board" style="color: #003366d2; font-size: 13px;" href="/board?kind=자유게시판&realm=WhiteHat">자유게시판</a>
+            <a class="dropdown-item WH_board board" style="color: #003366d2; font-size: 13px;" href="/board?kind=질문게시판&realm=WhiteHat">질문게시판</a>
+            <a class="dropdown-item WH_board board" style="color: #003366d2; font-size: 13px;" href="/board?kind=협업게시판&realm=WhiteHat">협업게시판</a>
+            <a class="dropdown-item WH_board board" style="color: #003366d2; font-size: 13px;" href="/board?kind=로드맵공유게시판&realm=WhiteHat">로드맵공유게시판</a>
+
           </div>
           </li>
 
@@ -132,7 +214,10 @@
               </ul>
               <ul class="login-box">
                 <li class="nav-item">
-                  <a class="nav-link" href="#"><i class="far fa-user"></i> 로그인</a></li>
+                  <a th:if="${session.id == null}"  href="/login"><i class="far fa-user"></i> 로그인</a></li>
+                  <a style="margin-left: 10px;" th:if="${session.id == null}"  href="/join">회원가입</a>
+                  <span th:if="${session.id != null}" th:text="|${session.id}님|"></span>
+                  <a style="margin-left: 10px;" th:if="${session.id != null}" href="/logoutAction">로그아웃</a>
               </ul>
               </nav>
   </div>

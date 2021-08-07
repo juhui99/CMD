@@ -152,4 +152,9 @@
     <update id="CommentSetDelete" parameterType="int">
         update comment set delete_option = 1 where bno = #{bno}
     </update>
+
+    <select id="TotalHotTopicList" parameterType="map" resultType="com.CMD.CMD_pro.board.domain.BoardVO">
+        select * from board_pro where reg_date > DATE_ADD(now(),INTERVAL -24 hour) and realm = #{realm} and delete_option = 0
+        order by hit + recommend desc, bno desc limit 5 offset 0;
+    </select>
 </mapper>

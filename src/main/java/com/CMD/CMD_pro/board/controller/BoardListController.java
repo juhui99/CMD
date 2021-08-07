@@ -105,7 +105,7 @@ public class BoardListController {
         if(hotContentList.size() >=3) model.addAttribute("hotContent3", hotContentList.get(2));
         if(hotContentList.size() >=4) model.addAttribute("hotContent4", hotContentList.get(3));
         if(hotContentList.size() >=5) model.addAttribute("hotContent5", hotContentList.get(4));
-        return "boardList";
+        return "cmd_community_boardList";
     }
 
     @PostMapping("board")   //게시물 리스트 가져오기 post방식 글쓰기 완료후 폼 액션
@@ -179,6 +179,10 @@ public class BoardListController {
     public String BoardView(@RequestParam("bno") int bno, @RequestParam("kind") String kind, @RequestParam("realm") String realm, Model model, HttpSession session,HttpServletRequest request) throws Exception{
         String userID = (String)session.getAttribute("id");
         String pageNumber = null;
+        String option = "non";
+        if(request.getParameter("option") != null){
+            option = request.getParameter("option");
+        }
         pageNumber = request.getParameter("pageNumber");
         if(userID == null){
             model.addAttribute("msg","로그인이 되어있지 않습니다.");
@@ -210,6 +214,8 @@ public class BoardListController {
         model.addAttribute("page",pageNumber);
         model.addAttribute("kind",kind);
         model.addAttribute("realm",realm);
+        model.addAttribute("option",option);
+
 
         return "view";
 
@@ -340,12 +346,12 @@ public class BoardListController {
         model.addAttribute("page",page);
         model.addAttribute("count",resultCount);
         model.addAttribute("target2",target2);
-        return "search";
+        return "cmd_search";
     }
 
     @GetMapping("/main")
     public String MainPage() throws Exception{
-        return "mainpage";
+        return "cmdev";
     }
 
     @GetMapping("/search_list")  //글 검색
@@ -389,7 +395,7 @@ public class BoardListController {
         model.addAttribute("page",page);
         model.addAttribute("count",resultCount);
         model.addAttribute("target2",target2);
-        return "search";
+        return "cmd_search";
     }
 
     @ResponseBody
@@ -503,6 +509,9 @@ public class BoardListController {
         comment.setWriter(form.getComment_writer());
         comment.setContent(form.getCommentContent());
         boardMapper.CommentInsert(comment);
+        if(form.getOption() != "non"){
+            redirect.addAttribute("option",form.getOption());
+        }
         redirect.addAttribute("bno",form.getBoard_bno());
         redirect.addAttribute("kind",form.getBoard_kind());
         redirect.addAttribute("realm",form.getBoard_realm());
@@ -522,6 +531,9 @@ public class BoardListController {
         comment.setWriter(form.getComment_writer());
         comment.setContent(form.getCommentContent());
         boardMapper.ReplyInsert(comment);
+        if(form.getOption() != "non"){
+            redirect.addAttribute("option",form.getOption());
+        }
         redirect.addAttribute("bno",form.getBoard_bno());
         redirect.addAttribute("kind",form.getBoard_kind());
         redirect.addAttribute("realm",form.getBoard_realm());
@@ -540,6 +552,9 @@ public class BoardListController {
         commentBno = form.getC_bno();
         commentContent = form.getCommentContent();
         boardMapper.CommentUpdate(commentBno,commentContent);
+        if(form.getOption() != "non"){
+            redirect.addAttribute("option",form.getOption());
+        }
         redirect.addAttribute("bno",form.getBoard_bno());
         redirect.addAttribute("kind",form.getBoard_kind());
         redirect.addAttribute("realm",form.getBoard_realm());
@@ -553,10 +568,15 @@ public class BoardListController {
         pageNumber = request.getParameter("pageNumber");
 
         String userID = (String)session.getAttribute("id");
-        if(!userID.equals(writer)){
+        UserVO user = userMapper.userLogin(userID);
+        if(!userID.equals(writer) && user.getUser_manager()==0){
             model.addAttribute("msg","접근할 수 없습니다.");
             model.addAttribute("url","board?kind="+kind+"&realm="+realm);
             return "alert";
+        }
+        String option = request.getParameter("option");
+        if(!option.equals("non")){
+            redirect.addAttribute("option",option);
         }
         boardMapper.ReplyDelete(commentBno);
         redirect.addAttribute("bno",bno);
@@ -573,10 +593,15 @@ public class BoardListController {
         String pageNumber = null;
         pageNumber = request.getParameter("pageNumber");
         String userID = (String)session.getAttribute("id");
-        if(!userID.equals(writer)){
+        UserVO user = userMapper.userLogin(userID);
+        if(!userID.equals(writer) && user.getUser_manager()==0){
             model.addAttribute("msg","접근할 수 없습니다.");
             model.addAttribute("url","board?kind="+kind+"&realm="+realm);
             return "alert";
+        }
+        String option = request.getParameter("option");
+        if(!option.equals("non")){
+            redirect.addAttribute("option",option);
         }
         boardMapper.CommentDelete(commentSequence);
         redirect.addAttribute("bno",bno);
@@ -592,9 +617,47 @@ public class BoardListController {
         return "cmd_community";
     }
 
-    @GetMapping("/cmd_community_frontend")
-    public String cmdCommunityFrontend() throws Exception{
-        return "cmd_community_frontend";
+
+    @GetMapping("/cmdev")
+    public String cmdEv() throws Exception{
+        return "cmdev";
+    }
+
+    @GetMapping("/cmdDetail")
+    public String cmdDetail(@RequestParam("realm") String realm,Model model) throws Exception{
+        model.addAttribute("realm",realm);
+        return "cmd_detail";
+    }
+
+    @GetMapping("/totalHotTopic")
+    public String totalHotTopic(@RequestParam("realm") String realm,@RequestParam("kind") String kind, Model model) throws Exception{
+        List<BoardVO> hotTopic = boardMapper.TotalHotTopicList(realm);
+        List<String> hotContentList = new ArrayList<String>();
+        for(int i=0; i < hotTopic.size(); i ++){
+            String hotContent = hotTopic.get(i).getContent();
+            if(hotContent.length() > 55){
+                hotContent = hotContent.substring(0,55);
+            }
+            hotContentList.add(hotContent);
+        }
+        if(hotTopic.size() >= 1) model.addAttribute("hotTopic1",hotTopic.get(0));
+        else model.addAttribute("hotTopic1","non");
+        if(hotTopic.size() >= 2) model.addAttribute("hotTopic2",hotTopic.get(1));
+        else model.addAttribute("hotTopic2","non");
+        if(hotTopic.size() >= 3) model.addAttribute("hotTopic3",hotTopic.get(2));
+        else model.addAttribute("hotTopic3","non");
+        if(hotTopic.size() >= 4) model.addAttribute("hotTopic4",hotTopic.get(3));
+        else model.addAttribute("hotTopic4","non");
+        if(hotTopic.size() >= 5) model.addAttribute("hotTopic5",hotTopic.get(4));
+        else model.addAttribute("hotTopic5","non");
+        if(hotContentList.size() >=1) model.addAttribute("hotContent1", hotContentList.get(0));
+        if(hotContentList.size() >=2) model.addAttribute("hotContent2", hotContentList.get(1));
+        if(hotContentList.size() >=3) model.addAttribute("hotContent3", hotContentList.get(2));
+        if(hotContentList.size() >=4) model.addAttribute("hotContent4", hotContentList.get(3));
+        if(hotContentList.size() >=5) model.addAttribute("hotContent5", hotContentList.get(4));
+        model.addAttribute("realm",realm);
+        model.addAttribute("kind",kind);
+        return "hotTopic";
     }
 
 

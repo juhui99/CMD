@@ -1,6 +1,6 @@
 CREATE TABLE `users` (
                          `user_index` int NOT NULL AUTO_INCREMENT,
-                         `user_id` varchar(10) NOT NULL,
+                         `user_id` varchar(20) NOT NULL,
                          `user_pwd` varchar(20) NOT NULL,
                          `user_name` varchar(80) DEFAULT NULL,
                          `user_age` varchar(20) DEFAULT NULL,

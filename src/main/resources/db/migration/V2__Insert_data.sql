@@ -17,7 +17,7 @@ insert into users ( `user_id`,
                     `user_email`,
                     `user_gender`,
                     `user_profile`)
-values('bbbb', '1b1b','김주희', '23', '백앤드', 'bbbb@gmail.com', 'W', 'profile');
+values('ehfehfdl0927', '0927','김주희', '23', '백앤드', 'bbbb@gmail.com', 'W', 'profile');
 
 
 insert into survey (`user_index`,
@@ -35,7 +35,18 @@ insert into board_pro (`subject`,
                        `realm`,
                        `recommend`,
                        `delete_option`)
-values('글제목','글내용1입니다.','ehfehfdl0927',now(),0,0,'자유게시판','백엔드',0,0);
+values('글제목','글내용1입니다.','ehfehfdl0927',now(),0,0,'자유게시판','Backend',0,0);
+insert into board_pro (`subject`,
+                       `content`,
+                       `writer`,
+                       `reg_date`,
+                       `hit`,
+                       `notice`,
+                       `kind`,
+                       `realm`,
+                       `recommend`,
+                       `delete_option`)
+values('글제목2','글내용2입니다.안녕하세요.','aaaa',now(),0,0,'정보팁게시판','Frontend',0,0);
 
 
 
