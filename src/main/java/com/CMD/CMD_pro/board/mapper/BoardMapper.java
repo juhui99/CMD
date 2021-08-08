@@ -71,5 +71,9 @@ public interface BoardMapper {
 
     public List<BoardVO> TotalHotTopicList(@Param("realm") String realm) throws Exception;
 
+    public List<BoardVO> mainSearch(@Param("keyword") String keyword) throws Exception;
+
+    public int mainSearchCount(@Param("keyword") String keyword) throws Exception;
+
 
 }

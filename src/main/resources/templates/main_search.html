@@ -1,0 +1,296 @@
+<!doctype html>
+<html lang="ko">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/libs/css/style.css">
+    <link rel="stylesheet" href="/libs/css/bootstrap.css">
+    <link rel="stylesheet" href="/libs/css/community.css">
+    <link rel="stylesheet" href="/libs/css/community-sub.css">
+    <script src="https://kit.fontawesome.com/717793cb2b.js" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <title>CMD</title>
+    <script type="text/javascript">
+        $(document).ready(function (){
+            $(".board").css("display","none");
+
+
+            $(".frontend").hover(function () {
+                $(".frontend_board").css("display","block");
+                $(".backend_board").css("display","none");
+                $(".DBA_board").css("display","none");
+                $(".AI_board").css("display","none");
+                $(".WH_board").css("display","none");
+
+            });
+            $(".backend").hover(function () {
+                $(".backend_board").css("display","block");
+                $(".frontend_board").css("display","none");
+                $(".DBA_board").css("display","none");
+                $(".AI_board").css("display","none");
+                $(".WH_board").css("display","none");
+            });
+            $(".DBA").hover(function () {
+                $(".DBA_board").css("display","block");
+                $(".backend_board").css("display","none");
+                $(".frontend_board").css("display","none");
+                $(".AI_board").css("display","none");
+                $(".WH_board").css("display","none");
+            });
+            $(".AI").hover(function () {
+                $(".AI_board").css("display","block");
+                $(".DBA_board").css("display","none");
+                $(".backend_board").css("display","none");
+                $(".frontend_board").css("display","none");
+                $(".WH_board").css("display","none");
+            });
+            $(".WH").hover(function () {
+                $(".WH_board").css("display","block");
+                $(".AI_board").css("display","none");
+                $(".DBA_board").css("display","none");
+                $(".backend_board").css("display","none");
+                $(".frontend_board").css("display","none");
+
+            });
+        });
+
+        function submitAction(){
+            if($("#search_option").val() != "writer"&& $("#search_option").val() != "subject"
+                && $("#search_option").val() != "content" && $("#search_option").val() != "all"){
+                alert("검색옵션을 선택해주세요.");
+                $("#search_option").focus();
+                return false;
+            }
+        }
+    </script>
+</head>
+<style>
+    h1{ margin: auto 44%; }
+
+
+
+
+    /* Make the image fully responsive */
+
+    .frontend_board {display: none;}
+
+
+
+    .carousel-inner .carouselImg { width: 100%; height: 200px; border-radius: 25px;}
+
+    .carousel-inner{
+        border-radius: 25px;
+
+    }
+
+    .btn-success {
+        color: #fff;
+        background-color: #003366d2;
+        border-color: #003366d2;
+    }
+
+    .btn-success:hover {
+        color: #fff;
+        background-color: #003366d2;
+        border-color: #003366d2;
+    }
+
+    .btn-success:focus, .btn-success.focus {
+        color: #fff;
+        background-color: #003366d2;
+        border-color: #003366d2;
+        box-shadow: 0 0 0 0.2rem #003366d2;
+    }
+
+    .btn-success.disabled, .btn-success:disabled {
+        color: #fff;
+        background-color: #003366d2;
+        border-color: #003366d2;
+    }
+
+    .btn-success:not(:disabled):not(.disabled):active, .btn-success:not(:disabled):not(.disabled).active,
+    .show > .btn-success.dropdown-toggle {
+        color: #fff;
+        background-color: #003366d2;
+        border-color: #003366d2;
+    }
+
+    .btn-success:not(:disabled):not(.disabled):active:focus, .btn-success:not(:disabled):not(.disabled).active:focus,
+    .show > .btn-success.dropdown-toggle:focus {
+        box-shadow: 0 0 0 0.2rem #003366d2;
+    }
+
+</style>
+<body>
+<div class="container">
+    <div class="header-box">
+        <div class="logo"><a href="/main"><img src="/img/CMD-logo.png" alt="logo"  height="100%"></a></div>
+        <div class="search">
+            <nav class="navbar navbar-expand-sm  navbar-dark">
+                <form class="form-inline" action="/action_page.php">
+                    <input class="form-control mr-sm-2" type="text" th:value="${keyword}" placeholder="Search">
+                    <button class="btn btn-success" type="submit">Search</button>
+                </form>
+            </nav>
+        </div>
+        <div class="keyword">실시간 검색</div>
+    </div>
+
+    <div class="menu-navbar">
+        <nav class="navbar navbar-expand-sm ">
+            <!-- Links -->
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="cmdev.html">메인</a>
+                </li>
+                <!-- Dropdown -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="/cmd_community" >
+                        커뮤니티
+                    </a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item frontend" href="/cmdDetail?realm=Frontend">Frontend</a>
+                        <a class="dropdown-item frontend_board board" style="color: #003366d2; font-size: 13px;" href="/totalHotTopic?kind=HOT게시판&realm=Frontend">HOT게시판</a>
+                        <a class="dropdown-item frontend_board board" style="color: #003366d2; font-size: 13px;" href="/board?kind=정보팁게시판&realm=Frontend">정보&팁게시판</a>
+                        <a class="dropdown-item frontend_board board" style="color: #003366d2; font-size: 13px;" href="/board?kind=자유게시판&realm=Frontend">자유게시판</a>
+                        <a class="dropdown-item frontend_board board" style="color: #003366d2; font-size: 13px;" href="/board?kind=질문게시판&realm=Frontend">질문게시판</a>
+                        <a class="dropdown-item frontend_board board" style="color: #003366d2; font-size: 13px;" href="/board?kind=협업게시판&realm=Frontend">협업게시판</a>
+                        <a class="dropdown-item frontend_board board" style="color: #003366d2; font-size: 13px;" href="/board?kind=로드맵공유게시판&realm=Frontend">로드맵공유게시판</a>
+                        <a class="dropdown-item backend" href="/cmdDetail?realm=Backend">Backend</a>
+                        <a class="dropdown-item backend_board board" style="color: #003366d2; font-size: 13px;" href="/totalHotTopic?kind=HOT게시판&realm=Backend">HOT게시판</a>
+                        <a class="dropdown-item backend_board board" style="color: #003366d2; font-size: 13px;" href="/board?kind=정보팁게시판&realm=Backend">정보&팁게시판</a>
+                        <a class="dropdown-item backend_board board" style="color: #003366d2; font-size: 13px;" href="/board?kind=자유게시판&realm=Backend">자유게시판</a>
+                        <a class="dropdown-item backend_board board" style="color: #003366d2; font-size: 13px;" href="/board?kind=질문게시판&realm=Backend">질문게시판</a>
+                        <a class="dropdown-item backend_board board" style="color: #003366d2; font-size: 13px;" href="/board?kind=협업게시판&realm=Backend">협업게시판</a>
+                        <a class="dropdown-item backend_board board" style="color: #003366d2; font-size: 13px;" href="/board?kind=로드맵공유게시판&realm=Backend">로드맵공유게시판</a>
+                        <a class="dropdown-item DBA" href="/cmdDetail?realm=DBA">DBA</a>
+                        <a class="dropdown-item DBA_board board" style="color: #003366d2; font-size: 13px;" href="/totalHotTopic?kind=HOT게시판&realm=DBA">HOT게시판</a>
+                        <a class="dropdown-item DBA_board board" style="color: #003366d2; font-size: 13px;" href="/board?kind=정보팁게시판&realm=DBA">정보&팁게시판</a>
+                        <a class="dropdown-item DBA_board board" style="color: #003366d2; font-size: 13px;" href="/board?kind=자유게시판&realm=DBA">자유게시판</a>
+                        <a class="dropdown-item DBA_board board" style="color: #003366d2; font-size: 13px;" href="/board?kind=질문게시판&realm=DBA">질문게시판</a>
+                        <a class="dropdown-item DBA_board board" style="color: #003366d2; font-size: 13px;" href="/board?kind=협업게시판&realm=DBA">협업게시판</a>
+                        <a class="dropdown-item DBA_board board" style="color: #003366d2; font-size: 13px;" href="/board?kind=로드맵공유게시판&realm=DBA">로드맵공유게시판</a>
+                        <a class="dropdown-item AI" href="/cmdDetail?realm=AI">A.I</a>
+                        <a class="dropdown-item AI_board board" style="color: #003366d2; font-size: 13px;" href="/totalHotTopic?kind=HOT게시판&realm=AI">HOT게시판</a>
+                        <a class="dropdown-item AI_board board" style="color: #003366d2; font-size: 13px;" href="/board?kind=정보팁게시판&realm=AI">정보&팁게시판</a>
+                        <a class="dropdown-item AI_board board" style="color: #003366d2; font-size: 13px;" href="/board?kind=자유게시판&realm=AI">자유게시판</a>
+                        <a class="dropdown-item AI_board board" style="color: #003366d2; font-size: 13px;" href="/board?kind=질문게시판&realm=AI">질문게시판</a>
+                        <a class="dropdown-item AI_board board" style="color: #003366d2; font-size: 13px;" href="/board?kind=협업게시판&realm=AI">협업게시판</a>
+                        <a class="dropdown-item AI_board board" style="color: #003366d2; font-size: 13px;" href="/board?kind=로드맵공유게시판&realm=AI">로드맵공유게시판</a>
+                        <a class="dropdown-item WH" href="/cmdDetail?realm=WhiteHat">White-Hat</a>
+                        <a class="dropdown-item WH_board board" style="color: #003366d2; font-size: 13px;" href="/totalHotTopic?kind=HOT게시판&realm=WhiteHat">HOT게시판</a>
+                        <a class="dropdown-item WH_board board" style="color: #003366d2; font-size: 13px;" href="/board?kind=정보팁게시판&realm=WhiteHat">정보&팁게시판</a>
+                        <a class="dropdown-item WH_board board" style="color: #003366d2; font-size: 13px;" href="/board?kind=자유게시판&realm=WhiteHat">자유게시판</a>
+                        <a class="dropdown-item WH_board board" style="color: #003366d2; font-size: 13px;" href="/board?kind=질문게시판&realm=WhiteHat">질문게시판</a>
+                        <a class="dropdown-item WH_board board" style="color: #003366d2; font-size: 13px;" href="/board?kind=협업게시판&realm=WhiteHat">협업게시판</a>
+                        <a class="dropdown-item WH_board board" style="color: #003366d2; font-size: 13px;" href="/board?kind=로드맵공유게시판&realm=WhiteHat">로드맵공유게시판</a>
+
+                    </div>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="#">채팅</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="cmd_loadmap.html">로드맵</a>
+                </li>
+
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+                        D-MBTI
+                    </a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="#">D-MBTI 하기</a>
+                        <a class="dropdown-item" href="#">D-MBTI 통계</a>
+                    </div>
+                </li>
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+                        설문조사
+                    </a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="#">설문조사 하기</a>
+                        <a class="dropdown-item" href="#">설문조사 통계</a>
+                    </div>
+                </li>
+            </ul>
+            <ul class="login-box">
+                <li class="nav-item">
+                    <a th:if="${session.id == null}"  href="/login"><i class="far fa-user"></i> 로그인</a></li>
+                <a style="margin-left: 10px;" th:if="${session.id == null}"  href="/join">회원가입</a>
+                <span th:if="${session.id != null}" th:text="|${session.id}님|"></span>
+                <a style="margin-left: 10px;" th:if="${session.id != null}" href="/logoutAction">로그아웃</a>
+            </ul>
+        </nav>
+    </div>
+
+        <div class="container">
+            <div>
+                <table style="text-align: center; border: 1px solid #dddddd" width="90%">
+                    <thead>
+                    <tr>
+                        <th>글 번호</th>
+                        <th>글 작성자</th>
+                        <th>글 제목</th>
+                        <th>날짜</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="board : ${board}">
+                        <td><a th:href="@{/view(bno=${board.bno},kind=${board.kind},realm=${board.realm},pageNumber=${page})}" th:text="${board.subject}"></a></td>
+                        <td th:text="${board.writer}"></td>
+                        <td th:text="${board.reg_date}"></td>
+                        <td th:if="${board.notice == 1}" style="color: red;">공지글</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div style="display: block; text-align: center;">
+                <ul class="pagination pagination-sm" style="margin: 0 auto; margin-top: 20px; margin-bottom: 20px;">
+                    <li class="page-item" th:if="${startPage != 1}"><a class="page-link" th:href="@{/main_search(pageNumber=${startPage} - 1,keyword=${keyword})}">&lt;</a></li>
+                    <li class="page-item" th:if="${startPage == 1}"><a class="page-link" style="color: gray;">&lt;</a></li>
+                    <li class="page-item" th:if="${startPage >0 and page != 1 and page > startPage}" th:each="idx,iterStat : ${#numbers.sequence(startPage, page - 1)}">
+                        <a class="page-link" th:if="${idx > 0 and page != 1}" th:href="@{/main_search(pageNumber=${idx},keyword=${keyword})}" th:text="${idx}"> </a>
+                    </li>
+                    <li class="page-item"><a class="page-link" th:href="@{/main_search(pageNumber=${page},keyword=${keyword})}" th:text="${page}" style="background-color: #006DCC;"></a></li>
+                    <li class="page-item" th:if="${count > 0}" th:each="idx,iterStat : ${#numbers.sequence(page + 1, target2 + page )}" >
+                        <a class="page-link" th:if="${idx < startPage + 10 and idx > page}" th:href="@{/main_search(pageNumber=${idx},keyword=${keyword})}" th:text="${idx}"></a>
+                    </li>
+                    <li class="page-item" th:if="${target2 >= 1 and target2 + page > startPage + 9}">
+                        <a class="page-link" th:href="@{/main_search(pageNumber=${startPage + 10},keyword=${keyword})}">></a>
+                    </li>
+                    <li class="page-item" th:if="${target2 + page <= startPage + 9}">
+                        <a class="page-link" style="color: gray;">></a>
+                    </li>
+                </ul>
+            </div>
+
+
+        </div>
+
+
+        <div class="footer-box">
+            <div class="author">
+                <p><b>Creators - </b>KimLeeEum</p>
+                <p><b>email - </b>energizun1001@gamil.com</p>
+                <p><b>Domain - </b>www.cmdev.com</p>
+            </div>
+            <div class="link">
+                <ul>
+                    <li><a href="https://github.com/" target="_blank"><i class="fab fa-github"> GitHub</i></a></li>
+                    <li><a href="https://stackoverflow.com/" target="_blank"><i class="fab fa-stack-overflow"> Stack-Overflow</i></a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="eyebrow"><p>@2021 prod by 김이음</p></div>
+    </div>
+</body>
+</html>

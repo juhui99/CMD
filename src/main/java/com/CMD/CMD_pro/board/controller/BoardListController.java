@@ -660,5 +660,97 @@ public class BoardListController {
         return "hotTopic";
     }
 
+    @PostMapping("/main_search")
+    public String main_search(SearchForm form,Model model,HttpServletRequest request) throws Exception{
+        String keyword = form.getKeyword();
+        List<BoardVO> board = boardMapper.mainSearch(keyword);
+        String pageNumber = "1";
+        int off = 0;
+        int target2 = 0; //새로
+        if(request.getParameter("pageNumber") != null){
+            pageNumber = request.getParameter("pageNumber");
+        }
+        if(Integer.parseInt(pageNumber) == 1){
+            off = 0;
+        }
+        else{
+            off = (Integer.parseInt(pageNumber) - 1) * 20;
+        }
+
+        int target =(Integer.parseInt(pageNumber) - 1) * 10;
+        int target1 = boardMapper.targetPage(target);
+        target1 = target1 / 10;
+        int startPage = (Integer.parseInt(pageNumber) / 10) * 10 + 1;
+        if(Integer.parseInt(pageNumber) % 10 == 0) startPage -= 10;
+        int page = Integer.parseInt(pageNumber);
+        int count = boardMapper.mainSearchCount(keyword);
+        if((count - (page * 20)) % 10 != 0 && count - (page * 20) > 0 ){ //새로 매앞에꺼만 20고침
+            target2 = ((count - (page * 20)) / 20) + 1; //고침
+        } else if((count - (page * 20)) % 10 == 0 && count - (page * 20) > 0) { //새로
+            if((count -(page * 20)) % 20 > 1){
+                target2 = ((count - (page * 20)) / 20) + 1;
+            }
+            else {
+                target2 = ((count - (page * 20)) / 20); //고침
+            }
+        } else {
+            target2 = 0;
+        }
+        int resultCount = count - (page * 20); //현재페이지 이후부터의 남은 게시물 갯수
+        model.addAttribute("board",board); //반환된 결과인 board를 모델로 담아 search.html로 전달
+        model.addAttribute("keyword",keyword); //키워드 전달
+        model.addAttribute("startPage",startPage);
+        model.addAttribute("page",page);
+        model.addAttribute("count",resultCount);
+        model.addAttribute("target2",target2);
+        return "main_search";
+    }
+
+    @GetMapping("/main_search")
+    public String main_search2(SearchForm form,Model model,HttpServletRequest request, @RequestParam("keyword") String keyword) throws Exception{
+        List<BoardVO> board = boardMapper.mainSearch(keyword);
+        String pageNumber = "1";
+        int off = 0;
+        int target2 = 0; //새로
+        if(request.getParameter("pageNumber") != null){
+            pageNumber = request.getParameter("pageNumber");
+        }
+        if(Integer.parseInt(pageNumber) == 1){
+            off = 0;
+        }
+        else{
+            off = (Integer.parseInt(pageNumber) - 1) * 20;
+        }
+
+        int target =(Integer.parseInt(pageNumber) - 1) * 10;
+        int target1 = boardMapper.targetPage(target);
+        target1 = target1 / 10;
+        int startPage = (Integer.parseInt(pageNumber) / 10) * 10 + 1;
+        if(Integer.parseInt(pageNumber) % 10 == 0) startPage -= 10;
+        int page = Integer.parseInt(pageNumber);
+        int count = boardMapper.mainSearchCount(keyword);
+        if((count - (page * 20)) % 10 != 0 && count - (page * 20) > 0 ){ //새로 매앞에꺼만 20고침
+            target2 = ((count - (page * 20)) / 20) + 1; //고침
+        } else if((count - (page * 20)) % 10 == 0 && count - (page * 20) > 0) { //새로
+            if((count -(page * 20)) % 20 > 1){
+                target2 = ((count - (page * 20)) / 20) + 1;
+            }
+            else {
+                target2 = ((count - (page * 20)) / 20); //고침
+            }
+        } else {
+            target2 = 0;
+        }
+        int resultCount = count - (page * 20); //현재페이지 이후부터의 남은 게시물 갯수
+        model.addAttribute("board",board); //반환된 결과인 board를 모델로 담아 search.html로 전달
+        model.addAttribute("keyword",keyword); //키워드 전달
+        model.addAttribute("startPage",startPage);
+        model.addAttribute("page",page);
+        model.addAttribute("count",resultCount);
+        model.addAttribute("target2",target2);
+        return "main_search";
+    }
+
+
 
 }
