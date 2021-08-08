@@ -180,8 +180,24 @@ public class BoardListController {
         String userID = (String)session.getAttribute("id");
         String pageNumber = null;
         String option = "non";
+        String search = "non";
+        String search_option = "non";
+        String keyword = "non";
+        String mainSearch = "non";
+        if(request.getParameter("search_option") != null){
+            search_option = request.getParameter("search_option");
+        }
+        if(request.getParameter("keyword") != null){
+            keyword = request.getParameter("keyword");
+        }
+        if(request.getParameter("search") != null){
+            search = request.getParameter("search");
+        }
         if(request.getParameter("option") != null){
             option = request.getParameter("option");
+        }
+        if(request.getParameter("mainSearch") != null){
+            mainSearch = request.getParameter("mainSearch");
         }
         pageNumber = request.getParameter("pageNumber");
         if(userID == null){
@@ -215,6 +231,10 @@ public class BoardListController {
         model.addAttribute("kind",kind);
         model.addAttribute("realm",realm);
         model.addAttribute("option",option);
+        model.addAttribute("search",search);
+        model.addAttribute("search_option",search_option);
+        model.addAttribute("keyword",keyword);
+        model.addAttribute("mainSearch",mainSearch);
 
 
         return "view";
@@ -512,6 +532,19 @@ public class BoardListController {
         if(form.getOption() != "non"){
             redirect.addAttribute("option",form.getOption());
         }
+        if(form.getSearch() != "non"){
+            redirect.addAttribute("search",form.getSearch());
+        }
+        if(form.getSearch_option() != "non"){
+            redirect.addAttribute("search_option",form.getSearch_option());
+        }
+        if(form.getKeyword() != "non"){
+            redirect.addAttribute("keyword",form.getKeyword());
+        }
+        if(form.getMainSearch() != "non"){
+            redirect.addAttribute("mainSearch",form.getMainSearch());
+        }
+
         redirect.addAttribute("bno",form.getBoard_bno());
         redirect.addAttribute("kind",form.getBoard_kind());
         redirect.addAttribute("realm",form.getBoard_realm());
@@ -534,6 +567,18 @@ public class BoardListController {
         if(form.getOption() != "non"){
             redirect.addAttribute("option",form.getOption());
         }
+        if(form.getSearch() != "non"){
+            redirect.addAttribute("search",form.getSearch());
+        }
+        if(form.getSearch_option() != "non"){
+            redirect.addAttribute("search_option",form.getSearch_option());
+        }
+        if(form.getKeyword() != "non"){
+            redirect.addAttribute("keyword",form.getKeyword());
+        }
+        if(form.getMainSearch() != "non"){
+            redirect.addAttribute("mainSearch",form.getMainSearch());
+        }
         redirect.addAttribute("bno",form.getBoard_bno());
         redirect.addAttribute("kind",form.getBoard_kind());
         redirect.addAttribute("realm",form.getBoard_realm());
@@ -554,6 +599,18 @@ public class BoardListController {
         boardMapper.CommentUpdate(commentBno,commentContent);
         if(form.getOption() != "non"){
             redirect.addAttribute("option",form.getOption());
+        }
+        if(form.getSearch() != "non"){
+            redirect.addAttribute("search",form.getSearch());
+        }
+        if(form.getSearch_option() != "non"){
+            redirect.addAttribute("search_option",form.getSearch_option());
+        }
+        if(form.getKeyword() != "non"){
+            redirect.addAttribute("keyword",form.getKeyword());
+        }
+        if(form.getMainSearch() != "non"){
+            redirect.addAttribute("mainSearch",form.getMainSearch());
         }
         redirect.addAttribute("bno",form.getBoard_bno());
         redirect.addAttribute("kind",form.getBoard_kind());
@@ -578,6 +635,23 @@ public class BoardListController {
         if(!option.equals("non")){
             redirect.addAttribute("option",option);
         }
+        String search = request.getParameter("search");
+        if(!search.equals("non")){
+            redirect.addAttribute("search",search);
+        }
+        String search_option = request.getParameter("search_option");
+        if(!search_option.equals("non")){
+            redirect.addAttribute("search_option",search_option);
+        }
+        String keyword = request.getParameter("keyword");
+        if(!keyword.equals("non")){
+            redirect.addAttribute("keyword",keyword);
+        }
+        String mainSearch = request.getParameter("mainSearch");
+        if(!mainSearch.equals("non")){
+            redirect.addAttribute("mainSearch",mainSearch);
+        }
+
         boardMapper.ReplyDelete(commentBno);
         redirect.addAttribute("bno",bno);
         redirect.addAttribute("kind",kind);
@@ -602,6 +676,22 @@ public class BoardListController {
         String option = request.getParameter("option");
         if(!option.equals("non")){
             redirect.addAttribute("option",option);
+        }
+        String search = request.getParameter("search");
+        if(!search.equals("non")){
+            redirect.addAttribute("search",search);
+        }
+        String search_option = request.getParameter("search_option");
+        if(!search_option.equals("non")){
+            redirect.addAttribute("search_option",search_option);
+        }
+        String keyword = request.getParameter("keyword");
+        if(!keyword.equals("non")){
+            redirect.addAttribute("keyword",keyword);
+        }
+        String mainSearch = request.getParameter("mainSearch");
+        if(!mainSearch.equals("non")){
+            redirect.addAttribute("mainSearch",mainSearch);
         }
         boardMapper.CommentDelete(commentSequence);
         redirect.addAttribute("bno",bno);

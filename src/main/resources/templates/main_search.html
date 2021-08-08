@@ -131,7 +131,7 @@
         <div class="logo"><a href="/main"><img src="/img/CMD-logo.png" alt="logo"  height="100%"></a></div>
         <div class="search">
             <nav class="navbar navbar-expand-sm  navbar-dark">
-                <form class="form-inline" action="/action_page.php">
+                <form class="form-inline" action="/main_search">
                     <input class="form-control mr-sm-2" type="text" th:value="${keyword}" placeholder="Search">
                     <button class="btn btn-success" type="submit">Search</button>
                 </form>
@@ -231,8 +231,9 @@
         </nav>
     </div>
 
-        <div class="container">
+        <div class="container" style="margin-top: 40px;">
             <div>
+                <h2 style="color: #003366d2; font-weight: bold;">커뮤니티</h2>
                 <table style="text-align: center; border: 1px solid #dddddd" width="90%">
                     <thead>
                     <tr>
@@ -244,7 +245,7 @@
                     </thead>
                     <tbody>
                     <tr th:each="board : ${board}">
-                        <td><a th:href="@{/view(bno=${board.bno},kind=${board.kind},realm=${board.realm},pageNumber=${page})}" th:text="${board.subject}"></a></td>
+                        <td><a th:href="@{/view(bno=${board.bno},kind=${board.kind},realm=${board.realm},pageNumber=${page},mainSearch='mainSearch',keyword=${keyword})}" th:text="${board.subject}"></a></td>
                         <td th:text="${board.writer}"></td>
                         <td th:text="${board.reg_date}"></td>
                         <td th:if="${board.notice == 1}" style="color: red;">공지글</td>

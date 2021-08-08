@@ -10,6 +10,10 @@ public class CommentForm {
     private int c_bno;
     private String pageNumber;
     private String option;
+    private String search;
+    private String search_option;
+    private String keyword;
+    private String mainSearch;
 
     public int getBoard_bno() {
         return board_bno;
@@ -81,5 +85,37 @@ public class CommentForm {
 
     public void setOption(String option) {
         this.option = option;
+    }
+
+    public String getSearch() {
+        return search;
+    }
+
+    public void setSearch(String search) {
+        this.search = search;
+    }
+
+    public String getSearch_option() {
+        return search_option;
+    }
+
+    public void setSearch_option(String search_option) {
+        this.search_option = search_option;
+    }
+
+    public String getKeyword() {
+        return keyword;
+    }
+
+    public void setKeyword(String keyword) {
+        this.keyword = keyword;
+    }
+
+    public String getMainSearch() {
+        return mainSearch;
+    }
+
+    public void setMainSearch(String mainSearch) {
+        this.mainSearch = mainSearch;
     }
 }
