@@ -217,6 +217,7 @@
                   <a th:if="${session.id == null}"  href="/login"><i class="far fa-user"></i> 로그인</a></li>
                   <a style="margin-left: 10px;" th:if="${session.id == null}"  href="/join">회원가입</a>
                   <span th:if="${session.id != null}" th:text="|${session.id}님|"></span>
+                <a style="margin-left: 10px;" th:if="${session.id != null}" href="/userUpdateCheck">회원정보 수정</a>
                   <a style="margin-left: 10px;" th:if="${session.id != null}" href="/logoutAction">로그아웃</a>
               </ul>
               </nav>

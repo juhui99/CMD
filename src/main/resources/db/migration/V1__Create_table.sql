@@ -40,7 +40,7 @@ CREATE TABLE `survey` (
 #                           PRIMARY KEY (`survey_result_index`)
 # ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
- CREATE TABLE `board_pro` (
+ CREATE TABLE `board` (
      `bno` int NOT NULL AUTO_INCREMENT,
      `subject` varchar(50),
      `content` text,
@@ -59,8 +59,8 @@ CREATE TABLE `survey` (
      `kind` varchar(20),
      `realm` varchar(20),
      `bno` int NOT NULL,
-     `userID` varchar(20),
-     FOREIGN KEY(bno) REFERENCES board_pro(bno) ON DELETE CASCADE ON UPDATE CASCADE
+     `user_id` varchar(20),
+     FOREIGN KEY(bno) REFERENCES board(bno) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 CREATE TABLE `comment` (
@@ -72,7 +72,7 @@ CREATE TABLE `comment` (
     `writer` varchar(20) NOT NULL,
     `content` text,
     `delete_option` int NOT NULL DEFAULT 0,
-    FOREIGN KEY(bno) REFERENCES board_pro(bno) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY(bno) REFERENCES board(bno) ON DELETE CASCADE ON UPDATE CASCADE,
     PRIMARY KEY (`c_bno`)
 
 );
@@ -83,7 +83,7 @@ CREATE TABLE `file`(
     `filename` varchar(200),
     `fileOriginName` varchar(300),
     `fileUrl` varchar(500),
-    FOREIGN KEY(bno) REFERENCES board_pro(bno) ON DELETE CASCADE ON UPDATE CASCADE
+    FOREIGN KEY(bno) REFERENCES board(bno) ON DELETE CASCADE ON UPDATE CASCADE
 ) ;
 
 

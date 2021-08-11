@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="http://code.jquery.com/jquery-3.1.1.min.js"></script>
+</head>
+<script type="text/javascript">
+    function submitAction(){
+
+        if($("#user_pwd").val() == ""){
+            alert("비밀번호를 입력해주세요.");
+            $("#user_pwd").focus();
+            return false;
+        }
+
+    }
+</script>
+<body>
+<form action="/userUpdate" method="post" onsubmit="return submitAction();">
+
+    <h4>비밀번호 확인</h4>
+
+    <div class="form-group">
+        <label for="user_pwd">*비밀번호 확인</label>
+        <input type="password" id="user_pwd" name="user_pwd" placeholder="비밀번호"><br>
+        <input type="submit" id="submit" name="submit" value="확인" >
+    </div>
+
+</form>
+</body>
+</html>

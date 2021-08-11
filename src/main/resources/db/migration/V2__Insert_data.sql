@@ -7,7 +7,7 @@ insert into users ( `user_id`,
                     `user_gender`,
                     `user_profile`,
                     `user_manager`)
-values('aaaa', '0a0a','이주희', '23', '보안', 'aaaa@gmail.com', 'W', 'profile',1);
+values('aaaa', '0a0a','이주희', '23', 'DBA', 'aaaa@gmail.com', 'W', 'profile',1);
 
 insert into users ( `user_id`,
                     `user_pwd`,
@@ -16,8 +16,9 @@ insert into users ( `user_id`,
                     `user_major`,
                     `user_email`,
                     `user_gender`,
-                    `user_profile`)
-values('ehfehfdl0927', '0927','김주희', '23', '백앤드', 'bbbb@gmail.com', 'W', 'profile');
+                    `user_profile`,
+                    `user_manager`)
+values('ehfehfdl0927', '0927','김주희', '23', 'Backend', 'bbbb@gmail.com', 'W', 'profile',1);
 
 
 insert into survey (`user_index`,
@@ -25,7 +26,7 @@ insert into survey (`user_index`,
                     `survey_duplicate`)
 values(0, '많이 사용하는 언어',2);
 
-insert into board_pro (`subject`,
+insert into board       (`subject`,
                        `content`,
                        `writer`,
                        `reg_date`,
@@ -36,7 +37,7 @@ insert into board_pro (`subject`,
                        `recommend`,
                        `delete_option`)
 values('글제목','글내용1입니다.','ehfehfdl0927',now(),0,0,'자유게시판','Backend',0,0);
-insert into board_pro (`subject`,
+insert into board       (`subject`,
                        `content`,
                        `writer`,
                        `reg_date`,

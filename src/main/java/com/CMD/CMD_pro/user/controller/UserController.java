@@ -73,4 +73,47 @@ public class UserController {
         session.invalidate();
         return "cmdev";
     }
+
+    @GetMapping("/userUpdateCheck")
+    public String userUpdateCheck(){
+        return "userUpdateCheck";
+    }
+
+    @PostMapping("/userUpdate")
+    public String userUpdate(HttpSession session,JoinForm form,Model model) throws Exception {
+        if(session.getAttribute("id") == null){
+            model.addAttribute("msg","로그인이 되어있지 않습니다.");
+            model.addAttribute("url","main");
+            return "alert";
+        }
+        String userID = (String) session.getAttribute("id");
+        String userPassword = form.getUser_pwd();
+        UserVO user = userMapper.userLogin(userID);
+        if (user.getUser_pwd().equals(userPassword)) {
+            model.addAttribute("user",user);
+            return "userUpdate";
+        }
+        else {
+            model.addAttribute("msg","비밀번호가 일치하지 않습니다.");
+            model.addAttribute("url","userUpdateCheck");
+            return "alert";
+        }
+    }
+
+    @PostMapping("/userUpdateAction")
+    public String userUpdateAction(Model model,JoinForm form) throws Exception{
+        UserVO user = new UserVO();
+        user.setUser_id(form.getUser_id());
+        user.setUser_pwd(form.getUser_pwd());
+        user.setUser_name(form.getUser_name());
+        user.setUser_age(form.getUser_age());
+        user.setUser_major(form.getUser_major());
+        user.setUser_email(form.getUser_email());
+        user.setUser_gender(form.getUser_gender());
+        userMapper.userUpdate(user);
+        model.addAttribute("msg","회원정보가 수정되었습니다.");
+        model.addAttribute("url","main");
+        return "alert";
+    }
+
 }

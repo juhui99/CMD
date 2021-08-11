@@ -5,31 +5,31 @@
 <mapper namespace="com.CMD.CMD_pro.board.mapper.BoardMapper">
 
     <insert id="boardInsert" parameterType="com.CMD.CMD_pro.board.domain.BoardVO">
-        insert into board_pro
+        insert into board
             values
         (#{bno},#{subject},#{content},#{writer},now(),0,#{notice},#{kind},#{realm},0,0)
     </insert>
 
 
     <select id="boardList" parameterType="map" resultType="com.CMD.CMD_pro.board.domain.BoardVO">
-        select * from board_pro where kind = #{kind} and realm = #{realm} and delete_option = 0 order by notice desc, bno desc limit 20 offset #{off};
+        select * from board where kind = #{kind} and realm = #{realm} and delete_option = 0 order by notice desc, bno desc limit 20 offset #{off};
     </select>
 
     <select id="boardView" parameterType="map" resultType="com.CMD.CMD_pro.board.domain.BoardVO" >
-         select * from board_pro where bno = #{bno} and kind = #{kind} and realm = #{realm}
+         select * from board where bno = #{bno} and kind = #{kind} and realm = #{realm}
     </select>
 
     <update id="boardUpdate" parameterType="com.CMD.CMD_pro.board.domain.BoardVO">
-        update board_pro set subject = #{subject}, content = #{content}
+        update board set subject = #{subject}, content = #{content}
         where bno = #{bno} and kind = #{kind} and realm = #{realm}
     </update>
 
     <update id="boardDelete" parameterType="map">
-        update board_pro set delete_option = 1 where bno = #{bno} and kind = #{kind} and realm = #{realm} and writer = #{writer}
+        update board set delete_option = 1 where bno = #{bno} and kind = #{kind} and realm = #{realm} and writer = #{writer}
     </update>
 
     <select id="boardSearch" parameterType="map" resultType="com.CMD.CMD_pro.board.domain.BoardVO">
-        select * from board_pro
+        select * from board
 
         <choose >
             <when test="search_option == 'all'">
@@ -46,19 +46,19 @@
     </select>
 
     <update id="boardHit" parameterType="int">
-        update board_pro set hit = hit + 1 where bno = #{bno}
+        update board set hit = hit + 1 where bno = #{bno}
     </update>
 
     <select id="targetPage" parameterType="map" resultType="int">
-        select count(bno) from board_pro where bno >= #{target}
+        select count(bno) from board where bno >= #{target}
     </select>
 
     <select id="boardCount" parameterType="map" resultType="int">
-        select count(*) from board_pro where kind = #{kind} and realm = #{realm} and delete_option = 0
+        select count(*) from board where kind = #{kind} and realm = #{realm} and delete_option = 0
     </select>
 
     <select id="searchCount" parameterType="map" resultType="int">
-        select count(*) from board_pro
+        select count(*) from board
         <choose >
             <when test="search_option == 'all'">
             where (writer like CONCAT('%',#{keyword},'%') and delete_option = 0 and kind = #{kind} and realm = #{realm})
@@ -73,15 +73,15 @@
     </select>
 
     <select id="recommendCheck" parameterType="map" resultType="int">
-        select exists (select userID from board_recommend where kind = #{kind} and realm = #{realm} and bno = #{bno} and userID = #{userID}) as success
+        select exists (select user_id from board_recommend where kind = #{kind} and realm = #{realm} and bno = #{bno} and user_id = #{userID}) as success
     </select>
 
     <update id="recommendAdd" parameterType="int">
-        update board_pro set recommend = recommend + 1 where bno = #{bno}
+        update board set recommend = recommend + 1 where bno = #{bno}
     </update>
 
     <update id="recommendSubtract" parameterType="int">
-        update board_pro set recommend = recommend - 1 where bno = #{bno}
+        update board set recommend = recommend - 1 where bno = #{bno}
     </update>
 
     <insert id="recommendInsert" parameterType="map">
@@ -91,20 +91,20 @@
     </insert>
 
     <delete id="recommendDelete" parameterType="map">
-        delete from board_recommend where kind = #{kind} and realm = #{realm} and bno = #{bno} and userID = #{userID}
+        delete from board_recommend where kind = #{kind} and realm = #{realm} and bno = #{bno} and user_id = #{userID}
     </delete>
 
     <select id="HotTopicList" parameterType="map" resultType="com.CMD.CMD_pro.board.domain.BoardVO">
-        select * from board_pro where reg_date > DATE_ADD(now(),INTERVAL -24 hour) and kind = #{kind} and realm = #{realm} and delete_option = 0
+        select * from board where reg_date > DATE_ADD(now(),INTERVAL -24 hour) and kind = #{kind} and realm = #{realm} and delete_option = 0
         order by hit + recommend desc, bno desc limit 5 offset 0;
     </select>
 
     <select id="selectMax" resultType="int">
-        select ifnull(max(bno),0) from board_pro;
+        select ifnull(max(bno),0) from board;
     </select>
     <insert id="fileInsert" parameterType="com.CMD.CMD_pro.board.domain.FileVO">
         <selectKey keyProperty="bno" resultType="int" order="BEFORE">
-            select max(bno) from board_pro
+            select max(bno) from board
         </selectKey>
         insert into file values (#{f_no},#{bno},#{filename},#{fileoriginname},#{fileurl})
     </insert>
@@ -154,12 +154,12 @@
     </update>
 
     <select id="TotalHotTopicList" parameterType="map" resultType="com.CMD.CMD_pro.board.domain.BoardVO">
-        select * from board_pro where reg_date > DATE_ADD(now(),INTERVAL -24 hour) and realm = #{realm} and delete_option = 0
+        select * from board where reg_date > DATE_ADD(now(),INTERVAL -24 hour) and realm = #{realm} and delete_option = 0
         order by hit + recommend desc, bno desc limit 5 offset 0;
     </select>
 
     <select id="mainSearch" parameterType="map" resultType="com.CMD.CMD_pro.board.domain.BoardVO">
-        select * from board_pro
+        select * from board
         where (writer like CONCAT('%',#{keyword},'%') and delete_option = 0)
         or (subject like CONCAT('%',#{keyword},'%') and delete_option = 0)
         or (content like CONCAT('%',#{keyword},'%') and delete_option = 0)
@@ -167,7 +167,7 @@
     </select>
 
     <select id="mainSearchCount" parameterType="map" resultType="int">
-        select count(*) from board_pro
+        select count(*) from board
         where (writer like CONCAT('%',#{keyword},'%') and delete_option = 0)
         or (subject like CONCAT('%',#{keyword},'%') and delete_option = 0)
         or (content like CONCAT('%',#{keyword},'%') and delete_option = 0)

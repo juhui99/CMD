@@ -17,4 +17,9 @@
         select * from users where user_id = #{userID}
     </select>
 
+    <update id="userUpdate" parameterType="com.CMD.CMD_pro.user.domain.UserVO">
+        update users set user_pwd = #{user_pwd}, user_name = #{user_name}, user_age = #{user_age}, user_major = #{user_major}, user_email = #{user_email}, user_gender = #{user_gender}
+        where user_id = #{user_id}
+    </update>
+
 </mapper>
