@@ -160,7 +160,12 @@
                 <button th:if="${session.id == board.writer}" type="submit">수정</button>
                 <a th:if="${session.id == board.writer or user.user_manager == 1}" th:href="@{/delete(bno=${board.bno},kind=${board.kind},realm=${board.realm},writer=${board.writer})}"><button type="button">삭제</button></a>
 
-
+                <input type="hidden" name="option" th:value="${option}">
+                <input type="hidden" name="search" th:value="${search}">
+                <input type="hidden" name="search_option" th:value="${search_option}">
+                <input type="hidden" name="keyword" th:value="${keyword}">
+                <input type="hidden" name="mainSearch" th:value="${mainSearch}">
+                <input type="hidden" name="page" th:value="${page}">
 
             </form>
 

@@ -51,6 +51,12 @@
                 <img id="clip" th:if="${!filename.equals('no')}" src="/img/clip.png" style="width:13px; margin-top: 3px; margin-right: 5px;"><a id="file" th:if="${!filename.equals('no')}" th:text="${filename}"></a><button th:if="${!filename.equals('no')}" id="delete" name="delete" type="button" onclick="deleteFile();">파일삭제</button>
                 <input type="hidden" name="filename" id="filename" th:value="${filename}">
                 <button type="submit">수정완료</button>
+                <input type="hidden" name="option" th:value="${option}">
+                <input type="hidden" name="search" th:value="${search}">
+                <input type="hidden" name="search_option" th:value="${search_option}">
+                <input type="hidden" name="keyword" th:value="${keyword}">
+                <input type="hidden" name="mainSearch" th:value="${mainSearch}">
+                <input type="hidden" name="page" th:value="${page}">
 
             </form>
             </tbody>

@@ -243,6 +243,12 @@ public class BoardListController {
 
     @PostMapping("/update")    //글 수정
     public String Update(UpdateForm form, Model model, HttpSession session) throws Exception{
+        String option = form.getOption();
+        String search = form.getSearch();
+        String search_option = form.getSearch_option();
+        String keyword = form.getKeyword();
+        String mainSearch = form.getMainSearch();
+        String page = form.getPage();
         String userID = (String)session.getAttribute("id");
         String filename = null;
         if(!userID.equals(form.getWriter())){
@@ -262,6 +268,12 @@ public class BoardListController {
         }
         model.addAttribute("board",board); //저장된 board 객체를 모델로 담아 update.html로 전달
         model.addAttribute("filename",filename);
+        model.addAttribute("option",option);
+        model.addAttribute("search",search);
+        model.addAttribute("search_option",search_option);
+        model.addAttribute("keyword",keyword);
+        model.addAttribute("mainSearch",mainSearch);
+        model.addAttribute("page",page);
         return "update";
     }
 
@@ -298,9 +310,27 @@ public class BoardListController {
         }
         boardMapper.fileUpdate(file);
 
+        if(form.getOption() != "non"){
+            redirect.addAttribute("option",form.getOption());
+        }
+        if(form.getSearch() != "non"){
+            redirect.addAttribute("search",form.getSearch());
+        }
+        if(form.getSearch_option() != "non"){
+            redirect.addAttribute("search_option",form.getSearch_option());
+        }
+        if(form.getKeyword() != "non"){
+            redirect.addAttribute("keyword",form.getKeyword());
+        }
+        if(form.getMainSearch() != "non"){
+            redirect.addAttribute("mainSearch",form.getMainSearch());
+        }
+
         redirect.addAttribute("kind", form.getKind());
         redirect.addAttribute("realm", form.getRealm());
-        return "redirect:/board"; //("/board")로 매핑된 get메소드 실행
+        redirect.addAttribute("bno",form.getBno());
+        redirect.addAttribute("pageNumber",form.getPage());
+        return "redirect:/view"; //("/board")로 매핑된 get메소드 실행
     }
 
 
