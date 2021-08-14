@@ -22,4 +22,8 @@
         where user_id = #{user_id}
     </update>
 
+    <update id="userProfile" parameterType="map">
+        update users set user_profile = #{userProfile} where user_id = #{userID}
+    </update>
+
 </mapper>

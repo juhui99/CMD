@@ -5,9 +5,8 @@ insert into users ( `user_id`,
                     `user_major`,
                     `user_email`,
                     `user_gender`,
-                    `user_profile`,
                     `user_manager`)
-values('aaaa', '0a0a','이주희', '23', 'DBA', 'aaaa@gmail.com', 'W', 'profile',1);
+values('aaaa', '0a0a','이주희', '23', 'DBA', 'aaaa@gmail.com', 'W',1);
 
 insert into users ( `user_id`,
                     `user_pwd`,
@@ -16,9 +15,8 @@ insert into users ( `user_id`,
                     `user_major`,
                     `user_email`,
                     `user_gender`,
-                    `user_profile`,
                     `user_manager`)
-values('ehfehfdl0927', '0927','김주희', '23', 'Backend', 'bbbb@gmail.com', 'W', 'profile',1);
+values('ehfehfdl0927', '0927','김주희', '23', 'Backend', 'bbbb@gmail.com', 'W',1);
 
 
 insert into survey (`user_index`,

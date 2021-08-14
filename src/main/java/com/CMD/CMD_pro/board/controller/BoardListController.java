@@ -400,7 +400,23 @@ public class BoardListController {
     }
 
     @GetMapping("/main")
-    public String MainPage() throws Exception{
+    public String MainPage(HttpSession session, Model model) throws Exception{
+        String userID;
+        String filename;
+        if((String) session.getAttribute("id") != null){
+            userID = (String) session.getAttribute("id");
+            UserVO user = userMapper.userLogin(userID);
+            if(user.getUser_profile() == null){
+                filename = "non";
+            }
+            else{
+                filename = user.getUser_profile();
+            }
+        } else {
+            filename = "non";
+        }
+
+        model.addAttribute("filename",filename);
         return "cmdev";
     }
 
