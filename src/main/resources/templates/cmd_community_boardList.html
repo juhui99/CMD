@@ -123,6 +123,10 @@
   .show > .btn-success.dropdown-toggle:focus {
     box-shadow: 0 0 0 0.2rem #003366d2;
   }
+  .img-circle{
+    border-radius: 50%;
+    border: 1px solid #003366d2;
+  }
 
 </style>
 <body>
@@ -192,8 +196,14 @@
           </div>
         </li>
 
-        <li class="nav-item">
-          <a class="nav-link" href="#">채팅</a>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+            채팅
+          </a>
+          <div class="dropdown-menu">
+            <a class="dropdown-item" href="/friendsFind">친구 찾기</a>
+            <a class="dropdown-item" href="/friendsList">친구 목록</a>
+          </div>
         </li>
 
         <li class="nav-item">
@@ -223,10 +233,22 @@
       </ul>
       <ul class="login-box">
         <li class="nav-item">
+
           <a th:if="${session.id == null}"  href="/login"><i class="far fa-user"></i> 로그인</a></li>
         <a style="margin-left: 10px;" th:if="${session.id == null}"  href="/join">회원가입</a>
-        <span th:if="${session.id != null}" th:text="|${session.id}님|"></span>
-        <a style="margin-left: 10px;" th:if="${session.id != null}" href="/logoutAction">로그아웃</a>
+
+        <li class="nav-item dropdown" th:if="${session.id != null}">
+          <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+            <img th:if="${!filename.equals('non') and session.id != null}" class= "img-circle" style="width: 35px; height: 35px; border-color:  #003366d2;" th:src="@{/display?(filename=${filename})}"/>
+            <img th:if="${filename.equals('non') and session.id != null}" class= "img-circle" style="width: 35px; height: 35px; border-color:  #003366d2;" src="/display?filename=default.png"/>
+            <span th:if="${session.id != null}" th:text="|${session.id}님|" style="margin-left: 3px;"></span>
+          </a>
+          <div class="dropdown-menu">
+            <a style="margin-left: 10px;" th:if="${session.id != null}" href="/userUpdateCheck">회원정보 수정</a></br>
+            <a style="margin-left: 10px;" th:if="${session.id != null}" href="/profile">프로필 수정</a></br>
+            <a style="margin-left: 10px;" th:if="${session.id != null}" href="/logoutAction">로그아웃</a>
+          </div>
+        </li>
       </ul>
     </nav>
   </div>

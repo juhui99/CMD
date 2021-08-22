@@ -7,16 +7,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="/libs/css/style.css">
     <link rel="stylesheet" href="/libs/css/bootstrap.css">
-    <link rel="stylesheet" href="/libs/css/community.css">
-    <link rel="stylesheet" href="/libs/css/community-sub.css">
+
     <script src="https://kit.fontawesome.com/717793cb2b.js" crossorigin="anonymous"></script>
+    <title>CMD</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <title>CMD</title>
     <script type="text/javascript">
         $(document).ready(function (){
             $(".board").css("display","none");
+            $(".friendDelete").css("display","none");
 
 
             $(".frontend").hover(function () {
@@ -56,88 +57,111 @@
                 $(".frontend_board").css("display","none");
 
             });
+            $("#friendSetup").click(function (){
+                if($(".friendDelete").is(":visible") == true){
+                    $(".friendDelete").css("display","none");
+                }else if($(".friendDelete").is(":visible") == false){
+                    $(".friendDelete").css("display","block");
+                }
+            });
+
         });
 
-        function submitAction(){
-            if($("#search_option").val() != "writer"&& $("#search_option").val() != "subject"
-                && $("#search_option").val() != "content" && $("#search_option").val() != "all"){
-                alert("검색옵션을 선택해주세요.");
-                $("#search_option").focus();
-                return false;
-            }
-        }
     </script>
+
+    <style>
+        /* Make the image fully responsive */
+
+        .frontend_board {display: none;}
+
+
+        .carousel{
+            margin: 4%auto;
+        }
+        .carousel-inner img { width: 100%; height: auto; border-radius: 25px;}
+
+        .carousel-inner{
+            border-radius: 25px;
+
+        }
+        .carousel-caption{
+            font-size: 25px;
+        }
+
+        .btn-success {
+            color: #fff;
+            background-color: #003366d2;
+            border-color: #003366d2;
+        }
+
+        .btn-success:hover {
+            color: #fff;
+            background-color: #003366d2;
+            border-color: #003366d2;
+        }
+
+        .btn-success:focus, .btn-success.focus {
+            color: #fff;
+            background-color: #003366d2;
+            border-color: #003366d2;
+            box-shadow: 0 0 0 0.2rem #003366d2;
+        }
+
+        .btn-success.disabled, .btn-success:disabled {
+            color: #fff;
+            background-color: #003366d2;
+            border-color: #003366d2;
+        }
+
+        .btn-success:not(:disabled):not(.disabled):active, .btn-success:not(:disabled):not(.disabled).active,
+        .show > .btn-success.dropdown-toggle {
+            color: #fff;
+            background-color: #003366d2;
+            border-color: #003366d2;
+        }
+        .img-circle{
+            border-radius: 50%;
+            border: 1px solid #003366d2;
+        }
+
+        .btn-success:not(:disabled):not(.disabled):active:focus, .btn-success:not(:disabled):not(.disabled).active:focus,
+        .show > .btn-success.dropdown-toggle:focus {
+            box-shadow: 0 0 0 0.2rem #003366d2;
+        }
+
+        thead th {
+            background-color: #003366d2;
+            color: white;
+            text-align: center;
+        }
+        tr td:first-child,
+        tr th:first-child {
+            border-top-left-radius: 6px;
+            border-bottom-left-radius: 6px;
+            border-top-right-radius: 6px;
+            border-bottom-right-radius: 6px;
+        }
+        tr last-child{
+            border-bottom-left-radius: 6px;
+            border-bottom-right-radius: 6px;
+        }
+
+        table{
+            border-collapse: separate !important;
+            border-spacing: 0 13px;
+        }
+
+
+    </style>
 </head>
-<style>
-    h1{ margin: auto 44%; }
-
-
-
-
-    /* Make the image fully responsive */
-
-    .frontend_board {display: none;}
-
-
-
-    .carousel-inner .carouselImg { width: 100%; height: 200px; border-radius: 25px;}
-
-    .carousel-inner{
-        border-radius: 25px;
-
-    }
-
-    .btn-success {
-        color: #fff;
-        background-color: #003366d2;
-        border-color: #003366d2;
-    }
-
-    .btn-success:hover {
-        color: #fff;
-        background-color: #003366d2;
-        border-color: #003366d2;
-    }
-
-    .btn-success:focus, .btn-success.focus {
-        color: #fff;
-        background-color: #003366d2;
-        border-color: #003366d2;
-        box-shadow: 0 0 0 0.2rem #003366d2;
-    }
-
-    .btn-success.disabled, .btn-success:disabled {
-        color: #fff;
-        background-color: #003366d2;
-        border-color: #003366d2;
-    }
-
-    .btn-success:not(:disabled):not(.disabled):active, .btn-success:not(:disabled):not(.disabled).active,
-    .show > .btn-success.dropdown-toggle {
-        color: #fff;
-        background-color: #003366d2;
-        border-color: #003366d2;
-    }
-
-    .btn-success:not(:disabled):not(.disabled):active:focus, .btn-success:not(:disabled):not(.disabled).active:focus,
-    .show > .btn-success.dropdown-toggle:focus {
-        box-shadow: 0 0 0 0.2rem #003366d2;
-    }
-
-    .img-circle{
-        border-radius: 50%;
-        border: 1px solid #003366d2;
-    }
-
-</style>
 <body>
 <div class="container">
     <div class="header-box">
         <div class="logo"><a href="/main"><img src="/img/CMD-logo.png" alt="logo"  height="100%"></a></div>
         <div class="search">
             <nav class="navbar navbar-expand-sm  navbar-dark">
-                <form class="form-inline" action="/main_search">
-                    <input class="form-control mr-sm-2" type="text" name="keyword" th:value="${keyword}" placeholder="Search">
+                <form class="form-inline" action="/main_search" method="post">
+                    <input class="form-control mr-sm-2" name="keyword" type="text" placeholder="Search">
                     <button class="btn btn-success" type="submit">Search</button>
                 </form>
             </nav>
@@ -251,70 +275,45 @@
                     </div>
                 </li>
             </ul>
+
         </nav>
     </div>
 
-        <div class="container" style="margin-top: 40px;">
-            <div>
-                <h2 style="color: #003366d2; font-weight: bold;">커뮤니티</h2>
-                <table style="text-align: center; border: 1px solid #dddddd" width="90%">
-                    <thead>
-                    <tr>
-                        <th>글 번호</th>
-                        <th>글 작성자</th>
-                        <th>글 제목</th>
-                        <th>날짜</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr th:each="board : ${board}">
-                        <td><a th:href="@{/view(bno=${board.bno},kind=${board.kind},realm=${board.realm},pageNumber=${page},mainSearch='mainSearch',keyword=${keyword})}" th:text="${board.subject}"></a></td>
-                        <td th:text="${board.writer}"></td>
-                        <td th:text="${board.reg_date}"></td>
-                        <td th:if="${board.notice == 1}" style="color: red;">공지글</td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
+    <div class="container" style="margin-top: 20px; margin-bottom: 20px;">
+        <table style="border: 1px solid #003366d2; border-radius: 5px;" width="70%">
+            <thead>
+            <tr>
+                <td><form action="/search_myFriend" method="post"><input type="text" name="keyword" placeholder="내친구 검색"><button type="submit"><img src="/img/search.png" style="width:15px; height: 15px; margin-bottom: 4px; margin-top: 4px;"></button></form></td>
+                <td align="right"><button id="friendSetup" type="button"><img src="/img/setup.png" style="width:20px; margin-bottom: 4px; margin-top: 4px;"></button></td>
+            </tr>
+            <tr>
+                <th colspan="5" style="height: 45px;"><span>친구목록</span></th>
+            </tr>
+            </thead>
+            <tbody>
+                <tr th:each="friendsList : ${friendsList}">
+                    <td th:if="${friendsList.user_profile != null}"><img class= "img-circle" style="width: 50px; height: 50px; border-color:  #003366d2;" th:src="@{/display?(filename=${friendsList.user_profile})}"/><a style="margin-left: 5px;" th:text="${friendsList.user_id}" th:href="@{/chat(friend=${friendsList.user_id})}"></a></td>
+                    <td th:if="${friendsList.user_profile == null}"><img class= "img-circle" style="width: 50px; height: 50px; border-color:  #003366d2;" src="/display?filename=default.png"/><a style="margin-left: 5px;" th:text="${friendsList.user_id}" th:href="@{/chat(friend=${friendsList.user_id})}"></a></td>
+                    <td><a th:href="@{/friendDelete(user=${session.id},friend=${friendsList.user_id})}"><button class="friendDelete" type="button">삭제</button></a></td>
 
-            <div style="display: block; text-align: center;">
-                <ul class="pagination pagination-sm" style="margin: 0 auto; margin-top: 20px; margin-bottom: 20px;">
-                    <li class="page-item" th:if="${startPage != 1}"><a class="page-link" th:href="@{/main_search(pageNumber=${startPage} - 1,keyword=${keyword})}">&lt;</a></li>
-                    <li class="page-item" th:if="${startPage == 1}"><a class="page-link" style="color: gray;">&lt;</a></li>
-                    <li class="page-item" th:if="${startPage >0 and page != 1 and page > startPage}" th:each="idx,iterStat : ${#numbers.sequence(startPage, page - 1)}">
-                        <a class="page-link" th:if="${idx > 0 and page != 1}" th:href="@{/main_search(pageNumber=${idx},keyword=${keyword})}" th:text="${idx}"> </a>
-                    </li>
-                    <li class="page-item"><a class="page-link" th:href="@{/main_search(pageNumber=${page},keyword=${keyword})}" th:text="${page}" style="background-color: #006DCC;"></a></li>
-                    <li class="page-item" th:if="${count > 0}" th:each="idx,iterStat : ${#numbers.sequence(page + 1, target2 + page )}" >
-                        <a class="page-link" th:if="${idx < startPage + 10 and idx > page}" th:href="@{/main_search(pageNumber=${idx},keyword=${keyword})}" th:text="${idx}"></a>
-                    </li>
-                    <li class="page-item" th:if="${target2 >= 1 and target2 + page > startPage + 9}">
-                        <a class="page-link" th:href="@{/main_search(pageNumber=${startPage + 10},keyword=${keyword})}">></a>
-                    </li>
-                    <li class="page-item" th:if="${target2 + page <= startPage + 9}">
-                        <a class="page-link" style="color: gray;">></a>
-                    </li>
-                </ul>
-            </div>
-
-
-        </div>
-
-
-        <div class="footer-box">
-            <div class="author">
-                <p><b>Creators - </b>KimLeeEum</p>
-                <p><b>email - </b>energizun1001@gamil.com</p>
-                <p><b>Domain - </b>www.cmdev.com</p>
-            </div>
-            <div class="link">
-                <ul>
-                    <li><a href="https://github.com/" target="_blank"><i class="fab fa-github"> GitHub</i></a></li>
-                    <li><a href="https://stackoverflow.com/" target="_blank"><i class="fab fa-stack-overflow"> Stack-Overflow</i></a></li>
-                </ul>
-            </div>
-        </div>
-        <div class="eyebrow"><p>@2021 prod by 김이음</p></div>
+                </tr>
+            </tbody>
+        </table>
     </div>
+    <div class="footer-box">
+        <div class="author">
+            <p><b>Creators - </b>KimLeeEum</p>
+            <p><b>email - </b>energizun1001@gamil.com</p>
+            <p><b>Domain - </b>www.cmdev.com</p>
+        </div>
+        <div class="link">
+            <ul>
+                <li><a href="https://github.com/" target="_blank"><i class="fab fa-github"> GitHub</i></a></li>
+                <li><a href="https://stackoverflow.com/" target="_blank"><i class="fab fa-stack-overflow"> Stack-Overflow</i></a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="eyebrow"><p>@2021 prod by 김이음</p></div>
+</div>
 </body>
 </html>

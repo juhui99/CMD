@@ -49,7 +49,7 @@ public class UserController {
         user.setUser_email(form.getUser_email());
         user.setUser_gender(form.getUser_gender());
         userMapper.userJoin(user);
-        return "redirect:/join";
+        return "redirect:/main";
     }
 
     @ResponseBody
@@ -167,26 +167,6 @@ public class UserController {
         return new ResponseEntity<Resource>(resource,header, HttpStatus.OK);
     }
 
-    @GetMapping("/test")
-    public String test(HttpSession session, Model model) throws Exception{
-        String userID;
-        String filename;
-        if((String) session.getAttribute("id") != null){
-            userID = (String) session.getAttribute("id");
-            UserVO user = userMapper.userLogin(userID);
-            if(user.getUser_profile() == null){
-                filename = "non";
-            }
-            else{
-                filename = user.getUser_profile();
-            }
-        } else {
-            filename = "non";
-        }
-
-        model.addAttribute("filename",filename);
-        return "test";
-    }
 
     @GetMapping("/profile")
     public String getProfile(){ return "profile";}
@@ -208,9 +188,7 @@ public class UserController {
         files.transferTo(destinationFile);
         userMapper.userProfile(destinationFileName,userID);
 
-        redirect.addAttribute("kind", form.getKind());
-        redirect.addAttribute("realm", form.getRealm());
-        return "login";
+        return "redirect:/main";
     }
 
 

@@ -38,8 +38,9 @@ public class BoardListController {
     //}
 
     @GetMapping("/board")  //게시물 리스트 가져오기 get방식
-    public String list(HttpServletRequest request, Model model, @RequestParam("kind") String kind, @RequestParam("realm") String realm) throws Exception{
+    public String list(HttpServletRequest request, Model model, @RequestParam("kind") String kind, @RequestParam("realm") String realm, HttpSession session) throws Exception{
         String pageNumber = "1";
+        String filename = null;
         int off = 0;
         int target2 = 0; //새로
         if(request.getParameter("pageNumber") != null){
@@ -82,6 +83,16 @@ public class BoardListController {
             }
             hotContentList.add(hotContent);
         }
+        if(session.getAttribute("id") != null) {
+            String userID = (String) session.getAttribute("id");
+            UserVO user = userMapper.userLogin(userID);
+            if (user.getUser_profile() == null) {
+                filename = "non";
+            } else {
+                filename = user.getUser_profile();
+            }
+        }
+        model.addAttribute("filename", filename);
         model.addAttribute("board", board); //게시물 메퍼에 boardList 로 얻은 결과를 리스트로 담아서 boardList.html로 전달
         model.addAttribute("target", target1);
         model.addAttribute("startPage", startPage);
@@ -352,12 +363,13 @@ public class BoardListController {
     }
 
     @PostMapping("/search_list")  //글 검색
-    public String BoardSearch(HttpServletRequest request, SearchForm form, Model model) throws Exception{
+    public String BoardSearch(HttpServletRequest request, SearchForm form, Model model, HttpSession session) throws Exception{
         String search_option = form.getSearch_option(); //String형 변수에 폼 데이터 저장
         String keyword = form.getKeyword();
         String kind = form.getKind();
         String realm = form.getRealm();
         String pageNumber = "1";
+        String filename = null;
         int off = 0;
         int target2 = 0; //새로
         if(request.getParameter("pageNumber") != null){
@@ -387,6 +399,17 @@ public class BoardListController {
         }
         int resultCount = count - (page * 20); //현재페이지 이후부터의 남은 게시물 갯수
         List<BoardVO> board = boardMapper.boardSearch(search_option, keyword,kind,realm,off); //저장된 변수들을 파라미터로 담아 boardSearch 실행후 결과를 board에 저장
+
+        if(session.getAttribute("id") != null) {
+            String userID = (String) session.getAttribute("id");
+            UserVO user = userMapper.userLogin(userID);
+            if (user.getUser_profile() == null) {
+                filename = "non";
+            } else {
+                filename = user.getUser_profile();
+            }
+        }
+        model.addAttribute("filename", filename);
         model.addAttribute("board",board); //반환된 결과인 board를 모델로 담아 search.html로 전달
         model.addAttribute("keyword",keyword); //키워드 전달
         model.addAttribute("search_option",search_option); //옵션 전달
@@ -421,10 +444,11 @@ public class BoardListController {
     }
 
     @GetMapping("/search_list")  //글 검색
-    public String BoardSearch2(@RequestParam("search_option") String search_option, @RequestParam("keyword") String keyword, @RequestParam("kind") String kind, @RequestParam("realm") String realm, HttpServletRequest request, SearchForm form, Model model) throws Exception{
+    public String BoardSearch2(@RequestParam("search_option") String search_option, @RequestParam("keyword") String keyword, @RequestParam("kind") String kind, @RequestParam("realm") String realm, HttpServletRequest request, SearchForm form, Model model, HttpSession session) throws Exception{
         String pageNumber = "1";
         int off = 0;
         int target2 = 0; //새로
+        String filename = null;
         if(request.getParameter("pageNumber") != null){
             pageNumber = request.getParameter("pageNumber");
         }
@@ -452,6 +476,16 @@ public class BoardListController {
         }
         int resultCount = count - (page * 20); //현재페이지 이후부터의 남은 게시물 갯수
         List<BoardVO> board = boardMapper.boardSearch(search_option, keyword,kind,realm,off); //저장된 변수들을 파라미터로 담아 boardSearch 실행후 결과를 board에 저장
+        if(session.getAttribute("id") != null) {
+            String userID = (String) session.getAttribute("id");
+            UserVO user = userMapper.userLogin(userID);
+            if (user.getUser_profile() == null) {
+                filename = "non";
+            } else {
+                filename = user.getUser_profile();
+            }
+        }
+        model.addAttribute("filename", filename);
         model.addAttribute("board",board); //반환된 결과인 board를 모델로 담아 search.html로 전달
         model.addAttribute("keyword",keyword); //키워드 전달
         model.addAttribute("search_option",search_option); //옵션 전달
@@ -749,24 +783,51 @@ public class BoardListController {
     }
 
     @GetMapping("/cmd_community")
-    public String cmdCommunity() throws Exception{
+    public String cmdCommunity(HttpSession session, Model model) throws Exception{
+        String filename = null;
+        if(session.getAttribute("id") != null) {
+            String userID = (String) session.getAttribute("id");
+            UserVO user = userMapper.userLogin(userID);
+            if (user.getUser_profile() == null) {
+                filename = "non";
+            } else {
+                filename = user.getUser_profile();
+            }
+        }
+        model.addAttribute("filename", filename);
         return "cmd_community";
     }
 
 
-    @GetMapping("/cmdev")
-    public String cmdEv() throws Exception{
-        return "cmdev";
-    }
-
     @GetMapping("/cmdDetail")
-    public String cmdDetail(@RequestParam("realm") String realm,Model model) throws Exception{
+    public String cmdDetail(@RequestParam("realm") String realm,Model model,HttpSession session) throws Exception{
+        String filename = null;
+        if(session.getAttribute("id") != null) {
+            String userID = (String) session.getAttribute("id");
+            UserVO user = userMapper.userLogin(userID);
+            if (user.getUser_profile() == null) {
+                filename = "non";
+            } else {
+                filename = user.getUser_profile();
+            }
+        }
+        model.addAttribute("filename", filename);
         model.addAttribute("realm",realm);
         return "cmd_detail";
     }
 
     @GetMapping("/totalHotTopic")
-    public String totalHotTopic(@RequestParam("realm") String realm,@RequestParam("kind") String kind, Model model) throws Exception{
+    public String totalHotTopic(@RequestParam("realm") String realm,@RequestParam("kind") String kind, Model model,HttpSession session) throws Exception{
+        String filename = null;
+        if(session.getAttribute("id") != null) {
+            String userID = (String) session.getAttribute("id");
+            UserVO user = userMapper.userLogin(userID);
+            if (user.getUser_profile() == null) {
+                filename = "non";
+            } else {
+                filename = user.getUser_profile();
+            }
+        }
         List<BoardVO> hotTopic = boardMapper.TotalHotTopicList(realm);
         List<String> hotContentList = new ArrayList<String>();
         for(int i=0; i < hotTopic.size(); i ++){
@@ -793,11 +854,12 @@ public class BoardListController {
         if(hotContentList.size() >=5) model.addAttribute("hotContent5", hotContentList.get(4));
         model.addAttribute("realm",realm);
         model.addAttribute("kind",kind);
+        model.addAttribute("filename", filename);
         return "hotTopic";
     }
 
     @PostMapping("/main_search")
-    public String main_search(SearchForm form,Model model,HttpServletRequest request) throws Exception{
+    public String main_search(SearchForm form,Model model,HttpServletRequest request,HttpSession session) throws Exception{
         String keyword = form.getKeyword();
         List<BoardVO> board = boardMapper.mainSearch(keyword);
         String pageNumber = "1";
@@ -833,6 +895,17 @@ public class BoardListController {
             target2 = 0;
         }
         int resultCount = count - (page * 20); //현재페이지 이후부터의 남은 게시물 갯수
+        String filename = null;
+        if(session.getAttribute("id") != null) {
+            String userID = (String) session.getAttribute("id");
+            UserVO user = userMapper.userLogin(userID);
+            if (user.getUser_profile() == null) {
+                filename = "non";
+            } else {
+                filename = user.getUser_profile();
+            }
+        }
+        model.addAttribute("filename", filename);
         model.addAttribute("board",board); //반환된 결과인 board를 모델로 담아 search.html로 전달
         model.addAttribute("keyword",keyword); //키워드 전달
         model.addAttribute("startPage",startPage);
@@ -843,7 +916,7 @@ public class BoardListController {
     }
 
     @GetMapping("/main_search")
-    public String main_search2(SearchForm form,Model model,HttpServletRequest request, @RequestParam("keyword") String keyword) throws Exception{
+    public String main_search2(SearchForm form,Model model,HttpServletRequest request, @RequestParam("keyword") String keyword,HttpSession session) throws Exception{
         List<BoardVO> board = boardMapper.mainSearch(keyword);
         String pageNumber = "1";
         int off = 0;
@@ -878,6 +951,17 @@ public class BoardListController {
             target2 = 0;
         }
         int resultCount = count - (page * 20); //현재페이지 이후부터의 남은 게시물 갯수
+        String filename = null;
+        if(session.getAttribute("id") != null) {
+            String userID = (String) session.getAttribute("id");
+            UserVO user = userMapper.userLogin(userID);
+            if (user.getUser_profile() == null) {
+                filename = "non";
+            } else {
+                filename = user.getUser_profile();
+            }
+        }
+        model.addAttribute("filename", filename);
         model.addAttribute("board",board); //반환된 결과인 board를 모델로 담아 search.html로 전달
         model.addAttribute("keyword",keyword); //키워드 전달
         model.addAttribute("startPage",startPage);

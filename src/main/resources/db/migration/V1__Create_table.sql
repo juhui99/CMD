@@ -7,7 +7,7 @@ CREATE TABLE `users` (
                          `user_major` varchar(20) DEFAULT NULL,
                          `user_email` varchar(200) DEFAULT NULL,
                          `user_gender` varchar(20) DEFAULT NULL,
-                         `user_profile` varchar(200) DEFAULT NULL,
+                         `user_profile` varchar(200) DEFAULT 'default.png',
                          `user_manager` int NOT NULL DEFAULT 0,
                          PRIMARY KEY (`user_index`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -85,6 +85,21 @@ CREATE TABLE `file`(
     `fileUrl` varchar(500),
     FOREIGN KEY(bno) REFERENCES board(bno) ON DELETE CASCADE ON UPDATE CASCADE
 ) ;
+
+CREATE TABLE `friends`(
+                       `user_id` varchar(20) NOT NULL,
+                       `friend_id` varchar(20) NOT NULL
+) ;
+
+CREATE TABLE `chat`(
+    `chat_index` int NOT NULL AUTO_INCREMENT,
+    `user_id` varchar(20) NOT NULL,
+    `friend_id` varchar(20) NOT NULL,
+    `chat_content` varchar(100),
+    `chat_time` datetime,
+    `chat_read` int,
+    PRIMARY KEY (`chat_index`)
+);
 
 
 
