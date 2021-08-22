@@ -21,4 +21,5 @@ public interface ChatMapper {
     public List<ChatVO> chatBox(@Param("user_id") String user_id) throws Exception;
     public String getProfile(@Param("user_id") String user_id) throws Exception;
     public void readChat(@Param("user_id") String user_id, @Param("friend_id") String friend_id) throws Exception;
+    public int getUnreadChat(@Param("user_id") String user_id, @Param("friend_id") String friend_id) throws Exception;
 }

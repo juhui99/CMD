@@ -212,6 +212,12 @@ public class ChatController {
 
     @GetMapping("/chatBox")
     public String chatBox(HttpSession session,Model model) throws Exception{
+        if(session.getAttribute("id") == null){
+            model.addAttribute("msg","로그인이 되어있지 않습니다.");
+            model.addAttribute("url","login");
+            return "alert";
+        }
+
         String userID = (String) session.getAttribute("id");
         UserVO user = userMapper.userLogin(userID);
         String filename;
@@ -266,18 +272,24 @@ public class ChatController {
             StringBuffer result = new StringBuffer("");
             result.append("{\"result\":[");
             for (int i = 0; i < chatList.size(); i++) {
+                String unread = "";
 
                 if(chatList.get(i).getUser_id().equals(userID)){
                     userProfile = chatMapper.getProfile(chatList.get(i).getFriend_id());
                 } else{
                     userProfile = chatMapper.getProfile(chatList.get(i).getUser_id());
                 }
+                if(userID.equals(chatList.get(i).getFriend_id())) {
+                    unread = chatMapper.getUnreadChat(chatList.get(i).getUser_id(), userID) + "";
+                    if(unread.equals("0")) unread = "";
+                }
 
                 result.append("[{\"value\": \"" + chatList.get(i).getUser_id() + "\"},");
                 result.append("{\"value\": \"" + chatList.get(i).getFriend_id() + "\"},");
                 result.append("{\"value\": \"" + chatList.get(i).getChat_content() + "\"},");
                 result.append("{\"value\": \"" + chatList.get(i).getChat_time() + "\"},");
-                result.append("{\"value\": \"" + userProfile + "\"}]");
+                result.append("{\"value\": \"" + userProfile + "\"},");
+                result.append("{\"value\": \"" + unread + "\"}]");
                 if (i != chatList.size() - 1) result.append(",");
             }
             result.append("]}");

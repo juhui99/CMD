@@ -33,9 +33,9 @@
                             result[i][0].value = result[i][1].value;
                         }
                         var html = '';
-                            html += '<p style="margin-left: 10px;">' +
+                            html += '<p style="margin-left: 10px;" >' +
                                 '<img class= "img-circle" style="width: 35px; height: 35px; border-color:  #003366d2;" src="/display?filename='  + result[i][4].value +'"' +  '/>'
-                                + result[i][0].value + '<br>' + result[i][2].value
+                                + '<a href="/chat?friend=' + result[i][0].value + '"' +'>' + result[i][0].value + '</a>' + '<br>' + result[i][2].value + '<span style="color: red;">' + result[i][5].value +'</span>'
                                 + '<br> ' + result[i][3].value +'</p>';
                             $("#chatContainer").append(html);
                             $('#chatContainer').scrollTop($('#chatContainer')[0].scrollHeight);
@@ -214,6 +214,7 @@
                     <div class="dropdown-menu">
                         <a class="dropdown-item" href="/friendsFind">친구 찾기</a>
                         <a class="dropdown-item" href="/friendsList">친구 목록</a>
+                        <a class="dropdown-item" href="/chatBox">채팅 목록</a>
                     </div>
                 </li>
 

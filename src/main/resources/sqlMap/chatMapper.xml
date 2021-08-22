@@ -48,4 +48,8 @@
         update chat set chat_read = 1 where (user_id = #{friend_id} and friend_id = #{user_id})
     </update>
 
+    <select id="getUnreadChat" parameterType="map" resultType="int">
+        select count(chat_index) from chat where user_id = #{user_id} and friend_id = #{friend_id} and chat_read = 0
+    </select>
+
 </mapper>
