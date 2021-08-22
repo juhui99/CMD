@@ -19,4 +19,6 @@ public interface ChatMapper {
     public void submitChat(ChatVO chat) throws Exception;
     public List<ChatVO> chatList(@Param("user_id") String user_id, @Param("friend_id") String friend_id, @Param("last_index") int last_index) throws Exception;
     public List<ChatVO> chatBox(@Param("user_id") String user_id) throws Exception;
+    public String getProfile(@Param("user_id") String user_id) throws Exception;
+    public void readChat(@Param("user_id") String user_id, @Param("friend_id") String friend_id) throws Exception;
 }

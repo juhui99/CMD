@@ -40,4 +40,12 @@
         select * from chat where chat_index in (select max(chat_index) from chat where user_id = #{user_id} or friend_id = #{user_id} group by user_id, friend_id) order by chat_index desc;
     </select>
 
+    <select id="getProfile" parameterType="map" resultType="String">
+        select user_profile from users where user_id = #{user_id};
+    </select>
+
+    <update id="readChat" parameterType="map">
+        update chat set chat_read = 1 where (user_id = #{friend_id} and friend_id = #{user_id})
+    </update>
+
 </mapper>

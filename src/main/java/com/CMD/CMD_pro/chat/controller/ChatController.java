@@ -199,6 +199,7 @@ public class ChatController {
 
             }
             result.append("], \"last\":\"" + chatList.get(chatList.size() - 1).getChat_index() + "\"}");
+            chatMapper.readChat(userID,friendID);
             try {
                 response.getWriter().print(result);
             } catch (IOException e) {
@@ -257,13 +258,26 @@ public class ChatController {
                     }
                 }
             }
+
+
+
+            String userProfile = "";
+
             StringBuffer result = new StringBuffer("");
             result.append("{\"result\":[");
             for (int i = 0; i < chatList.size(); i++) {
+
+                if(chatList.get(i).getUser_id().equals(userID)){
+                    userProfile = chatMapper.getProfile(chatList.get(i).getFriend_id());
+                } else{
+                    userProfile = chatMapper.getProfile(chatList.get(i).getUser_id());
+                }
+
                 result.append("[{\"value\": \"" + chatList.get(i).getUser_id() + "\"},");
                 result.append("{\"value\": \"" + chatList.get(i).getFriend_id() + "\"},");
                 result.append("{\"value\": \"" + chatList.get(i).getChat_content() + "\"},");
-                result.append("{\"value\": \"" + chatList.get(i).getChat_time() + "\"}]");
+                result.append("{\"value\": \"" + chatList.get(i).getChat_time() + "\"},");
+                result.append("{\"value\": \"" + userProfile + "\"}]");
                 if (i != chatList.size() - 1) result.append(",");
             }
             result.append("]}");

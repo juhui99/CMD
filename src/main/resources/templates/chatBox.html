@@ -33,7 +33,9 @@
                             result[i][0].value = result[i][1].value;
                         }
                         var html = '';
-                            html += '<p style="margin-left: 10px;">' + result[i][0].value + '<br>' + result[i][2].value
+                            html += '<p style="margin-left: 10px;">' +
+                                '<img class= "img-circle" style="width: 35px; height: 35px; border-color:  #003366d2;" src="/display?filename='  + result[i][4].value +'"' +  '/>'
+                                + result[i][0].value + '<br>' + result[i][2].value
                                 + '<br> ' + result[i][3].value +'</p>';
                             $("#chatContainer").append(html);
                             $('#chatContainer').scrollTop($('#chatContainer')[0].scrollHeight);
