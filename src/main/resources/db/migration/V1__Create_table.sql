@@ -95,7 +95,7 @@ CREATE TABLE `chat`(
     `chat_index` int NOT NULL AUTO_INCREMENT,
     `user_id` varchar(20) NOT NULL,
     `friend_id` varchar(20) NOT NULL,
-    `chat_content` varchar(100),
+    `chat_content` varchar(500),
     `chat_time` datetime,
     `chat_read` int,
     PRIMARY KEY (`chat_index`)

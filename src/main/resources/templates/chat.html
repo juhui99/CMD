@@ -47,15 +47,15 @@
                     for (var i = 0; i < result.length; i++) {
                         var html = '';
                         if(result[i][0].value == $('#friendID').val()){
-                            html += '<p style="margin-left: 10px;"><img class= "img-circle" style="width: 35px; height: 35px; border-color:  #003366d2;" src="/display?filename='  + $('#friendImg').val() +'"' +  '/><span style="margin-left: 4px; color: #003366d2; font-weight: bold;">'
-                                + result[i][0].value + '</span><br>' + '<span>' +result[i][1].value +'</span>'
-                                + '<br><span style="font-size: 1px; color: grey;">' +result[i][2].value + '</span></p>';
+                            html += '<div style="margin-left: 10px; margin-top: 20px;"><img class= "img-circle" style="width: 35px; height: 35px; border-color:  #003366d2;" src="/display?filename='  + $('#friendImg').val() +'"' +  '/><span style="margin-left: 4px; color: #003366d2; font-weight: bold;">'
+                                + result[i][0].value + '</span><br>' + '<div style="width: 200px;"><span style="word-break: break-all;">' +result[i][1].value +'</span></div>'
+                                + '<span style="font-size: 1px; color: grey;">' +result[i][2].value + '</span></div>';
                             $("#chatContainer").append(html);
                             $('#chatContainer').scrollTop($('#chatContainer')[0].scrollHeight);
                         } else{
-                            html += '<p style="margin-right: 10px;" align="right"><img class= "img-circle" style="width: 35px; height: 35px; border-color:  #003366d2;" src="/display?filename='  + $('#userImg').val() +'"' +  '/><span style="margin-left: 4px; color: #003366d2; font-weight: bold;">'
-                                + result[i][0].value + '</span><br>' + '<span>' +result[i][1].value +'</span>'
-                                + '<br><span style="font-size: 1px; color: grey;">' +result[i][2].value + '</span></p>';
+                            html += '<div style="margin-right: 10px; margin-top: 20px;" align="right"><img class= "img-circle" style="width: 35px; height: 35px; border-color:  #003366d2;" src="/display?filename='  + $('#userImg').val() +'"' +  '/><span style="margin-left: 4px; color: #003366d2; font-weight: bold;">'
+                                + result[i][0].value + '</span><br>' + '<div style="width: 200px;"><span style="word-break: break-all;">' +result[i][1].value +'</span></div>'
+                                + '<span style="font-size: 1px; color: grey;">' +result[i][2].value + '</span></div>';
                             $("#chatContainer").append(html);
                             $('#chatContainer').scrollTop($('#chatContainer')[0].scrollHeight);
                         }
@@ -297,9 +297,8 @@
 
 
 <div class="container" style="margin-top: 30px;">
-    <div style="background-color: #003366d2; width: 400px; text-align: center;"><span style="color: white;">채팅창</span></div>
-    <div  id="chatContainer" style="border: 1px solid #003366d2; width: 400px; height: 450px;">
-    </div>
+    <div style="background-color: #003366d2; border-top-left-radius: 5px; border-top-right-radius: 5px; width: 400px; text-align: center;"><span style="color: white;">채팅창</span></div>
+    <div  id="chatContainer" style="border: 1px solid #003366d2; border-bottom-left-radius: 5px; border-bottom-right-radius: 5px; width: 400px; height: 450px; padding-bottom: 20px;"></div>
     <div style="margin-bottom: 30px;">
         <textarea style="width: 300px;" id="chatContent"></textarea><button onclick="submitChat();">전송</button>
         <input type="hidden" th:value="${friend}" id="friendID">
