@@ -971,5 +971,26 @@ public class BoardListController {
         return "main_search";
     }
 
+    @GetMapping("/cmd_roadmap")
+    public String cmdRoadmap(HttpSession session, Model model) throws Exception{
+        String userID;
+        String filename;
+        if((String) session.getAttribute("id") != null){
+            userID = (String) session.getAttribute("id");
+            UserVO user = userMapper.userLogin(userID);
+            if(user.getUser_profile() == null){
+                filename = "non";
+            }
+            else{
+                filename = user.getUser_profile();
+            }
+        } else {
+            filename = "non";
+        }
+
+        model.addAttribute("filename",filename);
+        return "cmd_roadmap";
+    }
+
 
 }
