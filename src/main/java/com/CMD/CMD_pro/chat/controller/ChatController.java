@@ -304,5 +304,17 @@ public class ChatController {
     }
 
 
+    @ResponseBody
+    @RequestMapping(value = "/getTotalUnreadChat", method = RequestMethod.POST)
+    public int getTotalUnread(HttpServletRequest req, HttpServletResponse response) throws Exception{
+        req.setCharacterEncoding("UTF-8");
+        response.setContentType("text/html;charset=UTF-8");
+        String userID = req.getParameter("id");
+        int totalUnread = chatMapper.getTotalUnreadChat(userID);
+        return totalUnread;
+
+    }
+
+
 
 }

@@ -66,12 +66,36 @@
             });
         }
 
+        function totalUnreadChat(){
+            $.ajax({
+                type : "POST",
+                url : "/getTotalUnreadChat",
+                dataType: "json",
+                data : {
+                    id : $("#userID").val()
+                },
+                success: function(result) {
+                    if(result >= 1) {
+                        $('#totalUnread').html(result);
+                    } else {
+                        $('#totalUnread').html('');
+                    }
+                }
+            });
+        }
+
 
 
         function getInfiniteChat() {
             setInterval(function() {
                 chatList(lastID);
             }, 2000);
+        }
+
+        function getInfiniteTotalUnread() {
+            setInterval(function() {
+                totalUnreadChat();
+            }, 4000);
         }
 
     </script>
@@ -236,6 +260,7 @@
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
                         채팅
+                        <span id="totalUnread" class="badge badge-info"></span>
                     </a>
                     <div class="dropdown-menu">
                         <a class="dropdown-item" href="/friendsFind">친구 찾기</a>
@@ -319,6 +344,7 @@
                 <li><a href="https://github.com/" target="_blank"><i class="fab fa-github"> GitHub</i></a></li>
                 <li><a href="https://stackoverflow.com/" target="_blank"><i class="fab fa-stack-overflow"> Stack-Overflow</i></a></li>
             </ul>
+            <input type="hidden" id="userID" th:value="${session.id}">
         </div>
     </div>
     <div class="eyebrow"><p>@2021 prod by 김이음</p></div>
@@ -329,6 +355,8 @@
     $(document).ready(function() {
         chatList('0');
         getInfiniteChat();
+        totalUnreadChat();
+        getInfiniteTotalUnread();
 
         $(".board").css("display","none");
         $(".friendDelete").css("display","none");

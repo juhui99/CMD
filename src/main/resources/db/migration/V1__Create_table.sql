@@ -101,6 +101,12 @@ CREATE TABLE `chat`(
     PRIMARY KEY (`chat_index`)
 );
 
+CREATE TABLE `search` (
+    `search_index` int NOT NULL AUTO_INCREMENT,
+    `keyword` varchar(100),
+    `search_date` datetime,
+    PRIMARY KEY (`search_index`)
+);
 
 
 

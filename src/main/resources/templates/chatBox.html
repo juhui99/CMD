@@ -16,6 +16,25 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script type="text/javascript">
 
+
+        function totalUnreadChat(){
+            $.ajax({
+                type : "POST",
+                url : "/getTotalUnreadChat",
+                dataType: "json",
+                data : {
+                    id : $("#userID").val()
+                },
+                success: function(result) {
+                    if(result >= 1) {
+                        $('#totalUnread').html(result);
+                    } else {
+                        $('#totalUnread').html('');
+                    }
+                }
+            });
+        }
+
         function chatBox(){
             $.ajax({
                 type : "POST",
@@ -54,6 +73,12 @@
             setInterval(function() {
                 chatBox();
             }, 2000);
+        }
+
+        function getInfiniteTotalUnread() {
+            setInterval(function() {
+                totalUnreadChat();
+            }, 4000);
         }
 
 
@@ -215,6 +240,7 @@
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
                         채팅
+                        <span id="totalUnread" class="badge badge-info"></span>
                     </a>
                     <div class="dropdown-menu">
                         <a class="dropdown-item" href="/friendsFind">친구 찾기</a>
@@ -296,7 +322,9 @@
 
     $(document).ready(function() {
         chatBox();
+        totalUnreadChat();
         getInfiniteChatBox();
+        getInfiniteTotalUnread();
 
         $(".board").css("display","none");
         $(".friendDelete").css("display","none");

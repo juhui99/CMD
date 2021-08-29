@@ -9,7 +9,33 @@
   <link rel="stylesheet" href="/libs/css/bootstrap.css">
   <link rel="stylesheet" href="/libs/css/community.css">
   <script src="https://kit.fontawesome.com/717793cb2b.js" crossorigin="anonymous"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <title>CMD</title>
+  <script type="text/javascript">
+    function totalUnreadChat(){
+      $.ajax({
+        type : "POST",
+        url : "/getTotalUnreadChat",
+        dataType: "json",
+        data : {
+          id : $("#userID").val()
+        },
+        success: function(result) {
+          if(result >= 1) {
+            $('#totalUnread').html(result);
+          } else {
+            $('#totalUnread').html('');
+          }
+        }
+      });
+    }
+
+    function getInfiniteTotalUnread() {
+      setInterval(function() {
+        totalUnreadChat();
+      }, 4000);
+    }
+  </script>
 </head>
 <style>
   #link{
@@ -34,7 +60,7 @@
     <div class="logo"><a href="/main"><img src="/img/CMD-logo.png" alt="logo"  height="100%"></a></div>
     <div class="search">
       <nav class="navbar navbar-expand-sm  navbar-dark">
-        <form class="form-inline" action="/main_search">
+        <form class="form-inline" action="/main_search" method="post">
           <input class="form-control mr-sm-2" type="text" name="keyword" placeholder="Search">
           <button class="btn btn-success" type="submit">Search</button>
         </form>
@@ -52,21 +78,53 @@
         </li>
         <!-- Dropdown -->
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" >
+          <a class="nav-link dropdown-toggle" href="/cmd_community" >
             커뮤니티
           </a>
           <div class="dropdown-menu">
             <a class="dropdown-item frontend" href="/cmdDetail?realm=Frontend">Frontend</a>
+            <a class="dropdown-item frontend_board board" style="color: #003366d2; font-size: 13px;" href="/totalHotTopic?kind=HOT게시판&realm=Frontend">HOT게시판</a>
+            <a class="dropdown-item frontend_board board" style="color: #003366d2; font-size: 13px;" href="/board?kind=정보팁게시판&realm=Frontend">정보&팁게시판</a>
+            <a class="dropdown-item frontend_board board" style="color: #003366d2; font-size: 13px;" href="/board?kind=자유게시판&realm=Frontend">자유게시판</a>
+            <a class="dropdown-item frontend_board board" style="color: #003366d2; font-size: 13px;" href="/board?kind=질문게시판&realm=Frontend">질문게시판</a>
+            <a class="dropdown-item frontend_board board" style="color: #003366d2; font-size: 13px;" href="/board?kind=협업게시판&realm=Frontend">협업게시판</a>
+            <a class="dropdown-item frontend_board board" style="color: #003366d2; font-size: 13px;" href="/board?kind=로드맵공유게시판&realm=Frontend">로드맵공유게시판</a>
             <a class="dropdown-item backend" href="/cmdDetail?realm=Backend">Backend</a>
+            <a class="dropdown-item backend_board board" style="color: #003366d2; font-size: 13px;" href="/totalHotTopic?kind=HOT게시판&realm=Backend">HOT게시판</a>
+            <a class="dropdown-item backend_board board" style="color: #003366d2; font-size: 13px;" href="/board?kind=정보팁게시판&realm=Backend">정보&팁게시판</a>
+            <a class="dropdown-item backend_board board" style="color: #003366d2; font-size: 13px;" href="/board?kind=자유게시판&realm=Backend">자유게시판</a>
+            <a class="dropdown-item backend_board board" style="color: #003366d2; font-size: 13px;" href="/board?kind=질문게시판&realm=Backend">질문게시판</a>
+            <a class="dropdown-item backend_board board" style="color: #003366d2; font-size: 13px;" href="/board?kind=협업게시판&realm=Backend">협업게시판</a>
+            <a class="dropdown-item backend_board board" style="color: #003366d2; font-size: 13px;" href="/board?kind=로드맵공유게시판&realm=Backend">로드맵공유게시판</a>
             <a class="dropdown-item DBA" href="/cmdDetail?realm=DBA">DBA</a>
+            <a class="dropdown-item DBA_board board" style="color: #003366d2; font-size: 13px;" href="/totalHotTopic?kind=HOT게시판&realm=DBA">HOT게시판</a>
+            <a class="dropdown-item DBA_board board" style="color: #003366d2; font-size: 13px;" href="/board?kind=정보팁게시판&realm=DBA">정보&팁게시판</a>
+            <a class="dropdown-item DBA_board board" style="color: #003366d2; font-size: 13px;" href="/board?kind=자유게시판&realm=DBA">자유게시판</a>
+            <a class="dropdown-item DBA_board board" style="color: #003366d2; font-size: 13px;" href="/board?kind=질문게시판&realm=DBA">질문게시판</a>
+            <a class="dropdown-item DBA_board board" style="color: #003366d2; font-size: 13px;" href="/board?kind=협업게시판&realm=DBA">협업게시판</a>
+            <a class="dropdown-item DBA_board board" style="color: #003366d2; font-size: 13px;" href="/board?kind=로드맵공유게시판&realm=DBA">로드맵공유게시판</a>
             <a class="dropdown-item AI" href="/cmdDetail?realm=AI">A.I</a>
+            <a class="dropdown-item AI_board board" style="color: #003366d2; font-size: 13px;" href="/totalHotTopic?kind=HOT게시판&realm=AI">HOT게시판</a>
+            <a class="dropdown-item AI_board board" style="color: #003366d2; font-size: 13px;" href="/board?kind=정보팁게시판&realm=AI">정보&팁게시판</a>
+            <a class="dropdown-item AI_board board" style="color: #003366d2; font-size: 13px;" href="/board?kind=자유게시판&realm=AI">자유게시판</a>
+            <a class="dropdown-item AI_board board" style="color: #003366d2; font-size: 13px;" href="/board?kind=질문게시판&realm=AI">질문게시판</a>
+            <a class="dropdown-item AI_board board" style="color: #003366d2; font-size: 13px;" href="/board?kind=협업게시판&realm=AI">협업게시판</a>
+            <a class="dropdown-item AI_board board" style="color: #003366d2; font-size: 13px;" href="/board?kind=로드맵공유게시판&realm=AI">로드맵공유게시판</a>
             <a class="dropdown-item WH" href="/cmdDetail?realm=WhiteHat">White-Hat</a>
+            <a class="dropdown-item WH_board board" style="color: #003366d2; font-size: 13px;" href="/totalHotTopic?kind=HOT게시판&realm=WhiteHat">HOT게시판</a>
+            <a class="dropdown-item WH_board board" style="color: #003366d2; font-size: 13px;" href="/board?kind=정보팁게시판&realm=WhiteHat">정보&팁게시판</a>
+            <a class="dropdown-item WH_board board" style="color: #003366d2; font-size: 13px;" href="/board?kind=자유게시판&realm=WhiteHat">자유게시판</a>
+            <a class="dropdown-item WH_board board" style="color: #003366d2; font-size: 13px;" href="/board?kind=질문게시판&realm=WhiteHat">질문게시판</a>
+            <a class="dropdown-item WH_board board" style="color: #003366d2; font-size: 13px;" href="/board?kind=협업게시판&realm=WhiteHat">협업게시판</a>
+            <a class="dropdown-item WH_board board" style="color: #003366d2; font-size: 13px;" href="/board?kind=로드맵공유게시판&realm=WhiteHat">로드맵공유게시판</a>
+
           </div>
         </li>
 
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
             채팅
+            <span id="totalUnread" class="badge badge-info"></span>
           </a>
           <div class="dropdown-menu">
             <a class="dropdown-item" href="/friendsFind">친구 찾기</a>
@@ -162,9 +220,58 @@
         <li><a href="https://github.com/" target="_blank"><i class="fab fa-github"> GitHub</i></a></li>
         <li><a href="https://stackoverflow.com/" target="_blank"><i class="fab fa-stack-overflow"> Stack-Overflow</i></a></li>
       </ul>
+      <input type="hidden" id="userID" th:value="${session.id}">
     </div>
   </div>
   <div class="eyebrow"><p>@2021 prod by 김이음</p></div>
 </div>
+<script type="text/javascript">
+  $(document).ready(function (){
+    totalUnreadChat();
+    getInfiniteTotalUnread();
+
+    $(".board").css("display","none");
+
+
+    $(".frontend").hover(function () {
+      $(".frontend_board").css("display","block");
+      $(".backend_board").css("display","none");
+      $(".DBA_board").css("display","none");
+      $(".AI_board").css("display","none");
+      $(".WH_board").css("display","none");
+
+    });
+    $(".backend").hover(function () {
+      $(".backend_board").css("display","block");
+      $(".frontend_board").css("display","none");
+      $(".DBA_board").css("display","none");
+      $(".AI_board").css("display","none");
+      $(".WH_board").css("display","none");
+    });
+    $(".DBA").hover(function () {
+      $(".DBA_board").css("display","block");
+      $(".backend_board").css("display","none");
+      $(".frontend_board").css("display","none");
+      $(".AI_board").css("display","none");
+      $(".WH_board").css("display","none");
+    });
+    $(".AI").hover(function () {
+      $(".AI_board").css("display","block");
+      $(".DBA_board").css("display","none");
+      $(".backend_board").css("display","none");
+      $(".frontend_board").css("display","none");
+      $(".WH_board").css("display","none");
+    });
+    $(".WH").hover(function () {
+      $(".WH_board").css("display","block");
+      $(".AI_board").css("display","none");
+      $(".DBA_board").css("display","none");
+      $(".backend_board").css("display","none");
+      $(".frontend_board").css("display","none");
+
+    });
+
+  });
+</script>
 </body>
 </html>

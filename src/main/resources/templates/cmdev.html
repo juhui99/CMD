@@ -15,48 +15,59 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
   <script type="text/javascript">
-    $(document).ready(function (){
-      $(".board").css("display","none");
+
+    function searchRanking(){
+      $.ajax({
+        type : "POST",
+        url : "/searchRanking",
+        success : function(data) {
+          if (data == "") return;
+          $('#ranking').html('<span style="background-color: #003366d2; border-radius: 5px; margin-right: 5px; padding-left: 4px; padding-right: 4px; padding-top: 6px; color: white; font-size: 6px;">인기 검색어</span>');
+          var parsed = JSON.parse(data);
+          var result = parsed.result;
+          for(var i =0; i< result.length; i++){
+            var html = '';
+            html += '<span style="margin-right: 10px; color:#003366d2;">' + '<span style="font-weight: bold; color: #003366d2;">' +(i+1) + '</span><a style="color: #003366d2;" href="/main_search?keyword=' + result[i][0].value +'">' + result[i][0].value + '</a>';
+            html += '</span>';
+            $("#ranking").append(html);
+
+          }
+
+        }
+      });
+    }
+
+    function getInfiniteSearchRanking() {
+      setInterval(function() {
+        searchRanking();
+      }, 5000);
+    }
+
+    function totalUnreadChat(){
+      $.ajax({
+        type : "POST",
+        url : "/getTotalUnreadChat",
+        dataType: "json",
+        data : {
+          id : $("#userID").val()
+        },
+        success: function(result) {
+          if(result >= 1) {
+            $('#totalUnread').html(result);
+          } else {
+            $('#totalUnread').html('');
+          }
+        }
+      });
+    }
+
+    function getInfiniteTotalUnread() {
+      setInterval(function() {
+        totalUnreadChat();
+      }, 4000);
+    }
 
 
-      $(".frontend").hover(function () {
-        $(".frontend_board").css("display","block");
-        $(".backend_board").css("display","none");
-        $(".DBA_board").css("display","none");
-        $(".AI_board").css("display","none");
-        $(".WH_board").css("display","none");
-
-      });
-      $(".backend").hover(function () {
-        $(".backend_board").css("display","block");
-        $(".frontend_board").css("display","none");
-        $(".DBA_board").css("display","none");
-        $(".AI_board").css("display","none");
-        $(".WH_board").css("display","none");
-      });
-      $(".DBA").hover(function () {
-        $(".DBA_board").css("display","block");
-        $(".backend_board").css("display","none");
-        $(".frontend_board").css("display","none");
-        $(".AI_board").css("display","none");
-        $(".WH_board").css("display","none");
-      });
-      $(".AI").hover(function () {
-        $(".AI_board").css("display","block");
-        $(".DBA_board").css("display","none");
-        $(".backend_board").css("display","none");
-        $(".frontend_board").css("display","none");
-        $(".WH_board").css("display","none");
-      });
-      $(".WH").hover(function () {
-        $(".WH_board").css("display","block");
-        $(".AI_board").css("display","none");
-        $(".DBA_board").css("display","none");
-        $(".backend_board").css("display","none");
-        $(".frontend_board").css("display","none");
-
-      });
-    });
   </script>
 
   <style>
@@ -133,7 +144,7 @@
           </form>
         </nav>
       </div>
-      <div class="keyword">실시간 검색</div>
+      <div class="keyword" id="ranking"></div>
     </div>
 
     <div class="menu-navbar">
@@ -144,7 +155,7 @@
           <a class="nav-link" href="/main">메인</a>
         </li>
         <!-- Dropdown -->
-        <li class="nav-item dropdown">
+       <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="/cmd_community" >
             커뮤니티
           </a>
@@ -191,6 +202,7 @@
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
             채팅
+            <span id="totalUnread" class="badge badge-info"></span>
           </a>
           <div class="dropdown-menu">
             <a class="dropdown-item" href="/friendsFind">친구 찾기</a>
@@ -200,7 +212,7 @@
         </li>
 
         <li class="nav-item">
-          <a class="nav-link" href="cmd_roadmap.html">로드맵</a>
+          <a class="nav-link" href="/cmd_roadmap">로드맵</a>
         </li>
 
 
@@ -323,9 +335,60 @@
           <li><a href="https://github.com/" target="_blank"><i class="fab fa-github"> GitHub</i></a></li>
           <li><a href="https://stackoverflow.com/" target="_blank"><i class="fab fa-stack-overflow"> Stack-Overflow</i></a></li>
         </ul>
+        <input type="hidden" id="userID" th:value="${session.id}">
       </div>
     </div>
     <div class="eyebrow"><p>@2021 prod by 김이음</p></div>
+
   </div>
+<script type="text/javascript">
+  $(document).ready(function (){
+
+    searchRanking();
+    totalUnreadChat();
+    getInfiniteSearchRanking();
+    getInfiniteTotalUnread();
+    $(".board").css("display","none");
+
+
+    $(".frontend").hover(function () {
+      $(".frontend_board").css("display","block");
+      $(".backend_board").css("display","none");
+      $(".DBA_board").css("display","none");
+      $(".AI_board").css("display","none");
+      $(".WH_board").css("display","none");
+
+    });
+    $(".backend").hover(function () {
+      $(".backend_board").css("display","block");
+      $(".frontend_board").css("display","none");
+      $(".DBA_board").css("display","none");
+      $(".AI_board").css("display","none");
+      $(".WH_board").css("display","none");
+    });
+    $(".DBA").hover(function () {
+      $(".DBA_board").css("display","block");
+      $(".backend_board").css("display","none");
+      $(".frontend_board").css("display","none");
+      $(".AI_board").css("display","none");
+      $(".WH_board").css("display","none");
+    });
+    $(".AI").hover(function () {
+      $(".AI_board").css("display","block");
+      $(".DBA_board").css("display","none");
+      $(".backend_board").css("display","none");
+      $(".frontend_board").css("display","none");
+      $(".WH_board").css("display","none");
+    });
+    $(".WH").hover(function () {
+      $(".WH_board").css("display","block");
+      $(".AI_board").css("display","none");
+      $(".DBA_board").css("display","none");
+      $(".backend_board").css("display","none");
+      $(".frontend_board").css("display","none");
+
+    });
+  });
+</script>
 </body>
 </html>

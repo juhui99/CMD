@@ -52,4 +52,8 @@
         select count(chat_index) from chat where user_id = #{user_id} and friend_id = #{friend_id} and chat_read = 0
     </select>
 
+    <select id="getTotalUnreadChat" parameterType="map" resultType="int">
+        select count(chat_index) from chat where friend_id = #{user_id} and chat_read = 0
+    </select>
+
 </mapper>

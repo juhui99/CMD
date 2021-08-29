@@ -20,47 +20,74 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@500&display=swap" rel="stylesheet">
   <script type="text/javascript">
-    $(document).ready(function () {
-      $(".board").css("display", "none");
 
+      function totalUnreadChat(){
+          $.ajax({
+              type : "POST",
+              url : "/getTotalUnreadChat",
+              dataType: "json",
+              data : {
+                  id : $("#userID").val()
+              },
+              success: function(result) {
+                  if(result >= 1) {
+                      $('#totalUnread').html(result);
+                  } else {
+                      $('#totalUnread').html('');
+                  }
+              }
+          });
+      }
 
-      $(".frontend").hover(function () {
-        $(".frontend_board").css("display", "block");
-        $(".backend_board").css("display", "none");
-        $(".DBA_board").css("display", "none");
-        $(".AI_board").css("display", "none");
-        $(".WH_board").css("display", "none");
+      function getInfiniteTotalUnread() {
+          setInterval(function() {
+              totalUnreadChat();
+          }, 4000);
+      }
 
-      });
-      $(".backend").hover(function () {
-        $(".backend_board").css("display", "block");
-        $(".frontend_board").css("display", "none");
-        $(".DBA_board").css("display", "none");
-        $(".AI_board").css("display", "none");
-        $(".WH_board").css("display", "none");
-      });
-      $(".DBA").hover(function () {
-        $(".DBA_board").css("display", "block");
-        $(".backend_board").css("display", "none");
-        $(".frontend_board").css("display", "none");
-        $(".AI_board").css("display", "none");
-        $(".WH_board").css("display", "none");
-      });
-      $(".AI").hover(function () {
-        $(".AI_board").css("display", "block");
-        $(".DBA_board").css("display", "none");
-        $(".backend_board").css("display", "none");
-        $(".frontend_board").css("display", "none");
-        $(".WH_board").css("display", "none");
-      });
-      $(".WH").hover(function () {
-        $(".WH_board").css("display", "block");
-        $(".AI_board").css("display", "none");
-        $(".DBA_board").css("display", "none");
-        $(".backend_board").css("display", "none");
-        $(".frontend_board").css("display", "none");
+      $(document).ready(function () {
+          totalUnreadChat();
+          getInfiniteTotalUnread();
 
-      });
+          $(".board").css("display","none");
+
+          $(".frontend").hover(function () {
+              $(".frontend_board").css("display","block");
+              $(".backend_board").css("display","none");
+              $(".DBA_board").css("display","none");
+              $(".AI_board").css("display","none");
+              $(".WH_board").css("display","none");
+
+          });
+          $(".backend").hover(function () {
+              $(".backend_board").css("display","block");
+              $(".frontend_board").css("display","none");
+              $(".DBA_board").css("display","none");
+              $(".AI_board").css("display","none");
+              $(".WH_board").css("display","none");
+          });
+          $(".DBA").hover(function () {
+              $(".DBA_board").css("display","block");
+              $(".backend_board").css("display","none");
+              $(".frontend_board").css("display","none");
+              $(".AI_board").css("display","none");
+              $(".WH_board").css("display","none");
+          });
+          $(".AI").hover(function () {
+              $(".AI_board").css("display","block");
+              $(".DBA_board").css("display","none");
+              $(".backend_board").css("display","none");
+              $(".frontend_board").css("display","none");
+              $(".WH_board").css("display","none");
+          });
+          $(".WH").hover(function () {
+              $(".WH_board").css("display","block");
+              $(".AI_board").css("display","none");
+              $(".DBA_board").css("display","none");
+              $(".backend_board").css("display","none");
+              $(".frontend_board").css("display","none");
+
+          });
     });
   </script>
 
@@ -554,6 +581,7 @@
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbardrop1" data-toggle="dropdown">
                         채팅
+                        <span id="totalUnread" class="badge badge-info"></span>
                     </a>
                     <div class="dropdown-menu">
                         <a class="dropdown-item" href="/friendsFind">친구 찾기</a>
@@ -1111,6 +1139,7 @@
                 <li><a href="https://stackoverflow.com/" target="_blank"><i class="fab fa-stack-overflow">
                     Stack-Overflow</i></a></li>
             </ul>
+            <input type="hidden" id="userID" th:value="${session.id}">
         </div>
     </div>
     <div class="eyebrow"><p>@2021 prod by 김이음</p></div>
