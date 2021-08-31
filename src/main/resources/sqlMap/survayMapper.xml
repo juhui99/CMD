@@ -10,6 +10,107 @@
     <resultMap id="surveyItemVo" type="com.CMD.CMD_pro.survey.domain.SurveyItemVO"/>
     <resultMap id="pageMaker" type="com.CMD.CMD_pro.survey.domain.PageMaker"/>
 
-    <select id="selectCountPaging" parameterMap="searchCriteria" resultMap="pageMaker">
+    <!--  search 변수명 확인 + 코드 연동확인  -->
+    <!-- 검색기능을 위한 동적SQL -->
+    <sql id="search">
+        <choose>
+            <when test="progressing == null or progressing.isEmpty()">
+                AND progressing = 1
+            </when>
+            <otherwise>
+                AND progressing = #{progressing}
+            </otherwise>
+        </choose>
+        <if test="searchType != null and !search.isEmpty()">
+            <bind name="pattern" value="'%' +  search  + '%'" />
+            <!-- SearchCriteria.keyword로 넘어옴 -->
+            <choose>
+                <when test="type eq 'writer'">
+                    AND name LIKE #{pattern}
+                </when>
+                <when test="type eq 'title'">
+                    AND surveyTitle LIKE #{pattern} OR surveyContent LIKE #{pattern}
+                </when>
+            </choose>
+        </if>
+    </sql>
+
+    <!-- 검색기능을 위한 동적SQL -->
+    <sql id="search2">
+        <if test="searchType != null">
+            <if test="searchType == 't'.toString()">AND survey.surveyTitle LIKE CONCAT('%',#{keyword},'%')</if>
+            <if test="searchType == 'c'.toString()">AND survey.surveyContent LIKE CONCAT('%',#{keyword},'%')</if>
+            <if test="searchType == 'w'.toString()">AND users.user_name LIKE CONCAT('%',#{keyword},'%')</if>
+            <if test="searchType == 'tc'.toString()">AND (survey.surveyTitle LIKE CONCAT('%',#{keyword},'%')) or (survey.surveyContent LIKE CONCAT('%',#{keyword},'%'))</if>
+        </if>
+    </sql>
+
+    <insert id="insertSurvey">
+        insert into survey (surveyIndex, userIndex, surveyTitle, surveyContent, surveyEnd)
+        values (surveyIndex.nextval, #{userIndex}, #{surveyTitle}, #{surveyContent},
+                #{surveyEnd})
+    </insert>
+
+    <insert id="insertSurveyItem">
+        insert into surveyItem
+        values
+            (surveyItemIndex.nextval, surveyIndex.currval, #{surveyItemContent})
+    </insert>
+
+    <insert id="addSurveyResult">
+        INSERT INTO surveyResult (surveyResultIndex, surveyIndex, surveyItemIndex, userIndex)
+        VALUES (surveyResultIndex.nextval, #{surveyIndex}, #{surveyItemIndex}, #{userIndex})
+    </insert>
+
+    <select id="selectSurvey" parameterMap="surveyVO" resultMap="SurveyVO">
+        SELECT surveyIndex, surveyTitle, users.user_index, surveyReg, surveyContent, progressing, surveyEnd,
+               (
+                   SELECT COUNT(surveyResultIndex)
+                   FROM surveyResult
+                            JOIN surveyItem ON surveyResult.surveyItemIndex = surveyItem.surveyItemIndex
+                   WHERE surveyItem.surveyIndex = survey.surveyIndex
+               ) surveyCount
+        FROM survey
+                 JOIN users ON survey.userIndex = users.user_index
+        WHERE surveyIndex = #{surveyIndex}
+    </select>
+
+    <update id="closeSurvey">
+        UPDATE survey set PROGRESSING = 0
+        WHERE surveyIndex = #{surveyIndex}
+    </update>
+
+    <delete id="removeSurvey">
+        DELETE FROM survey
+        WHERE surveyIndex = #{surveyIndex}
+    </delete>
+
+    <!-- 리스트 + 페이징 + 검색 -->
+    <select id="selectSurveyList" parameterMap="surveyVO" resultMap="SurveyVO">
+        SELECT
+        surveyIndex, users.user_index, surveyTitle, surveyContent, surveyReg, surveyEnd, progressing,(
+        SELECT COUNT(surveyResultIndex)
+        FROM surveyResult
+        JOIN surveyItem ON surveyResult.surveyItemIndex = surveyItem.surveyItemIndex
+        WHERE surveyItem.surveyIndex = survey.surveyIndex
+        )participantCnt
+        FROM survey
+        JOIN users ON survey.userIndex = users.user_index
+        WHERE surveyIndex > 0
+
+        <include refid="search2"></include>
+        ORDER BY surveyIndex desc
+        LIMIT #{pageStart}, #{perPageNum}
+    </select>
+
+    <!-- 총 게시물 개수 구하기 -->
+    <select id="selectCountPaging" parameterMap="searchCriteria" resultMap="pageMaker" resultType="int">
+        <![CDATA[
+		SELECT COUNT(surveyIndex)
+		FROM survey
+		JOIN users ON users.user_index = survey.userIndex
+		WHERE surveyIndex > 0
+		]]>
+        <include refid="search2"> </include>
     </select>
 </mapper>

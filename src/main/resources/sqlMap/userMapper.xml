@@ -6,7 +6,7 @@
     <insert id="userJoin" parameterType="com.CMD.CMD_pro.user.domain.UserVO">
         insert into users
         values
-            (#{user_index},#{user_id},#{user_pwd},#{user_name},#{user_age},#{user_major},#{user_email},#{user_gender},#{user_profile},#{user_manager})
+        (#{user_index},#{user_id},#{user_pwd},#{user_name},#{user_age},#{user_major},#{user_email},#{user_gender},#{user_profile},#{user_manager})
     </insert>
 
     <select id="idChk" parameterType="String" resultType="int">

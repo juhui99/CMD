@@ -99,7 +99,6 @@ public class UserController {
         return "alert";
     }
 
-
     @GetMapping("/logoutAction")
     public String LogoutAction(HttpSession session, Model model) throws Exception{
         session.invalidate();
@@ -167,7 +166,6 @@ public class UserController {
         return new ResponseEntity<Resource>(resource,header, HttpStatus.OK);
     }
 
-
     @GetMapping("/profile")
     public String getProfile(){ return "profile";}
 
@@ -190,6 +188,4 @@ public class UserController {
 
         return "redirect:/main";
     }
-
-
 }
