@@ -174,7 +174,7 @@
     </select>
 
     <select id="searchRanking" resultType="String">
-        select keyword from search where search_date > DATE_ADD(now(),INTERVAL -1 hour) group by keyword order by count(*) desc limit 5 offset 0;
+        select keyword from search where search_date > DATE_ADD(now(),INTERVAL -1 hour) group by keyword order by count(*) desc, ANY_VALUE(search_index) desc limit 5 offset 0;
     </select>
 
     <insert id="searchInsert" parameterType="map">
