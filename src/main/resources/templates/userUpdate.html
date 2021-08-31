@@ -10,6 +10,11 @@
 <script type="text/javascript">
 
     $(document).ready(function (){
+
+        $("#file").css("display","none");
+        $("#defaultImgBtn").css("display","none");
+        $("#defaultMessage").css("display","none");
+
         if($("#user_gender").val() == "W"){
             $("#woman").attr("checked",true);
         }
@@ -31,6 +36,23 @@
         else if($("#user_selected_major").val() == "WhiteHat"){
             $("#WhiteHat").attr("selected",true);
         }
+
+        $("#profile").click(function (){
+            $("#file").css("display","block");
+            $("#defaultImgBtn").css("display","block");
+            $("#profile").css("display","none");
+            $("#profile").attr("value", "Y");
+            $("#modifyChek").val("Y");
+        });
+
+        $("#defaultImgBtn").click(function (){
+            $("#defaultImgCheck").val("Y");
+            $("#file").val("");
+            $("#defaultMessage").css("display","block");
+        });
+        $("#file").click(function (){
+            $("#defaultMessage").css("display","none");
+        });
 
     });
 
@@ -55,10 +77,21 @@
             alert("비밀번호가 일치하지 않습니다.");
             return false;
         }
+
+        var fileCheck = $("#file").val();
+        var profileModify = $("#profile").val();
+        var defaultImgCheck = $("#defaultImgCheck").val();
+        if(!fileCheck && profileModify == "Y" && defaultImgCheck == "N"){
+            alert("프로필 사진을 첨부해주세요.");
+            return false;
+        }
+        if(fileCheck && defaultImgCheck == "Y"){
+            $("#defaultImgCheck").val("N");
+        }
     }
 </script>
 <body>
-<form action="/userUpdateAction" method="post" onsubmit="return submitAction();">
+<form action="/userUpdateAction" method="post" enctype="multipart/form-data" onsubmit="return submitAction();">
 
     <h4>회원정보 수정 양식</h4>
 
@@ -86,9 +119,15 @@
         <input type="email" id="user_email" name="user_email" placeholder="이메일" th:value="${user.user_email}"><br>
         <input type="checkbox" id="woman" name="user_gender"  value="W">여성
         <input type="checkbox" id="man" name="user_gender"  value="M">남성
+        <br><button type="button" id="profile" value="N">프로필 수정</button>
+        <div><input id="file" type="file" name="files">
+            <button id="defaultImgBtn" type="button">기본 이미지로 변경</button><span id="defaultMessage" style="font-size: 5px; color: #003366d2;">기본이미지 선택완료</span>
+        </div>
         <input type="submit" id="submit" name="submit" value="수정" >
         <input type="hidden" id="user_gender" th:value="${user.user_gender}">
         <input type="hidden" id="user_selected_major" th:value="${user.user_major}">
+        <input type="hidden" id="modifyChek" name="modify" value="N">
+        <input type="hidden" id="defaultImgCheck" name="default_img" value="N">
     </div>
 
 </form>

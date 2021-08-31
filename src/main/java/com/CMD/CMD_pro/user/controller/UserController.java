@@ -137,7 +137,7 @@ public class UserController {
     }
 
     @PostMapping("/userUpdateAction")
-    public String userUpdateAction(Model model,JoinForm form) throws Exception{
+    public String userUpdateAction(Model model,JoinForm form,HttpSession session,@RequestPart MultipartFile files) throws Exception{
         UserVO user = new UserVO();
         user.setUser_id(form.getUser_id());
         user.setUser_pwd(form.getUser_pwd());
@@ -147,6 +147,28 @@ public class UserController {
         user.setUser_email(form.getUser_email());
         user.setUser_gender(form.getUser_gender());
         userMapper.userUpdate(user);
+        if(form.getModify().equals("Y")){
+            if(form.getDefault_img().equals("Y")){
+                String userID = (String) session.getAttribute("id");
+                userMapper.userProfile("default.png", userID);
+            }
+            else {
+                String userID = (String) session.getAttribute("id");
+                String fileName = files.getOriginalFilename();
+                String fileNameExtension = FilenameUtils.getExtension(fileName).toLowerCase();
+                File destinationFile;
+                String destinationFileName;
+                String fileUrl = "C:\\images\\";
+                do {
+                    destinationFileName = RandomStringUtils.randomAlphanumeric(32) + "." + fileNameExtension;
+                    destinationFile = new File(fileUrl + destinationFileName);
+
+                } while (destinationFile.exists());
+                destinationFile.getParentFile().mkdirs();
+                files.transferTo(destinationFile);
+                userMapper.userProfile(destinationFileName, userID);
+            }
+        }
         model.addAttribute("msg","회원정보가 수정되었습니다.");
         model.addAttribute("url","main");
         return "alert";

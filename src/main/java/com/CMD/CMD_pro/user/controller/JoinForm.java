@@ -13,4 +13,6 @@ public class JoinForm {
     private String user_major;
     private String user_email;
     private String user_gender;
+    private String modify;
+    private String default_img;
 }
