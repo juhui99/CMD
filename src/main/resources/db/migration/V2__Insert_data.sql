@@ -28,10 +28,34 @@ insert into users ( `user_id`,
                     `user_manager`)
 values('bbbb11', '1111','음성준', '25', 'Frontend', 'bbbb@gmail.com', 'M',1);
 
-insert into survey (`user_index`,
-                    `survey_title`,
-                    `survey_duplicate`)
-values(0, '많이 사용하는 언어',2);
+insert into survey (`userIndex`,
+                    `surveyTitle`,
+                    `surveyContent`,
+                    `surveyEnd`,
+                    `surveyCount`,
+                    `surveyDuplicate`)
+values(1,'타이틀1','내용1','2021-09-14',1,2);
+
+insert into survey (`userIndex`,
+                    `surveyTitle`,
+                    `surveyContent`,
+                    `surveyEnd`,
+                    `surveyCount`,
+                    `surveyDuplicate`)
+values(2,'타이틀2','내용2','2021-09-15',1,3);
+
+insert into surveyItem (`surveyIndex`,
+                        `surveyItemContent`)
+values(1,'진행중인 설문1이요');
+
+insert into surveyItem (`surveyIndex`,
+                        `surveyItemContent`)
+values(2,'진행중인 설문2요');
+
+insert into surveyResult (`surveyIndex`,
+                          `surveyItemIndex`,
+                          `userIndex`)
+values(1,1,2);
 
 insert into board       (`subject`,
                        `content`,
@@ -44,6 +68,7 @@ insert into board       (`subject`,
                        `recommend`,
                        `delete_option`)
 values('글제목','글내용1입니다.','ehfehfdl0927',now(),0,0,'자유게시판','Backend',0,0);
+
 insert into board       (`subject`,
                        `content`,
                        `writer`,
@@ -58,7 +83,7 @@ values('글제목2','글내용2입니다.안녕하세요.','aaaa',now(),0,0,'정
 
 insert into friends(`user_id`,
                     `friend_id`)
-                    values('aaaa','bbbb11');
+values('aaaa','bbbb11');
 
 
 
