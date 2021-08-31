@@ -32,7 +32,7 @@ CREATE TABLE `survey` (
                           `surveyReg` datetime NOT NULL DEFAULT NOW(),
                           `surveyEnd` datetime DEFAULT NULL,
                           `progressing` int NOT NULL DEFAULT 1,
-                          `surveyCount` int DEFAULT NULL,
+                          `surveyCount` int NOT NULL DEFAULT 0,
                           `surveyDuplicate` int DEFAULT NULL,
                           PRIMARY KEY (`surveyIndex`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

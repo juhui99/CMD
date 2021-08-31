@@ -44,6 +44,13 @@ insert into survey (`userIndex`,
                     `surveyDuplicate`)
 values(2,'타이틀2','내용2','2021-09-15',1,3);
 
+insert into survey (`userIndex`,
+                    `surveyTitle`,
+                    `surveyContent`,
+                    `surveyEnd`,
+                    `surveyDuplicate`)
+values(1,'test','내용3','2021-09-5',4);
+
 insert into surveyItem (`surveyIndex`,
                         `surveyItemContent`)
 values(1,'진행중인 설문1이요');

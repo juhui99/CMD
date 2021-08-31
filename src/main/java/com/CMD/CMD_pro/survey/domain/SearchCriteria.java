@@ -21,7 +21,7 @@ public class SearchCriteria extends Criteria{
     public String makeSearch() {
         UriComponents uriComponents = UriComponentsBuilder.newInstance()
                 .queryParam("perPageNum", this.getPerPageNum())
-                .queryParam("type", this.getSearchType())
+                .queryParam("searchType", this.getSearchType())
                 .queryParam("progressing", this.getProgressing())
                 .queryParam("search", this.getSearch())
                 .queryParam("keyword", this.getKeyword())
