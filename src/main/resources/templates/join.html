@@ -50,6 +50,9 @@
                 } else if(data == 0){
                     $("#idChk").attr("value", "Y");
                     alert("사용가능한 아이디입니다.");
+                } else if(data == -1){
+                    alert("아이디를 입력해주세요.");
+                    $("#idChk").attr("value", "N");
                 }
             }
         });

@@ -63,16 +63,21 @@ public class ChatController {
         } else {
             filename = user.getUser_profile();
         }
+        String myProfile = user.getUser_profile();
         model.addAttribute("filename", filename);
+        model.addAttribute("myProfile",myProfile);
         return "friendsFind";
 
     }
 
     @ResponseBody
     @RequestMapping(value = "/findFriend", method = RequestMethod.POST)
-    public String findFriend(HttpServletRequest req) throws Exception{
+    public String findFriend(HttpServletRequest req,HttpSession session) throws Exception{
         UserVO user = null;
         String user_id = req.getParameter("id");
+        if(user_id.equals((String) session.getAttribute("id"))){
+            return "me";
+        }
         if(userMapper.userLogin(user_id) != null ){
             user = userMapper.userLogin(user_id);
             String userProfile = user.getUser_profile();
@@ -125,7 +130,7 @@ public class ChatController {
         List<UserVO> friendsList = chatMapper.friendsSearch(userID,keyword);
         model.addAttribute("friendsList",friendsList);
         model.addAttribute("filename", filename);
-        return "friendsList";
+        return "friendsSearchList";
     }
 
     @GetMapping("/chat")
@@ -257,9 +262,10 @@ public class ChatController {
                             chatList.remove(x);
                             i--;
                             break;
-                        } else {
+                        } else if(x.getChat_index() > y.getChat_index()){
                             chatList.remove(y);
                             j--;
+                            break;
                         }
                     }
                 }

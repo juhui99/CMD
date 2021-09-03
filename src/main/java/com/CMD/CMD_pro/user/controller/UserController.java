@@ -56,6 +56,9 @@ public class UserController {
     @RequestMapping(value = "/idChk", method = RequestMethod.POST)
     public int idChk(HttpServletRequest req) throws Exception{
         String user_id = req.getParameter("id");
+        if(user_id == ""){
+            return -1;
+        }
         int result = userMapper.idChk(user_id);
         return result;
     }

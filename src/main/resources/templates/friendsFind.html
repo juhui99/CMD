@@ -117,7 +117,22 @@
                             '<tr> <td style="text-align: center;"> <button onclick="addFriend();">친구추가</button> <a href="/chat?friend=' + $('#findId').val() + '"' +'><button>채팅</button></a>' +
                             '</tbody> </table> </div>'
                         );
-                    } else{
+                    }
+                    else if(data == "me"){
+                        $("#friendResult").html(
+                            '<div className="container" style="margin-top: 20px; margin-bottom: 20px;">' +
+                            '<table style="border: 1px solid #003366d2; border-radius: 5px;" width="70%">' +
+                            '<thead> <tr>' +
+                            '<th colSpan="5" style="height: 45px;"><span>친구검색 결과</span></th>' +
+                            '</tr>' +
+                            '</thead> <tbody> <tr>' +
+                            '<td style="text-align: center;"><img class= "img-circle" style="width: 200px; height: 200px; border-color:  #003366d2;" src="/display?filename=' + $('#myProfile').val() + '"/></td>' +
+                            '</tr>' + '<tr> <td style="text-align: center;">' + $("#findId").val() + '님 본인 입니다.' + '</td></tr>' +
+                            '<tr> <td style="text-align: center;">  <a href="/chat?friend=' + $('#findId').val() + '"' +'><button>채팅</button></a></td></tr>' +
+                            '</tbody> </table> </div>'
+                        );
+                    }
+                    else{
                         $("#friendResult").html(
                             '<div className="container" style="margin-top: 20px; margin-bottom: 20px;">' +
                             '<table style="border: 1px solid #003366d2; border-radius: 5px;" width="70%">' +
@@ -388,6 +403,7 @@
                 <li><a href="https://stackoverflow.com/" target="_blank"><i class="fab fa-stack-overflow"> Stack-Overflow</i></a></li>
             </ul>
             <input type="hidden" id="userID" th:value="${session.id}">
+            <input type="hidden" id="myProfile" th:value="${myProfile}">
         </div>
     </div>
     <div class="eyebrow"><p>@2021 prod by 김이음</p></div>

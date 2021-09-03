@@ -321,16 +321,12 @@
             </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td th:if="${!filename.equals('non') and session.id != null}"><img class= "img-circle" style="width: 50px; height: 50px; border-color:  #003366d2;" th:src="@{/display?(filename=${filename})}"/><a style="margin-left: 5px;" th:text="${session.id}" th:href="@{/chat(friend=${session.id})}"></a><span style="margin-left: 3px; background-color: #003366d2; border-radius: 50%; padding-right: 4px; padding-top: 3px; padding-left: 4px; padding-bottom: 3px; font-size: 3px; color: white;" >나</span></td>
-                    <td th:if="${filename.equals('non') and session.id != null}"><img class= "img-circle" style="width: 50px; height: 50px; border-color:  #003366d2;" src="/display?filename=default.png"/><a style="margin-left: 5px;" th:text="${session.id}" th:href="@{/chat(friend=${session.id})}"></a><span style="margin-left: 3px; background-color: #003366d2; border-radius: 50%; padding-right: 4px; padding-top: 3px; padding-left: 4px; padding-bottom: 3px; font-size: 3px; color: white;" >나</span></td>
-                </tr>
-                <tr th:each="friendsList : ${friendsList}">
-                    <td th:if="${friendsList.user_profile != null}"><img class= "img-circle" style="width: 50px; height: 50px; border-color:  #003366d2;" th:src="@{/display?(filename=${friendsList.user_profile})}"/><a style="margin-left: 5px;" th:text="${friendsList.user_id}" th:href="@{/chat(friend=${friendsList.user_id})}"></a></td>
-                    <td th:if="${friendsList.user_profile == null}"><img class= "img-circle" style="width: 50px; height: 50px; border-color:  #003366d2;" src="/display?filename=default.png"/><a style="margin-left: 5px;" th:text="${friendsList.user_id}" th:href="@{/chat(friend=${friendsList.user_id})}"></a></td>
-                    <td><a th:href="@{/friendDelete(user=${session.id},friend=${friendsList.user_id})}"><button class="friendDelete" type="button">삭제</button></a></td>
+            <tr th:each="friendsList : ${friendsList}">
+                <td th:if="${friendsList.user_profile != null}"><img class= "img-circle" style="width: 50px; height: 50px; border-color:  #003366d2;" th:src="@{/display?(filename=${friendsList.user_profile})}"/><a style="margin-left: 5px;" th:text="${friendsList.user_id}" th:href="@{/chat(friend=${friendsList.user_id})}"></a></td>
+                <td th:if="${friendsList.user_profile == null}"><img class= "img-circle" style="width: 50px; height: 50px; border-color:  #003366d2;" src="/display?filename=default.png"/><a style="margin-left: 5px;" th:text="${friendsList.user_id}" th:href="@{/chat(friend=${friendsList.user_id})}"></a></td>
+                <td><a th:href="@{/friendDelete(user=${session.id},friend=${friendsList.user_id})}"><button class="friendDelete" type="button">삭제</button></a></td>
 
-                </tr>
+            </tr>
             </tbody>
         </table>
     </div>
