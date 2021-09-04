@@ -1,13 +1,17 @@
 package com.CMD.CMD_pro.survey.controller;
 
+import com.CMD.CMD_pro.board.controller.UpdateForm;
 import com.CMD.CMD_pro.survey.domain.*;
 import com.CMD.CMD_pro.survey.service.SurveyService;
+import com.CMD.CMD_pro.user.domain.UserVO;
+import com.CMD.CMD_pro.user.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -18,8 +22,8 @@ import java.util.Map;
 @RequestMapping("/survey/*") //현재 믈래스의 모든 메서드들의 기본적인 URL경로
 public class SurveyController {
 
-    //    @Autowired
-//    private UserService userService;
+    @Autowired
+    private UserMapper userMapper;
     @Autowired
     private SurveyService surveyService;
 
@@ -31,14 +35,20 @@ public class SurveyController {
 
         PageMaker pageMaker = surveyService.getPagination(cri);
         model.addAttribute("pageMaker", pageMaker); // 게시판 하단의 페이징 관련, 이전페이지, 페이지 링크 , 다음 페이지
-        return "index";
+        return "list";
     }
 
     @RequestMapping(value = "/readSurvey") //진행중인 설문조사 읽기
     public String readSurvey(@RequestParam("surveyIndex") int surveyIndex, @RequestParam("progressing") int progressing,
-                             @ModelAttribute("cri") SearchCriteria cri, Model model) throws Exception{
+                             @ModelAttribute("cri") SearchCriteria cri, Model model, HttpSession session) throws Exception{
         boolean isProgressing = progressing == 1 ? true : false;
         SurveyVO surveyVo = null;
+        String userID = (String)session.getAttribute("id");
+        if(userID == null){
+            model.addAttribute("msg","로그인이 되어있지 않습니다.");
+            model.addAttribute("url","login");
+            return "alert";
+        }
         if(isProgressing) {
             surveyVo = surveyService.getSurveyItems(surveyIndex);
             model.addAttribute("survey", surveyVo);
@@ -68,9 +78,20 @@ public class SurveyController {
     @RequestMapping(value="addSurvey") //설문조사 추가하기
     public String addSurvey(@RequestParam("title") String surveyTitle, @RequestParam("content") String surveyContent,
                             @RequestParam("itemcontent") String [] itemcontent, @RequestParam("end_date") String surveyEnd,
-                            HttpServletRequest request, Model model) throws Exception {
+                            @RequestParam("writer") String writer, HttpServletRequest request, Model model, HttpSession session) throws Exception {
         SurveyVO surveyVO = new SurveyVO();
         SurveyWithItemVO surveyWithItemVO = new SurveyWithItemVO();
+        String userID = (String)session.getAttribute("id");
+        if(userID == null){
+            model.addAttribute("msg","로그인이 되어있지 않습니다.");
+            model.addAttribute("url","login");
+            return "alert";
+        }
+        UserVO user = userMapper.userLogin(userID);
+        if(!userID.equals(writer) && user.getUser_manager()==0){
+            model.addAttribute("msg","접근할 수 없습니다.");
+            return "alert";
+        }
 
         String pattern = "yyyy-MM-dd";
         SimpleDateFormat sdf = new SimpleDateFormat(pattern);
@@ -90,7 +111,7 @@ public class SurveyController {
         return "redirect:/survey/main";
     }
 
-    @RequestMapping(value="voteSurvey", method = RequestMethod.POST)
+    @RequestMapping(value="voteSurvey", method = RequestMethod.POST) //설문조사 참여하기
     public @ResponseBody
     Map<String, Object> addSurveyResult(@RequestParam("surveyItemIndex") int surveyItemIndex, @RequestParam("surveyIndex") int surveyIndex) {
         SurveyResultVO srvo = new SurveyResultVO();
@@ -110,13 +131,25 @@ public class SurveyController {
         return return_param;
     }
 
-    @RequestMapping("removeSurvey")
-    public String removeSurvey(@RequestParam("surveyIndex") int surveyIndex) {
+    @RequestMapping("removeSurvey") //설문조사 지우기
+    public String removeSurvey(@RequestParam("surveyIndex") int surveyIndex, @RequestParam("writer") String writer, UpdateForm form, Model model, HttpSession session) throws Exception{
+        String userID = (String)session.getAttribute("id");
+        if(userID == null){
+            model.addAttribute("msg","로그인이 되어있지 않습니다.");
+            model.addAttribute("url","login");
+            return "alert";
+        }
+        UserVO user = userMapper.userLogin(userID);
+        if(!userID.equals(writer) && user.getUser_manager()==0){
+            model.addAttribute("msg","접근할 수 없습니다.");
+            return "alert";
+        }
         try {
             surveyService.removeSurvey(surveyIndex);
         } catch (Exception e) {
             return "redirect:/survey/main?surveyremove=fail";
         }
+        //model.addAttribute("msg","설문조사를 삭제하였습니다.");
         return "redirect:/survey/main?surveyremove=success";
     }
 

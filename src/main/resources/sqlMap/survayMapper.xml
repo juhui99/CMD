@@ -10,7 +10,6 @@
     <resultMap id="surveyItemVo" type="com.CMD.CMD_pro.survey.domain.SurveyItemVO"/>
     <resultMap id="pageMaker" type="com.CMD.CMD_pro.survey.domain.PageMaker"/>
 
-    <!--  search 변수명 확인 + 코드 연동확인  -->
     <!-- 검색기능을 위한 동적SQL -->
     <sql id="search">
         <choose>
@@ -21,8 +20,8 @@
                 AND progressing = #{progressing}
             </otherwise>
         </choose>
-        <if test="searchType != null and !search.isEmpty()">
-            <bind name="pattern" value="'%' +  search  + '%'" />
+        <if test="searchType != null and !searchType.isEmpty()">
+            <bind name="pattern" value="'%' +  searchType  + '%'" />
             <!-- SearchCriteria.keyword로 넘어옴 -->
             <choose>
                 <when test="type eq 'writer'">
@@ -35,15 +34,15 @@
         </if>
     </sql>
 
-    <!-- 검색기능을 위한 동적SQL -->
-    <sql id="search2">
-        <if test="searchType != null">
-            <if test="searchType == 't'.toString()">AND survey.surveyTitle LIKE CONCAT('%',#{keyword},'%')</if>
-            <if test="searchType == 'c'.toString()">AND survey.surveyContent LIKE CONCAT('%',#{keyword},'%')</if>
-            <if test="searchType == 'w'.toString()">AND users.user_name LIKE CONCAT('%',#{keyword},'%')</if>
-            <if test="searchType == 'tc'.toString()">AND (survey.surveyTitle LIKE CONCAT('%',#{keyword},'%')) or (survey.surveyContent LIKE CONCAT('%',#{keyword},'%'))</if>
-        </if>
-    </sql>
+<!--    &lt;!&ndash; 검색기능을 위한 동적SQL &ndash;&gt;-->
+<!--    <sql id="search2">-->
+<!--        <if test="searchType != null">-->
+<!--            <if test="searchType == 't'.toString()">AND survey.surveyTitle LIKE CONCAT('%',#{keyword},'%')</if>-->
+<!--            <if test="searchType == 'c'.toString()">AND survey.surveyContent LIKE CONCAT('%',#{keyword},'%')</if>-->
+<!--            <if test="searchType == 'w'.toString()">AND users.user_name LIKE CONCAT('%',#{keyword},'%')</if>-->
+<!--            <if test="searchType == 'tc'.toString()">AND (survey.surveyTitle LIKE CONCAT('%',#{keyword},'%')) or (survey.surveyContent LIKE CONCAT('%',#{keyword},'%'))</if>-->
+<!--        </if>-->
+<!--    </sql>-->
 
     <insert id="insertSurvey">
         insert into survey (surveyIndex, userIndex, surveyTitle, surveyContent, surveyEnd)
@@ -98,7 +97,7 @@
         JOIN users ON survey.userIndex = users.user_index
         WHERE surveyIndex > 0
 
-        <include refid="search2"></include>
+        <include refid="search"></include>
         ORDER BY surveyIndex desc
         LIMIT #{pageStart}, #{perPageNum}
     </select>
@@ -111,6 +110,6 @@
 		JOIN users ON users.user_index = survey.userIndex
 		WHERE surveyIndex > 0
 		]]>
-        <include refid="search2"> </include>
+        <include refid="search"></include>
     </select>
 </mapper>
