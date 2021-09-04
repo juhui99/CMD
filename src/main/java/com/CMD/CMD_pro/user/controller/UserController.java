@@ -5,6 +5,7 @@ import com.CMD.CMD_pro.board.domain.BoardVO;
 import com.CMD.CMD_pro.board.domain.FileVO;
 import com.CMD.CMD_pro.user.domain.UserVO;
 import com.CMD.CMD_pro.user.mapper.UserMapper;
+import org.apache.catalina.User;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.ibatis.annotations.Param;
@@ -14,12 +15,16 @@ import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.File;
@@ -27,11 +32,15 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Random;
 
 @Controller
 public class UserController {
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private JavaMailSender sender;
 
     @GetMapping("/join")
     public String join(){
@@ -216,5 +225,57 @@ public class UserController {
         return "redirect:/main";
     }
 
+    @GetMapping("/findPassword")
+    public String findPassword(){ return "findPassword";}
+
+    @PostMapping("/sendEmail")   //게시물 리스트 가져오기 post방식 글쓰기 완료후 폼 액션
+    public String sendEmail(JoinForm form, Model model) throws Exception{
+        String id = form.getUser_id();
+        UserVO user = userMapper.userLogin(id);
+
+        if(user == null){
+            model.addAttribute("msg","존재하지 않는 아이디입니다.");
+            model.addAttribute("url","findPassword");
+            return "alert";
+        }
+
+        String email = user.getUser_email();
+        Random r = new Random();
+        int num = r.nextInt(999999);
+
+        MimeMessage message = sender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message);
+        try {
+            helper.setTo(email);
+            helper.setSubject("CMD 비밀번호 찾기 인증코드");
+            helper.setText("회원님의 인증코드는"+num+"입니다.");
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
+
+        sender.send(message);
+        model.addAttribute("code",num);
+        model.addAttribute("id",id);
+        return "codeCheck";
+    }
+
+
+    @PostMapping("/PasswordCheck")   //게시물 리스트 가져오기 post방식 글쓰기 완료후 폼 액션
+    public String passwordCheck(JoinForm form, Model model) throws Exception{
+        String userCode = form.getUser_code();
+        String correctCode = form.getCorrect_code();
+        String userId = form.getUser_id();
+        UserVO user = userMapper.userLogin(userId);
+        String userPwd = user.getUser_pwd();
+        if(userCode.equals(correctCode)){
+            model.addAttribute("user_pwd",userPwd);
+            return "passwordCheck";
+        }
+        else{
+            model.addAttribute("msg","인증코드가 틀립니다.");
+            model.addAttribute("url","findPassword");
+            return "alert";
+        }
+    }
 
 }

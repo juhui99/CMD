@@ -15,4 +15,6 @@ public class JoinForm {
     private String user_gender;
     private String modify;
     private String default_img;
+    private String user_code;
+    private String correct_code;
 }
