@@ -45,7 +45,7 @@ public class SurveyController {
         SurveyVO surveyVo = null;
         String userID = (String)session.getAttribute("id");
         if(userID == null){ //로그인 확인
-            model.addAttribute("msg","로그인이 되어있지 않습니다.");
+            model.addAttribute("message","로그인이 되어있지 않습니다.");
             model.addAttribute("url","login");
             return "alert";
         }
@@ -61,7 +61,7 @@ public class SurveyController {
 
             model.addAttribute("survey", surveyVo); //설문조사 보기
             model.addAttribute("itemList", itemList); //내용 리스트
-            model.addAttribute("msg","마감된 설문조사입니다.");
+            model.addAttribute("message","마감된 설문조사입니다.");
             return "readSurvey_off";
         }
     }
@@ -90,13 +90,13 @@ public class SurveyController {
         SurveyWithItemVO surveyWithItemVO = new SurveyWithItemVO();
         String userID = (String)session.getAttribute("id");
         if(userID == null){ //로그인 확인
-            model.addAttribute("msg","로그인이 되어있지 않습니다.");
+            model.addAttribute("message","로그인이 되어있지 않습니다.");
             model.addAttribute("url","login");
             return "alert";
         }
         UserVO user = userMapper.userLogin(userID);
         if(!userID.equals(writer) && user.getUser_manager()==0){ //매니저만 추가가능
-            model.addAttribute("msg","접근할 수 없는 권한입니다.");
+            model.addAttribute("message","접근할 수 없는 권한입니다.");
             return "alert";
         }
 
@@ -143,13 +143,13 @@ public class SurveyController {
                                UpdateForm form, Model model, HttpSession session) throws Exception{
         String userID = (String)session.getAttribute("id");
         if(userID == null){ //로그인 확인
-            model.addAttribute("msg","로그인이 되어있지 않습니다.");
+            model.addAttribute("message","로그인이 되어있지 않습니다.");
             model.addAttribute("url","login");
             return "alert";
         }
         UserVO user = userMapper.userLogin(userID);
         if(!userID.equals(writer) && user.getUser_manager()==0){ //매니저만 설문 삭제 가능
-            model.addAttribute("msg","접근할 수 없습니다.");
+            model.addAttribute("message","접근할 수 없습니다.");
             return "alert";
         }
         try {

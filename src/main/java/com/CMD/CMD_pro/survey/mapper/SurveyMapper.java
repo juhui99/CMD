@@ -5,7 +5,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@Repository
+//@Repository
 public interface SurveyMapper {
 
     public List<SurveyVO> selectSurveyList(SearchCriteria cri) throws Exception;
@@ -19,7 +19,7 @@ public interface SurveyMapper {
     public void insertSurveyItem(List<SurveyItemVO> itemlist);
     public void addSurveyResult(SurveyResultVO srvo);
 //    public List<SurveyVO> selectSearchSurvey(SearchCriteria cri);
-    public void	 closeSurvey(int surveyIndex);
+    public void closeSurvey(int surveyIndex);
     public void removeSurvey(int surveyIndex);
 //    public int targetPage(@Param("target") int target) throws Exception;
 //    public List<SurveyVO> mainSearch(@Param("keyword") String keyword) throws Exception;

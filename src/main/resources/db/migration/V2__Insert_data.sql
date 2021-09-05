@@ -34,30 +34,23 @@ insert into survey (`userIndex`,
                     `surveyEnd`,
                     `surveyCount`,
                     `surveyDuplicate`)
-values(1,'타이틀1','내용1','2021-09-14',1,2);
+values(1,'test2','내용1','2021-09-14',1,2);
 
-insert into survey (`userIndex`,
-                    `surveyTitle`,
-                    `surveyContent`,
-                    `surveyEnd`,
-                    `surveyCount`,
-                    `surveyDuplicate`)
-values(2,'타이틀2','내용2','2021-09-15',1,3);
 
 insert into survey (`userIndex`,
                     `surveyTitle`,
                     `surveyContent`,
                     `surveyEnd`,
                     `surveyDuplicate`)
-values(1,'test','내용3','2021-09-5',4);
+values(1,'test1','내용2','2021-09-5',4);
 
 insert into surveyItem (`surveyIndex`,
                         `surveyItemContent`)
-values(1,'진행중인 설문1이요');
+values(1,'선택1');
 
 insert into surveyItem (`surveyIndex`,
                         `surveyItemContent`)
-values(2,'진행중인 설문2요');
+values(2,'선택2');
 
 insert into surveyResult (`surveyIndex`,
                           `surveyItemIndex`,

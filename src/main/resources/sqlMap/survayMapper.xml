@@ -8,7 +8,7 @@
     <parameterMap id="resultDataSet" type="com.CMD.CMD_pro.survey.domain.ResultDataSet"/>
 
     <resultMap id="surveyVO" type="com.CMD.CMD_pro.survey.domain.SurveyVO"/>
-    <resultMap id="surveyItemVo" type="com.CMD.CMD_pro.survey.domain.SurveyItemVO"/>
+    <resultMap id="surveyItemVO" type="com.CMD.CMD_pro.survey.domain.SurveyItemVO"/>
     <resultMap id="pageMaker" type="com.CMD.CMD_pro.survey.domain.PageMaker"/>
     <resultMap id="resultDataSet" type="com.CMD.CMD_pro.survey.domain.ResultDataSet"/>
 
@@ -63,7 +63,7 @@
         VALUES (surveyResultIndex.nextval, #{surveyIndex}, #{surveyItemIndex}, #{userIndex})
     </insert>
 
-    <select id="selectSurvey" parameterMap="surveyVO" resultMap="SurveyVO">
+    <select id="selectSurvey" parameterMap="surveyVO" resultMap="surveyVO">
         SELECT surveyIndex, surveyTitle, users.user_index, surveyReg, surveyContent, progressing, surveyEnd,
                (
                    SELECT COUNT(surveyResultIndex)
@@ -74,6 +74,13 @@
         FROM survey
                  JOIN users ON survey.userIndex = users.user_index
         WHERE surveyIndex = #{surveyIndex}
+    </select>
+
+    <select id="selectSurveyItems" resultMap="surveyItemVO">
+        SELECT
+            surveyItemIndex, surveyIndex, surveyItemContent
+        FROM surveyItem
+        WHERE surveyIndex = #{surveyIndex }
     </select>
 
     <update id="closeSurvey">
@@ -87,7 +94,7 @@
     </delete>
 
     <!-- 리스트 + 페이징 + 검색 -->
-    <select id="selectSurveyList" parameterMap="surveyVO" resultMap="SurveyVO">
+    <select id="selectSurveyList" parameterMap="surveyVO" resultMap="surveyVO">
         SELECT
         surveyIndex, users.user_index, surveyTitle, surveyContent, surveyReg, surveyEnd, progressing,(
         SELECT COUNT(surveyResultIndex)
