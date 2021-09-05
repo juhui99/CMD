@@ -7,13 +7,13 @@ import java.util.Date;
 
 @Getter
 @Setter
-//설문조사 보기 선택
+//설문조사 참여정보
 public class SurveyResultVO {
     private int surveyResultIndex;
     private int surveyIndex;
     private int surveyItemIndex;
-    private int userIndex;
-    private Date surveyResultReg;
+    private int userIndex; //참여자
+    private Date surveyResultReg; //참여일
 
 //    public SurveyResultVO() {}
 //

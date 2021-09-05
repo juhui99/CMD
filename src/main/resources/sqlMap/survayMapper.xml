@@ -5,10 +5,12 @@
 <mapper namespace="com.CMD.CMD_pro.survey.mapper.SurveyMapper">
     <parameterMap id="surveyVO" type="com.CMD.CMD_pro.survey.domain.SurveyVO"/>
     <parameterMap id="searchCriteria" type="com.CMD.CMD_pro.survey.domain.SearchCriteria"/>
+    <parameterMap id="resultDataSet" type="com.CMD.CMD_pro.survey.domain.ResultDataSet"/>
 
     <resultMap id="surveyVO" type="com.CMD.CMD_pro.survey.domain.SurveyVO"/>
     <resultMap id="surveyItemVo" type="com.CMD.CMD_pro.survey.domain.SurveyItemVO"/>
     <resultMap id="pageMaker" type="com.CMD.CMD_pro.survey.domain.PageMaker"/>
+    <resultMap id="resultDataSet" type="com.CMD.CMD_pro.survey.domain.ResultDataSet"/>
 
     <!-- 검색기능을 위한 동적SQL -->
     <sql id="search">
@@ -112,4 +114,15 @@
 		]]>
         <include refid="search"></include>
     </select>
+
+    <select id="selectResultDataset" parameterMap="resultDataSet" resultMap="resultDataSet">
+        SELECT users.user_gender, users.user_name, surveyItem.surveyItemIndex
+        FROM surveyItem
+        JOIN surveyResult ON surveyResult.surveyItemIndex = surveyItem.surveyItemIndex
+        JOIN users ON surveyResult.userIndex = users.userIndex
+        WHERE
+            surveyItem.surveyIndex = #{surveyIndex}
+    </select>
+
+
 </mapper>

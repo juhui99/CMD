@@ -12,11 +12,11 @@ import java.util.Date;
 public class SurveyVO {
     private int surveyIndex;
     private int userIndex;
-    private String surveyTitle;
-    private String surveyContent;
-    private Date surveyReg;
-    private Date surveyEnd;
-    private int progressing;
+    private String surveyTitle; //제목
+    private String surveyContent; //내용
+    private Date surveyReg; //시작시간
+    private Date surveyEnd; //종료시간
+    private int progressing; //진행여부 1:진행중인, 0:마감된 설문
     private int surveyCount;
     private int surveyDuplicate;
 

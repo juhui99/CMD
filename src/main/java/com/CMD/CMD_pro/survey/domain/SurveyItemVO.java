@@ -10,11 +10,11 @@ import java.util.List;
 
 @Getter
 @Setter
-// 진행중인 설문
+// 설문 항목 저장
 public class SurveyItemVO {
     private int surveyItemIndex;
     private int surveyIndex;
-    private String  surveyItemContent;
+    private String  surveyItemContent; //내용
 
     public static List<SurveyItemVO> initSurveyItemVO(ResultSet rs) throws SQLException {
         List<SurveyItemVO> itemList = new ArrayList<SurveyItemVO>();
