@@ -11,4 +11,6 @@ public interface UserMapper {
     public UserVO userLogin(String userID) throws Exception;
     public void userUpdate(UserVO user) throws Exception;
     public void userProfile(@Param("userProfile") String userProfile, @Param("userID") String userID) throws Exception;
+    public void userWithdrawal(@Param("userID") String userID) throws Exception;
+    public UserVO userData(String userID) throws Exception;
 }

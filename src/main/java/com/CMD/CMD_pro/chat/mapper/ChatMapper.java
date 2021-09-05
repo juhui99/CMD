@@ -23,4 +23,5 @@ public interface ChatMapper {
     public void readChat(@Param("user_id") String user_id, @Param("friend_id") String friend_id) throws Exception;
     public int getUnreadChat(@Param("user_id") String user_id, @Param("friend_id") String friend_id) throws Exception;
     public int getTotalUnreadChat(@Param("user_id") String user_id) throws Exception;
+    public int getUserWithdrawal(@Param("user_id") String user_id) throws Exception;
 }

@@ -93,6 +93,16 @@
                 }
             });
 
+            $("#withdrawal").click(function (){
+                var id = $("#userID").val();
+                if(confirm("정말로 회원탈퇴를 하시겠습니까?")){
+                    alert("회원탈퇴를 수행합니다.");
+                    location.href="/userWithdrawal?id=" + id;
+                } else {
+                    alert("회원탈퇴를 취소합니다.");
+                }
+            });
+
         });
 
     </script>
@@ -300,8 +310,8 @@
                     </a>
                     <div class="dropdown-menu">
                         <a style="margin-left: 10px;" th:if="${session.id != null}" href="/userUpdateCheck">회원정보 수정</a></br>
-                        <a style="margin-left: 10px;" th:if="${session.id != null}" href="/profile">프로필 수정</a></br>
-                        <a style="margin-left: 10px;" th:if="${session.id != null}" href="/logoutAction">로그아웃</a>
+                        <a style="margin-left: 10px;" th:if="${session.id != null}" href="/logoutAction">로그아웃</a><br>
+                        <a style="margin-left: 10px;" th:if="${session.id != null}" href="#" id="withdrawal">회원탈퇴</a>
                     </div>
                 </li>
             </ul>
@@ -326,8 +336,8 @@
                     <td th:if="${filename.equals('non') and session.id != null}"><img class= "img-circle" style="width: 50px; height: 50px; border-color:  #003366d2;" src="/display?filename=default.png"/><a style="margin-left: 5px;" th:text="${session.id}" th:href="@{/chat(friend=${session.id})}"></a><span style="margin-left: 3px; background-color: #003366d2; border-radius: 50%; padding-right: 4px; padding-top: 3px; padding-left: 4px; padding-bottom: 3px; font-size: 3px; color: white;" >나</span></td>
                 </tr>
                 <tr th:each="friendsList : ${friendsList}">
-                    <td th:if="${friendsList.user_profile != null}"><img class= "img-circle" style="width: 50px; height: 50px; border-color:  #003366d2;" th:src="@{/display?(filename=${friendsList.user_profile})}"/><a style="margin-left: 5px;" th:text="${friendsList.user_id}" th:href="@{/chat(friend=${friendsList.user_id})}"></a></td>
-                    <td th:if="${friendsList.user_profile == null}"><img class= "img-circle" style="width: 50px; height: 50px; border-color:  #003366d2;" src="/display?filename=default.png"/><a style="margin-left: 5px;" th:text="${friendsList.user_id}" th:href="@{/chat(friend=${friendsList.user_id})}"></a></td>
+                    <td th:if="${friendsList.user_profile != null}"><img class= "img-circle" style="width: 50px; height: 50px; border-color:  #003366d2;" th:src="@{/display?(filename=${friendsList.user_profile})}"/><a style="margin-left: 5px;" th:text="${friendsList.user_id}" th:href="@{/chat(friend=${friendsList.user_id})}"></a><img th:if="${friendsList.user_withdrawal == 1}" src="/img/warning.png" style="width:13px; margin-top: 3px; margin-left: 3px;"/><span th:if="${friendsList.user_withdrawal == 1}" style="margin-left: 2px; margin-top: 4px; font-size: 3px; color: red;" >탈퇴한 회원</span></td>
+                    <td th:if="${friendsList.user_profile == null}"><img class= "img-circle" style="width: 50px; height: 50px; border-color:  #003366d2;" src="/display?filename=default.png"/><a style="margin-left: 5px;" th:text="${friendsList.user_id}" th:href="@{/chat(friend=${friendsList.user_id})}"></a><img th:if="${friendsList.user_withdrawal == 1}" src="/img/warning.png" style="width:13px; margin-top: 3px; margin-left: 3px;"><span th:if="${friendsList.user_withdrawal == 1}" style="margin-left: 2px; margin-top: 4px; font-size: 3px; color: red;" >탈퇴한 회원</span></td>
                     <td><a th:href="@{/friendDelete(user=${session.id},friend=${friendsList.user_id})}"><button class="friendDelete" type="button">삭제</button></a></td>
 
                 </tr>

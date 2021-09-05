@@ -56,4 +56,8 @@
         select count(chat_index) from chat where friend_id = #{user_id} and chat_read = 0
     </select>
 
+    <select id="getUserWithdrawal" parameterType="map" resultType="int">
+        select user_withdrawal from users where user_id = #{user_id}
+    </select>
+
 </mapper>

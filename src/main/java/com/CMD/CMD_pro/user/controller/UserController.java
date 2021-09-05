@@ -43,7 +43,18 @@ public class UserController {
     private JavaMailSender sender;
 
     @GetMapping("/join")
-    public String join(){
+    public String join(Model model, HttpSession session) throws Exception{
+        String filename;
+        String userID;
+        if((String) session.getAttribute("id") != null){
+            userID = (String) session.getAttribute("id");
+            UserVO user = userMapper.userLogin(userID);
+            filename = user.getUser_profile();
+
+        } else {
+            filename = "non";
+        }
+        model.addAttribute("filename",filename);
         return "join";
     }
 
@@ -73,7 +84,20 @@ public class UserController {
     }
 
     @GetMapping("/login")
-    public String login(){ return "login"; }
+    public String login(Model model, HttpSession session) throws Exception{
+        String filename;
+        String userID;
+        if((String) session.getAttribute("id") != null){
+            userID = (String) session.getAttribute("id");
+            UserVO user = userMapper.userLogin(userID);
+            filename = user.getUser_profile();
+
+        } else {
+            filename = "non";
+        }
+        model.addAttribute("filename",filename);
+        return "login";
+    }
 
     @PostMapping("/LoginAction")
     public String loginAction(Model model, JoinForm form, HttpServletRequest request)throws Exception {
@@ -123,7 +147,18 @@ public class UserController {
     }
 
     @GetMapping("/userUpdateCheck")
-    public String userUpdateCheck(){
+    public String userUpdateCheck(Model model, HttpSession session) throws Exception{
+        String filename;
+        String userID;
+        if((String) session.getAttribute("id") != null){
+            userID = (String) session.getAttribute("id");
+            UserVO user = userMapper.userLogin(userID);
+            filename = user.getUser_profile();
+
+        } else {
+            filename = "non";
+        }
+        model.addAttribute("filename",filename);
         return "userUpdateCheck";
     }
 
@@ -137,7 +172,9 @@ public class UserController {
         String userID = (String) session.getAttribute("id");
         String userPassword = form.getUser_pwd();
         UserVO user = userMapper.userLogin(userID);
+        String filename = user.getUser_profile();
         if (user.getUser_pwd().equals(userPassword)) {
+            model.addAttribute("filename",filename);
             model.addAttribute("user",user);
             return "userUpdate";
         }
@@ -205,7 +242,7 @@ public class UserController {
     @GetMapping("/profile")
     public String getProfile(){ return "profile";}
 
-    @PostMapping("/profile")   //게시물 리스트 가져오기 post방식 글쓰기 완료후 폼 액션
+    @PostMapping("/profile")
     public String WriteAction(WriteForm form, RedirectAttributes redirect, HttpSession session, Model model, @RequestPart MultipartFile files) throws Exception{
         String userID = (String) session.getAttribute("id");
         String fileName = files.getOriginalFilename();
@@ -226,10 +263,23 @@ public class UserController {
     }
 
     @GetMapping("/findPassword")
-    public String findPassword(){ return "findPassword";}
+    public String findPassword(Model model, HttpSession session) throws Exception{
+        String filename;
+        String userID;
+        if((String) session.getAttribute("id") != null){
+            userID = (String) session.getAttribute("id");
+            UserVO user = userMapper.userLogin(userID);
+            filename = user.getUser_profile();
 
-    @PostMapping("/sendEmail")   //게시물 리스트 가져오기 post방식 글쓰기 완료후 폼 액션
-    public String sendEmail(JoinForm form, Model model) throws Exception{
+        } else {
+            filename = "non";
+        }
+        model.addAttribute("filename",filename);
+        return "findPassword";
+    }
+
+    @PostMapping("/sendEmail")
+    public String sendEmail(JoinForm form, Model model,HttpSession session) throws Exception{
         String id = form.getUser_id();
         UserVO user = userMapper.userLogin(id);
 
@@ -249,25 +299,50 @@ public class UserController {
             helper.setTo(email);
             helper.setSubject("CMD 비밀번호 찾기 인증코드");
             helper.setText("회원님의 인증코드는"+num+"입니다.");
+            helper.setFrom("kimjoohe3@gmail.com","CMD");
         } catch (MessagingException e) {
             e.printStackTrace();
         }
 
         sender.send(message);
+
+        String filename;
+        String userID;
+        if((String) session.getAttribute("id") != null){
+            userID = (String) session.getAttribute("id");
+            UserVO user2 = userMapper.userLogin(userID);
+            filename = user2.getUser_profile();
+
+        } else {
+            filename = "non";
+        }
+        model.addAttribute("filename",filename);
+
         model.addAttribute("code",num);
         model.addAttribute("id",id);
         return "codeCheck";
     }
 
 
-    @PostMapping("/PasswordCheck")   //게시물 리스트 가져오기 post방식 글쓰기 완료후 폼 액션
-    public String passwordCheck(JoinForm form, Model model) throws Exception{
+    @PostMapping("/PasswordCheck")
+    public String passwordCheck(JoinForm form, Model model,HttpSession session) throws Exception{
         String userCode = form.getUser_code();
         String correctCode = form.getCorrect_code();
         String userId = form.getUser_id();
         UserVO user = userMapper.userLogin(userId);
         String userPwd = user.getUser_pwd();
         if(userCode.equals(correctCode)){
+            String filename;
+            String userID;
+            if((String) session.getAttribute("id") != null){
+                userID = (String) session.getAttribute("id");
+                UserVO user2 = userMapper.userLogin(userID);
+                filename = user2.getUser_profile();
+
+            } else {
+                filename = "non";
+            }
+            model.addAttribute("filename",filename);
             model.addAttribute("user_pwd",userPwd);
             return "passwordCheck";
         }
@@ -276,6 +351,17 @@ public class UserController {
             model.addAttribute("url","findPassword");
             return "alert";
         }
+    }
+
+    @GetMapping("/userWithdrawal")
+    public String userWithdrawal(HttpSession session, Model model,@RequestParam("id") String id) throws Exception{
+        session.invalidate();
+        userMapper.userWithdrawal(id);
+        userMapper.userProfile("default.png",id);
+        String filename = "non";
+
+        model.addAttribute("filename",filename);
+        return "cmdev";
     }
 
 }

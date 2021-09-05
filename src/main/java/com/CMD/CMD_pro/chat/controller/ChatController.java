@@ -142,7 +142,9 @@ public class ChatController {
         }
         String userID = (String) session.getAttribute("id");
         UserVO user = userMapper.userLogin(userID);
-        UserVO friendUser = userMapper.userLogin(friend);
+        UserVO friendUser = userMapper.userData(friend);
+        chatMapper.readChat(userID,friend);
+        int withdrawal = friendUser.getUser_withdrawal();
         String filename;
         String friendFile;
         if (user.getUser_profile() == null) {
@@ -155,6 +157,7 @@ public class ChatController {
         model.addAttribute("filename", filename);
         model.addAttribute("friend",friend);
         model.addAttribute("friendFile",friendFile);
+        model.addAttribute("withdrawal",withdrawal);
         return "chat";
     }
 
@@ -183,6 +186,7 @@ public class ChatController {
         int chatID = Integer.parseInt(req.getParameter("id"));
         String userID = (String) session.getAttribute("id");
         List<ChatVO> chatList = chatMapper.chatList(userID,friendID,chatID);
+        chatMapper.readChat(userID,friendID);
         if(chatList.size() == 0){
             try{
                 response.getWriter().print("");
@@ -204,7 +208,7 @@ public class ChatController {
 
             }
             result.append("], \"last\":\"" + chatList.get(chatList.size() - 1).getChat_index() + "\"}");
-            chatMapper.readChat(userID,friendID);
+
             try {
                 response.getWriter().print(result);
             } catch (IOException e) {
@@ -274,6 +278,7 @@ public class ChatController {
 
 
             String userProfile = "";
+            String userWithdrawal = "";
 
             StringBuffer result = new StringBuffer("");
             result.append("{\"result\":[");
@@ -282,8 +287,10 @@ public class ChatController {
 
                 if(chatList.get(i).getUser_id().equals(userID)){
                     userProfile = chatMapper.getProfile(chatList.get(i).getFriend_id());
+                    userWithdrawal = chatMapper.getUserWithdrawal(chatList.get(i).getFriend_id()) + "";
                 } else{
                     userProfile = chatMapper.getProfile(chatList.get(i).getUser_id());
+                    userWithdrawal = chatMapper.getUserWithdrawal(chatList.get(i).getUser_id()) + "";
                 }
                 if(userID.equals(chatList.get(i).getFriend_id())) {
                     unread = chatMapper.getUnreadChat(chatList.get(i).getUser_id(), userID) + "";
@@ -295,7 +302,8 @@ public class ChatController {
                 result.append("{\"value\": \"" + chatList.get(i).getChat_content() + "\"},");
                 result.append("{\"value\": \"" + chatList.get(i).getChat_time() + "\"},");
                 result.append("{\"value\": \"" + userProfile + "\"},");
-                result.append("{\"value\": \"" + unread + "\"}]");
+                result.append("{\"value\": \"" + unread + "\"},");
+                result.append("{\"value\": \"" + userWithdrawal + "\"}]");
                 if (i != chatList.size() - 1) result.append(",");
             }
             result.append("]}");
