@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 @Controller
-@RequestMapping("/survey/*") //현재 믈래스의 모든 메서드들의 기본적인 URL경로
+//@RequestMapping("/survey/*") //현재 믈래스의 모든 메서드들의 기본적인 URL경로
 public class SurveyController {
 
     @Autowired
@@ -27,7 +27,7 @@ public class SurveyController {
     @Autowired
     private SurveyService surveyService;
 
-    @RequestMapping("main") //설문조사 메인화면
+    @RequestMapping("/mainSurvey") //설문조사 메인화면
     public String main(@ModelAttribute("cri") SearchCriteria cri, Model model) throws Exception {
 
         List<SurveyVO> surveyList = surveyService.getSurveyList(cri);
@@ -37,10 +37,10 @@ public class SurveyController {
         model.addAttribute("pageMaker", pageMaker); // 게시판 하단의 페이징 관련, 이전페이지, 페이지 링크 , 다음 페이지
 
         //model.addAttribute("list", surveyList.get(0)); //데이터 전달 test 확인
-        return "list";
+        return "mainSurvey";
     }
 
-    @RequestMapping(value = "readSurvey") //진행중인 설문조사 읽기
+    @RequestMapping(value = "/readSurvey") //진행중인 설문조사 읽기
     public String readSurvey(@RequestParam("survey_index") int survey_index, @RequestParam("progressing") int progressing,
                              @ModelAttribute("cri") SearchCriteria cri, Model model, HttpSession session) throws Exception{
         boolean isProgressing = progressing == 1 ? true : false;
@@ -69,7 +69,7 @@ public class SurveyController {
         }
     }
 
-    @RequestMapping("closeSurvey") //설문조사 닫기
+    @RequestMapping("/closeSurvey") //설문조사 닫기
     public String closeSurvey(@RequestParam("survey_index") int survey_index) {
         try {
             surveyService.closeSurvey(survey_index);
@@ -80,9 +80,9 @@ public class SurveyController {
         return "redirect:/survey/main?surveyclose=success"; //설문조사 닫기 성공
     }
 
-    @RequestMapping(value="addSurvey",method = RequestMethod.GET)
+    @RequestMapping(value="/addSurvey",method = RequestMethod.GET)
     public String AddSurveyGET() throws Exception {
-        return "survey.addSurvey";
+        return "addSurvey";
     }
 
     @RequestMapping(value="addSurvey", method = RequestMethod.POST) //설문조사 추가하기
@@ -141,7 +141,7 @@ public class SurveyController {
         return return_param;
     }
 
-    @RequestMapping("removeSurvey") //설문조사 지우기
+    @RequestMapping("/removeSurvey") //설문조사 지우기
     public String removeSurvey(@RequestParam("survey_index") int survey_index, @RequestParam("writer") String writer,
                                UpdateForm form, Model model, HttpSession session) throws Exception{
         String userID = (String)session.getAttribute("id");
@@ -164,7 +164,7 @@ public class SurveyController {
         return "redirect:/survey/main?surveyremove=success";
     }
 
-    @RequestMapping("searchSurvey") // 메인 검색
+    @RequestMapping("/searchSurvey") // 메인 검색
     public String searchSurvey(Model model) throws Exception {
         SearchCriteria cri = new SearchCriteria();
         cri.setPage(1);
@@ -172,7 +172,7 @@ public class SurveyController {
 
         List<SurveyVO> SurveyList = surveyService.getSurveyList(cri);
         model.addAttribute("surveysearch",SurveyList); //검색한 설문 리스트
-        return "main_search";
+        return "searchSurvey";
     }
 
 //    @RequestMapping(value = "/mainsurvey")
