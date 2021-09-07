@@ -136,6 +136,8 @@
             $("#AI").attr("selected", true);
         } else if ($("#user_selected_major").val() == "WhiteHat") {
             $("#WhiteHat").attr("selected", true);
+        } else if ($("#user_selected_major").val() == "선택사항없음") {
+            $("#non").attr("selected", true);
         }
 
         $("#profile").click(function () {
@@ -421,6 +423,7 @@
                 <label for="user_major">분야</label>
                 <select id="user_major" name="user_major">
                     <option value="" selected disabled hidden>분야</option>
+                    <option id="non" value="선택사항없음">선택사항없음</option>
                     <option id="Frontend" value="Frontend">Frontend</option>
                     <option id="Backend" value="Backend">Backend</option>
                     <option id="DBA" value="DBA">DBA</option>

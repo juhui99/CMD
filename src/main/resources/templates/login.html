@@ -95,7 +95,7 @@
             url: "/getTotalUnreadChat",
             dataType: "json",
             data: {
-                id: $("#userID").val()
+                id: $("#user").val()
             },
             success: function (result) {
                 if (result >= 1) {
@@ -345,19 +345,19 @@
 
         </nav>
     </div>
-        <form class="form-box" action="/LoginAction" method="post" onsubmit="return submitAction();">
-            <div class="form-group">
-                <p class="sign text-center">C M D</p>
-                <form class="form1">
-                    <input class="un " type="text" align="center" id="userID" name="user_id" placeholder="UserID">
-                    <input class="pass" type="password" align="center" id="userPassword" name="user_pwd"
-                           placeholder="Password">
-                    <input class="submit" type="submit" align="center" id="submit" name="submit" value="로그인">
-                    <p class="forgot" align="center"><a href="/findPassword">비밀번호를 잊으셨나요?</a></p>
-                </form>
-            </div>
-            <div th:if="${session.id != null}">이미 로그인 되어있습니다.</div>
-        </form>
+    <form class="form-box" action="/LoginAction" method="post" onsubmit="return submitAction();">
+        <div class="form-group">
+            <p class="sign text-center">C M D</p>
+            <form class="form1">
+                <input class="un " type="text" align="center" id="userID" name="user_id" placeholder="UserID">
+                <input class="pass" type="password" align="center" id="userPassword" name="user_pwd"
+                       placeholder="Password">
+                <input class="submit" type="submit" align="center" id="submit" name="submit" value="로그인">
+                <p class="forgot" align="center"><a href="/findPassword">비밀번호를 잊으셨나요?</a></p>
+            </form>
+        </div>
+        <div th:if="${session.id != null}">이미 로그인 되어있습니다.</div>
+    </form>
 
     <div class="footer-box">
         <div class="author">
@@ -371,6 +371,7 @@
                 <li><a href="https://stackoverflow.com/" target="_blank"><i class="fab fa-stack-overflow">
                     Stack-Overflow</i></a></li>
             </ul>
+            <input th:if="${session.id != null}" type="hidden" id="user" th:value="${session.id}">
         </div>
     </div>
     <div class="eyebrow"><p>@2021 prod by 김이음</p></div>
