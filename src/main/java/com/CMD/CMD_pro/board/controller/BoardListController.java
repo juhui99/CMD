@@ -964,6 +964,7 @@ public class BoardListController {
                 filename = user.getUser_profile();
             }
         }
+        boardMapper.searchInsert(keyword);
         model.addAttribute("filename", filename);
         model.addAttribute("board",board); //반환된 결과인 board를 모델로 담아 search.html로 전달
         model.addAttribute("keyword",keyword); //키워드 전달
