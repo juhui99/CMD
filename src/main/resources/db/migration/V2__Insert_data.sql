@@ -28,33 +28,31 @@ insert into users ( `user_id`,
                     `user_manager`)
 values('bbbb11', '1111','음성준', '25', 'Frontend', 'bbbb@gmail.com', 'M',1);
 
-insert into survey (`userIndex`,
-                    `surveyTitle`,
-                    `surveyContent`,
-                    `surveyEnd`,
-                    `surveyCount`,
-                    `surveyDuplicate`)
-values(1,'test2','내용1','2021-09-14',1,2);
+insert into survey (`user_index`,
+                    `survey_title`,
+                    `survey_content`,
+                    `survey_end`,
+                    `survey_count`)
+values(1,'test1','내용1','2021-09-14',1);
 
+insert into survey (`user_index`,
+                    `survey_title`,
+                    `survey_content`,
+                    `survey_end`,
+                    `survey_count`)
+values(2,'test2','내용2','2021-09-5',4);
 
-insert into survey (`userIndex`,
-                    `surveyTitle`,
-                    `surveyContent`,
-                    `surveyEnd`,
-                    `surveyDuplicate`)
-values(1,'test1','내용2','2021-09-5',4);
-
-insert into surveyItem (`surveyIndex`,
-                        `surveyItemContent`)
+insert into surveyItem (`survey_index`,
+                        `survey_item_content`)
 values(1,'선택1');
 
-insert into surveyItem (`surveyIndex`,
-                        `surveyItemContent`)
+insert into surveyItem (`survey_index`,
+                        `survey_item_content`)
 values(2,'선택2');
 
-insert into surveyResult (`surveyIndex`,
-                          `surveyItemIndex`,
-                          `userIndex`)
+insert into surveyResult (`survey_index`,
+                          `survey_item_index`,
+                          `user_index`)
 values(1,1,2);
 
 insert into board       (`subject`,

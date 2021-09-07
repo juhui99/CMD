@@ -35,11 +35,13 @@ public class SurveyController {
 
         PageMaker pageMaker = surveyService.getPagination(cri);
         model.addAttribute("pageMaker", pageMaker); // 게시판 하단의 페이징 관련, 이전페이지, 페이지 링크 , 다음 페이지
+
+        //model.addAttribute("list", surveyList.get(0)); //데이터 전달 test 확인
         return "list";
     }
 
-    @RequestMapping(value = "/readSurvey") //진행중인 설문조사 읽기
-    public String readSurvey(@RequestParam("surveyIndex") int surveyIndex, @RequestParam("progressing") int progressing,
+    @RequestMapping(value = "readSurvey") //진행중인 설문조사 읽기
+    public String readSurvey(@RequestParam("survey_index") int survey_index, @RequestParam("progressing") int progressing,
                              @ModelAttribute("cri") SearchCriteria cri, Model model, HttpSession session) throws Exception{
         boolean isProgressing = progressing == 1 ? true : false;
         SurveyVO surveyVo = null;
@@ -50,26 +52,27 @@ public class SurveyController {
             return "alert";
         }
         if(isProgressing) { //설문조사가 실행중일때
-            surveyVo = surveyService.getSurveyItems(surveyIndex);
+            surveyVo = surveyService.getSurveyItems(survey_index);
             model.addAttribute("survey", surveyVo);//진행중인 설문조사 상세 페이지
 
             return "readSurvey_on";
         }
         else{ //설문조사 마감일때
-            surveyVo = surveyService.getSurveyResult(surveyIndex);
+            surveyVo = surveyService.getSurveyResult(survey_index);
             List<SurveyItemVO> itemList = ((SurveyWithItemVO)surveyVo).getSurveyItemList();
 
             model.addAttribute("survey", surveyVo); //설문조사 보기
             model.addAttribute("itemList", itemList); //내용 리스트
             model.addAttribute("message","마감된 설문조사입니다.");
+
             return "readSurvey_off";
         }
     }
 
     @RequestMapping("closeSurvey") //설문조사 닫기
-    public String closeSurvey(@RequestParam("surveyIndex") int surveyIndex) {
+    public String closeSurvey(@RequestParam("survey_index") int survey_index) {
         try {
-            surveyService.closeSurvey(surveyIndex);
+            surveyService.closeSurvey(survey_index);
         } catch (Exception e) {
             return "redirect:/survey/main?surveyclose=fail"; //닫는거 실패했을때
         }
@@ -83,8 +86,8 @@ public class SurveyController {
     }
 
     @RequestMapping(value="addSurvey", method = RequestMethod.POST) //설문조사 추가하기
-    public String addSurvey(@RequestParam("title") String surveyTitle, @RequestParam("content") String surveyContent,
-                            @RequestParam("itemcontent") String [] itemcontent, @RequestParam("end_date") String surveyEnd,
+    public String addSurvey(@RequestParam("survey_title") String survey_title, @RequestParam("survey_content") String survey_content,
+                            @RequestParam("itemcontent") String [] itemcontent, @RequestParam("survey_end") String survey_end,
                             @RequestParam("writer") String writer, HttpServletRequest request, Model model, HttpSession session) throws Exception {
         SurveyVO surveyVO = new SurveyVO();
         SurveyWithItemVO surveyWithItemVO = new SurveyWithItemVO();
@@ -102,14 +105,14 @@ public class SurveyController {
 
         String pattern = "yyyy-MM-dd";
         SimpleDateFormat sdf = new SimpleDateFormat(pattern);
-        surveyVO.setSurveyEnd(sdf.parse(surveyEnd));
-        surveyVO.setSurveyTitle(surveyTitle);
-        surveyVO.setSurveyContent(surveyContent);
-        surveyVO.setUserIndex(surveyVO.getUserIndex());
+        surveyVO.setSurvey_end(sdf.parse(survey_end));
+        surveyVO.setSurvey_title(survey_title);
+        surveyVO.setSurvey_content(survey_content);
+        surveyVO.setUser_index(user.getUser_index());
         List<SurveyItemVO> surveyItemList = new ArrayList<>();
         for (int i = 0; i < itemcontent.length; i++) {
             SurveyItemVO temp  = new SurveyItemVO();
-            temp.setSurveyItemContent(itemcontent[i]);
+            temp.setSurvey_item_content(itemcontent[i]);
             surveyItemList.add(temp);
         }
         surveyWithItemVO.setSurveyItemList(surveyItemList);
@@ -120,13 +123,13 @@ public class SurveyController {
 
     @RequestMapping(value="voteSurvey", method = RequestMethod.POST) //설문조사 참여하기
     public @ResponseBody Map<String, Object> addSurveyResult
-            (@RequestParam("surveyItemIndex") int surveyItemIndex, @RequestParam("surveyIndex") int surveyIndex) {
+            (@RequestParam("survey_item_index") int survey_item_index, @RequestParam("survey_index") int survey_index) {
         SurveyResultVO surveyResultVO = new SurveyResultVO();
         Map<String, Object> return_param = new HashMap<>();
         try {
-            surveyResultVO.setSurveyResultIndex(surveyItemIndex);
+            surveyResultVO.setSurvey_item_index(survey_item_index);
             //surveyResultVO.setMember_seq(user.getMember_seq());
-            surveyResultVO.setSurveyIndex(surveyIndex);
+            surveyResultVO.setSurvey_index(survey_index);
             surveyService.addSurveyResult(surveyResultVO);
             return_param.put("result", true);
             return_param.put("message", "설문에 참여하였습니다.");
@@ -139,7 +142,7 @@ public class SurveyController {
     }
 
     @RequestMapping("removeSurvey") //설문조사 지우기
-    public String removeSurvey(@RequestParam("surveyIndex") int surveyIndex, @RequestParam("writer") String writer,
+    public String removeSurvey(@RequestParam("survey_index") int survey_index, @RequestParam("writer") String writer,
                                UpdateForm form, Model model, HttpSession session) throws Exception{
         String userID = (String)session.getAttribute("id");
         if(userID == null){ //로그인 확인
@@ -153,7 +156,7 @@ public class SurveyController {
             return "alert";
         }
         try {
-            surveyService.removeSurvey(surveyIndex);
+            surveyService.removeSurvey(survey_index);
             //model.addAttribute("msg","설문조사가 삭제되었습니다.");
         } catch (Exception e) {
             return "redirect:/survey/main?surveyremove=fail";
@@ -161,7 +164,7 @@ public class SurveyController {
         return "redirect:/survey/main?surveyremove=success";
     }
 
-    @RequestMapping("/searchSurvey") // 메인 검색
+    @RequestMapping("searchSurvey") // 메인 검색
     public String searchSurvey(Model model) throws Exception {
         SearchCriteria cri = new SearchCriteria();
         cri.setPage(1);

@@ -7,7 +7,7 @@ import lombok.Setter;
 @Setter
 public class ResultDataSet {
     private int user_age;
-    private int user_gender;
+    private String user_gender;
     private String user_name;
     private int surveyItemIndex;
 

@@ -25,32 +25,31 @@ CREATE TABLE `users` (
 -- ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `survey` (
-                          `surveyIndex` int NOT NULL AUTO_INCREMENT,
-                          `userIndex` int NOT NULL,
-                          `surveyTitle` varchar(200) NOT NULL,
-                          `surveyContent` varchar(1000) DEFAULT NULL,
-                          `surveyReg` datetime NOT NULL DEFAULT NOW(),
-                          `surveyEnd` datetime DEFAULT NULL,
+                          `survey_index` int NOT NULL AUTO_INCREMENT,
+                          `user_index` int NOT NULL,
+                          `survey_title` varchar(200) NOT NULL,
+                          `survey_content` varchar(1000) DEFAULT NULL,
+                          `survey_reg` datetime NOT NULL DEFAULT NOW(),
+                          `survey_end` datetime DEFAULT NULL,
                           `progressing` int NOT NULL DEFAULT 1,
-                          `surveyCount` int NOT NULL DEFAULT 0,
-                          `surveyDuplicate` int DEFAULT NULL,
-                          PRIMARY KEY (`surveyIndex`)
+                          `survey_count` int NOT NULL DEFAULT 0,
+                          PRIMARY KEY (`survey_index`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `surveyItem` (
-                              `surveyItemIndex` int NOT NULL AUTO_INCREMENT,
-                              `surveyIndex` int NOT NULL,
-                              `surveyItemContent` varchar(1000) DEFAULT NULL,
-                              PRIMARY KEY (`surveyItemIndex`)
+                              `survey_item_index` int NOT NULL AUTO_INCREMENT,
+                              `survey_index` int NOT NULL,
+                              `survey_item_content` varchar(1000) DEFAULT NULL,
+                              PRIMARY KEY (`survey_item_index`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `surveyResult` (
-                                `surveyResultIndex` int NOT NULL AUTO_INCREMENT,
-                                `surveyIndex` int NOT NULL,
-                                `surveyItemIndex` int NOT NULL,
-                                `userIndex` int NOT NULL,
-                                `surveyResultReg` datetime NOT NULL DEFAULT NOW(),
-                                PRIMARY KEY (`surveyResultIndex`)
+                                `survey_result_index` int NOT NULL AUTO_INCREMENT,
+                                `survey_index` int NOT NULL,
+                                `survey_item_index` int NOT NULL,
+                                `user_index` int NOT NULL,
+                                `survey_result_reg` datetime NOT NULL DEFAULT NOW(),
+                                PRIMARY KEY (`survey_result_index`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
  CREATE TABLE `board` (

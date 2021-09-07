@@ -6,15 +6,17 @@ import org.apache.ibatis.session.SqlSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+@Repository
 public class SurveyMapperimpl implements SurveyMapper{
     private static final Logger logger = LoggerFactory.getLogger(SurveyServiceimpl.class);
-    private String namespace = "com.CMD.CMD_pro.board.mapper.SurveyMapper";
+    private String namespace = "com.CMD.CMD_pro.sqlMap.surveyMapper";
 
     @Autowired
     private SqlSession sqlSession;
@@ -39,23 +41,23 @@ public class SurveyMapperimpl implements SurveyMapper{
 
     // 아이템리스트가 포함된 select
     @Override
-    public List<SurveyItemVO> selectSurveyItems(int surveyIndex) {
+    public List<SurveyItemVO> selectSurveyItems(int survey_index) {
         logger.info("selectSurvey");
         List<SurveyItemVO> surveyItemList = null;
-        surveyItemList = sqlSession.selectList(namespace+".selectSurveyItems", surveyIndex);
+        surveyItemList = sqlSession.selectList(namespace+".selectSurveyItems", survey_index);
         return surveyItemList;
     }
 
     @Override
-    public List<ResultDataSet> selectSurveyResultDataSet(int surveyIndex) {
+    public List<ResultDataSet> selectSurveyResultDataSet(int survey_index) {
         logger.info("selectSurveyResultDataSet");
-        return sqlSession.selectList(namespace+".selectResultDataset", surveyIndex);
+        return sqlSession.selectList(namespace+".selectResultDataset", survey_index);
     }
 
     @Override
-    public SurveyVO selectSurvey(int surveyIndex) {
+    public SurveyVO selectSurvey(int survey_index) {
         logger.info("selectSurvey");
-        return sqlSession.selectOne(namespace+".selectSurvey", surveyIndex);
+        return sqlSession.selectOne(namespace+".selectSurvey", survey_index);
     }
 
     @Override
@@ -66,12 +68,12 @@ public class SurveyMapperimpl implements SurveyMapper{
     }
 
     @Override
-    public SurveyItemVO selecyMySurveyResult(int surveyIndex, int user_index) {
+    public SurveyItemVO selecyMySurveyResult(int survey_index, int user_index) {
         logger.info("selecyMySurveyResult");
         Map<String, Integer> params = new HashMap<>();
-        params.put("survey_seq", surveyIndex);
+        params.put("survey_seq", survey_index);
         params.put("member_seq", user_index);
-        return sqlSession.selectOne(namespace+".selecyMySurveyResult", params);
+        return sqlSession.selectOne(namespace+".selectMySurveyResult", params);
     }
 
     @Override
@@ -100,15 +102,15 @@ public class SurveyMapperimpl implements SurveyMapper{
 //    }
 
     @Override
-    public void closeSurvey(int surveyIndex) {
+    public void closeSurvey(int survey_index) {
         logger.info("closeSurvey");
-        sqlSession.update(namespace+".closeSurvey", surveyIndex);
+        sqlSession.update(namespace+".closeSurvey", survey_index);
     }
 
     @Override
-    public void removeSurvey(int surveyIndex) {
+    public void removeSurvey(int survey_index) {
         logger.info("removeSurvey");
-        sqlSession.delete(namespace+".removeSurvey", surveyIndex);
+        sqlSession.delete(namespace+".removeSurvey", survey_index);
     }
 
 //    public void mainSearch(HttpServletRequest request, String keyword) throws Exception {

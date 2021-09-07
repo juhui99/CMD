@@ -30,7 +30,7 @@
                     AND name LIKE #{pattern}
                 </when>
                 <when test="type eq 'title'">
-                    AND surveyTitle LIKE #{pattern} OR surveyContent LIKE #{pattern}
+                    AND survey_title LIKE #{pattern} OR survey_content LIKE #{pattern}
                 </when>
             </choose>
         </if>
@@ -47,88 +47,88 @@
 <!--    </sql>-->
 
     <insert id="insertSurvey">
-        insert into survey (surveyIndex, userIndex, surveyTitle, surveyContent, surveyEnd)
-        values (surveyIndex.nextval, #{userIndex}, #{surveyTitle}, #{surveyContent},
-                #{surveyEnd})
+        insert into survey (survey_index, user_index, survey_title, survey_content, survey_end)
+        values (surveyIndex.nextval, #{user_index}, #{survey_title}, #{survey_content},
+                #{survey_end})
     </insert>
 
     <insert id="insertSurveyItem">
         insert into surveyItem
         values
-            (surveyItemIndex.nextval, surveyIndex.currval, #{surveyItemContent})
+            (survey_item_index.nextval, survey_index.currval, #{survey_item_content})
     </insert>
 
     <insert id="addSurveyResult">
-        INSERT INTO surveyResult (surveyResultIndex, surveyIndex, surveyItemIndex, userIndex)
-        VALUES (surveyResultIndex.nextval, #{surveyIndex}, #{surveyItemIndex}, #{userIndex})
+        INSERT INTO surveyResult (survey_result_index, survey_index, survey_item_index, user_index)
+        VALUES (survey_result_index.nextval, #{survey_index}, #{survey_item_index}, #{user_index})
     </insert>
 
     <select id="selectSurvey" parameterMap="surveyVO" resultMap="surveyVO">
-        SELECT surveyIndex, surveyTitle, users.user_index, surveyReg, surveyContent, progressing, surveyEnd,
+        SELECT survey_index, survey_title, users.user_index, survey_reg, survey_content, progressing, survey_end,
                (
-                   SELECT COUNT(surveyResultIndex)
+                   SELECT COUNT(survey_result_index)
                    FROM surveyResult
-                            JOIN surveyItem ON surveyResult.surveyItemIndex = surveyItem.surveyItemIndex
-                   WHERE surveyItem.surveyIndex = survey.surveyIndex
-               ) surveyCount
+                            JOIN surveyItem ON surveyResult.survey_item_index = surveyItem.survey_item_index
+                   WHERE surveyItem.survey_index = survey.survey_index
+               ) survey_count
         FROM survey
-                 JOIN users ON survey.userIndex = users.user_index
-        WHERE surveyIndex = #{surveyIndex}
+                 JOIN users ON survey.user_index = users.user_index
+        WHERE survey_index = #{survey_index}
     </select>
 
     <select id="selectSurveyItems" resultMap="surveyItemVO">
         SELECT
-            surveyItemIndex, surveyIndex, surveyItemContent
+            survey_item_index, survey_index, survey_item_content
         FROM surveyItem
-        WHERE surveyIndex = #{surveyIndex }
+        WHERE survey_index = #{survey_index}
     </select>
 
     <update id="closeSurvey">
         UPDATE survey set PROGRESSING = 0
-        WHERE surveyIndex = #{surveyIndex}
+        WHERE survey_index = #{survey_index}
     </update>
 
     <delete id="removeSurvey">
         DELETE FROM survey
-        WHERE surveyIndex = #{surveyIndex}
+        WHERE survey_index = #{survey_index}
     </delete>
 
     <!-- 리스트 + 페이징 + 검색 -->
     <select id="selectSurveyList" parameterMap="surveyVO" resultMap="surveyVO">
         SELECT
-        surveyIndex, users.user_index, surveyTitle, surveyContent, surveyReg, surveyEnd, progressing,(
-        SELECT COUNT(surveyResultIndex)
+        survey_index, users.user_index, survey_title, survey_content, survey_reg, survey_end, progressing,(
+        SELECT COUNT(survey_result_index)
         FROM surveyResult
-        JOIN surveyItem ON surveyResult.surveyItemIndex = surveyItem.surveyItemIndex
-        WHERE surveyItem.surveyIndex = survey.surveyIndex
-        )participantCnt
+        JOIN surveyItem ON surveyResult.survey_item_index = surveyItem.survey_item_index
+        WHERE surveyItem.survey_index = survey.survey_index
+        )survey_count
         FROM survey
-        JOIN users ON survey.userIndex = users.user_index
-        WHERE surveyIndex > 0
+        JOIN users ON survey.user_index = users.user_index
+        WHERE survey_index > 0
 
         <include refid="search"></include>
-        ORDER BY surveyIndex desc
+        ORDER BY survey_index desc
         LIMIT #{pageStart}, #{perPageNum}
     </select>
 
     <!-- 총 게시물 개수 구하기 -->
     <select id="selectCountPaging" parameterMap="searchCriteria" resultMap="pageMaker" resultType="int">
         <![CDATA[
-		SELECT COUNT(surveyIndex)
+		SELECT COUNT(survey_index)
 		FROM survey
-		JOIN users ON users.user_index = survey.userIndex
-		WHERE surveyIndex > 0
+		JOIN users ON users.user_index = survey.user_index
+		WHERE survey_index > 0
 		]]>
         <include refid="search"></include>
     </select>
 
     <select id="selectResultDataset" parameterMap="resultDataSet" resultMap="resultDataSet">
-        SELECT users.user_gender, users.user_name, surveyItem.surveyItemIndex
+        SELECT users.user_gender, users.user_name, surveyItem.survey_item_index
         FROM surveyItem
-        JOIN surveyResult ON surveyResult.surveyItemIndex = surveyItem.surveyItemIndex
-        JOIN users ON surveyResult.userIndex = users.userIndex
+        JOIN surveyResult ON surveyResult.survey_item_index = surveyItem.survey_item_index
+        JOIN users ON surveyResult.user_index = users.user_index
         WHERE
-            surveyItem.surveyIndex = #{surveyIndex}
+            surveyItem.survey_index = #{survey_index}
     </select>
 
 

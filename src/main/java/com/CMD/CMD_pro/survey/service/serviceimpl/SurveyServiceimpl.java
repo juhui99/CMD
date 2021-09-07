@@ -4,17 +4,19 @@ import com.CMD.CMD_pro.survey.domain.*;
 import com.CMD.CMD_pro.survey.mapper.SurveyMapper;
 import com.CMD.CMD_pro.survey.service.SurveyService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class SurveyServiceimpl implements SurveyService {
 
     @Autowired
     private SurveyMapper surveyMapper;
 
     @Override
-    public SurveyVO getSurvey(int surveyIndex) throws Exception {
-        return surveyMapper.selectSurvey(surveyIndex);
+    public SurveyVO getSurvey(int survey_index) throws Exception {
+        return surveyMapper.selectSurvey(survey_index);
     }
 
     @Override
@@ -28,10 +30,10 @@ public class SurveyServiceimpl implements SurveyService {
     }
 
     @Override
-    public SurveyWithItemVO getSurveyItems(int surveyIndex) throws Exception {
-        SurveyVO surveyVO = getSurvey(surveyIndex);
+    public SurveyWithItemVO getSurveyItems(int survey_index) throws Exception {
+        SurveyVO surveyVO = getSurvey(survey_index);
         SurveyWithItemVO surveyWithItemVO = new SurveyWithItemVO(surveyVO);
-        surveyWithItemVO.setSurveyItemList(surveyMapper.selectSurveyItems(surveyIndex));
+        surveyWithItemVO.setSurveyItemList(surveyMapper.selectSurveyItems(survey_index));
 //		surveyWithItemVO.setMySurvey(dao.selecyMySurveyResult(survey_seq, member_seq));
         return surveyWithItemVO;
     }
@@ -42,10 +44,10 @@ public class SurveyServiceimpl implements SurveyService {
     }
 
     @Override
-    public SurveyWithDatasetVO getSurveyResult(int surveyIndex) throws Exception {
-        SurveyWithItemVO surveyWithItemVO = getSurveyItems(surveyIndex);
+    public SurveyWithDatasetVO getSurveyResult(int survey_index) throws Exception {
+        SurveyWithItemVO surveyWithItemVO = getSurveyItems(survey_index);
         SurveyWithDatasetVO surveyWithDatasetVO = new SurveyWithDatasetVO(surveyWithItemVO);
-        List<ResultDataSet> dataSetList = surveyMapper.selectSurveyResultDataSet(surveyIndex);
+        List<ResultDataSet> dataSetList = surveyMapper.selectSurveyResultDataSet(survey_index);
         surveyWithDatasetVO.setDataset(dataSetList);
         return surveyWithDatasetVO;
     }
@@ -62,13 +64,13 @@ public class SurveyServiceimpl implements SurveyService {
 //        return list;
 //    }
     @Override
-    public void closeSurvey(int surveyIndex) {
-        surveyMapper.closeSurvey(surveyIndex);
+    public void closeSurvey(int survey_index) {
+        surveyMapper.closeSurvey(survey_index);
     }
 
     @Override
-    public void removeSurvey(int surveyIndex) {
-        surveyMapper.removeSurvey(surveyIndex);
+    public void removeSurvey(int survey_index) {
+        surveyMapper.removeSurvey(survey_index);
     }
 
 

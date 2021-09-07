@@ -9,25 +9,25 @@ import java.util.Date;
 @Setter
 //설문조사 참여정보
 public class SurveyResultVO {
-    private int surveyResultIndex;
-    private int surveyIndex;
-    private int surveyItemIndex;
-    private int userIndex; //참여자
-    private Date surveyResultReg; //참여일
+    private int survey_result_index;
+    private int survey_index;
+    private int survey_item_index;
+    private int user_index; //참여자
+    private Date survey_result_reg; //참여일
 
-//    public SurveyResultVO() {}
-//
-//    public SurveyResultVO(SurveyResultVO resultCopy) {
-//        this.surveyResultIndex = resultCopy.surveyResultIndex;
-//        this.surveyItemIndex = resultCopy.surveyItemIndex;
-//        this.userIndex = resultCopy.userIndex;
-//        this.surveyResultReg = resultCopy.surveyResultReg;
-//    }
+    public SurveyResultVO() {}
+
+    public SurveyResultVO(SurveyResultVO resultCopy) {
+        this.survey_result_index = resultCopy.survey_result_index;
+        this.survey_item_index = resultCopy.survey_item_index;
+        this.user_index = resultCopy.user_index;
+        this.survey_result_reg = resultCopy.survey_result_reg;
+    }
 
     @Override
     public String toString() {
-        return "SurveyResultVO [surveyResultIndex=" + surveyResultIndex + ", surveyItemIndex=" + surveyItemIndex
-                + ", userIndex=" + userIndex + ", surveyResultReg=" + surveyResultReg + "]";
+        return "SurveyResultVO [survey_result_index=" + survey_result_index + ", survey_item_index=" + survey_item_index
+                + ", user_index=" + user_index + ", survey_result_reg=" + survey_result_reg + "]";
     }
 
 }
