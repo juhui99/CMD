@@ -162,8 +162,7 @@
         $("#withdrawal").click(function (){
             var id = $("#userID").val();
             if(confirm("정말로 회원탈퇴를 하시겠습니까?")){
-                alert("회원탈퇴를 수행합니다.");
-                location.href="/userWithdrawal?id=" + id;
+                location.href = "/withdrawalCheck";
             } else {
                 alert("회원탈퇴를 취소합니다.");
             }

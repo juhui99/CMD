@@ -148,6 +148,28 @@
             alert("비밀번호가 일치하지 않습니다.");
             return false;
         }
+        var pwd = $("#user_pwd").val();
+        var pwd_pattern = /[`~!@#$%^&*()_+|<>?{}]/;
+        var pwd_pattern2 = /[a-zA-Z]/;
+        var pwd_pattern3 = /[0-9]/;
+        if(!pwd_pattern.test(pwd) || !pwd_pattern2.test(pwd) || !pwd_pattern3.test(pwd) || pwd.length < 8){
+            alert("비밀번호는 문자, 숫자, 특수문자를 포함하여 8자리 이상으로 구성해야 합니다.");
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    function passwordCheckFunction(){
+        var pwd = $("#user_pwd").val();
+        var pwd_pattern = /[`~!@#$%^&*()_+|<>?{}]/;
+        var pwd_pattern2 = /[a-zA-Z]/;
+        var pwd_pattern3 = /[0-9]/;
+        if(!pwd_pattern.test(pwd) || !pwd_pattern2.test(pwd) || !pwd_pattern3.test(pwd) || pwd.length < 8){
+            $("#pwdCheckMessage").html('<span style="color: red; font-size: 4px;">비밀번호는 문자, 숫자, 특수문자를 포함하여 8자리 이상으로 구성해야 합니다.</span>');
+        } else{
+            $("#pwdCheckMessage").html('<span style="color: green; font-size: 4px;">사용가능한 비밀번호입니다.</span>');
+        }
     }
 
     function idCheck() {
@@ -219,8 +241,7 @@
         $("#withdrawal").click(function () {
             var id = $("#userID").val();
             if (confirm("정말로 회원탈퇴를 하시겠습니까?")) {
-                alert("회원탈퇴를 수행합니다.");
-                location.href = "/userWithdrawal?id=" + id;
+                location.href = "/withdrawalCheck";
             } else {
                 alert("회원탈퇴를 취소합니다.");
             }
@@ -398,7 +419,8 @@
                 <button type="button" class="idChk" id="idChk" onclick="idCheck();" value="N">중복확인</button>
                 <br>
                 <label for="user_pwd">*비밀번호</label>
-                <input type="password" id="user_pwd" name="user_pwd" placeholder="비밀번호"><br>
+                <input type="password" id="user_pwd" name="user_pwd" placeholder="비밀번호" onkeyup="passwordCheckFunction()">
+                <div id="pwdCheckMessage"></div>
                 <label for="pwd_check">*비밀번호 확인</label>
                 <input type="password" id="pwd_check" name="pwd_check" placeholder="비밀번호 확인"><br>
                 <label for="user_name">*이름</label>
@@ -413,7 +435,6 @@
                     <option value="DBA">DBA</option>
                     <option value="AI">AI</option>
                     <option value="WhiteHat">White-Hat</option>
-                    >
                 </select>
                 <label for="user_email">*이메일</label>
                 <input type="email" id="user_email" name="user_email" placeholder="이메일"><br>

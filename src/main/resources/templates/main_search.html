@@ -79,6 +79,15 @@
                 $(".frontend_board").css("display","none");
 
             });
+
+            $("#withdrawal").click(function (){
+                var id = $("#userID").val();
+                if(confirm("정말로 회원탈퇴를 하시겠습니까?")){
+                    location.href = "/withdrawalCheck";
+                } else {
+                    alert("회원탈퇴를 취소합니다.");
+                }
+            });
         });
 
         function submitAction(){
@@ -272,8 +281,8 @@
                     </a>
                     <div class="dropdown-menu">
                         <a style="margin-left: 10px;" th:if="${session.id != null}" href="/userUpdateCheck">회원정보 수정</a></br>
-                        <a style="margin-left: 10px;" th:if="${session.id != null}" href="/profile">프로필 수정</a></br>
-                        <a style="margin-left: 10px;" th:if="${session.id != null}" href="/logoutAction">로그아웃</a>
+                        <a style="margin-left: 10px;" th:if="${session.id != null}" href="/logoutAction">로그아웃</a><br>
+                        <a style="margin-left: 10px;" th:if="${session.id != null}" href="#" id="withdrawal">회원탈퇴</a>
                     </div>
                 </li>
             </ul>

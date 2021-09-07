@@ -245,9 +245,6 @@ public class UserController {
     }
 
 
-    @GetMapping("/profile")
-    public String getProfile(){ return "profile";}
-
     @PostMapping("/profile")
     public String WriteAction(WriteForm form, RedirectAttributes redirect, HttpSession session, Model model, @RequestPart MultipartFile files) throws Exception{
         String userID = (String) session.getAttribute("id");
