@@ -1,367 +1,13 @@
 <!doctype html>
-<html lang="ko">
-<<<<<<< HEAD
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://thymeleaf.org">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="/css/style.css">
-  <link rel="stylesheet" href="/css/loadmap.css">
-  <link rel="stylesheet" href="/css/bootstrap.css">
-  <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
-  <script src="https://kit.fontawesome.com/717793cb2b.js" crossorigin="anonymous"></script>
-  <title>CMD</title>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@500&display=swap" rel="stylesheet">
-  <script type="text/javascript">
+      xmlns:th="http://thymeleaf.org" lang="ko">
 
-      function totalUnreadChat(){
-          $.ajax({
-              type : "POST",
-              url : "/getTotalUnreadChat",
-              dataType: "json",
-              data : {
-                  id : $("#userID").val()
-              },
-              success: function(result) {
-                  if(result >= 1) {
-                      $('#totalUnread').html(result);
-                  } else {
-                      $('#totalUnread').html('');
-                  }
-              }
-          });
-      }
-
-      function getInfiniteTotalUnread() {
-          setInterval(function() {
-              totalUnreadChat();
-          }, 4000);
-      }
-
-      $(document).ready(function () {
-          totalUnreadChat();
-          getInfiniteTotalUnread();
-
-          $(".board").css("display","none");
-
-          $(".frontend").hover(function () {
-              $(".frontend_board").css("display","block");
-              $(".backend_board").css("display","none");
-              $(".DBA_board").css("display","none");
-              $(".AI_board").css("display","none");
-              $(".WH_board").css("display","none");
-
-          });
-          $(".backend").hover(function () {
-              $(".backend_board").css("display","block");
-              $(".frontend_board").css("display","none");
-              $(".DBA_board").css("display","none");
-              $(".AI_board").css("display","none");
-              $(".WH_board").css("display","none");
-          });
-          $(".DBA").hover(function () {
-              $(".DBA_board").css("display","block");
-              $(".backend_board").css("display","none");
-              $(".frontend_board").css("display","none");
-              $(".AI_board").css("display","none");
-              $(".WH_board").css("display","none");
-          });
-          $(".AI").hover(function () {
-              $(".AI_board").css("display","block");
-              $(".DBA_board").css("display","none");
-              $(".backend_board").css("display","none");
-              $(".frontend_board").css("display","none");
-              $(".WH_board").css("display","none");
-          });
-          $(".WH").hover(function () {
-              $(".WH_board").css("display","block");
-              $(".AI_board").css("display","none");
-              $(".DBA_board").css("display","none");
-              $(".backend_board").css("display","none");
-              $(".frontend_board").css("display","none");
-
-          });
-          $("#withdrawal").click(function (){
-              var id = $("#userID").val();
-              if(confirm("정말로 회원탈퇴를 하시겠습니까?")){
-                  alert("회원탈퇴를 수행합니다.");
-                  location.href="/userWithdrawal?id=" + id;
-              } else {
-                  alert("회원탈퇴를 취소합니다.");
-              }
-          });
-    });
-  </script>
-
-  <style>
-    /* Make the image fully responsive */
-
-    .frontend_board {
-      display: none;
-    }
-
-
-    .carousel {
-      margin: 4% auto;
-      width: 94%;
-    }
-
-    .carousel-inner img {
-      width: 100%;
-      height: auto;
-      border-radius: 25px;
-    }
-
-    .carousel-inner {
-      border-radius: 25px;
-
-    }
-
-    .carousel-caption {
-      font-size: 25px;
-    }
-
-    .btn-success {
-      color: #fff;
-      background-color: #003366d2;
-      border-color: #003366d2;
-    }
-
-    .btn-success:hover {
-      color: #fff;
-      background-color: #003366d2;
-      border-color: #003366d2;
-    }
-
-    .btn-success:focus, .btn-success.focus {
-      color: #fff;
-      background-color: #003366d2;
-      border-color: #003366d2;
-      box-shadow: 0 0 0 0.2rem #003366d2;
-    }
-
-    .btn-success.disabled, .btn-success:disabled {
-      color: #fff;
-      background-color: #003366d2;
-      border-color: #003366d2;
-    }
-
-    .btn-success:not(:disabled):not(.disabled):active, .btn-success:not(:disabled):not(.disabled).active,
-    .show > .btn-success.dropdown-toggle {
-      color: #fff;
-      background-color: #003366d2;
-      border-color: #003366d2;
-    }
-
-    .img-circle {
-      border-radius: 50%;
-      border: 1px solid #003366d2;
-    }
-
-    .btn-success:not(:disabled):not(.disabled):active:focus, .btn-success:not(:disabled):not(.disabled).active:focus,
-    .show > .btn-success.dropdown-toggle:focus {
-      box-shadow: 0 0 0 0.2rem #003366d2;
-    }
-
-  </style>
-</head>
-<body>
-<div class="container">
-  <div class="header-box">
-    <div class="logo"><a href="/main"><img src="/img/CMD-logo.png" alt="logo" height="100%"></a></div>
-    <div class="search">
-      <nav class="navbar navbar-expand-sm  navbar-dark">
-        <form class="form-inline" action="/main_search" method="post">
-          <input class="form-control mr-sm-2" name="keyword" type="text" placeholder="Search">
-          <button class="btn btn-success" type="submit">Search</button>
-        </form>
-      </nav>
-    </div>
-    <div class="keyword">실시간 검색</div>
-  </div>
-
-  <div class="menu-navbar">
-    <nav class="navbar navbar-expand-sm ">
-      <!-- Links -->
-      <ul class="navbar-nav">
-        <li class="nav-item">
-          <a class="nav-link" href="/main">메인</a>
-        </li>
-        <!-- Dropdown -->
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="/cmd_community">
-            커뮤니티
-          </a>
-          <div class="dropdown-menu">
-            <a class="dropdown-item frontend" href="/cmdDetail?realm=Frontend">Frontend</a>
-            <a class="dropdown-item frontend_board board" style="color: #003366d2; font-size: 13px;"
-               href="/totalHotTopic?kind=HOT게시판&realm=Frontend">HOT게시판</a>
-            <a class="dropdown-item frontend_board board" style="color: #003366d2; font-size: 13px;"
-               href="/board?kind=정보팁게시판&realm=Frontend">정보&팁게시판</a>
-            <a class="dropdown-item frontend_board board" style="color: #003366d2; font-size: 13px;"
-               href="/board?kind=자유게시판&realm=Frontend">자유게시판</a>
-            <a class="dropdown-item frontend_board board" style="color: #003366d2; font-size: 13px;"
-               href="/board?kind=질문게시판&realm=Frontend">질문게시판</a>
-            <a class="dropdown-item frontend_board board" style="color: #003366d2; font-size: 13px;"
-               href="/board?kind=협업게시판&realm=Frontend">협업게시판</a>
-            <a class="dropdown-item frontend_board board" style="color: #003366d2; font-size: 13px;"
-               href="/board?kind=로드맵공유게시판&realm=Frontend">로드맵공유게시판</a>
-            <a class="dropdown-item backend" href="/cmdDetail?realm=Backend">Backend</a>
-            <a class="dropdown-item backend_board board" style="color: #003366d2; font-size: 13px;"
-               href="/totalHotTopic?kind=HOT게시판&realm=Backend">HOT게시판</a>
-            <a class="dropdown-item backend_board board" style="color: #003366d2; font-size: 13px;"
-               href="/board?kind=정보팁게시판&realm=Backend">정보&팁게시판</a>
-            <a class="dropdown-item backend_board board" style="color: #003366d2; font-size: 13px;"
-               href="/board?kind=자유게시판&realm=Backend">자유게시판</a>
-            <a class="dropdown-item backend_board board" style="color: #003366d2; font-size: 13px;"
-               href="/board?kind=질문게시판&realm=Backend">질문게시판</a>
-            <a class="dropdown-item backend_board board" style="color: #003366d2; font-size: 13px;"
-               href="/board?kind=협업게시판&realm=Backend">협업게시판</a>
-            <a class="dropdown-item backend_board board" style="color: #003366d2; font-size: 13px;"
-               href="/board?kind=로드맵공유게시판&realm=Backend">로드맵공유게시판</a>
-            <a class="dropdown-item DBA" href="/cmdDetail?realm=DBA">DBA</a>
-            <a class="dropdown-item DBA_board board" style="color: #003366d2; font-size: 13px;"
-               href="/totalHotTopic?kind=HOT게시판&realm=DBA">HOT게시판</a>
-            <a class="dropdown-item DBA_board board" style="color: #003366d2; font-size: 13px;"
-               href="/board?kind=정보팁게시판&realm=DBA">정보&팁게시판</a>
-            <a class="dropdown-item DBA_board board" style="color: #003366d2; font-size: 13px;"
-               href="/board?kind=자유게시판&realm=DBA">자유게시판</a>
-            <a class="dropdown-item DBA_board board" style="color: #003366d2; font-size: 13px;"
-               href="/board?kind=질문게시판&realm=DBA">질문게시판</a>
-            <a class="dropdown-item DBA_board board" style="color: #003366d2; font-size: 13px;"
-               href="/board?kind=협업게시판&realm=DBA">협업게시판</a>
-            <a class="dropdown-item DBA_board board" style="color: #003366d2; font-size: 13px;"
-               href="/board?kind=로드맵공유게시판&realm=DBA">로드맵공유게시판</a>
-            <a class="dropdown-item AI" href="/cmdDetail?realm=AI">A.I</a>
-            <a class="dropdown-item AI_board board" style="color: #003366d2; font-size: 13px;"
-               href="/totalHotTopic?kind=HOT게시판&realm=AI">HOT게시판</a>
-            <a class="dropdown-item AI_board board" style="color: #003366d2; font-size: 13px;"
-               href="/board?kind=정보팁게시판&realm=AI">정보&팁게시판</a>
-            <a class="dropdown-item AI_board board" style="color: #003366d2; font-size: 13px;"
-               href="/board?kind=자유게시판&realm=AI">자유게시판</a>
-            <a class="dropdown-item AI_board board" style="color: #003366d2; font-size: 13px;"
-               href="/board?kind=질문게시판&realm=AI">질문게시판</a>
-            <a class="dropdown-item AI_board board" style="color: #003366d2; font-size: 13px;"
-               href="/board?kind=협업게시판&realm=AI">협업게시판</a>
-            <a class="dropdown-item AI_board board" style="color: #003366d2; font-size: 13px;"
-               href="/board?kind=로드맵공유게시판&realm=AI">로드맵공유게시판</a>
-            <a class="dropdown-item WH" href="/cmdDetail?realm=WhiteHat">White-Hat</a>
-            <a class="dropdown-item WH_board board" style="color: #003366d2; font-size: 13px;"
-               href="/totalHotTopic?kind=HOT게시판&realm=WhiteHat">HOT게시판</a>
-            <a class="dropdown-item WH_board board" style="color: #003366d2; font-size: 13px;"
-               href="/board?kind=정보팁게시판&realm=WhiteHat">정보&팁게시판</a>
-            <a class="dropdown-item WH_board board" style="color: #003366d2; font-size: 13px;"
-               href="/board?kind=자유게시판&realm=WhiteHat">자유게시판</a>
-            <a class="dropdown-item WH_board board" style="color: #003366d2; font-size: 13px;"
-               href="/board?kind=질문게시판&realm=WhiteHat">질문게시판</a>
-            <a class="dropdown-item WH_board board" style="color: #003366d2; font-size: 13px;"
-               href="/board?kind=협업게시판&realm=WhiteHat">협업게시판</a>
-            <a class="dropdown-item WH_board board" style="color: #003366d2; font-size: 13px;"
-               href="/board?kind=로드맵공유게시판&realm=WhiteHat">로드맵공유게시판</a>
-
-          </div>
-        </li>
-
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navbardrop1" data-toggle="dropdown">
-            채팅
-          </a>
-          <div class="dropdown-menu">
-            <a class="dropdown-item" href="/friendsFind">친구 찾기</a>
-            <a class="dropdown-item" href="/friendsList">친구 목록</a>
-            <a class="dropdown-item" href="/chatBox">채팅 목록</a>
-          </div>
-        </li>
-
-        <li class="nav-item">
-          <a class="nav-link" href="/cmd_roadmap">로드맵</a>
-        </li>
-
-
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navbardrop2" data-toggle="dropdown">
-            D-MBTI
-          </a>
-          <div class="dropdown-menu">
-            <a class="dropdown-item" href="#">D-MBTI 하기</a>
-            <a class="dropdown-item" href="#">D-MBTI 통계</a>
-          </div>
-        </li>
-
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navbardrop3" data-toggle="dropdown">
-            설문조사
-          </a>
-          <div class="dropdown-menu">
-            <a class="dropdown-item" href="#">설문조사 하기</a>
-            <a class="dropdown-item" href="#">설문조사 통계</a>
-          </div>
-        </li>
-      </ul>
-      <ul class="login-box">
-        <li class="nav-item">
-
-          <a th:if="${session.id == null}" href="/login"><i class="far fa-user"></i> 로그인</a></li>
-        <a style="margin-left: 10px;" th:if="${session.id == null}" href="/join">회원가입</a>
-
-        <li class="nav-item dropdown" th:if="${session.id != null}">
-          <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
-            <img th:if="${!filename.equals('non') and session.id != null}" class="img-circle"
-                 style="width: 35px; height: 35px; border-color:  #003366d2;"
-                 th:src="@{/display?(filename=${filename})}"/>
-            <img th:if="${filename.equals('non') and session.id != null}" class="img-circle"
-                 style="width: 35px; height: 35px; border-color:  #003366d2;"
-                 src="/display?filename=default.png"/>
-            <span th:if="${session.id != null}" th:text="|${session.id}님|" style="margin-left: 3px;"></span>
-          </a>
-          <div class="dropdown-menu">
-            <a class="dropdown-item" th:if="${session.id != null}" href="/userUpdateCheck">회원정보 수정</a>
-            <a class="dropdown-item" th:if="${session.id != null}" href="/logoutAction">로그아웃</a>
-            <a style="margin-left: 10px;" th:if="${session.id != null}" href="#" id="withdrawal">회원탈퇴</a>
-          </div>
-        </li>
-      </ul>
-
-    </nav>
-  </div>
-
-  <div class="roadmap">
-    <div class="roadmap-tabs">
-      <input id="basic" type="radio" name="tab_item" checked>
-      <label class="tab_item" for="basic">Basic</label>
-      <input id="frontend" type="radio" name="tab_item">
-      <label class="tab_item" for="frontend">Frontend</label>
-      <input id="backend" type="radio" name="tab_item">
-      <label class="tab_item" for="backend">Backend</label>
-      <input id="dba" type="radio" name="tab_item">
-      <label class="tab_item" for="dba">DBA</label>
-      <input id="ai" type="radio" name="tab_item">
-      <label class="tab_item" for="ai">A.I</label>
-      <input id="whitehat" type="radio" name="tab_item">
-      <label class="tab_item" for="whitehat">White-hat</label>
-
-      <div class="tab_content" id="basic_content" style="width: 100%; height: 500px; overflow-y: scroll;">
-        <div class="main-timeline">
-
-          <!-- start experience section-->
-          <div class="timeline">
-            <div class="icon"></div>
-            <div class="step-content">
-              <div class="step-outer">
-=======
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="/css/style.css">
-    <link rel="stylesheet" href="/css/loadmap.css">
-    <link rel="stylesheet" href="/css/bootstrap.css">
+    <link rel="stylesheet" href="/libs/css/style.css">
+    <link rel="stylesheet" href="/libs/css/roadmap.css">
+    <link rel="stylesheet" href="/libs/css/bootstrap.css">
     <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
     <script src="https://kit.fontawesome.com/717793cb2b.js" crossorigin="anonymous"></script>
     <title>CMD</title>
@@ -373,9 +19,35 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@500&display=swap" rel="stylesheet">
     <script type="text/javascript">
-        $(document).ready(function () {
-            $(".board").css("display", "none");
+        function totalUnreadChat() {
+            $.ajax({
+                type: "POST",
+                url: "/getTotalUnreadChat",
+                dataType: "json",
+                data: {
+                    id: $("#userID").val()
+                },
+                success: function (result) {
+                    if (result >= 1) {
+                        $('#totalUnread').html(result);
+                    } else {
+                        $('#totalUnread').html('');
+                    }
+                }
+            });
+        }
 
+        function getInfiniteTotalUnread() {
+            setInterval(function () {
+                totalUnreadChat();
+            }, 4000);
+        }
+
+        $(document).ready(function () {
+            totalUnreadChat();
+            getInfiniteTotalUnread();
+
+            $(".board").css("display", "none");
 
             $(".frontend").hover(function () {
                 $(".frontend_board").css("display", "block");
@@ -413,6 +85,15 @@
                 $(".backend_board").css("display", "none");
                 $(".frontend_board").css("display", "none");
 
+            });
+            $("#withdrawal").click(function () {
+                var id = $("#userID").val();
+                if (confirm("정말로 회원탈퇴를 하시겠습니까?")) {
+                    alert("회원탈퇴를 수행합니다.");
+                    location.href = "/userWithdrawal?id=" + id;
+                } else {
+                    alert("회원탈퇴를 취소합니다.");
+                }
             });
         });
     </script>
@@ -589,7 +270,6 @@
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbardrop1" data-toggle="dropdown">
                         채팅
-                        <span id="totalUnread" class="badge badge-info"></span>
                     </a>
                     <div class="dropdown-menu">
                         <a class="dropdown-item" href="/friendsFind">친구 찾기</a>
@@ -599,7 +279,7 @@
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link" href="cmd_roadmap.html">로드맵</a>
+                    <a class="nav-link" href="/cmd_roadmap">로드맵</a>
                 </li>
 
 
@@ -625,9 +305,10 @@
             </ul>
             <ul class="login-box">
                 <li class="nav-item">
+                    <a th:if="${session.id == null}" href="/login"><i class="far fa-user"></i> 로그인</a>
+                    <a style="margin-left: 10px;" th:if="${session.id == null}" href="/join">회원가입</a>
+                </li>
 
-                    <a th:if="${session.id == null}" href="/login"><i class="far fa-user"></i> 로그인</a></li>
-                <a style="margin-left: 10px;" th:if="${session.id == null}" href="/join">회원가입</a>
 
                 <li class="nav-item dropdown" th:if="${session.id != null}">
                     <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
@@ -640,14 +321,16 @@
                         <span th:if="${session.id != null}" th:text="|${session.id}님|" style="margin-left: 3px;"></span>
                     </a>
                     <div class="dropdown-menu">
-                        <a class="dropdown-item" th:if="${session.id != null}" href="/userUpdateCheck">회원정보 수정</a><br>
-                        <a class="dropdown-item" th:if="${session.id != null}" href="/logoutAction">로그아웃</a><br>
+                        <a class="dropdown-item" th:if="${session.id != null}" href="/userUpdateCheck">회원정보 수정</a>
+                        <a class="dropdown-item" th:if="${session.id != null}" href="/logoutAction">로그아웃</a>
+                        <a style="margin-left: 10px;" th:if="${session.id != null}" href="#" id="withdrawal">회원탈퇴</a>
                     </div>
                 </li>
             </ul>
 
         </nav>
     </div>
+
 
     <div class="roadmap">
         <div class="roadmap-tabs">
@@ -672,39 +355,22 @@
                         <div class="icon"></div>
                         <div class="step-content">
                             <div class="step-outer">
->>>>>>> origin/master
                                     <span class="step">
                                             <span class="order">1 Step</span>
                                     <span class="subject">컴퓨터</span>
                                     </span>
-<<<<<<< HEAD
-              </div>
-            </div>
-            <div class="timeline-content">
-              <h5 class="title">컴퓨터 구조 &amp; 운영체제</h5>
-              <p class="description">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed efficitur ex sit amet massa
-                scelerisque scelerisque. Aliquam erat volutpat. Aenean interdum finibus efficitur.
-                Praesent dapibus dolor felis, eu ultrices elit molestie.
-              </p>
-            </div>
-          </div>
-          <!-- end experience section-->
-
-          <!-- start experience section-->
-          <div class="timeline">
-            <div class="icon"></div>
-            <div class="step-content">
-              <div class="step-outer">
-=======
                             </div>
                         </div>
                         <div class="timeline-content">
-                            <h5 class="title">컴퓨터 구조 &amp; 운영체제</h5>
-                            <p class="description">
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed efficitur ex sit amet massa
-                                scelerisque scelerisque. Aliquam erat volutpat. Aenean interdum finibus efficitur.
-                                Praesent dapibus dolor felis, eu ultrices elit molestie.
+                            <h5 class="title">컴퓨터 구조</h5>
+                            <p class="description" style="overflow-y: scroll; height: 250px">
+                                컴퓨터 구조론은 글자 그대로 컴퓨터의 기본적인 하드웨어의 작동 원리와 구성에 대한 내용을 다루는 분야. 부울 대수(Boolean Algebra)와 논리 표현을
+                                익히고, 이를 하드웨어로 어떻게 구현하는지 공부하고 집적회로(IC)의 동작원리를 배운다.
+                                CPU, 메모리, 입출력의 구성이나 주변 장치와의 통신방법 등도 포함된다. 소프트웨어를 하는 사람의 입장에서 컴퓨터 구조론은 '어셈블리어'를 익히고,
+                                동작원리를 아는 데 의의가 있다.
+                                컴퓨터 구조론은 컴퓨터를 만드는 데 필요한 내용을 공부하는 것이지만, 컴퓨터 구조론을 공부하는 것과 컴퓨터를 만드는 일에는 아주 큰 격차가 있다는 사실을
+                                알아야 한다.
+                                만일, 여러분이 컴퓨터를 만들고 싶다면 납땜질을 배우거나 원칩 마이크로 컴퓨터를 공부하는 것이 훨씬 빠를 것이다.
                             </p>
                         </div>
                     </div>
@@ -715,315 +381,131 @@
                         <div class="icon"></div>
                         <div class="step-content">
                             <div class="step-outer">
->>>>>>> origin/master
                                     <span class="step">
                                             <span class="order">2 Step</span>
+                                    <span class="subject">운영체제</span>
+                                    </span>
+                            </div>
+                        </div>
+                        <div class="timeline-content">
+                            <h5 class="title">운영체제</h5>
+                            <p class="description" style="overflow-y: scroll; height: 250px">
+                                컴퓨터와 운영체제의 구조, 가상 기억 장치, 멀티 태스킹, 프로세스 스케쥴링 등의 기본 개념 및 이들과 관련된 이슈를 공부한다.
+                                대부분의 강좌에서 유닉스 운영체제의 구조와 작동원리를 실사례로 많이 사용한다. 유닉스는 C로 소스가 쓰여 있어 구체적으로 설명하기에 좋기 때문이다.
+                                운영체제는 프로그램이 운영되는 환경을 제공하기 때문에 운영체제론은 소프트웨어를 개발하는 사람들에게 중요한 내용을 많이 담고 있다.
+                                물론 메모리 관리, CPU 스케쥴링 알고리즘, 주변장치 관리 등에 대한 학습이 실제 코딩에 직접 사용되지 않더라도, 조금 규모가 있는 소프트웨어를 제작하는
+                                경우 운영체제가 갖고 있는 여러 가지 정책에 대한 구현은 여러분이 소프트웨어 아키텍처를 설계하는 데 적지 않은 도움을 준다.
+                                특히 '무슨 무슨 서버'라는 이름이 붙는 소프트웨어를 만든다면, 운영체제 전반에 대한 이해는 아주 필수적이다.
+                            </p>
+                        </div>
+                    </div>
+                    <!-- end experience section-->
+
+                    <div class="timeline">
+                        <div class="icon"></div>
+                        <div class="step-content">
+                            <div class="step-outer">
+                                    <span class="step">
+                                            <span class="order">3 Step</span>
                                     <span class="subject">언어</span>
                                     </span>
-<<<<<<< HEAD
-              </div>
-            </div>
-            <div class="timeline-content">
-              <h5 class="title">프로그래밍 언어</h5>
-              <p class="description">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed efficitur ex sit amet massa
-                scelerisque scelerisque. Aliquam erat volutpat. Aenean interdum finibus efficitur.
-                Praesent dapibus dolor felis, eu ultrices elit molestie.
-              </p>
-            </div>
-          </div>
-          <!-- end experience section-->
-
-          <!-- start experience section-->
-          <div class="timeline">
-            <div class="icon"></div>
-            <div class="step-content">
-              <div class="step-outer">
-=======
                             </div>
                         </div>
                         <div class="timeline-content">
                             <h5 class="title">프로그래밍 언어</h5>
-                            <p class="description">
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed efficitur ex sit amet massa
-                                scelerisque scelerisque. Aliquam erat volutpat. Aenean interdum finibus efficitur.
-                                Praesent dapibus dolor felis, eu ultrices elit molestie.
+                            <p class="description" style="overflow-y: scroll; height: 250px">
+                                개발자는 컴퓨터와 의사소통이 절대적으로 필요하기 때문에 그 수단이 되는 프로그래밍언어(: 컴퓨터와 사람이 대화가 가능하게 해주는 언어이다.)를
+                                처음에 하나쯤은 배워두는게 좋다. 프로그래밍 언어는 여러가지가 있는데
+                                과거의 언어, 예를 들면 C언어 같은 언어는 컴퓨터가 더 이해하기 쉬운 컴퓨터에 가까운 언어와
+                                요즘 언어 사람이 이해가히 쉬운 언어 자바, 파이선 자바스크립트등 이 외에도 여러가지 언어가 있다.
+                                겁먹지말고 하나만 배워보자. 또 요즘에는 코딩을 쉽게할 수 있도록 도와주는 프레임워크가 굉장히 많이 발전되었고,
+                                원하는 것을 기초적인 프로그래밍 지식만 있다면 단지 호출만 하면 되는 API들도 굉장히 많아졌다.
+                                또 오픈소스들도 굉장히 많아졌고. 복사-붙여넣기하고 살짝만 커스터마이징 해주면 자신만의 코드가 완성되는 시대가 왔다.
+                                여러분의 애플리케이션에서 파서가 필요하고 이를 직접 구현해야 한다면 컴파일러 이론이 필요하겠지만, 흔하지 않은 일이다.
+                                그래서 기본적으로 시작하기전에 어떤 프로그래밍언어든 좋으니 하나를 선택해서 배워보자.
                             </p>
                         </div>
                     </div>
-                    <!-- end experience section-->
 
                     <!-- start experience section-->
                     <div class="timeline">
                         <div class="icon"></div>
                         <div class="step-content">
                             <div class="step-outer">
->>>>>>> origin/master
-                                    <span class="step">
-                                            <span class="order">3 Step</span>
-                                    <span class="subject">데이터</span>
-                                    </span>
-<<<<<<< HEAD
-              </div>
-            </div>
-            <div class="timeline-content">
-              <h5 class="title">데이터베이스</h5>
-              <p class="description">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed efficitur ex sit amet massa
-                scelerisque scelerisque. Aliquam erat volutpat. Aenean interdum finibus efficitur.
-                Praesent dapibus dolor felis, eu ultrices elit molestie.
-              </p>
-            </div>
-          </div>
-          <!-- end experience section-->
-
-          <!-- start experience section-->
-          <div class="timeline">
-            <div class="icon"></div>
-            <div class="step-content">
-              <div class="step-outer">
-=======
-                            </div>
-                        </div>
-                        <div class="timeline-content">
-                            <h5 class="title">데이터베이스</h5>
-                            <p class="description">
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed efficitur ex sit amet massa
-                                scelerisque scelerisque. Aliquam erat volutpat. Aenean interdum finibus efficitur.
-                                Praesent dapibus dolor felis, eu ultrices elit molestie.
-                            </p>
-                        </div>
-                    </div>
-                    <!-- end experience section-->
-
-                    <!-- start experience section-->
-                    <div class="timeline">
-                        <div class="icon"></div>
-                        <div class="step-content">
-                            <div class="step-outer">
->>>>>>> origin/master
                                     <span class="step">
                                             <span class="order">4 Step</span>
                                     <span class="subject">문제해결</span>
                                     </span>
-<<<<<<< HEAD
-              </div>
-            </div>
-            <div class="timeline-content">
-              <h5 class="title">자료구조 &amp; 알고리즘</h5>
-              <p class="description">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed efficitur ex sit amet massa
-                scelerisque scelerisque. Aliquam erat volutpat. Aenean interdum finibus efficitur.
-                Praesent dapibus dolor felis, eu ultrices elit molestie.
-              </p>
-            </div>
-          </div>
-          <!-- end experience section-->
-          <div class="timeline">
-            <div class="icon"></div>
-            <div class="step-content">
-              <div class="step-outer">
-=======
                             </div>
                         </div>
                         <div class="timeline-content">
-                            <h5 class="title">자료구조 &amp; 알고리즘</h5>
-                            <p class="description">
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed efficitur ex sit amet massa
-                                scelerisque scelerisque. Aliquam erat volutpat. Aenean interdum finibus efficitur.
-                                Praesent dapibus dolor felis, eu ultrices elit molestie.
+                            <h5 class="title">자료구조 & 알고리즘</h5>
+                            <p class="description" style="overflow-y: scroll; height: 250px">
+                                컴퓨터 프로그램 설계에 널리 사용되는 자료구조와 알고리즘, 알고리즘에 대한 복잡도를 분석하는 방법 등을 제공하며 각종 검색, 정렬 프로그래밍을 통해 실제로
+                                구현해 보고 복잡도를 분석한다.
+                                일반적인 애플리케이션에서 자료구조를 직접 설계하고 구현할 필요성은 점차 줄어들고 있다.
+                                자료구조의 많은 내용이 클래스 라이브러리로 구축돼 이를 잘 활용하거나 데이터베이스에 자료를 저장하는 것이 일반화적인 현상으로 자리잡았기 때문이다.
+                                비정형화된 자료는 복잡한 자료구조를 쓰는 것보다 XML로 저장하거나 전송하는 것이 상당히 보편화됐다.
+                                예를 들어 C++ 프로그래머가 직접 자료구조를 만들지 않아도 되도록 CArray, CList, CMap 같은 세 개의 클래스는 각각 가변 길이 배열, 양방향
+                                리스트, 해시를 구현하고 있다.
+                                이 정도면 웬만한 비즈니스 애플리케이션을 작성하기에 충분하다.
+                                마찬가지로 자바도 이런 기능을 가진 벡터나 해시 테이블 등을 클래스 라이브러리로 제공하고 있다.
+                                더 고급 기능이 필요하면 직접 작성하는 것보다는 표준화한 자료구조와 알고리즘을 제공하는 C++의 STL을 이용해도 된다.
+                                하지만, 자료구조나 알고리즘에 대한 이해 없이 이런 내용을 사용하는 것은 불가능하다.
+                                자료구조는 적어도 양방향 리스트를 자신이 사용하는 언어로 직접 구현하는 수준까지 해봐야 한다.
+                                대부분 프로그래머가 메모리 기반의 정렬/탐색 알고리즘은 기본으로 공부하지만, 실제는 파일 기반의 탐색과 정렬이 오히려 더 중요할 수 있다.
+                                따라서 정렬의 경우 파일 기반의 병합 정렬 정도까지 마스터하는 것이 좋다.
                             </p>
                         </div>
                     </div>
+                    <!-- end experience section-->
+
+                    <!-- start experience section-->
+                    <div class="timeline">
+                        <div class="icon"></div>
+                        <div class="step-content">
+                            <div class="step-outer">
+                                    <span class="step">
+                                            <span class="order">5 Step</span>
+                                    <span class="subject">데이터</span>
+                                    </span>
+                            </div>
+                        </div>
+                        <div class="timeline-content">
+                            <h5 class="title">데이터베이스</h5>
+                            <p class="description" style="overflow-y: scroll; height: 250px">
+                                관계형 데이터베이스 구조와 동작 등에 대한 이슈를 공부하며, 정규화 방법과 데이터베이스 설계, 튜닝 등에 필요한 여러 가지 이론을 공부한다.
+                                대부분의 애플리케이션에서 데이터베이스 사용은 필수적인 사항으로 SQL, ERD 작성, 정규화, 설계, 구축, 데이터베이스 애플리케이션 작성 등은 대부분의
+                                개발자에게 요구되는 기술이 됐다.
+                                특히 SQL에 대한 이해와 사용이 가장 중요하며, 데이터베이스 설계에 대한 이해가 필수적이다.
+                        </div>
+                    </div>
+                    <!-- end experience section-->
+
+
                     <!-- end experience section-->
                     <div class="timeline">
                         <div class="icon"></div>
                         <div class="step-content">
                             <div class="step-outer">
->>>>>>> origin/master
-                                    <span class="step">
-                                            <span class="order">5 Step</span>
-                                    <span class="subject">기록</span>
-                                    </span>
-<<<<<<< HEAD
-              </div>
-            </div>
-            <div class="timeline-content">
-              <h5 class="title">버전관리</h5>
-              <p class="description">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed efficitur ex sit amet massa
-                scelerisque scelerisque. Aliquam erat volutpat. Aenean interdum finibus efficitur.
-                Praesent dapibus dolor felis, eu ultrices elit molestie.
-              </p>
-            </div>
-          </div>
-          <div class="timeline">
-            <div class="icon"></div>
-            <div class="step-content">
-              <div class="step-outer">
-=======
-                            </div>
-                        </div>
-                        <div class="timeline-content">
-                            <h5 class="title">버전관리</h5>
-                            <p class="description">
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed efficitur ex sit amet massa
-                                scelerisque scelerisque. Aliquam erat volutpat. Aenean interdum finibus efficitur.
-                                Praesent dapibus dolor felis, eu ultrices elit molestie.
-                            </p>
-                        </div>
-                    </div>
-                    <div class="timeline">
-                        <div class="icon"></div>
-                        <div class="step-content">
-                            <div class="step-outer">
->>>>>>> origin/master
                                     <span class="step">
                                             <span class="order">Wrap Up</span>
                                     <span class="subject">개발자</span>
                                     </span>
-<<<<<<< HEAD
-              </div>
-            </div>
-            <div class="timeline-content">
-              <h5 class="title">중요하지 않은 것은 하나도 없다.</h5>
-              <p class="description">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed efficitur ex sit amet massa
-                scelerisque scelerisque. Aliquam erat volutpat. Aenean interdum finibus efficitur.
-                Praesent dapibus dolor felis, eu ultrices elit molestie.
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-
-      <div class="tab_content" id="frontend_content" style="width: 100%; height: 500px; overflow-y: scroll;">
-        <h5>언어</h5>
-        <div class="linebox">
-          <ul class="line">
-            <li>d</li>
-            <li>d</li>
-            <li>d</li>
-            <li>d</li>
-            <li>d</li>
-          </ul>
-        </div>
-        <h5>프레임워크, 라이브러리</h5>
-        <div class="linebox">
-          <ul class="line">
-            <li>d</li>
-            <li>d</li>
-            <li>d</li>
-            <li>d</li>
-            <li>d</li>
-          </ul>
-        </div>
-        <h5>기초 이론</h5>
-        <div class="linebox">
-          <ul class="line">
-            <li>d</li>
-            <li>d</li>
-            <li>d</li>
-            <li>d</li>
-            <li>d</li>
-          </ul>
-        </div>
-        <h5>심화이론</h5>
-        <div class="linebox">
-          <ul class="line">
-            <li>d</li>
-            <li>d</li>
-            <li>d</li>
-            <li>d</li>
-            <li>d</li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="tab_content" id="backend_content" style="width: 100%; height: 500px; overflow-y: scroll;">
-        <h5>언어</h5>
-        <div class="linebox">
-          <ul class="line">
-            <li>d</li>
-            <li>d</li>
-            <li>d</li>
-            <li>d</li>
-            <li>d</li>
-          </ul>
-        </div>
-        <h5>프레임워크, 라이브러리</h5>
-        <div class="linebox">
-          <ul class="line">
-            <li>d</li>
-            <li>d</li>
-            <li>d</li>
-            <li>d</li>
-            <li>d</li>
-          </ul>
-        </div>
-        <h5>기초 이론</h5>
-        <div class="linebox">
-          <ul class="line">
-            <li>d</li>
-            <li>d</li>
-            <li>d</li>
-            <li>d</li>
-            <li>d</li>
-          </ul>
-        </div>
-        <h5>심화이론</h5>
-        <div class="linebox">
-          <ul class="line">
-            <li>d</li>
-            <li>d</li>
-            <li>d</li>
-            <li>d</li>
-            <li>d</li>
-          </ul>
-        </div>
-
-      </div>
-
-      <div class="tab_content" id="dba_content" style="width: 100%; height: 500px; overflow-y: scroll;">
-
-      </div>
-
-      <div class="tab_content" id="ai_content" style="width: 100%; height: 500px; overflow-y: scroll;">
-
-      </div>
-
-      <div class="tab_content" id="whitehat_content" style="width: 100%; height: 500px; overflow-y: scroll;">
-
-      </div>
-
-    </div>
-  </div>
-
-  <div class="footer-box">
-    <div class="author">
-      <p><b>Creators - </b>KimLeeEum</p>
-      <p><b>email - </b>energizun1001@gamil.com</p>
-      <p><b>Domain - </b>www.cmdev.com</p>
-    </div>
-    <div class="link">
-      <ul>
-        <li><a href="https://github.com/" target="_blank"><i class="fab fa-github"> GitHub</i></a></li>
-        <li><a href="https://stackoverflow.com/" target="_blank"><i class="fab fa-stack-overflow">
-          Stack-Overflow</i></a></li>
-      </ul>
-    </div>
-  </div>
-  <div class="eyebrow"><p>@2021 prod by 김이음</p></div>
-=======
                             </div>
                         </div>
                         <div class="timeline-content">
                             <h5 class="title">중요하지 않은 것은 하나도 없다.</h5>
-                            <p class="description">
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed efficitur ex sit amet massa
-                                scelerisque scelerisque. Aliquam erat volutpat. Aenean interdum finibus efficitur.
-                                Praesent dapibus dolor felis, eu ultrices elit molestie.
+                            <p class="description" style="overflow-y: scroll; height: 250px">
+                                실제 컴퓨터에 대한 이해가 전혀 없는 사람도 대략 4∼6개월 정도의 학습을 거치면 실전에서 애플리케이션을 개발할 정도의 능력이 배양된다. 하지만 여기서 모든
+                                것이 해결되는 것은 아니다.
+                                1년이나 2년이 지나면, '프로그램 짤 수 있다'는 정도의 내공(?)에 부족함을 느끼게 되는 것은 어쩌면 당연한 일인지도 모른다.
+                                소프트웨어 개발에 따른 다양한 이슈를 소화하고, 실제 기술의 장단점을 논의하기 위해서는 조금은 다른 지식이 필요하다.
+                                예컨대 개발된 애플리케이션의 수행 효율을 향상하기 위한 성능 튜닝, 이식, 프로그램 설치와 배포, 팀 개발을 이끌어 가는 프로젝트 관리 등의 프로그래밍 이외의
+                                이슈를 만나면,
+                                '프로그램을 짤 수 있다'만으로는 해결되지 않는 구석이 많다는 사실을 깨닫게 된다. 즉, 기본기의 중요성을 절감하게 되는 것이다. 이 위의 기본적인 5 스텝이
+                                정답이 아닐 수 있고 이 과정 말고도 더 좋은 방법이 있을 수 있다.
+                                꼭 참고하고 자신에게 맞는 방법을 선택하자. 그리고 이 외에도 개발자로서 어떠한거 하나 중요하지 않은것은 없다.
                             </p>
                         </div>
                     </div>
@@ -1133,6 +615,7 @@
         </div>
     </div>
 
+
     <div class="footer-box">
         <div class="author">
             <p><b>Creators - </b>KimLeeEum</p>
@@ -1149,7 +632,7 @@
         </div>
     </div>
     <div class="eyebrow"><p>@2021 prod by 김이음</p></div>
->>>>>>> origin/master
+    >>>>>>> origin/master
 </div>
 <!-- jQuery CDN - Slim version (=without AJAX) -->
 <script

@@ -2,21 +2,21 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://thymeleaf.org">
 <head>
-    <meta charset="UTF-8" >
+    <meta charset="UTF-8">
     <title>Title</title>
 </head>
 <body>
 
-    <script th:inline="javascript">
-        /*<![CDATA[*/
-        var message = /*[[ ${msg} ]]*/;
-        /*]]*/
-        /*<![CDATA[*/
-        var url = /*[[ ${url} ]]*/;
-        /*]]*/
-        alert(message);
-        document.location.href = url;
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    var message = /*[[ ${msg} ]]*/;
+    /*]]*/
+    /*<![CDATA[*/
+    var url = /*[[ ${url} ]]*/;
+    /*]]*/
+    alert(message);
+    document.location.href = url;
 
-    </script>
+</script>
 </body>
 </html>
