@@ -7,7 +7,6 @@ import java.util.List;
 
 //@Repository
 public interface SurveyMapper {
-
     public List<SurveyVO> selectSurveyList(SearchCriteria cri) throws Exception;
     public PageMaker selectCountPaging(SearchCriteria cri);
     public List<ResultDataSet> selectSurveyResultDataSet(int survey_index);

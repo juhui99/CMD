@@ -7,7 +7,7 @@ import java.util.List;
 
 @Service
 public interface SurveyService {
-    List<SurveyVO> getSurveyList(SearchCriteria cri) throws Exception;  // 리스트 + 검색 + 페이징
+    public List<SurveyVO> getSurveyList(SearchCriteria cri) throws Exception;  // 리스트 + 검색 + 페이징
 //    int countInfoListTotal(SearchCriteria scri) throws Exception;
     public PageMaker getPagination(SearchCriteria cri) throws Exception;
 //    List<SurveyVO> getSurveyItemList(int surveyIndex) throws Exception;

@@ -27,7 +27,7 @@ public class SurveyController {
     @Autowired
     private SurveyService surveyService;
 
-    @RequestMapping("/mainSurvey") //설문조사 메인화면
+    @RequestMapping(value = "/mainSurvey") //설문조사 메인화면
     public String main(@ModelAttribute("cri") SearchCriteria cri, Model model) throws Exception {
 
         List<SurveyVO> surveyList = surveyService.getSurveyList(cri);
@@ -172,7 +172,7 @@ public class SurveyController {
 
         List<SurveyVO> SurveyList = surveyService.getSurveyList(cri);
         model.addAttribute("surveysearch",SurveyList); //검색한 설문 리스트
-        return "searchSurvey";
+        return "mainSurvey";
     }
 
 //    @RequestMapping(value = "/mainsurvey")
