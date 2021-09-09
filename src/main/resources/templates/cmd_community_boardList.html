@@ -104,10 +104,6 @@
     </script>
 </head>
 <style>
-    h1 {
-        margin: auto 44%;
-    }
-
 
     /* Make the image fully responsive */
 
@@ -280,7 +276,7 @@
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link" href="cmd_roadmap.html">로드맵</a>
+                    <a class="nav-link" href="/cmd_roadmap">로드맵</a>
                 </li>
 
 
@@ -322,10 +318,9 @@
                         <span th:if="${session.id != null}" th:text="|${session.id}님|" style="margin-left: 3px;"></span>
                     </a>
                     <div class="dropdown-menu">
-                        <a style="margin-left: 10px;" th:if="${session.id != null}" href="/userUpdateCheck">회원정보
-                            수정</a></br>
-                        <a style="margin-left: 10px;" th:if="${session.id != null}" href="/logoutAction">로그아웃</a><br>
-                        <a style="margin-left: 10px;" th:if="${session.id != null}" href="#" id="withdrawal">회원탈퇴</a>
+                        <a class="dropdown-item" th:if="${session.id != null}" href="/userUpdateCheck">회원정보 수정</a>
+                        <a class="dropdown-item" th:if="${session.id != null}" href="/logoutAction">로그아웃</a>
+                        <a class="dropdown-item" th:if="${session.id != null}" href="#" id="withdrawal">회원탈퇴</a>
                     </div>
                 </li>
             </ul>
@@ -335,44 +330,22 @@
 
     <div th:if="${realm == 'AI'}" class="community_ai_info">
         <h1 class="text-center">A.I</h1>
-        <h6 class="text-center">< 인공지능(A.I) 개발자는 ></h6>
-        <p class="text-center"><span>인공지능 엔지니어는 데이터를 추출해 알고리즘을 설계하고 머신러닝 모델을 실제로 구축하는 기술자입니다. <br>이들은 수학과 알고리즘 등 복잡한 로직에 익숙해야 하고, 컴퓨터 알고리즘의 설계 및 분석 최적화, 실험 평가를 반복하면서<br> 알고리즘의 이론과 실제 응용 사이의 격차를 해소하는 직업입니다.</span>
-        </p>
     </div>
 
     <div th:if="${realm == 'Frontend'}" class="community_frontend_info">
         <h1 class="text-center">Frontend</h1>
-        <h6 class="text-center">< 프론트엔드(Frontend) 개발자는 ></h6>
-        <p class="text-center"><span>
-                웹사이트에서 보여지는 글꼴, 생각, 메뉴 등 사용자에게 시각적으로 보여지는 부분을 구축하고 배치하는 역할을 합니다.<br>
-                즉, 사용자가 웹사이트를 이용할 때, 사이트와 직접적으로 상호작용하여 접촉하는 부분을 프론트 엔드라고 합니다.</span>
-        </p>
     </div>
 
     <div th:if="${realm == 'Backend'}" class="community_backend_info">
         <h1 class="text-center">Backend</h1>
-        <h6 class="text-center">< 백엔드(Back end)개발자는 ></h6>
-        <p class="text-center">
-              <span>웹사이트나 웹 애플리케이션 또는 모바일 솔루션의
-               프로세스와 관련된 서버측(server-side)과 데이터베이스를 관리해주는 테크놀로지입니다.
-              <br>
-               프론트엔드가 눈에 직접적으로 보여지는 영역이였다면, 백엔드는 눈에 보이지 않는 서버에서 작용하는 기술을 다룹니다.</span>
-        </p>
     </div>
 
-    <div th:if="${realm == 'DBA'}" class="community_frontend_info">
+    <div th:if="${realm == 'DBA'}" class="community_dba_info">
         <h1 class="text-center">DBA</h1>
-        <h6 class="text-center">< 데이터베이스관리자(Data Base Administration) ></h6>
-        <p class="text-center"><span>한 조직 내에서 데이터베이스를 설치, 구성 업그레이드, 관리, 감시 하는일을 하는 사람입니다. <br>
-              보통 자료를 복구(백업)하거나, 데이터를 보전하고, 보안을 위해 데이터에 접근을 제어하는 업무를 하게됩니다.</span>
-        </p>
     </div>
 
-    <div th:if="${realm == 'WhiteHat'}" class="community_eis_info">
+    <div th:if="${realm == 'WhiteHat'}" class="community_whh_info">
         <h1 class="text-center">White-Hat</h1>
-        <h6 class="text-center">< White-Hat은 ></h6>
-        <p class="text-center"><span>컴퓨터 온라인 보안취약점을 연구해 해킹을 방어하는 전문가를 말합니다. 사이버 공간에서 중요한 정보를 훔치거나 <br> 국가 기반 시설을 마비시키는이를 블랙 해커 또는 크래커(cracker)라 하는 반면 화이트 해커는 이와 반대되는 개념입니다.</span>
-        </p>
     </div>
     <div class="community_ai_box">
         <h2 class="text-center" th:text="|${kind}-${realm}|"></h2>
