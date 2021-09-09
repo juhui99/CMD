@@ -172,4 +172,13 @@
         or (subject like CONCAT('%',#{keyword},'%') and delete_option = 0)
         or (content like CONCAT('%',#{keyword},'%') and delete_option = 0)
     </select>
+
+    <select id="searchRanking" resultType="String">
+        select keyword from search where search_date > DATE_ADD(now(),INTERVAL -1 hour) group by keyword order by count(*) desc, ANY_VALUE(search_index) desc limit 5 offset 0;
+    </select>
+
+    <insert id="searchInsert" parameterType="map">
+        insert into search (keyword,search_date) values(#{keyword},now());
+    </insert>
+
 </mapper>

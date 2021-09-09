@@ -4,6 +4,7 @@ package com.CMD.CMD_pro.board.mapper;
 import com.CMD.CMD_pro.board.domain.BoardVO;
 import com.CMD.CMD_pro.board.domain.CommentVO;
 import com.CMD.CMD_pro.board.domain.FileVO;
+import com.CMD.CMD_pro.board.domain.SearchVO;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -75,5 +76,8 @@ public interface BoardMapper {
 
     public int mainSearchCount(@Param("keyword") String keyword) throws Exception;
 
+    public List<String> searchRanking() throws Exception;
+
+    public void searchInsert(@Param("keyword") String keyword) throws Exception;
 
 }

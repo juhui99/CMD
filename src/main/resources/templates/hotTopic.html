@@ -1,7 +1,6 @@
 <!doctype html>
-<html lang="ko">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://thymeleaf.org">
+      xmlns:th="http://thymeleaf.org" xmlns:line-height="http://www.w3.org/1999/xhtml" lang="ko">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -15,52 +14,88 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <title>CMD</title>
     <script type="text/javascript">
-        $(document).ready(function (){
-            $(".board").css("display","none");
+        function totalUnreadChat() {
+            $.ajax({
+                type: "POST",
+                url: "/getTotalUnreadChat",
+                dataType: "json",
+                data: {
+                    id: $("#userID").val()
+                },
+                success: function (result) {
+                    if (result >= 1) {
+                        $('#totalUnread').html(result);
+                    } else {
+                        $('#totalUnread').html('');
+                    }
+                }
+            });
+        }
+
+        function getInfiniteTotalUnread() {
+            setInterval(function () {
+                totalUnreadChat();
+            }, 4000);
+        }
+
+        $(document).ready(function () {
+            totalUnreadChat();
+            getInfiniteTotalUnread();
+
+            $(".board").css("display", "none");
 
 
             $(".frontend").hover(function () {
-                $(".frontend_board").css("display","block");
-                $(".backend_board").css("display","none");
-                $(".DBA_board").css("display","none");
-                $(".AI_board").css("display","none");
-                $(".WH_board").css("display","none");
+                $(".frontend_board").css("display", "block");
+                $(".backend_board").css("display", "none");
+                $(".DBA_board").css("display", "none");
+                $(".AI_board").css("display", "none");
+                $(".WH_board").css("display", "none");
 
             });
             $(".backend").hover(function () {
-                $(".backend_board").css("display","block");
-                $(".frontend_board").css("display","none");
-                $(".DBA_board").css("display","none");
-                $(".AI_board").css("display","none");
-                $(".WH_board").css("display","none");
+                $(".backend_board").css("display", "block");
+                $(".frontend_board").css("display", "none");
+                $(".DBA_board").css("display", "none");
+                $(".AI_board").css("display", "none");
+                $(".WH_board").css("display", "none");
             });
             $(".DBA").hover(function () {
-                $(".DBA_board").css("display","block");
-                $(".backend_board").css("display","none");
-                $(".frontend_board").css("display","none");
-                $(".AI_board").css("display","none");
-                $(".WH_board").css("display","none");
+                $(".DBA_board").css("display", "block");
+                $(".backend_board").css("display", "none");
+                $(".frontend_board").css("display", "none");
+                $(".AI_board").css("display", "none");
+                $(".WH_board").css("display", "none");
             });
             $(".AI").hover(function () {
-                $(".AI_board").css("display","block");
-                $(".DBA_board").css("display","none");
-                $(".backend_board").css("display","none");
-                $(".frontend_board").css("display","none");
-                $(".WH_board").css("display","none");
+                $(".AI_board").css("display", "block");
+                $(".DBA_board").css("display", "none");
+                $(".backend_board").css("display", "none");
+                $(".frontend_board").css("display", "none");
+                $(".WH_board").css("display", "none");
             });
             $(".WH").hover(function () {
-                $(".WH_board").css("display","block");
-                $(".AI_board").css("display","none");
-                $(".DBA_board").css("display","none");
-                $(".backend_board").css("display","none");
-                $(".frontend_board").css("display","none");
+                $(".WH_board").css("display", "block");
+                $(".AI_board").css("display", "none");
+                $(".DBA_board").css("display", "none");
+                $(".backend_board").css("display", "none");
+                $(".frontend_board").css("display", "none");
 
+            });
+
+            $("#withdrawal").click(function (){
+                var id = $("#userID").val();
+                if(confirm("정말로 회원탈퇴를 하시겠습니까?")){
+                    location.href = "/withdrawalCheck";
+                } else {
+                    alert("회원탈퇴를 취소합니다.");
+                }
             });
         });
 
-        function submitAction(){
-            if($("#search_option").val() != "writer"&& $("#search_option").val() != "subject"
-                && $("#search_option").val() != "content" && $("#search_option").val() != "all"){
+        function submitAction() {
+            if ($("#search_option").val() != "writer" && $("#search_option").val() != "subject"
+                && $("#search_option").val() != "content" && $("#search_option").val() != "all") {
                 alert("검색옵션을 선택해주세요.");
                 $("#search_option").focus();
                 return false;
@@ -69,20 +104,25 @@
     </script>
 </head>
 <style>
-    h1{ margin: auto 44%; }
-
-
+    h1 {
+        margin: auto 44%;
+    }
 
 
     /* Make the image fully responsive */
 
-    .frontend_board {display: none;}
+    .frontend_board {
+        display: none;
+    }
 
 
+    .carousel-inner .carouselImg {
+        width: 100%;
+        height: 200px;
+        border-radius: 25px;
+    }
 
-    .carousel-inner .carouselImg { width: 100%; height: 200px; border-radius: 25px;}
-
-    .carousel-inner{
+    .carousel-inner {
         border-radius: 25px;
 
     }
@@ -123,7 +163,8 @@
     .show > .btn-success.dropdown-toggle:focus {
         box-shadow: 0 0 0 0.2rem #003366d2;
     }
-    .img-circle{
+
+    .img-circle {
         border-radius: 50%;
         border: 1px solid #003366d2;
     }
@@ -132,10 +173,10 @@
 <body>
 <div class="container">
     <div class="header-box">
-        <div class="logo"><a href="/main"><img src="/img/CMD-logo.png" alt="logo"  height="100%"></a></div>
+        <div class="logo"><a href="/main"><img src="/img/CMD-logo.png" alt="logo" height="100%"></a></div>
         <div class="search">
             <nav class="navbar navbar-expand-sm  navbar-dark">
-                <form class="form-inline" action="/main_search">
+                <form class="form-inline" action="/main_search" method="post">
                     <input class="form-control mr-sm-2" type="text" name="keyword" placeholder="Search">
                     <button class="btn btn-success" type="submit">Search</button>
                 </form>
@@ -153,52 +194,83 @@
                 </li>
                 <!-- Dropdown -->
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="/cmd_community" >
+                    <a class="nav-link dropdown-toggle" href="/cmd_community">
                         커뮤니티
                     </a>
                     <div class="dropdown-menu">
                         <a class="dropdown-item frontend" href="/cmdDetail?realm=Frontend">Frontend</a>
-                        <a class="dropdown-item frontend_board board" style="color: #003366d2; font-size: 13px;" href="/totalHotTopic?kind=HOT게시판&realm=Frontend">HOT게시판</a>
-                        <a class="dropdown-item frontend_board board" style="color: #003366d2; font-size: 13px;" href="/board?kind=정보팁게시판&realm=Frontend">정보&팁게시판</a>
-                        <a class="dropdown-item frontend_board board" style="color: #003366d2; font-size: 13px;" href="/board?kind=자유게시판&realm=Frontend">자유게시판</a>
-                        <a class="dropdown-item frontend_board board" style="color: #003366d2; font-size: 13px;" href="/board?kind=질문게시판&realm=Frontend">질문게시판</a>
-                        <a class="dropdown-item frontend_board board" style="color: #003366d2; font-size: 13px;" href="/board?kind=협업게시판&realm=Frontend">협업게시판</a>
-                        <a class="dropdown-item frontend_board board" style="color: #003366d2; font-size: 13px;" href="/board?kind=로드맵공유게시판&realm=Frontend">로드맵공유게시판</a>
+                        <a class="dropdown-item frontend_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/totalHotTopic?kind=HOT게시판&realm=Frontend">HOT게시판</a>
+                        <a class="dropdown-item frontend_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=정보팁게시판&realm=Frontend">정보&팁게시판</a>
+                        <a class="dropdown-item frontend_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=자유게시판&realm=Frontend">자유게시판</a>
+                        <a class="dropdown-item frontend_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=질문게시판&realm=Frontend">질문게시판</a>
+                        <a class="dropdown-item frontend_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=협업게시판&realm=Frontend">협업게시판</a>
+                        <a class="dropdown-item frontend_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=로드맵공유게시판&realm=Frontend">로드맵공유게시판</a>
                         <a class="dropdown-item backend" href="/cmdDetail?realm=Backend">Backend</a>
-                        <a class="dropdown-item backend_board board" style="color: #003366d2; font-size: 13px;" href="/totalHotTopic?kind=HOT게시판&realm=Backend">HOT게시판</a>
-                        <a class="dropdown-item backend_board board" style="color: #003366d2; font-size: 13px;" href="/board?kind=정보팁게시판&realm=Backend">정보&팁게시판</a>
-                        <a class="dropdown-item backend_board board" style="color: #003366d2; font-size: 13px;" href="/board?kind=자유게시판&realm=Backend">자유게시판</a>
-                        <a class="dropdown-item backend_board board" style="color: #003366d2; font-size: 13px;" href="/board?kind=질문게시판&realm=Backend">질문게시판</a>
-                        <a class="dropdown-item backend_board board" style="color: #003366d2; font-size: 13px;" href="/board?kind=협업게시판&realm=Backend">협업게시판</a>
-                        <a class="dropdown-item backend_board board" style="color: #003366d2; font-size: 13px;" href="/board?kind=로드맵공유게시판&realm=Backend">로드맵공유게시판</a>
+                        <a class="dropdown-item backend_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/totalHotTopic?kind=HOT게시판&realm=Backend">HOT게시판</a>
+                        <a class="dropdown-item backend_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=정보팁게시판&realm=Backend">정보&팁게시판</a>
+                        <a class="dropdown-item backend_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=자유게시판&realm=Backend">자유게시판</a>
+                        <a class="dropdown-item backend_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=질문게시판&realm=Backend">질문게시판</a>
+                        <a class="dropdown-item backend_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=협업게시판&realm=Backend">협업게시판</a>
+                        <a class="dropdown-item backend_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=로드맵공유게시판&realm=Backend">로드맵공유게시판</a>
                         <a class="dropdown-item DBA" href="/cmdDetail?realm=DBA">DBA</a>
-                        <a class="dropdown-item DBA_board board" style="color: #003366d2; font-size: 13px;" href="/totalHotTopic?kind=HOT게시판&realm=DBA">HOT게시판</a>
-                        <a class="dropdown-item DBA_board board" style="color: #003366d2; font-size: 13px;" href="/board?kind=정보팁게시판&realm=DBA">정보&팁게시판</a>
-                        <a class="dropdown-item DBA_board board" style="color: #003366d2; font-size: 13px;" href="/board?kind=자유게시판&realm=DBA">자유게시판</a>
-                        <a class="dropdown-item DBA_board board" style="color: #003366d2; font-size: 13px;" href="/board?kind=질문게시판&realm=DBA">질문게시판</a>
-                        <a class="dropdown-item DBA_board board" style="color: #003366d2; font-size: 13px;" href="/board?kind=협업게시판&realm=DBA">협업게시판</a>
-                        <a class="dropdown-item DBA_board board" style="color: #003366d2; font-size: 13px;" href="/board?kind=로드맵공유게시판&realm=DBA">로드맵공유게시판</a>
+                        <a class="dropdown-item DBA_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/totalHotTopic?kind=HOT게시판&realm=DBA">HOT게시판</a>
+                        <a class="dropdown-item DBA_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=정보팁게시판&realm=DBA">정보&팁게시판</a>
+                        <a class="dropdown-item DBA_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=자유게시판&realm=DBA">자유게시판</a>
+                        <a class="dropdown-item DBA_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=질문게시판&realm=DBA">질문게시판</a>
+                        <a class="dropdown-item DBA_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=협업게시판&realm=DBA">협업게시판</a>
+                        <a class="dropdown-item DBA_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=로드맵공유게시판&realm=DBA">로드맵공유게시판</a>
                         <a class="dropdown-item AI" href="/cmdDetail?realm=AI">A.I</a>
-                        <a class="dropdown-item AI_board board" style="color: #003366d2; font-size: 13px;" href="/totalHotTopic?kind=HOT게시판&realm=AI">HOT게시판</a>
-                        <a class="dropdown-item AI_board board" style="color: #003366d2; font-size: 13px;" href="/board?kind=정보팁게시판&realm=AI">정보&팁게시판</a>
-                        <a class="dropdown-item AI_board board" style="color: #003366d2; font-size: 13px;" href="/board?kind=자유게시판&realm=AI">자유게시판</a>
-                        <a class="dropdown-item AI_board board" style="color: #003366d2; font-size: 13px;" href="/board?kind=질문게시판&realm=AI">질문게시판</a>
-                        <a class="dropdown-item AI_board board" style="color: #003366d2; font-size: 13px;" href="/board?kind=협업게시판&realm=AI">협업게시판</a>
-                        <a class="dropdown-item AI_board board" style="color: #003366d2; font-size: 13px;" href="/board?kind=로드맵공유게시판&realm=AI">로드맵공유게시판</a>
+                        <a class="dropdown-item AI_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/totalHotTopic?kind=HOT게시판&realm=AI">HOT게시판</a>
+                        <a class="dropdown-item AI_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=정보팁게시판&realm=AI">정보&팁게시판</a>
+                        <a class="dropdown-item AI_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=자유게시판&realm=AI">자유게시판</a>
+                        <a class="dropdown-item AI_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=질문게시판&realm=AI">질문게시판</a>
+                        <a class="dropdown-item AI_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=협업게시판&realm=AI">협업게시판</a>
+                        <a class="dropdown-item AI_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=로드맵공유게시판&realm=AI">로드맵공유게시판</a>
                         <a class="dropdown-item WH" href="/cmdDetail?realm=WhiteHat">White-Hat</a>
-                        <a class="dropdown-item WH_board board" style="color: #003366d2; font-size: 13px;" href="/totalHotTopic?kind=HOT게시판&realm=WhiteHat">HOT게시판</a>
-                        <a class="dropdown-item WH_board board" style="color: #003366d2; font-size: 13px;" href="/board?kind=정보팁게시판&realm=WhiteHat">정보&팁게시판</a>
-                        <a class="dropdown-item WH_board board" style="color: #003366d2; font-size: 13px;" href="/board?kind=자유게시판&realm=WhiteHat">자유게시판</a>
-                        <a class="dropdown-item WH_board board" style="color: #003366d2; font-size: 13px;" href="/board?kind=질문게시판&realm=WhiteHat">질문게시판</a>
-                        <a class="dropdown-item WH_board board" style="color: #003366d2; font-size: 13px;" href="/board?kind=협업게시판&realm=WhiteHat">협업게시판</a>
-                        <a class="dropdown-item WH_board board" style="color: #003366d2; font-size: 13px;" href="/board?kind=로드맵공유게시판&realm=WhiteHat">로드맵공유게시판</a>
+                        <a class="dropdown-item WH_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/totalHotTopic?kind=HOT게시판&realm=WhiteHat">HOT게시판</a>
+                        <a class="dropdown-item WH_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=정보팁게시판&realm=WhiteHat">정보&팁게시판</a>
+                        <a class="dropdown-item WH_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=자유게시판&realm=WhiteHat">자유게시판</a>
+                        <a class="dropdown-item WH_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=질문게시판&realm=WhiteHat">질문게시판</a>
+                        <a class="dropdown-item WH_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=협업게시판&realm=WhiteHat">협업게시판</a>
+                        <a class="dropdown-item WH_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=로드맵공유게시판&realm=WhiteHat">로드맵공유게시판</a>
 
                     </div>
                 </li>
 
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbardrop1" data-toggle="dropdown">
                         채팅
+                        <span id="totalUnread" class="badge badge-info"></span>
                     </a>
                     <div class="dropdown-menu">
                         <a class="dropdown-item" href="/friendsFind">친구 찾기</a>
@@ -208,12 +280,12 @@
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link" href="cmd_roadmap.html">로드맵</a>
+                    <a class="nav-link" href="/cmd_roadmap">로드맵</a>
                 </li>
 
 
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbardrop2" data-toggle="dropdown">
                         D-MBTI
                     </a>
                     <div class="dropdown-menu">
@@ -223,7 +295,7 @@
                 </li>
 
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbardrop3" data-toggle="dropdown">
                         설문조사
                     </a>
                     <div class="dropdown-menu">
@@ -234,20 +306,25 @@
             </ul>
             <ul class="login-box">
                 <li class="nav-item">
-
-                    <a th:if="${session.id == null}"  href="/login"><i class="far fa-user"></i> 로그인</a></li>
-                <a style="margin-left: 10px;" th:if="${session.id == null}"  href="/join">회원가입</a>
+                    <a th:if="${session.id == null}" href="/login"><i class="far fa-user"></i> 로그인</a>
+                    <a style="margin-left: 10px;" th:if="${session.id == null}" href="/join">회원가입</a>
+                </li>
 
                 <li class="nav-item dropdown" th:if="${session.id != null}">
                     <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
-                        <img th:if="${!filename.equals('non') and session.id != null}" class= "img-circle" style="width: 35px; height: 35px; border-color:  #003366d2;" th:src="@{/display?(filename=${filename})}"/>
-                        <img th:if="${filename.equals('non') and session.id != null}" class= "img-circle" style="width: 35px; height: 35px; border-color:  #003366d2;" src="/display?filename=default.png"/>
+                        <img th:if="${!filename.equals('non') and session.id != null}" class="img-circle"
+                             style="width: 35px; height: 35px; border-color:  #003366d2;"
+                             th:src="@{/display?(filename=${filename})}"/>
+                        <img th:if="${filename.equals('non') and session.id != null}" class="img-circle"
+                             style="width: 35px; height: 35px; border-color:  #003366d2;"
+                             src="/display?filename=default.png"/>
                         <span th:if="${session.id != null}" th:text="|${session.id}님|" style="margin-left: 3px;"></span>
                     </a>
                     <div class="dropdown-menu">
-                        <a style="margin-left: 10px;" th:if="${session.id != null}" href="/userUpdateCheck">회원정보 수정</a></br>
-                        <a style="margin-left: 10px;" th:if="${session.id != null}" href="/profile">프로필 수정</a></br>
-                        <a style="margin-left: 10px;" th:if="${session.id != null}" href="/logoutAction">로그아웃</a>
+                        <a style="margin-left: 10px;" th:if="${session.id != null}" href="/userUpdateCheck">회원정보
+                            수정</a></br>
+                        <a style="margin-left: 10px;" th:if="${session.id != null}" href="/logoutAction">로그아웃</a><br>
+                        <a style="margin-left: 10px;" th:if="${session.id != null}" href="#" id="withdrawal">회원탈퇴</a>
                     </div>
                 </li>
             </ul>
@@ -257,9 +334,7 @@
     <div th:if="${realm == 'AI'}" class="community_ai_info">
         <h1 class="text-center">A.I</h1>
         <h6 class="text-center">< 인공지능(A.I) 개발자는 ></h6>
-        <p class="text-center">프론트엔드 개발자는 웹사이트에서 보여지는 글꼴, 생각, 메뉴 등
-            <br>사용자에게 시각적으로 보여지는 부분을 구축하고 배치하는 역할을 합니다.<br>
-            <span>즉, 사용자가 웹사이트를 이용할 때, 사이트와 직접적으로 상호작용하여 접촉하는 부분을 프론트 엔드라고 합니다.</span>
+        <p class="text-center"><span>인공지능 엔지니어는 데이터를 추출해 알고리즘을 설계하고 머신러닝 모델을 실제로 구축하는 기술자입니다. <br>이들은 수학과 알고리즘 등 복잡한 로직에 익숙해야 하고, 컴퓨터 알고리즘의 설계 및 분석 최적화, 실험 평가를 반복하면서<br> 알고리즘의 이론과 실제 응용 사이의 격차를 해소하는 직업입니다.</span>
         </p>
     </div>
 
@@ -276,27 +351,25 @@
         <h1 class="text-center">Backend</h1>
         <h6 class="text-center">< 백엔드(Back end)개발자는 ></h6>
         <p class="text-center">
-              <span>프론트엔드, 백엔드의 완전한 분리 구조를 지향하는 업무 스타일의 개발 방식으로서 백엔드의 DB와 API 서버 개발을 맡고,
-                <br> 이와 다른 방식의 업무 스타일 직군으로는 웹퍼블리셔(UI 개발)와 개발자(서버 개발자)의 업무 분리 방식이 있습니다.
-                <br> 이 경우는 주로 서버사이드가 클라이언트를 감싸는 방식이고, 전반적인 비지니스 로직은 개발자가 맡습니다.
-                <br>좀 더 들어가면 MVC에서 Model, Controller가 백엔드의 소관입니다.</span>
+              <span>웹사이트나 웹 애플리케이션 또는 모바일 솔루션의
+               프로세스와 관련된 서버측(server-side)과 데이터베이스를 관리해주는 테크놀로지입니다.
+              <br>
+               프론트엔드가 눈에 직접적으로 보여지는 영역이였다면, 백엔드는 눈에 보이지 않는 서버에서 작용하는 기술을 다룹니다.</span>
         </p>
     </div>
 
     <div th:if="${realm == 'DBA'}" class="community_frontend_info">
         <h1 class="text-center">DBA</h1>
         <h6 class="text-center">< 데이터베이스관리자(Data Base Administration) ></h6>
-        <p class="text-center"><span>컴퓨터를 사용하여 각종 데이터를 체계적으로 수집,정리, 가공 및 입력하여
-              <br> 데이터베이스를 구축, 관리하는 일을 합니다.</span>
+        <p class="text-center"><span>한 조직 내에서 데이터베이스를 설치, 구성 업그레이드, 관리, 감시 하는일을 하는 사람입니다. <br>
+              보통 자료를 복구(백업)하거나, 데이터를 보전하고, 보안을 위해 데이터에 접근을 제어하는 업무를 하게됩니다.</span>
         </p>
     </div>
 
     <div th:if="${realm == 'WhiteHat'}" class="community_eis_info">
         <h1 class="text-center">White-Hat</h1>
         <h6 class="text-center">< White-Hat은 ></h6>
-        <p class="text-center">프론트엔드 개발자는 웹사이트에서 보여지는 글꼴, 생각, 메뉴 등
-            <br>사용자에게 시각적으로 보여지는 부분을 구축하고 배치하는 역할을 합니다.<br>
-            <span>즉, 사용자가 웹사이트를 이용할 때, 사이트와 직접적으로 상호작용하여 접촉하는 부분을 프론트 엔드라고 합니다.</span>
+        <p class="text-center"><span>컴퓨터 온라인 보안취약점을 연구해 해킹을 방어하는 전문가를 말합니다. 사이버 공간에서 중요한 정보를 훔치거나 <br> 국가 기반 시설을 마비시키는이를 블랙 해커 또는 크래커(cracker)라 하는 반면 화이트 해커는 이와 반대되는 개념입니다.</span>
         </p>
     </div>
     <div class="community_ai_box">
@@ -316,10 +389,16 @@
                     <img class="carouselImg" src="/img/img14.png" alt="main-info" width="100%" height="auto">
                     <div class="carousel-caption">
                         <div class="carousel-caption">
-                            <a style="color: white;" th:if="${!hotTopic1.equals('non')}" th:href="@{/view(bno=${hotTopic1.bno},kind=${hotTopic1.kind},realm=${realm},option='hotTopic')}" th:text="${hotTopic1.subject}"></a><br>
-                            <img th:if="${!hotTopic1.equals('non')}" src="/img/hit.png" style="width:13px; margin-left: 350px;"><span th:if="${!hotTopic1.equals('non')}" th:text="${hotTopic1.hit}"></span>
-                            <img th:if="${!hotTopic1.equals('non')}" src="/img/heart2.png" style="width:13px;"><span th:if="${!hotTopic1.equals('non')}" th:text="${hotTopic1.recommend}"></span><br>
-                            <img th:if="${!hotTopic1.equals('non')}" src="/img/user.png" style="width:13px;"><span th:if="${!hotTopic1.equals('non')}" th:text="|${hotTopic1.writer}님|"></span>
+                            <a style="color: white;" th:if="${!hotTopic1.equals('non')}"
+                               th:href="@{/view(bno=${hotTopic1.bno},kind=${hotTopic1.kind},realm=${realm},option='hotTopic')}"
+                               th:text="${hotTopic1.subject}"></a><br>
+                            <img th:if="${!hotTopic1.equals('non')}" src="/img/hit.png"
+                                 style="width:13px; margin-left: 350px;"><span th:if="${!hotTopic1.equals('non')}"
+                                                                               th:text="${hotTopic1.hit}"></span>
+                            <img th:if="${!hotTopic1.equals('non')}" src="/img/heart2.png" style="width:13px;"><span
+                                th:if="${!hotTopic1.equals('non')}" th:text="${hotTopic1.recommend}"></span><br>
+                            <img th:if="${!hotTopic1.equals('non')}" src="/img/user.png" style="width:13px;"><span
+                                th:if="${!hotTopic1.equals('non')}" th:text="|${hotTopic1.writer}님|"></span>
                             <p th:if="${!hotTopic1.equals('non')}" th:text="|${hotContent1}...|"></p>
                             <p th:if="${hotTopic1.equals('non')}">인기게시물이 아직 존재하지 않습니다.</p>
                         </div>
@@ -329,10 +408,16 @@
                     <img class="carouselImg" src="/img/img14.png" alt="main-info" width="100%" height="auto">
                     <div class="carousel-caption">
                         <div class="carousel-caption">
-                            <a style="color: white;" th:if="${!hotTopic2.equals('non')}" th:href="@{/view(bno=${hotTopic2.bno},kind=${hotTopic2.kind},realm=${realm},option='hotTopic')}" th:text="${hotTopic2.subject}"></a><br>
-                            <img th:if="${!hotTopic2.equals('non')}" src="/img/hit.png" style="width:13px; margin-left: 350px;"><span th:if="${!hotTopic2.equals('non')}" th:text="${hotTopic2.hit}"></span>
-                            <img th:if="${!hotTopic2.equals('non')}" src="/img/heart2.png" style="width:13px;"><span th:if="${!hotTopic2.equals('non')}" th:text="${hotTopic2.recommend}"></span><br>
-                            <img th:if="${!hotTopic2.equals('non')}" src="/img/user.png" style="width:13px;"><span th:if="${!hotTopic2.equals('non')}" th:text="|${hotTopic2.writer}님|"></span>
+                            <a style="color: white;" th:if="${!hotTopic2.equals('non')}"
+                               th:href="@{/view(bno=${hotTopic2.bno},kind=${hotTopic2.kind},realm=${realm},option='hotTopic')}"
+                               th:text="${hotTopic2.subject}"></a><br>
+                            <img th:if="${!hotTopic2.equals('non')}" src="/img/hit.png"
+                                 style="width:13px; margin-left: 350px;"><span th:if="${!hotTopic2.equals('non')}"
+                                                                               th:text="${hotTopic2.hit}"></span>
+                            <img th:if="${!hotTopic2.equals('non')}" src="/img/heart2.png" style="width:13px;"><span
+                                th:if="${!hotTopic2.equals('non')}" th:text="${hotTopic2.recommend}"></span><br>
+                            <img th:if="${!hotTopic2.equals('non')}" src="/img/user.png" style="width:13px;"><span
+                                th:if="${!hotTopic2.equals('non')}" th:text="|${hotTopic2.writer}님|"></span>
                             <p th:if="${!hotTopic2.equals('non')}" th:text="|${hotContent2}...|"></p>
                             <p th:if="${hotTopic2.equals('non')}">인기게시물이 아직 존재하지 않습니다.</p>
                         </div>
@@ -343,10 +428,16 @@
                     <img class="carouselImg" src="/img/img14.png" alt="main-info" width="100%" height="auto">
                     <div class="carousel-caption">
                         <div class="carousel-caption">
-                            <a style="color: white;" th:if="${!hotTopic3.equals('non')}" th:href="@{/view(bno=${hotTopic3.bno},kind=${hotTopic3.kind},realm=${realm},option='hotTopic')}" th:text="${hotTopic3.subject}"></a><br>
-                            <img th:if="${!hotTopic3.equals('non')}" src="/img/hit.png" style="width:13px; margin-left: 350px;"><span th:if="${!hotTopic3.equals('non')}" th:text="${hotTopic3.hit}"></span>
-                            <img th:if="${!hotTopic3.equals('non')}" src="/img/heart2.png" style="width:13px;"><span th:if="${!hotTopic3.equals('non')}" th:text="${hotTopic3.recommend}"></span><br>
-                            <img th:if="${!hotTopic3.equals('non')}" src="/img/user.png" style="width:13px;"><span th:if="${!hotTopic3.equals('non')}" th:text="|${hotTopic3.writer}님|"></span>
+                            <a style="color: white;" th:if="${!hotTopic3.equals('non')}"
+                               th:href="@{/view(bno=${hotTopic3.bno},kind=${hotTopic3.kind},realm=${realm},option='hotTopic')}"
+                               th:text="${hotTopic3.subject}"></a><br>
+                            <img th:if="${!hotTopic3.equals('non')}" src="/img/hit.png"
+                                 style="width:13px; margin-left: 350px;"><span th:if="${!hotTopic3.equals('non')}"
+                                                                               th:text="${hotTopic3.hit}"></span>
+                            <img th:if="${!hotTopic3.equals('non')}" src="/img/heart2.png" style="width:13px;"><span
+                                th:if="${!hotTopic3.equals('non')}" th:text="${hotTopic3.recommend}"></span><br>
+                            <img th:if="${!hotTopic3.equals('non')}" src="/img/user.png" style="width:13px;"><span
+                                th:if="${!hotTopic3.equals('non')}" th:text="|${hotTopic3.writer}님|"></span>
                             <p th:if="${!hotTopic3.equals('non')}" th:text="|${hotContent3}...|"></p>
                             <p th:if="${hotTopic3.equals('non')}">인기게시물이 아직 존재하지 않습니다.</p>
                         </div>
@@ -356,10 +447,16 @@
                     <img class="carouselImg" src="/img/img14.png" alt="main-info" width="100%" height="auto">
                     <div class="carousel-caption">
                         <div class="carousel-caption">
-                            <a style="color: white;" th:if="${!hotTopic4.equals('non')}" th:href="@{/view(bno=${hotTopic4.bno},kind=${hotTopic4.kind},realm=${realm},option='hotTopic')}" th:text="${hotTopic4.subject}"></a><br>
-                            <img th:if="${!hotTopic4.equals('non')}" src="/img/hit.png" style="width:13px; margin-left: 350px;"><span th:if="${!hotTopic4.equals('non')}" th:text="${hotTopic4.hit}"></span>
-                            <img th:if="${!hotTopic4.equals('non')}" src="/img/heart2.png" style="width:13px;"><span th:if="${!hotTopic4.equals('non')}" th:text="${hotTopic4.recommend}"></span><br>
-                            <img th:if="${!hotTopic4.equals('non')}" src="/img/user.png" style="width:13px;"><span th:if="${!hotTopic4.equals('non')}" th:text="|${hotTopic4.writer}님|"></span>
+                            <a style="color: white;" th:if="${!hotTopic4.equals('non')}"
+                               th:href="@{/view(bno=${hotTopic4.bno},kind=${hotTopic4.kind},realm=${realm},option='hotTopic')}"
+                               th:text="${hotTopic4.subject}"></a><br>
+                            <img th:if="${!hotTopic4.equals('non')}" src="/img/hit.png"
+                                 style="width:13px; margin-left: 350px;"><span th:if="${!hotTopic4.equals('non')}"
+                                                                               th:text="${hotTopic4.hit}"></span>
+                            <img th:if="${!hotTopic4.equals('non')}" src="/img/heart2.png" style="width:13px;"><span
+                                th:if="${!hotTopic4.equals('non')}" th:text="${hotTopic4.recommend}"></span><br>
+                            <img th:if="${!hotTopic4.equals('non')}" src="/img/user.png" style="width:13px;"><span
+                                th:if="${!hotTopic4.equals('non')}" th:text="|${hotTopic4.writer}님|"></span>
                             <p th:if="${!hotTopic4.equals('non')}" th:text="|${hotContent4}...|"></p>
                             <p th:if="${hotTopic4.equals('non')}">인기게시물이 아직 존재하지 않습니다.</p>
                         </div>
@@ -370,10 +467,16 @@
                     <img class="carouselImg" src="/img/img14.png" alt="main-info" width="100%" height="auto">
                     <div class="carousel-caption">
                         <div class="carousel-caption">
-                            <a style="color: white;" th:if="${!hotTopic5.equals('non')}" th:href="@{/view(bno=${hotTopic5.bno},kind=${hotTopic5.kind},realm=${realm},option='hotTopic')}" th:text="${hotTopic5.subject}"></a><br>
-                            <img th:if="${!hotTopic5.equals('non')}" src="/img/hit.png" style="width:13px; margin-left: 350px;"><span th:if="${!hotTopic5.equals('non')}" th:text="${hotTopic5.hit}"></span>
-                            <img th:if="${!hotTopic5.equals('non')}" src="/img/heart2.png" style="width:13px;"><span th:if="${!hotTopic5.equals('non')}" th:text="${hotTopic5.recommend}"></span><br>
-                            <img th:if="${!hotTopic5.equals('non')}" src="/img/user.png" style="width:13px;"><span th:if="${!hotTopic5.equals('non')}" th:text="|${hotTopic5.writer}님|"></span>
+                            <a style="color: white;" th:if="${!hotTopic5.equals('non')}"
+                               th:href="@{/view(bno=${hotTopic5.bno},kind=${hotTopic5.kind},realm=${realm},option='hotTopic')}"
+                               th:text="${hotTopic5.subject}"></a><br>
+                            <img th:if="${!hotTopic5.equals('non')}" src="/img/hit.png"
+                                 style="width:13px; margin-left: 350px;"><span th:if="${!hotTopic5.equals('non')}"
+                                                                               th:text="${hotTopic5.hit}"></span>
+                            <img th:if="${!hotTopic5.equals('non')}" src="/img/heart2.png" style="width:13px;"><span
+                                th:if="${!hotTopic5.equals('non')}" th:text="${hotTopic5.recommend}"></span><br>
+                            <img th:if="${!hotTopic5.equals('non')}" src="/img/user.png" style="width:13px;"><span
+                                th:if="${!hotTopic5.equals('non')}" th:text="|${hotTopic5.writer}님|"></span>
                             <p th:if="${!hotTopic5.equals('non')}" th:text="|${hotContent5}...|"></p>
                             <p th:if="${hotTopic5.equals('non')}">인기게시물이 아직 존재하지 않습니다.</p>
                         </div>
@@ -390,7 +493,6 @@
         </div>
 
 
-
         <div class="footer-box">
             <div class="author">
                 <p><b>Creators - </b>KimLeeEum</p>
@@ -400,11 +502,14 @@
             <div class="link">
                 <ul>
                     <li><a href="https://github.com/" target="_blank"><i class="fab fa-github"> GitHub</i></a></li>
-                    <li><a href="https://stackoverflow.com/" target="_blank"><i class="fab fa-stack-overflow"> Stack-Overflow</i></a></li>
+                    <li><a href="https://stackoverflow.com/" target="_blank"><i class="fab fa-stack-overflow">
+                        Stack-Overflow</i></a></li>
                 </ul>
+                <input type="hidden" id="userID" th:value="${session.id}">
             </div>
         </div>
         <div class="eyebrow"><p>@2021 prod by 김이음</p></div>
     </div>
+</div>
 </body>
 </html>

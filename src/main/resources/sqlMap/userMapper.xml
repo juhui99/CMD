@@ -14,7 +14,7 @@
     </select>
 
     <select id="userLogin" parameterType="String" resultType="com.CMD.CMD_pro.user.domain.UserVO">
-        select * from users where user_id = #{userID}
+        select * from users where user_id = #{userID} and user_withdrawal = 0
     </select>
 
     <update id="userUpdate" parameterType="com.CMD.CMD_pro.user.domain.UserVO">
@@ -25,5 +25,13 @@
     <update id="userProfile" parameterType="map">
         update users set user_profile = #{userProfile} where user_id = #{userID}
     </update>
+
+    <update id="userWithdrawal" parameterType="map">
+        update users set user_withdrawal = 1 where user_id = #{userID}
+    </update>
+
+    <select id="userData" parameterType="String" resultType="com.CMD.CMD_pro.user.domain.UserVO">
+        select * from users where user_id = #{userID}
+    </select>
 
 </mapper>

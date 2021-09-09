@@ -4,7 +4,9 @@ package com.CMD.CMD_pro.board.controller;
 import com.CMD.CMD_pro.board.domain.BoardVO;
 import com.CMD.CMD_pro.board.domain.CommentVO;
 import com.CMD.CMD_pro.board.domain.FileVO;
+import com.CMD.CMD_pro.board.domain.SearchVO;
 import com.CMD.CMD_pro.board.mapper.BoardMapper;
+import com.CMD.CMD_pro.chat.domain.ChatVO;
 import com.CMD.CMD_pro.user.domain.UserVO;
 import com.CMD.CMD_pro.user.mapper.UserMapper;
 import org.apache.commons.io.FilenameUtils;
@@ -905,6 +907,7 @@ public class BoardListController {
                 filename = user.getUser_profile();
             }
         }
+        boardMapper.searchInsert(keyword);
         model.addAttribute("filename", filename);
         model.addAttribute("board",board); //반환된 결과인 board를 모델로 담아 search.html로 전달
         model.addAttribute("keyword",keyword); //키워드 전달
@@ -961,6 +964,7 @@ public class BoardListController {
                 filename = user.getUser_profile();
             }
         }
+        boardMapper.searchInsert(keyword);
         model.addAttribute("filename", filename);
         model.addAttribute("board",board); //반환된 결과인 board를 모델로 담아 search.html로 전달
         model.addAttribute("keyword",keyword); //키워드 전달
@@ -990,6 +994,42 @@ public class BoardListController {
 
         model.addAttribute("filename",filename);
         return "cmd_roadmap";
+    }
+
+
+
+
+    @ResponseBody
+    @RequestMapping(value = "/searchRanking", method = RequestMethod.POST)
+    public void getSearchRanking(HttpServletRequest req, HttpSession session, HttpServletResponse response) throws Exception{
+        req.setCharacterEncoding("UTF-8");
+        response.setContentType("text/html;charset=UTF-8");
+        List<String> ranking = boardMapper.searchRanking();
+
+        if(ranking.size() == 0){
+            try{
+                response.getWriter().print("");
+            }catch (IOException e){
+                e.printStackTrace();
+            }
+        }
+        else {
+
+            StringBuffer result = new StringBuffer("");
+            result.append("{\"result\":[");
+            for (int i = 0; i < ranking.size(); i++) {
+                result.append("[{\"value\": \"" + ranking.get(i) + "\"}]");
+                if (i != ranking.size() - 1) result.append(",");
+            }
+            result.append("]}");
+            try {
+                response.getWriter().print(result);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+
     }
 
 

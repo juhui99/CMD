@@ -4,7 +4,7 @@ body {
 
 .community{
     margin-top: 40px;
-    margin-bottom: 10%;  
+    margin-bottom: 10%;
     width: 100%;
     height: auto;
 }
@@ -18,7 +18,7 @@ h1{
     margin: auto 27%;
 }
 
-#comm{
+#comm1, #comm2, #comm3, #comm4,#comm5, #comm6{
     font-weight: 450;
     padding: 20px 30px;
 }
@@ -36,8 +36,8 @@ h4{
 }
 p{
     font-weight: 340;
-    padding: 10px 0px 10px 0px; 
-    
+    padding: 10px 0px 10px 0px;
+
 }
 span{
     font-weight: 500 !important;

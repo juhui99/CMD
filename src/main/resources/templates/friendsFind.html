@@ -1,13 +1,12 @@
 <!doctype html>
-<html lang="ko">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://thymeleaf.org">
+      xmlns:th="http://thymeleaf.org" lang="ko">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="/libs/css/style.css">
     <link rel="stylesheet" href="/libs/css/bootstrap.css">
-
+    <link rel="stylesheet" href="/libs/css/chatting.css">
     <script src="https://kit.fontawesome.com/717793cb2b.js" crossorigin="anonymous"></script>
     <title>CMD</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
@@ -15,60 +14,95 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script type="text/javascript">
-        $(document).ready(function (){
-            $(".board").css("display","none");
+        function totalUnreadChat() {
+            $.ajax({
+                type: "POST",
+                url: "/getTotalUnreadChat",
+                dataType: "json",
+                data: {
+                    id: $("#userID").val()
+                },
+                success: function (result) {
+                    if (result >= 1) {
+                        $('#totalUnread').html(result);
+                    } else {
+                        $('#totalUnread').html('');
+                    }
+                }
+            });
+        }
+
+        function getInfiniteTotalUnread() {
+            setInterval(function () {
+                totalUnreadChat();
+            }, 4000);
+        }
+
+        $(document).ready(function () {
+            totalUnreadChat();
+            getInfiniteTotalUnread();
+
+            $(".board").css("display", "none");
 
             $(".frontend").hover(function () {
-                $(".frontend_board").css("display","block");
-                $(".backend_board").css("display","none");
-                $(".DBA_board").css("display","none");
-                $(".AI_board").css("display","none");
-                $(".WH_board").css("display","none");
+                $(".frontend_board").css("display", "block");
+                $(".backend_board").css("display", "none");
+                $(".DBA_board").css("display", "none");
+                $(".AI_board").css("display", "none");
+                $(".WH_board").css("display", "none");
 
             });
             $(".backend").hover(function () {
-                $(".backend_board").css("display","block");
-                $(".frontend_board").css("display","none");
-                $(".DBA_board").css("display","none");
-                $(".AI_board").css("display","none");
-                $(".WH_board").css("display","none");
+                $(".backend_board").css("display", "block");
+                $(".frontend_board").css("display", "none");
+                $(".DBA_board").css("display", "none");
+                $(".AI_board").css("display", "none");
+                $(".WH_board").css("display", "none");
             });
             $(".DBA").hover(function () {
-                $(".DBA_board").css("display","block");
-                $(".backend_board").css("display","none");
-                $(".frontend_board").css("display","none");
-                $(".AI_board").css("display","none");
-                $(".WH_board").css("display","none");
+                $(".DBA_board").css("display", "block");
+                $(".backend_board").css("display", "none");
+                $(".frontend_board").css("display", "none");
+                $(".AI_board").css("display", "none");
+                $(".WH_board").css("display", "none");
             });
             $(".AI").hover(function () {
-                $(".AI_board").css("display","block");
-                $(".DBA_board").css("display","none");
-                $(".backend_board").css("display","none");
-                $(".frontend_board").css("display","none");
-                $(".WH_board").css("display","none");
+                $(".AI_board").css("display", "block");
+                $(".DBA_board").css("display", "none");
+                $(".backend_board").css("display", "none");
+                $(".frontend_board").css("display", "none");
+                $(".WH_board").css("display", "none");
             });
             $(".WH").hover(function () {
-                $(".WH_board").css("display","block");
-                $(".AI_board").css("display","none");
-                $(".DBA_board").css("display","none");
-                $(".backend_board").css("display","none");
-                $(".frontend_board").css("display","none");
+                $(".WH_board").css("display", "block");
+                $(".AI_board").css("display", "none");
+                $(".DBA_board").css("display", "none");
+                $(".backend_board").css("display", "none");
+                $(".frontend_board").css("display", "none");
 
+            });
+            $("#withdrawal").click(function () {
+                var id = $("#userID").val();
+                if (confirm("정말로 회원탈퇴를 하시겠습니까?")) {
+                    location.href = "/withdrawalCheck";
+                } else {
+                    alert("회원탈퇴를 취소합니다.");
+                }
             });
         });
 
-        function findFriend(){
+        function findFriend() {
 
             $.ajax({
                 url: "/findFriend",
                 type: "POST",
                 dataType: "text",
-                data: { id : $("#findId").val()},
-                success: function (data){
-                    if(data == "error"){
+                data: {id: $("#findId").val()},
+                success: function (data) {
+                    if (data == "error") {
                         $("#friendResult").html(
-                            '<div className="container" style="margin-top: 20px; margin-bottom: 20px;">' +
-                            '<table style="border: 1px solid #003366d2; border-radius: 5px;" width="70%">' +
+                            '<div className="container" style="margin-bottom: 20px;">' +
+                            '<table style= width="70%">' +
                             '<thead> <tr>' +
                             '<th colSpan="5" style="height: 45px;"><span>친구검색 결과</span></th>' +
                             '</tr>' +
@@ -77,30 +111,43 @@
                             '</tr>' +
                             '</tbody> </table> </div>'
                         );
-                    } else if(data == "default") {
+                    } else if (data == "default") {
                         $("#friendResult").html(
-                            '<div className="container" style="margin-top: 20px; margin-bottom: 20px;">' +
-                            '<table style="border: 1px solid #003366d2; border-radius: 5px;" width="70%">' +
+                            '<div className="container" style="margin-bottom: 20px;">' +
+                            '<table style= width="70%">' +
                             '<thead> <tr>' +
                             '<th colSpan="5" style="height: 45px;"><span>친구검색 결과</span></th>' +
                             '</tr>' +
                             '</thead> <tbody> <tr>' +
-                            '<td style="text-align: center;"><img class= "img-circle" style="width: 200px; height: 200px; border-color:  #003366d2;" src="/display?filename=default.png"/></td>' +
+                            '<td style="text-align: center;"><img class= "img-circle" style="width: 150px; height: 150px; border-color:  #003366d2;" src="/display?filename=default.png"/></td>' +
                             '</tr>' + '<tr> <td style="text-align: center;">' + $("#findId").val() + '님' + '</td></tr>' +
-                            '<tr> <td style="text-align: center;"> <button onclick="addFriend();">친구추가</button> <a href="/chat?friend=' + $('#findId').val() + '"' +'><button>채팅</button></a>' +
+                            '<tr> <td style="text-align: center;"> <button class="submit" type="submit" onclick="addFriend();">친구추가</button> <a href="/chat?friend=' + $('#findId').val() + '"' + '><button  class="submit" type="submit" align="center" >채팅</button></a>' +
                             '</tbody> </table> </div>'
                         );
-                    } else{
+                    } else if (data == "me") {
                         $("#friendResult").html(
-                            '<div className="container" style="margin-top: 20px; margin-bottom: 20px;">' +
-                            '<table style="border: 1px solid #003366d2; border-radius: 5px;" width="70%">' +
+                            '<div className="container" style="margin-bottom: 20px;">' +
+                            '<table style= width="70%">' +
                             '<thead> <tr>' +
                             '<th colSpan="5" style="height: 45px;"><span>친구검색 결과</span></th>' +
                             '</tr>' +
                             '</thead> <tbody> <tr>' +
-                            '<td style="text-align: center;"><img class= "img-circle" style="width: 200px; height: 200px; border-color:  #003366d2;" src="/display?filename=' + data + '"/></td>' +
+                            '<td style="text-align: center;"><img class= "img-circle" style="width: 150px; height: 150px; border-color:  #003366d2;" src="/display?filename=' + $('#myProfile').val() + '"/></td>' +
+                            '</tr>' + '<tr> <td style="text-align: center;">' + $("#findId").val() + '님 본인 입니다.' + '</td></tr>' +
+                            '<tr> <td style="text-align: center;">  <a href="/chat?friend=' + $('#findId').val() + '"' + '><button class="submit" type="submit" align="center">채팅</button></a></td></tr>' +
+                            '</tbody> </table> </div>'
+                        );
+                    } else {
+                        $("#friendResult").html(
+                            '<div className="container" style="margin-bottom: 20px;">' +
+                            '<table styl= width="70%">' +
+                            '<thead> <tr>' +
+                            '<th colSpan="5" style="height: 45px;"><span>친구검색 결과</span></th>' +
+                            '</tr>' +
+                            '</thead> <tbody> <tr>' +
+                            '<td style="text-align: center;"><img class= "img-circle" style="width: 150px; height: 150px; border-color:  #003366d2;" src="/display?filename=' + data + '"/></td>' +
                             '</tr>' + '<tr> <td style="text-align: center;">' + $("#findId").val() + '님' + '</td></tr>' +
-                            '<tr> <td style="text-align: center;"> <button onclick="addFriend();">친구추가</button> <a href="/chat?friend=' + $('#findId').val() + '"' +'><button>채팅</button></a></td></tr>' +
+                            '<tr> <td style="text-align: center;"> <button class="submit" type="submit" align="center" onclick="addFriend();">친구추가</button> <a href="/chat?friend=' + $('#findId').val() + '"' + '><button class="submit" type="submit" align="center">채팅</button></a></td></tr>' +
                             '</tbody> </table> </div>'
                         );
                     }
@@ -108,24 +155,24 @@
             });
         }
 
-        function addFriend(){
+        function addFriend() {
 
             $.ajax({
                 url: "/addFriend",
                 type: "POST",
                 dataType: "json",
                 data: {
-                friend : $("#findId").val()},
-                success: function (data){
-                    if(data == 1){
+                    friend: $("#findId").val()
+                },
+                success: function (data) {
+                    if (data == 1) {
                         alert("이미 친구추가가 돼 있는 회원입니다.");
-                    } else if(data == 0){
+                    } else if (data == 0) {
                         alert("친구추가가 완료되었습니다.");
                     }
                 }
             });
         }
-
 
 
     </script>
@@ -134,19 +181,27 @@
         /* Make the image fully
     }responsive */
 
-        .frontend_board {display: none;}
-
-
-        .carousel{
-            margin: 4%auto;
+        .frontend_board {
+            display: none;
         }
-        .carousel-inner img { width: 100%; height: auto; border-radius: 25px;}
 
-        .carousel-inner{
+
+        .carousel {
+            margin: 4% auto;
+        }
+
+        .carousel-inner img {
+            width: 100%;
+            height: auto;
+            border-radius: 25px;
+        }
+
+        .carousel-inner {
             border-radius: 25px;
 
         }
-        .carousel-caption{
+
+        .carousel-caption {
             font-size: 25px;
         }
 
@@ -181,7 +236,8 @@
             background-color: #003366d2;
             border-color: #003366d2;
         }
-        .img-circle{
+
+        .img-circle {
             border-radius: 50%;
             border: 1px solid #003366d2;
         }
@@ -190,12 +246,12 @@
         .show > .btn-success.dropdown-toggle:focus {
             box-shadow: 0 0 0 0.2rem #003366d2;
         }
-
         thead th {
             background-color: #003366d2;
             color: white;
             text-align: center;
         }
+
         tr td:first-child,
         tr th:first-child {
             border-top-left-radius: 6px;
@@ -203,14 +259,16 @@
             border-top-right-radius: 6px;
             border-bottom-right-radius: 6px;
         }
-        tr last-child{
+
+        tr last-child {
             border-bottom-left-radius: 6px;
             border-bottom-right-radius: 6px;
         }
 
-        table{
+        table {
             border-collapse: separate !important;
         }
+
 
 
     </style>
@@ -218,7 +276,7 @@
 <body>
 <div class="container">
     <div class="header-box">
-        <div class="logo"><a href="/main"><img src="/img/CMD-logo.png" alt="logo"  height="100%"></a></div>
+        <div class="logo"><a href="/main"><img src="/img/CMD-logo.png" alt="logo" height="100%"></a></div>
         <div class="search">
             <nav class="navbar navbar-expand-sm  navbar-dark">
                 <form class="form-inline" action="/main_search" method="post">
@@ -239,52 +297,83 @@
                 </li>
                 <!-- Dropdown -->
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="/cmd_community" >
+                    <a class="nav-link dropdown-toggle" href="/cmd_community">
                         커뮤니티
                     </a>
                     <div class="dropdown-menu">
                         <a class="dropdown-item frontend" href="/cmdDetail?realm=Frontend">Frontend</a>
-                        <a class="dropdown-item frontend_board board" style="color: #003366d2; font-size: 13px;" href="/totalHotTopic?kind=HOT게시판&realm=Frontend">HOT게시판</a>
-                        <a class="dropdown-item frontend_board board" style="color: #003366d2; font-size: 13px;" href="/board?kind=정보팁게시판&realm=Frontend">정보&팁게시판</a>
-                        <a class="dropdown-item frontend_board board" style="color: #003366d2; font-size: 13px;" href="/board?kind=자유게시판&realm=Frontend">자유게시판</a>
-                        <a class="dropdown-item frontend_board board" style="color: #003366d2; font-size: 13px;" href="/board?kind=질문게시판&realm=Frontend">질문게시판</a>
-                        <a class="dropdown-item frontend_board board" style="color: #003366d2; font-size: 13px;" href="/board?kind=협업게시판&realm=Frontend">협업게시판</a>
-                        <a class="dropdown-item frontend_board board" style="color: #003366d2; font-size: 13px;" href="/board?kind=로드맵공유게시판&realm=Frontend">로드맵공유게시판</a>
+                        <a class="dropdown-item frontend_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/totalHotTopic?kind=HOT게시판&realm=Frontend">HOT게시판</a>
+                        <a class="dropdown-item frontend_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=정보팁게시판&realm=Frontend">정보&팁게시판</a>
+                        <a class="dropdown-item frontend_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=자유게시판&realm=Frontend">자유게시판</a>
+                        <a class="dropdown-item frontend_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=질문게시판&realm=Frontend">질문게시판</a>
+                        <a class="dropdown-item frontend_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=협업게시판&realm=Frontend">협업게시판</a>
+                        <a class="dropdown-item frontend_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=로드맵공유게시판&realm=Frontend">로드맵공유게시판</a>
                         <a class="dropdown-item backend" href="/cmdDetail?realm=Backend">Backend</a>
-                        <a class="dropdown-item backend_board board" style="color: #003366d2; font-size: 13px;" href="/totalHotTopic?kind=HOT게시판&realm=Backend">HOT게시판</a>
-                        <a class="dropdown-item backend_board board" style="color: #003366d2; font-size: 13px;" href="/board?kind=정보팁게시판&realm=Backend">정보&팁게시판</a>
-                        <a class="dropdown-item backend_board board" style="color: #003366d2; font-size: 13px;" href="/board?kind=자유게시판&realm=Backend">자유게시판</a>
-                        <a class="dropdown-item backend_board board" style="color: #003366d2; font-size: 13px;" href="/board?kind=질문게시판&realm=Backend">질문게시판</a>
-                        <a class="dropdown-item backend_board board" style="color: #003366d2; font-size: 13px;" href="/board?kind=협업게시판&realm=Backend">협업게시판</a>
-                        <a class="dropdown-item backend_board board" style="color: #003366d2; font-size: 13px;" href="/board?kind=로드맵공유게시판&realm=Backend">로드맵공유게시판</a>
+                        <a class="dropdown-item backend_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/totalHotTopic?kind=HOT게시판&realm=Backend">HOT게시판</a>
+                        <a class="dropdown-item backend_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=정보팁게시판&realm=Backend">정보&팁게시판</a>
+                        <a class="dropdown-item backend_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=자유게시판&realm=Backend">자유게시판</a>
+                        <a class="dropdown-item backend_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=질문게시판&realm=Backend">질문게시판</a>
+                        <a class="dropdown-item backend_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=협업게시판&realm=Backend">협업게시판</a>
+                        <a class="dropdown-item backend_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=로드맵공유게시판&realm=Backend">로드맵공유게시판</a>
                         <a class="dropdown-item DBA" href="/cmdDetail?realm=DBA">DBA</a>
-                        <a class="dropdown-item DBA_board board" style="color: #003366d2; font-size: 13px;" href="/totalHotTopic?kind=HOT게시판&realm=DBA">HOT게시판</a>
-                        <a class="dropdown-item DBA_board board" style="color: #003366d2; font-size: 13px;" href="/board?kind=정보팁게시판&realm=DBA">정보&팁게시판</a>
-                        <a class="dropdown-item DBA_board board" style="color: #003366d2; font-size: 13px;" href="/board?kind=자유게시판&realm=DBA">자유게시판</a>
-                        <a class="dropdown-item DBA_board board" style="color: #003366d2; font-size: 13px;" href="/board?kind=질문게시판&realm=DBA">질문게시판</a>
-                        <a class="dropdown-item DBA_board board" style="color: #003366d2; font-size: 13px;" href="/board?kind=협업게시판&realm=DBA">협업게시판</a>
-                        <a class="dropdown-item DBA_board board" style="color: #003366d2; font-size: 13px;" href="/board?kind=로드맵공유게시판&realm=DBA">로드맵공유게시판</a>
+                        <a class="dropdown-item DBA_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/totalHotTopic?kind=HOT게시판&realm=DBA">HOT게시판</a>
+                        <a class="dropdown-item DBA_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=정보팁게시판&realm=DBA">정보&팁게시판</a>
+                        <a class="dropdown-item DBA_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=자유게시판&realm=DBA">자유게시판</a>
+                        <a class="dropdown-item DBA_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=질문게시판&realm=DBA">질문게시판</a>
+                        <a class="dropdown-item DBA_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=협업게시판&realm=DBA">협업게시판</a>
+                        <a class="dropdown-item DBA_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=로드맵공유게시판&realm=DBA">로드맵공유게시판</a>
                         <a class="dropdown-item AI" href="/cmdDetail?realm=AI">A.I</a>
-                        <a class="dropdown-item AI_board board" style="color: #003366d2; font-size: 13px;" href="/totalHotTopic?kind=HOT게시판&realm=AI">HOT게시판</a>
-                        <a class="dropdown-item AI_board board" style="color: #003366d2; font-size: 13px;" href="/board?kind=정보팁게시판&realm=AI">정보&팁게시판</a>
-                        <a class="dropdown-item AI_board board" style="color: #003366d2; font-size: 13px;" href="/board?kind=자유게시판&realm=AI">자유게시판</a>
-                        <a class="dropdown-item AI_board board" style="color: #003366d2; font-size: 13px;" href="/board?kind=질문게시판&realm=AI">질문게시판</a>
-                        <a class="dropdown-item AI_board board" style="color: #003366d2; font-size: 13px;" href="/board?kind=협업게시판&realm=AI">협업게시판</a>
-                        <a class="dropdown-item AI_board board" style="color: #003366d2; font-size: 13px;" href="/board?kind=로드맵공유게시판&realm=AI">로드맵공유게시판</a>
+                        <a class="dropdown-item AI_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/totalHotTopic?kind=HOT게시판&realm=AI">HOT게시판</a>
+                        <a class="dropdown-item AI_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=정보팁게시판&realm=AI">정보&팁게시판</a>
+                        <a class="dropdown-item AI_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=자유게시판&realm=AI">자유게시판</a>
+                        <a class="dropdown-item AI_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=질문게시판&realm=AI">질문게시판</a>
+                        <a class="dropdown-item AI_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=협업게시판&realm=AI">협업게시판</a>
+                        <a class="dropdown-item AI_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=로드맵공유게시판&realm=AI">로드맵공유게시판</a>
                         <a class="dropdown-item WH" href="/cmdDetail?realm=WhiteHat">White-Hat</a>
-                        <a class="dropdown-item WH_board board" style="color: #003366d2; font-size: 13px;" href="/totalHotTopic?kind=HOT게시판&realm=WhiteHat">HOT게시판</a>
-                        <a class="dropdown-item WH_board board" style="color: #003366d2; font-size: 13px;" href="/board?kind=정보팁게시판&realm=WhiteHat">정보&팁게시판</a>
-                        <a class="dropdown-item WH_board board" style="color: #003366d2; font-size: 13px;" href="/board?kind=자유게시판&realm=WhiteHat">자유게시판</a>
-                        <a class="dropdown-item WH_board board" style="color: #003366d2; font-size: 13px;" href="/board?kind=질문게시판&realm=WhiteHat">질문게시판</a>
-                        <a class="dropdown-item WH_board board" style="color: #003366d2; font-size: 13px;" href="/board?kind=협업게시판&realm=WhiteHat">협업게시판</a>
-                        <a class="dropdown-item WH_board board" style="color: #003366d2; font-size: 13px;" href="/board?kind=로드맵공유게시판&realm=WhiteHat">로드맵공유게시판</a>
+                        <a class="dropdown-item WH_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/totalHotTopic?kind=HOT게시판&realm=WhiteHat">HOT게시판</a>
+                        <a class="dropdown-item WH_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=정보팁게시판&realm=WhiteHat">정보&팁게시판</a>
+                        <a class="dropdown-item WH_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=자유게시판&realm=WhiteHat">자유게시판</a>
+                        <a class="dropdown-item WH_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=질문게시판&realm=WhiteHat">질문게시판</a>
+                        <a class="dropdown-item WH_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=협업게시판&realm=WhiteHat">협업게시판</a>
+                        <a class="dropdown-item WH_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=로드맵공유게시판&realm=WhiteHat">로드맵공유게시판</a>
 
                     </div>
                 </li>
 
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbardrop1" data-toggle="dropdown">
                         채팅
+                        <span id="totalUnread" class="badge badge-info"></span>
                     </a>
                     <div class="dropdown-menu">
                         <a class="dropdown-item" href="/friendsFind">친구 찾기</a>
@@ -294,12 +383,12 @@
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link" href="cmd_roadmap.html">로드맵</a>
+                    <a class="nav-link" href="/cmd_roadmap">로드맵</a>
                 </li>
 
 
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbardrop2" data-toggle="dropdown">
                         D-MBTI
                     </a>
                     <div class="dropdown-menu">
@@ -309,7 +398,7 @@
                 </li>
 
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbardrop3" data-toggle="dropdown">
                         설문조사
                     </a>
                     <div class="dropdown-menu">
@@ -320,33 +409,40 @@
             </ul>
             <ul class="login-box">
                 <li class="nav-item">
+                    <a th:if="${session.id == null}" href="/login"><i class="far fa-user"></i> 로그인</a>
+                    <a style="margin-left: 10px;" th:if="${session.id == null}" href="/join">회원가입</a>
+                </li>
 
-                    <a th:if="${session.id == null}"  href="/login"><i class="far fa-user"></i> 로그인</a></li>
-                <a style="margin-left: 10px;" th:if="${session.id == null}"  href="/join">회원가입</a>
 
                 <li class="nav-item dropdown" th:if="${session.id != null}">
                     <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
-                        <img th:if="${!filename.equals('non') and session.id != null}" class= "img-circle" style="width: 35px; height: 35px; border-color:  #003366d2;" th:src="@{/display?(filename=${filename})}"/>
-                        <img th:if="${filename.equals('non') and session.id != null}" class= "img-circle" style="width: 35px; height: 35px; border-color:  #003366d2;" src="/display?filename=default.png"/>
+                        <img th:if="${!filename.equals('non') and session.id != null}" class="img-circle"
+                             style="width: 35px; height: 35px; border-color:  #003366d2;"
+                             th:src="@{/display?(filename=${filename})}"/>
+                        <img th:if="${filename.equals('non') and session.id != null}" class="img-circle"
+                             style="width: 35px; height: 35px; border-color:  #003366d2;"
+                             src="/display?filename=default.png"/>
                         <span th:if="${session.id != null}" th:text="|${session.id}님|" style="margin-left: 3px;"></span>
                     </a>
                     <div class="dropdown-menu">
-                        <a style="margin-left: 10px;" th:if="${session.id != null}" href="/userUpdateCheck">회원정보 수정</a></br>
-                        <a style="margin-left: 10px;" th:if="${session.id != null}" href="/profile">프로필 수정</a></br>
-                        <a style="margin-left: 10px;" th:if="${session.id != null}" href="/logoutAction">로그아웃</a>
+                        <a style="margin-left: 10px;" th:if="${session.id != null}" href="/userUpdateCheck">회원정보
+                            수정</a></br>
+                        <a style="margin-left: 10px;" th:if="${session.id != null}" href="/logoutAction">로그아웃</a><br>
+                        <a style="margin-left: 10px;" th:if="${session.id != null}" href="#" id="withdrawal">회원탈퇴</a>
                     </div>
                 </li>
             </ul>
 
         </nav>
     </div>
-
-    <di class="container">
-        <input type="text" id="findId" placeholder="회원 검색">
-        <button onclick="findFriend();">검색</button>
-    </di>
-    <div  id="friendResult" class="container" style="margin-top: 20px; margin-bottom: 20px;">
-
+    <div class="friendfind">
+        <div class="ff-box">
+            <div class="ff-search">
+                <input type="text" id="findId" placeholder="회원 검색">
+                <button class="submit" type="submit" align="center" onclick="findFriend();">검색</button>
+            </div>
+            <div id="friendResult"></div>
+        </div>
     </div>
     <div class="footer-box">
         <div class="author">
@@ -357,8 +453,11 @@
         <div class="link">
             <ul>
                 <li><a href="https://github.com/" target="_blank"><i class="fab fa-github"> GitHub</i></a></li>
-                <li><a href="https://stackoverflow.com/" target="_blank"><i class="fab fa-stack-overflow"> Stack-Overflow</i></a></li>
+                <li><a href="https://stackoverflow.com/" target="_blank"><i class="fab fa-stack-overflow">
+                    Stack-Overflow</i></a></li>
             </ul>
+            <input type="hidden" id="userID" th:value="${session.id}">
+            <input type="hidden" id="myProfile" th:value="${myProfile}">
         </div>
     </div>
     <div class="eyebrow"><p>@2021 prod by 김이음</p></div>

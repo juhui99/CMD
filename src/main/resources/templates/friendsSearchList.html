@@ -1,16 +1,20 @@
 <!doctype html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://thymeleaf.org" lang="ko">
+      xmlns:th="http://thymeleaf.org" xmlns:line-height="http://www.w3.org/1999/xhtml" lang="ko">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="/libs/css/style.css">
     <link rel="stylesheet" href="/libs/css/bootstrap.css">
-    <link rel="stylesheet" href="/libs/css/community.css">
+    <link rel="stylesheet" href="/libs/css/chat.css">
     <script src="https://kit.fontawesome.com/717793cb2b.js" crossorigin="anonymous"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <title>CMD</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script type="text/javascript">
+
         function totalUnreadChat() {
             $.ajax({
                 type: "POST",
@@ -34,25 +38,169 @@
                 totalUnreadChat();
             }, 4000);
         }
+
+        $(document).ready(function () {
+            totalUnreadChat();
+            getInfiniteTotalUnread();
+
+            $(".board").css("display", "none");
+            $(".friendDelete").css("display", "none");
+
+
+            $(".frontend").hover(function () {
+                $(".frontend_board").css("display", "block");
+                $(".backend_board").css("display", "none");
+                $(".DBA_board").css("display", "none");
+                $(".AI_board").css("display", "none");
+                $(".WH_board").css("display", "none");
+
+            });
+            $(".backend").hover(function () {
+                $(".backend_board").css("display", "block");
+                $(".frontend_board").css("display", "none");
+                $(".DBA_board").css("display", "none");
+                $(".AI_board").css("display", "none");
+                $(".WH_board").css("display", "none");
+            });
+            $(".DBA").hover(function () {
+                $(".DBA_board").css("display", "block");
+                $(".backend_board").css("display", "none");
+                $(".frontend_board").css("display", "none");
+                $(".AI_board").css("display", "none");
+                $(".WH_board").css("display", "none");
+            });
+            $(".AI").hover(function () {
+                $(".AI_board").css("display", "block");
+                $(".DBA_board").css("display", "none");
+                $(".backend_board").css("display", "none");
+                $(".frontend_board").css("display", "none");
+                $(".WH_board").css("display", "none");
+            });
+            $(".WH").hover(function () {
+                $(".WH_board").css("display", "block");
+                $(".AI_board").css("display", "none");
+                $(".DBA_board").css("display", "none");
+                $(".backend_board").css("display", "none");
+                $(".frontend_board").css("display", "none");
+
+            });
+            $("#friendSetup").click(function () {
+                if ($(".friendDelete").is(":visible") == true) {
+                    $(".friendDelete").css("display", "none");
+                } else if ($(".friendDelete").is(":visible") == false) {
+                    $(".friendDelete").css("display", "block");
+                }
+            });
+
+            $("#withdrawal").click(function () {
+                var id = $("#userID").val();
+                if (confirm("정말로 회원탈퇴를 하시겠습니까?")) {
+                    location.href = "/withdrawalCheck";
+                } else {
+                    alert("회원탈퇴를 취소합니다.");
+                }
+            });
+
+        });
+
     </script>
+
+    <style>
+        /* Make the image fully responsive */
+
+        .frontend_board {
+            display: none;
+        }
+
+
+        .carousel {
+            margin: 4% auto;
+        }
+
+        .carousel-inner img {
+            width: 100%;
+            height: auto;
+            border-radius: 25px;
+        }
+
+        .carousel-inner {
+            border-radius: 25px;
+
+        }
+
+        .carousel-caption {
+            font-size: 25px;
+        }
+
+        .btn-success {
+            color: #fff;
+            background-color: #003366d2;
+            border-color: #003366d2;
+        }
+
+        .btn-success:hover {
+            color: #fff;
+            background-color: #003366d2;
+            border-color: #003366d2;
+        }
+
+        .btn-success:focus, .btn-success.focus {
+            color: #fff;
+            background-color: #003366d2;
+            border-color: #003366d2;
+            box-shadow: 0 0 0 0.2rem #003366d2;
+        }
+
+        .btn-success.disabled, .btn-success:disabled {
+            color: #fff;
+            background-color: #003366d2;
+            border-color: #003366d2;
+        }
+
+        .btn-success:not(:disabled):not(.disabled):active, .btn-success:not(:disabled):not(.disabled).active,
+        .show > .btn-success.dropdown-toggle {
+            color: #fff;
+            background-color: #003366d2;
+            border-color: #003366d2;
+        }
+
+        .img-circle {
+            border-radius: 50%;
+            border: 1px solid #003366d2;
+        }
+
+        .btn-success:not(:disabled):not(.disabled):active:focus, .btn-success:not(:disabled):not(.disabled).active:focus,
+        .show > .btn-success.dropdown-toggle:focus {
+            box-shadow: 0 0 0 0.2rem #003366d2;
+        }
+
+        thead th {
+            background-color: #003366d2;
+            color: white;
+            text-align: center;
+        }
+
+        tr td:first-child,
+        tr th:first-child {
+            border-top-left-radius: 6px;
+            border-bottom-left-radius: 6px;
+            border-top-right-radius: 6px;
+            border-bottom-right-radius: 6px;
+        }
+
+        tr last-child {
+            border-bottom-left-radius: 6px;
+            border-bottom-right-radius: 6px;
+        }
+
+        table {
+            border-collapse: separate !important;
+            border-spacing: 0 13px;
+        }
+
+
+    </style>
 </head>
-<style>
-    #link1, #link2, #link3, #link4, #link5 {
-        width: 100px;
-        height: auto;
-        border-radius: 50%;
-        background: #02264b81;
-        color: rgb(222, 239, 248) !important;
-        text-align: center;
-        line-height: 80px;
-    }
-
-    .img-circle {
-        border-radius: 50%;
-        border: 1px solid #003366d2;
-    }
-
-</style>
 <body>
 <div class="container">
     <div class="header-box">
@@ -60,7 +208,7 @@
         <div class="search">
             <nav class="navbar navbar-expand-sm  navbar-dark">
                 <form class="form-inline" action="/main_search" method="post">
-                    <input class="form-control mr-sm-2" type="text" name="keyword" placeholder="Search">
+                    <input class="form-control mr-sm-2" name="keyword" type="text" placeholder="Search">
                     <button class="btn btn-success" type="submit">Search</button>
                 </form>
             </nav>
@@ -166,6 +314,7 @@
                     <a class="nav-link" href="/cmd_roadmap">로드맵</a>
                 </li>
 
+
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbardrop2" data-toggle="dropdown">
                         D-MBTI
@@ -192,6 +341,7 @@
                     <a style="margin-left: 10px;" th:if="${session.id == null}" href="/join">회원가입</a>
                 </li>
 
+
                 <li class="nav-item dropdown" th:if="${session.id != null}">
                     <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
                         <img th:if="${!filename.equals('non') and session.id != null}" class="img-circle"
@@ -210,39 +360,52 @@
                     </div>
                 </li>
             </ul>
+
         </nav>
     </div>
 
+    <div class="container" style="margin-top: 20px; margin-bottom: 20px;">
+        <table style="border: 1px solid #003366d2; border-radius: 5px;" width="70%">
+            <thead>
+            <tr>
+                <td>
+                    <form action="/search_myFriend" method="post"><input type="text" name="keyword"
+                                                                         placeholder="내친구 검색">
+                        <button type="submit"><img src="/img/search.png"
+                                                   style="width:15px; height: 15px; margin-bottom: 4px; margin-top: 4px;">
+                        </button>
+                    </form>
+                </td>
+                <td align="right">
+                    <button id="friendSetup" type="button"><img src="/img/setup.png"
+                                                                style="width:20px; margin-bottom: 4px; margin-top: 4px;">
+                    </button>
+                </td>
+            </tr>
+            <tr>
+                <th colspan="5" style="height: 45px;"><span>친구목록</span></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="friendsList : ${friendsList}">
+                <td th:if="${friendsList.user_profile != null}"><img class="img-circle"
+                                                                     style="width: 50px; height: 50px; border-color:  #003366d2;"
+                                                                     th:src="@{/display?(filename=${friendsList.user_profile})}"/><a
+                        style="margin-left: 5px;" th:text="${friendsList.user_id}"
+                        th:href="@{/chat(friend=${friendsList.user_id})}"></a></td>
+                <td th:if="${friendsList.user_profile == null}"><img class="img-circle"
+                                                                     style="width: 50px; height: 50px; border-color:  #003366d2;"
+                                                                     src="/display?filename=default.png"/><a
+                        style="margin-left: 5px;" th:text="${friendsList.user_id}"
+                        th:href="@{/chat(friend=${friendsList.user_id})}"></a></td>
+                <td><a th:href="@{/friendDelete(user=${session.id},friend=${friendsList.user_id})}">
+                    <button class="friendDelete" type="button">삭제</button>
+                </a></td>
 
-    <div class="community">
-        <h1 class="text-center">개발자의 Communtiy</h1>
-        <h6 class="text-center">< Community by Developer field ><br>
-            개발자를 분야별로 나눈 커뮤니티를 이용해보세요.</h6>
-        <ul class="nav justify-content-center">
-            <li class="nav-item" id="comm1">
-                <a class="nav-link" id="link1" href="/cmdDetail?realm=Frontend">Frontend</a>
-            </li>
-            <li class="nav-item" id="comm2">
-                <a class="nav-link" id="link2" href="/cmdDetail?realm=Backend">Backend</a>
-            </li>
-            <li class="nav-item" id="comm3">
-                <a class="nav-link" id="link3" href="/cmdDetail?realm=DBA">DBA</a>
-            </li>
-            <li class="nav-item" id="comm4">
-                <a class="nav-link" id="link4" href="/cmdDetail?realm=AI">A.I</a>
-            </li>
-            <li class="nav-item" id="comm5">
-                <a class="nav-link" id="link5" href="/cmdDetail?realm=WhiteHat">WhiteHat</a>
-            </li>
-        </ul>
-        <h4 class="text-center"><b>저희 CMD에서의 커뮤니티는</b></h4>
-        <p class="text-center">비 전공자 혹은 전공자, <span>개발에 관심이 있는 모두가 이용하게</span>
-            <br><b>"개발자 분야별로 커뮤니티"</b>를 만들어 전문성을 가진 정보를 얻을 수 있습니다.
-            <br>그 분야별 커뮤니티 안에 <b>게시판 카테고리를  5가지로 나뉘어,</b>
-            <br><span>조금 더 세분화된 질문을 하고 정확성 있는 답변을 얻을 수 있도록 유저에게 제공하는 것입니다.</span>
-        </p>
+            </tr>
+            </tbody>
+        </table>
     </div>
-
     <div class="footer-box">
         <div class="author">
             <p><b>Creators - </b>KimLeeEum</p>
@@ -260,61 +423,5 @@
     </div>
     <div class="eyebrow"><p>@2021 prod by 김이음</p></div>
 </div>
-<script type="text/javascript">
-    $(document).ready(function () {
-        totalUnreadChat();
-        getInfiniteTotalUnread();
-
-        $(".board").css("display", "none");
-
-
-        $(".frontend").hover(function () {
-            $(".frontend_board").css("display", "block");
-            $(".backend_board").css("display", "none");
-            $(".DBA_board").css("display", "none");
-            $(".AI_board").css("display", "none");
-            $(".WH_board").css("display", "none");
-
-        });
-        $(".backend").hover(function () {
-            $(".backend_board").css("display", "block");
-            $(".frontend_board").css("display", "none");
-            $(".DBA_board").css("display", "none");
-            $(".AI_board").css("display", "none");
-            $(".WH_board").css("display", "none");
-        });
-        $(".DBA").hover(function () {
-            $(".DBA_board").css("display", "block");
-            $(".backend_board").css("display", "none");
-            $(".frontend_board").css("display", "none");
-            $(".AI_board").css("display", "none");
-            $(".WH_board").css("display", "none");
-        });
-        $(".AI").hover(function () {
-            $(".AI_board").css("display", "block");
-            $(".DBA_board").css("display", "none");
-            $(".backend_board").css("display", "none");
-            $(".frontend_board").css("display", "none");
-            $(".WH_board").css("display", "none");
-        });
-        $(".WH").hover(function () {
-            $(".WH_board").css("display", "block");
-            $(".AI_board").css("display", "none");
-            $(".DBA_board").css("display", "none");
-            $(".backend_board").css("display", "none");
-            $(".frontend_board").css("display", "none");
-
-        });
-        $("#withdrawal").click(function () {
-            var id = $("#userID").val();
-            if (confirm("정말로 회원탈퇴를 하시겠습니까?")) {
-                location.href = "/withdrawalCheck";
-            } else {
-                alert("회원탈퇴를 취소합니다.");
-            }
-        });
-
-    });
-</script>
 </body>
 </html>

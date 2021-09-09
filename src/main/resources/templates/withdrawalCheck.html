@@ -1,167 +1,174 @@
-<!doctype html>
+<!DOCTYPE html>
+<html lang="en">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://thymeleaf.org" lang="ko">
+      xmlns:th="http://thymeleaf.org">
 <head>
-    <meta charset="utf-8">
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="http://code.jquery.com/jquery-3.1.1.min.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="/libs/css/style.css">
     <link rel="stylesheet" href="/libs/css/bootstrap.css">
-    <link rel="stylesheet" href="/libs/css/community.css">
+
     <script src="https://kit.fontawesome.com/717793cb2b.js" crossorigin="anonymous"></script>
+    <title>CMD</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <title>CMD</title>
-    <script type="text/javascript">
-        function totalUnreadChat(){
-            $.ajax({
-                type : "POST",
-                url : "/getTotalUnreadChat",
-                dataType: "json",
-                data : {
-                    id : $("#userID").val()
-                },
-                success: function(result) {
-                    if(result >= 1) {
-                        $('#totalUnread').html(result);
-                    } else {
-                        $('#totalUnread').html('');
-                    }
-                }
-            });
+
+    <style>
+        /* Make the image fully responsive */
+
+        .frontend_board {display: none;}
+
+
+        .carousel{
+            margin: 4%auto;
+        }
+        .carousel-inner img { width: 100%; height: auto; border-radius: 25px;}
+
+        .carousel-inner{
+            border-radius: 25px;
+
+        }
+        .carousel-caption{
+            font-size: 25px;
         }
 
-        function getInfiniteTotalUnread() {
-            setInterval(function() {
-                totalUnreadChat();
-            }, 4000);
+        .btn-success {
+            color: #fff;
+            background-color: #003366d2;
+            border-color: #003366d2;
         }
-        $(document).ready(function (){
-            totalUnreadChat();
-            getInfiniteTotalUnread();
-            $(".board").css("display","none");
 
-
-            $(".frontend").hover(function () {
-                $(".frontend_board").css("display","block");
-                $(".backend_board").css("display","none");
-                $(".DBA_board").css("display","none");
-                $(".AI_board").css("display","none");
-                $(".WH_board").css("display","none");
-
-            });
-            $(".backend").hover(function () {
-                $(".backend_board").css("display","block");
-                $(".frontend_board").css("display","none");
-                $(".DBA_board").css("display","none");
-                $(".AI_board").css("display","none");
-                $(".WH_board").css("display","none");
-            });
-            $(".DBA").hover(function () {
-                $(".DBA_board").css("display","block");
-                $(".backend_board").css("display","none");
-                $(".frontend_board").css("display","none");
-                $(".AI_board").css("display","none");
-                $(".WH_board").css("display","none");
-            });
-            $(".AI").hover(function () {
-                $(".AI_board").css("display","block");
-                $(".DBA_board").css("display","none");
-                $(".backend_board").css("display","none");
-                $(".frontend_board").css("display","none");
-                $(".WH_board").css("display","none");
-            });
-            $(".WH").hover(function () {
-                $(".WH_board").css("display","block");
-                $(".AI_board").css("display","none");
-                $(".DBA_board").css("display","none");
-                $(".backend_board").css("display","none");
-                $(".frontend_board").css("display","none");
-
-            });
-
-            $("#withdrawal").click(function (){
-                var id = $("#userID").val();
-                if(confirm("정말로 회원탈퇴를 하시겠습니까?")){
-                    location.href = "/withdrawalCheck";
-                } else {
-                    alert("회원탈퇴를 취소합니다.");
-                }
-            });
-        });
-
-        function submitAction(){
-            if($("#search_option").val() != "writer"&& $("#search_option").val() != "subject"
-                && $("#search_option").val() != "content" && $("#search_option").val() != "all"){
-                alert("검색옵션을 선택해주세요.");
-                $("#search_option").focus();
-                return false;
-            }
+        .btn-success:hover {
+            color: #fff;
+            background-color: #003366d2;
+            border-color: #003366d2;
         }
-    </script>
+
+        .btn-success:focus, .btn-success.focus {
+            color: #fff;
+            background-color: #003366d2;
+            border-color: #003366d2;
+            box-shadow: 0 0 0 0.2rem #003366d2;
+        }
+
+        .btn-success.disabled, .btn-success:disabled {
+            color: #fff;
+            background-color: #003366d2;
+            border-color: #003366d2;
+        }
+
+        .btn-success:not(:disabled):not(.disabled):active, .btn-success:not(:disabled):not(.disabled).active,
+        .show > .btn-success.dropdown-toggle {
+            color: #fff;
+            background-color: #003366d2;
+            border-color: #003366d2;
+        }
+        .img-circle{
+            border-radius: 50%;
+            border: 1px solid #003366d2;
+        }
+
+        .btn-success:not(:disabled):not(.disabled):active:focus, .btn-success:not(:disabled):not(.disabled).active:focus,
+        .show > .btn-success.dropdown-toggle:focus {
+            box-shadow: 0 0 0 0.2rem #003366d2;
+        }
+
+    </style>
 </head>
-<style>
-    h1{ margin: auto 44%; }
+<script type="text/javascript">
 
+    function totalUnreadChat(){
+        $.ajax({
+            type : "POST",
+            url : "/getTotalUnreadChat",
+            dataType: "json",
+            data : {
+                id : $("#userID").val()
+            },
+            success: function(result) {
+                if(result >= 1) {
+                    $('#totalUnread').html(result);
+                } else {
+                    $('#totalUnread').html('');
+                }
+            }
+        });
+    }
 
+    function getInfiniteTotalUnread() {
+        setInterval(function() {
+            totalUnreadChat();
+        }, 4000);
+    }
 
+    function submitAction(){
 
-    /* Make the image fully responsive */
-
-    .frontend_board {display: none;}
-
-
-
-    .carousel-inner .carouselImg { width: 100%; height: 200px; border-radius: 25px;}
-
-    .carousel-inner{
-        border-radius: 25px;
+        if($("#user_pwd").val() == ""){
+            alert("비밀번호를 입력해주세요.");
+            $("#user_pwd").focus();
+            return false;
+        }
 
     }
 
-    .btn-success {
-        color: #fff;
-        background-color: #003366d2;
-        border-color: #003366d2;
-    }
+    $(document).ready(function (){
 
-    .btn-success:hover {
-        color: #fff;
-        background-color: #003366d2;
-        border-color: #003366d2;
-    }
+        totalUnreadChat();
+        getInfiniteTotalUnread();
+        $(".board").css("display","none");
 
-    .btn-success:focus, .btn-success.focus {
-        color: #fff;
-        background-color: #003366d2;
-        border-color: #003366d2;
-        box-shadow: 0 0 0 0.2rem #003366d2;
-    }
 
-    .btn-success.disabled, .btn-success:disabled {
-        color: #fff;
-        background-color: #003366d2;
-        border-color: #003366d2;
-    }
+        $(".frontend").hover(function () {
+            $(".frontend_board").css("display","block");
+            $(".backend_board").css("display","none");
+            $(".DBA_board").css("display","none");
+            $(".AI_board").css("display","none");
+            $(".WH_board").css("display","none");
 
-    .btn-success:not(:disabled):not(.disabled):active, .btn-success:not(:disabled):not(.disabled).active,
-    .show > .btn-success.dropdown-toggle {
-        color: #fff;
-        background-color: #003366d2;
-        border-color: #003366d2;
-    }
+        });
+        $(".backend").hover(function () {
+            $(".backend_board").css("display","block");
+            $(".frontend_board").css("display","none");
+            $(".DBA_board").css("display","none");
+            $(".AI_board").css("display","none");
+            $(".WH_board").css("display","none");
+        });
+        $(".DBA").hover(function () {
+            $(".DBA_board").css("display","block");
+            $(".backend_board").css("display","none");
+            $(".frontend_board").css("display","none");
+            $(".AI_board").css("display","none");
+            $(".WH_board").css("display","none");
+        });
+        $(".AI").hover(function () {
+            $(".AI_board").css("display","block");
+            $(".DBA_board").css("display","none");
+            $(".backend_board").css("display","none");
+            $(".frontend_board").css("display","none");
+            $(".WH_board").css("display","none");
+        });
+        $(".WH").hover(function () {
+            $(".WH_board").css("display","block");
+            $(".AI_board").css("display","none");
+            $(".DBA_board").css("display","none");
+            $(".backend_board").css("display","none");
+            $(".frontend_board").css("display","none");
 
-    .btn-success:not(:disabled):not(.disabled):active:focus, .btn-success:not(:disabled):not(.disabled).active:focus,
-    .show > .btn-success.dropdown-toggle:focus {
-        box-shadow: 0 0 0 0.2rem #003366d2;
-    }
-
-    .img-circle{
-        border-radius: 50%;
-        border: 1px solid #003366d2;
-    }
-
-</style>
+        });
+        $("#withdrawal").click(function (){
+            var id = $("#userID").val();
+            if(confirm("정말로 회원탈퇴를 하시겠습니까?")){
+                location.href = "/withdrawalCheck";
+            } else {
+                alert("회원탈퇴를 취소합니다.");
+            }
+        });
+    });
+</script>
 <body>
 <div class="container">
     <div class="header-box">
@@ -169,12 +176,12 @@
         <div class="search">
             <nav class="navbar navbar-expand-sm  navbar-dark">
                 <form class="form-inline" action="/main_search" method="post">
-                    <input class="form-control mr-sm-2" type="text" name="keyword" th:value="${keyword}" placeholder="Search">
+                    <input class="form-control mr-sm-2" name="keyword" type="text" placeholder="Search">
                     <button class="btn btn-success" type="submit">Search</button>
                 </form>
             </nav>
         </div>
-        <div class="keyword">실시간 검색</div>
+        <div class="keyword" id="ranking"></div>
     </div>
 
     <div class="menu-navbar">
@@ -230,7 +237,7 @@
                 </li>
 
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbardrop1" data-toggle="dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
                         채팅
                         <span id="totalUnread" class="badge badge-info"></span>
                     </a>
@@ -247,7 +254,7 @@
 
 
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbardrop2" data-toggle="dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
                         D-MBTI
                     </a>
                     <div class="dropdown-menu">
@@ -257,7 +264,7 @@
                 </li>
 
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbardrop3" data-toggle="dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
                         설문조사
                     </a>
                     <div class="dropdown-menu">
@@ -268,10 +275,9 @@
             </ul>
             <ul class="login-box">
                 <li class="nav-item">
-                    <a th:if="${session.id == null}"  href="/login"><i class="far fa-user"></i> 로그인</a>
-                    <a style="margin-left: 10px;" th:if="${session.id == null}"  href="/join">회원가입</a>
-                </li>
 
+                    <a th:if="${session.id == null}"  href="/login"><i class="far fa-user"></i> 로그인</a></li>
+                <a style="margin-left: 10px;" th:if="${session.id == null}"  href="/join">회원가입</a>
 
                 <li class="nav-item dropdown" th:if="${session.id != null}">
                     <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
@@ -286,71 +292,38 @@
                     </div>
                 </li>
             </ul>
+
         </nav>
     </div>
+    <div><form action="/userWithdrawal" method="post" onsubmit="return submitAction();">
 
-        <div class="container" style="margin-top: 40px;">
-            <div>
-                <h2 style="color: #003366d2; font-weight: bold;">커뮤니티</h2>
-                <table style="text-align: center; border: 1px solid #dddddd" width="90%">
-                    <thead>
-                    <tr>
-                        <th>글 번호</th>
-                        <th>글 작성자</th>
-                        <th>글 제목</th>
-                        <th>날짜</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr th:each="board : ${board}">
-                        <td><a th:href="@{/view(bno=${board.bno},kind=${board.kind},realm=${board.realm},pageNumber=${page},mainSearch='mainSearch',keyword=${keyword})}" th:text="${board.subject}"></a></td>
-                        <td th:text="${board.writer}"></td>
-                        <td th:text="${board.reg_date}"></td>
-                        <td th:if="${board.notice == 1}" style="color: red;">공지글</td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
+        <h4>비밀번호 확인</h4>
 
-            <div style="display: block; text-align: center;">
-                <ul class="pagination pagination-sm" style="margin: 0 auto; margin-top: 20px; margin-bottom: 20px;">
-                    <li class="page-item" th:if="${startPage != 1}"><a class="page-link" th:href="@{/main_search(pageNumber=${startPage} - 1,keyword=${keyword})}">&lt;</a></li>
-                    <li class="page-item" th:if="${startPage == 1}"><a class="page-link" style="color: gray;">&lt;</a></li>
-                    <li class="page-item" th:if="${startPage >0 and page != 1 and page > startPage}" th:each="idx,iterStat : ${#numbers.sequence(startPage, page - 1)}">
-                        <a class="page-link" th:if="${idx > 0 and page != 1}" th:href="@{/main_search(pageNumber=${idx},keyword=${keyword})}" th:text="${idx}"> </a>
-                    </li>
-                    <li class="page-item"><a class="page-link" th:href="@{/main_search(pageNumber=${page},keyword=${keyword})}" th:text="${page}" style="background-color: #006DCC;"></a></li>
-                    <li class="page-item" th:if="${count > 0}" th:each="idx,iterStat : ${#numbers.sequence(page + 1, target2 + page )}" >
-                        <a class="page-link" th:if="${idx < startPage + 10 and idx > page}" th:href="@{/main_search(pageNumber=${idx},keyword=${keyword})}" th:text="${idx}"></a>
-                    </li>
-                    <li class="page-item" th:if="${target2 >= 1 and target2 + page > startPage + 9}">
-                        <a class="page-link" th:href="@{/main_search(pageNumber=${startPage + 10},keyword=${keyword})}">></a>
-                    </li>
-                    <li class="page-item" th:if="${target2 + page <= startPage + 9}">
-                        <a class="page-link" style="color: gray;">></a>
-                    </li>
-                </ul>
-            </div>
-
-
+        <div class="form-group">
+            <label for="user_pwd">*비밀번호 확인</label>
+            <input type="password" id="user_pwd" name="user_pwd" placeholder="비밀번호"><br>
+            <input type="submit" id="submit" name="submit" value="확인" >
         </div>
 
-
-        <div class="footer-box">
-            <div class="author">
-                <p><b>Creators - </b>KimLeeEum</p>
-                <p><b>email - </b>energizun1001@gamil.com</p>
-                <p><b>Domain - </b>www.cmdev.com</p>
-            </div>
-            <div class="link">
-                <ul>
-                    <li><a href="https://github.com/" target="_blank"><i class="fab fa-github"> GitHub</i></a></li>
-                    <li><a href="https://stackoverflow.com/" target="_blank"><i class="fab fa-stack-overflow"> Stack-Overflow</i></a></li>
-                </ul>
-                <input type="hidden" id="userID" th:value="${session.id}">
-            </div>
-        </div>
-        <div class="eyebrow"><p>@2021 prod by 김이음</p></div>
+    </form>
     </div>
+    <div class="footer-box">
+        <div class="author">
+            <p><b>Creators - </b>KimLeeEum</p>
+            <p><b>email - </b>energizun1001@gamil.com</p>
+            <p><b>Domain - </b>www.cmdev.com</p>
+        </div>
+        <div class="link">
+            <ul>
+                <li><a href="https://github.com/" target="_blank"><i class="fab fa-github"> GitHub</i></a></li>
+                <li><a href="https://stackoverflow.com/" target="_blank"><i class="fab fa-stack-overflow"> Stack-Overflow</i></a></li>
+            </ul>
+            <input type="hidden" id="userID" th:value="${session.id}">
+        </div>
+    </div>
+    <div class="eyebrow"><p>@2021 prod by 김이음</p></div>
+
+</div>
+
 </body>
 </html>

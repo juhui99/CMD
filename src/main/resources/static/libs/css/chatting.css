@@ -1,0 +1,108 @@
+
+.submit {
+    cursor: pointer;
+    color: honeydew!important;
+    background: linear-gradient(to left, rgba(22, 40, 108, 0.55), #1969af
+    );
+    border: 0;
+    border-radius: 1em;
+    padding-left: 30px;
+    padding-right: 30px;
+    padding-bottom: 10px;
+    padding-top: 10px;
+    font-family: 'Ubuntu', sans-serif;
+    font-size: 14px;
+    box-shadow: 0 0 20px 1px rgba(0, 0, 0, 0.04);
+}
+
+.friendfind {
+    width: 100%;
+    height: auto;
+    background: white;
+}
+
+.ff-box {
+    background-color: #FFFFFF;
+    width: 76%;
+    height: 400px;
+    margin: 4em auto;
+    border-radius: 1.5em;
+    box-shadow: 0 11px 35px 2px rgba(0, 0, 0, 0.14);
+}
+
+.ff-search{
+    margin-left: 10%;
+    margin-right: 10%;
+    padding-left: 10%;
+    padding-right: 10%;
+    padding-bottom: 3%;
+}
+
+#findId{
+    font-size: 14px;
+    padding-bottom: 10px;
+    padding-top: 10px;
+    text-align: center;
+    margin-top: 50px;
+    background: #d8e9ff;
+    color: black;
+    border-radius: 1em;
+    border: 0;
+    box-shadow: 0 0 20px 1px rgba(0, 0, 0, 0.04);
+    width: 60%;
+
+}
+
+input button {
+    text-shadow: 0px 0px 3px rgba(117, 117, 117, 0.12);
+    color: #E1BEE7;
+    text-decoration: none;
+}
+input:focus {
+    outline:none;
+}
+
+textarea:focus {
+    outline: none;
+}
+button.submit:focus{
+    outline:none;
+}
+
+table{
+    margin-left: 15%;
+    margin-right: 15%;
+    width:70%;
+}
+
+.fl-layout {
+    position: relative;
+    width: 100%;
+    height: 600px;
+}
+
+.fl-box {
+    float: left;
+    z-index: 1;
+    background-color: #FFFFFF;
+    width: 40%;
+    height: 500px;
+    margin-left: 8.5em;
+    margin-top: 50px;
+    margin-bottom: 50px;
+    padding-top: 30px;
+    border-radius: 1.5em;
+    box-shadow: 0 11px 35px 2px rgba(0, 0, 0, 0.14);
+}
+.chatimg img{
+    border: 1px;
+    border-radius: 10px;
+    position: absolute;
+    z-index: -10;
+    top: 0;
+    left: 40%;
+    bottom: 10%;
+    line-height: 200px;
+    margin-top: 2%;
+    margin-bottom: 2%;
+}
