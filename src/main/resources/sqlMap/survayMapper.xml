@@ -14,30 +14,6 @@
     <resultMap id="pageMaker" type="com.CMD.CMD_pro.survey.domain.PageMaker"/>
     <resultMap id="resultDataSet" type="com.CMD.CMD_pro.survey.domain.ResultDataSet"/>
 
-<!--    &lt;!&ndash; 검색기능을 위한 동적SQL &ndash;&gt;-->
-<!--    <sql id="search2">-->
-<!--        <choose>-->
-<!--            <when test="progressing == null or progressing.isEmpty()">-->
-<!--                AND progressing = 1-->
-<!--            </when>-->
-<!--            <otherwise>-->
-<!--                AND progressing = #{progressing}-->
-<!--            </otherwise>-->
-<!--        </choose>-->
-<!--        <if test="searchType != null and !searchType.isEmpty()">-->
-<!--            <bind name="pattern" value="'%' +  searchType  + '%'" />-->
-<!--            &lt;!&ndash; SearchCriteria.keyword로 넘어옴 &ndash;&gt;-->
-<!--            <choose>-->
-<!--                <when test="type eq 'writer'">-->
-<!--                    AND name LIKE #{pattern}-->
-<!--                </when>-->
-<!--                <when test="type eq 'title'">-->
-<!--                    AND survey_title LIKE #{pattern} OR survey_content LIKE #{pattern}-->
-<!--                </when>-->
-<!--            </choose>-->
-<!--        </if>-->
-<!--    </sql>-->
-
     <!-- 검색기능을 위한 동적SQL -->
     <sql id="search">
         <choose>
@@ -48,18 +24,41 @@
                 AND progressing = #{progressing}
             </otherwise>
         </choose>
-        <if test="searchType != null">
-            <if test="searchType == 't'.toString()">AND survey.surveyTitle LIKE CONCAT('%',#{keyword},'%')</if>
-            <if test="searchType == 'c'.toString()">AND survey.surveyContent LIKE CONCAT('%',#{keyword},'%')</if>
-            <if test="searchType == 'w'.toString()">AND users.user_name LIKE CONCAT('%',#{keyword},'%')</if>
-            <if test="searchType == 'tc'.toString()">AND (survey.surveyTitle LIKE CONCAT('%',#{keyword},'%')) or (survey.surveyContent LIKE CONCAT('%',#{keyword},'%'))</if>
+        <if test="searchType != null and !searchType.isEmpty()">
+            <bind name="pattern" value="'%' +  searchType  + '%'" />
+            <!-- SearchCriteria.keyword로 넘어옴 -->
+            <choose>
+                <when test="type eq 'writer'">
+                    AND name LIKE #{pattern}
+                </when>
+                <when test="type eq 'title'">
+                    AND survey_title LIKE #{pattern} OR survey_content LIKE #{pattern}
+                </when>
+            </choose>
         </if>
     </sql>
 
+<!--    &lt;!&ndash; 검색기능을 위한 동적SQL &ndash;&gt;-->
+<!--    <sql id="search">-->
+<!--        <choose>-->
+<!--            <when test="progressing == null or progressing.isEmpty()">-->
+<!--                AND progressing = 1-->
+<!--            </when>-->
+<!--            <otherwise>-->
+<!--                AND progressing = #{progressing}-->
+<!--            </otherwise>-->
+<!--        </choose>-->
+<!--        <if test="searchType != null and !searchType.isEmpty()">-->
+<!--            <if test="searchType == 't'.toString()">AND survey.surveyTitle LIKE CONCAT('%',#{keyword},'%')</if>-->
+<!--            <if test="searchType == 'c'.toString()">AND survey.surveyContent LIKE CONCAT('%',#{keyword},'%')</if>-->
+<!--            <if test="searchType == 'w'.toString()">AND users.user_name LIKE CONCAT('%',#{keyword},'%')</if>-->
+<!--            <if test="searchType == 'tc'.toString()">AND (survey.surveyTitle LIKE CONCAT('%',#{keyword},'%')) or (survey.surveyContent LIKE CONCAT('%',#{keyword},'%'))</if>-->
+<!--        </if>-->
+<!--    </sql>-->
+
     <insert id="insertSurvey" parameterMap="surveyVO">
         insert into survey (survey_index, user_index, survey_title, survey_content, survey_end)
-        values (surveyIndex.nextval, #{user_index}, #{survey_title}, #{survey_content},
-                #{survey_end})
+        values (surveyIndex.nextval, #{user_index}, #{survey_title}, #{survey_content}, #{survey_end})
     </insert>
 
     <insert id="insertSurveyItem" parameterMap="surveyItemVO">
@@ -74,7 +73,7 @@
     </insert>
 
     <select id="selectSurvey" parameterMap="surveyVO" resultMap="surveyVO">
-        SELECT survey_index, survey_title, users.user_index, survey_reg, survey_content, progressing, survey_end,
+        SELECT survey_index, survey_title, user_index, survey_reg, survey_content, progressing, survey_end,
                (
                    SELECT COUNT(survey_result_index)
                    FROM surveyResult
@@ -106,17 +105,17 @@
     <!-- 리스트 + 페이징 + 검색 -->
     <select id="selectSurveyList" parameterMap="searchCriteria" resultMap="surveyVO">
         SELECT
-        survey_index, user_index, survey_title, survey_content, survey_reg, survey_end, progressing,(
-        SELECT COUNT(survey_result_index)
-        FROM surveyResult
-        JOIN surveyItem ON surveyResult.survey_item_index = surveyItem.survey_item_index
-        WHERE surveyItem.survey_index = survey.survey_index
-        )survey_count
+        survey_index, user_index, survey_title, survey_content, survey_reg, survey_end, progressing,
+               (
+                   SELECT COUNT(survey_result_index)
+                   FROM surveyResult
+                       JOIN surveyItem ON surveyResult.survey_item_index = surveyItem.survey_item_index
+                   WHERE surveyItem.survey_index = survey.survey_index
+                )survey_count
         FROM survey
-        JOIN users ON survey.user_index = users.user_index
+            JOIN users ON survey.user_index = users.user_index
         WHERE survey_index > 0
-
-        <include refid="search"></include>
+        <include refid="search"/>
         ORDER BY survey_index desc
         LIMIT #{pageStart}, #{perPageNum}
     </select>
@@ -126,7 +125,7 @@
         <![CDATA[
 		SELECT COUNT(survey_index)
 		FROM survey
-		JOIN users ON users.user_index = survey.user_index
+		    JOIN users ON users.user_index = survey.user_index
 		WHERE survey_index > 0
 		]]>
         <include refid="search"></include>
@@ -135,11 +134,10 @@
     <select id="selectSurveyResultDataSet" parameterMap="surveyItemVO" resultMap="resultDataSet">
         SELECT users.user_gender, users.user_name, surveyItem.survey_item_index
         FROM surveyItem
-        JOIN surveyResult ON surveyResult.survey_item_index = surveyItem.survey_item_index
-        JOIN users ON surveyResult.user_index = users.user_index
+            JOIN surveyResult ON surveyResult.survey_item_index = surveyItem.survey_item_index
+            JOIN users ON surveyResult.user_index = users.user_index
         WHERE
             surveyItem.survey_index = #{survey_index}
     </select>
-
 
 </mapper>
