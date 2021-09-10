@@ -16,7 +16,7 @@ import java.util.Map;
 @Repository
 public class SurveyMapperimpl implements SurveyMapper{
     private static final Logger logger = LoggerFactory.getLogger(SurveyServiceimpl.class);
-    private String namespace = "com.CMD.CMD_pro.sqlMap.surveyMapper";
+    private String namespace = "com.CMD.CMD_pro.survey.mapper.SurveyMapper";
 
     @Autowired
     private SqlSession sqlSession;
@@ -51,6 +51,7 @@ public class SurveyMapperimpl implements SurveyMapper{
     @Override
     public List<ResultDataSet> selectSurveyResultDataSet(int survey_index) {
         logger.info("selectSurveyResultDataSet");
+
         return sqlSession.selectList(namespace+".selectResultDataset", survey_index);
     }
 

@@ -2,7 +2,7 @@ package com.CMD.CMD_pro.survey.controller;
 
 import com.CMD.CMD_pro.board.controller.UpdateForm;
 import com.CMD.CMD_pro.survey.domain.*;
-import com.CMD.CMD_pro.survey.service.SurveyService;
+import com.CMD.CMD_pro.survey.mapper.SurveyMapper;
 import com.CMD.CMD_pro.user.domain.UserVO;
 import com.CMD.CMD_pro.user.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,15 +25,15 @@ public class SurveyController {
     @Autowired
     private UserMapper userMapper;
     @Autowired
-    private SurveyService surveyService;
+    private SurveyMapper surveyMapper;
 
     @RequestMapping(value = "/mainSurvey") //설문조사 메인화면
     public String main(@ModelAttribute("cri") SearchCriteria cri, Model model) throws Exception {
 
-        List<SurveyVO> surveyList = surveyService.getSurveyList(cri);
+        List<SurveyVO> surveyList = surveyMapper.selectSurveyList(cri);
         model.addAttribute("surveyList", surveyList);//survey 리스트 출력
 
-        PageMaker pageMaker = surveyService.getPagination(cri);
+        PageMaker pageMaker = surveyMapper.selectCountPaging(cri);
         model.addAttribute("pageMaker", pageMaker); // 게시판 하단의 페이징 관련, 이전페이지, 페이지 링크 , 다음 페이지
 
         //model.addAttribute("list", surveyList.get(0)); //데이터 전달 test 확인
@@ -43,25 +43,26 @@ public class SurveyController {
     @RequestMapping(value = "/readSurvey") //진행중인 설문조사 읽기
     public String readSurvey(@RequestParam("survey_index") int survey_index, @RequestParam("progressing") int progressing,
                              @ModelAttribute("cri") SearchCriteria cri, Model model, HttpSession session) throws Exception{
-        boolean isProgressing = progressing == 1 ? true : false;
-        SurveyVO surveyVo = null;
         String userID = (String)session.getAttribute("id");
         if(userID == null){ //로그인 확인
             model.addAttribute("message","로그인이 되어있지 않습니다.");
             model.addAttribute("url","login");
             return "alert";
         }
+
+        boolean isProgressing = progressing == 1 ? true : false;
+        List<SurveyItemVO> surveyItemList = null;
         if(isProgressing) { //설문조사가 실행중일때
-            surveyVo = surveyService.getSurveyItems(survey_index);
-            model.addAttribute("survey", surveyVo);//진행중인 설문조사 상세 페이지
+            surveyItemList = surveyMapper.selectSurveyItems(survey_index);
+            model.addAttribute("surveyItemList", surveyItemList);//진행중인 설문조사 상세 페이지
 
             return "readSurvey_on";
         }
         else{ //설문조사 마감일때
-            surveyVo = surveyService.getSurveyResult(survey_index);
-            List<SurveyItemVO> itemList = ((SurveyWithItemVO)surveyVo).getSurveyItemList();
+            //surveyItemList = surveyMapper.selectSurveyResultDataSet(survey_index);
+            List<SurveyItemVO> itemList = ((SurveyWithItemVO)surveyItemList).getSurveyItemList();
 
-            model.addAttribute("survey", surveyVo); //설문조사 보기
+            model.addAttribute("surveyItemList", surveyItemList); //설문조사 보기
             model.addAttribute("itemList", itemList); //내용 리스트
             model.addAttribute("message","마감된 설문조사입니다.");
 
@@ -72,7 +73,7 @@ public class SurveyController {
     @RequestMapping("/closeSurvey") //설문조사 닫기
     public String closeSurvey(@RequestParam("survey_index") int survey_index) {
         try {
-            surveyService.closeSurvey(survey_index);
+            surveyMapper.closeSurvey(survey_index);
         } catch (Exception e) {
             return "redirect:/survey/main?surveyclose=fail"; //닫는거 실패했을때
         }
@@ -116,7 +117,7 @@ public class SurveyController {
             surveyItemList.add(temp);
         }
         surveyWithItemVO.setSurveyItemList(surveyItemList);
-        surveyService.addSurvey(surveyVO,surveyWithItemVO);
+//        surveyMapper.addSurveyResult(surveyWithItemVO);
 
         return "redirect:/survey/main";
     }
@@ -130,7 +131,7 @@ public class SurveyController {
             surveyResultVO.setSurvey_item_index(survey_item_index);
             //surveyResultVO.setMember_seq(user.getMember_seq());
             surveyResultVO.setSurvey_index(survey_index);
-            surveyService.addSurveyResult(surveyResultVO);
+            surveyMapper.addSurveyResult(surveyResultVO);
             return_param.put("result", true);
             return_param.put("message", "설문에 참여하였습니다.");
         } catch (Exception e) {
@@ -156,7 +157,7 @@ public class SurveyController {
             return "alert";
         }
         try {
-            surveyService.removeSurvey(survey_index);
+            surveyMapper.removeSurvey(survey_index);
             //model.addAttribute("msg","설문조사가 삭제되었습니다.");
         } catch (Exception e) {
             return "redirect:/survey/main?surveyremove=fail";
@@ -170,7 +171,7 @@ public class SurveyController {
         cri.setPage(1);
         cri.setPerPageNum(2);
 
-        List<SurveyVO> SurveyList = surveyService.getSurveyList(cri);
+        List<SurveyVO> SurveyList = surveyMapper.selectSurveyList(cri);
         model.addAttribute("surveysearch",SurveyList); //검색한 설문 리스트
         return "mainSurvey";
     }

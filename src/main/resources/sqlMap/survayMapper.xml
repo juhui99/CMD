@@ -58,7 +58,7 @@
 
     <insert id="insertSurvey" parameterMap="surveyVO">
         insert into survey (survey_index, user_index, survey_title, survey_content, survey_end)
-        values (surveyIndex.nextval, #{user_index}, #{survey_title}, #{survey_content}, #{survey_end})
+        values (survey_index.nextval, #{user_index}, #{survey_title}, #{survey_content}, #{survey_end})
     </insert>
 
     <insert id="insertSurveyItem" parameterMap="surveyItemVO">
@@ -73,7 +73,7 @@
     </insert>
 
     <select id="selectSurvey" parameterMap="surveyVO" resultMap="surveyVO">
-        SELECT survey_index, survey_title, user_index, survey_reg, survey_content, progressing, survey_end,
+        SELECT survey_index, survey_title, survey.user_index, survey_reg, survey_content, progressing, survey_end,
                (
                    SELECT COUNT(survey_result_index)
                    FROM surveyResult
@@ -105,7 +105,7 @@
     <!-- 리스트 + 페이징 + 검색 -->
     <select id="selectSurveyList" parameterMap="searchCriteria" resultMap="surveyVO">
         SELECT
-        survey_index, user_index, survey_title, survey_content, survey_reg, survey_end, progressing,
+        survey_index, survey.user_index, survey_title, survey_content, survey_reg, survey_end, progressing,
                (
                    SELECT COUNT(survey_result_index)
                    FROM surveyResult
@@ -113,7 +113,7 @@
                    WHERE surveyItem.survey_index = survey.survey_index
                 )survey_count
         FROM survey
-            JOIN users ON survey.user_index = users.user_index
+            LEFT JOIN users ON survey.user_index = users.user_index
         WHERE survey_index > 0
         <include refid="search"/>
         ORDER BY survey_index desc
@@ -125,7 +125,7 @@
         <![CDATA[
 		SELECT COUNT(survey_index)
 		FROM survey
-		    JOIN users ON users.user_index = survey.user_index
+		    LEFT JOIN users ON users.user_index = survey.user_index
 		WHERE survey_index > 0
 		]]>
         <include refid="search"></include>
