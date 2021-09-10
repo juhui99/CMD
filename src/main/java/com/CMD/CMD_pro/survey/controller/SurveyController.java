@@ -119,7 +119,7 @@ public class SurveyController {
         surveyWithItemVO.setSurveyItemList(surveyItemList);
 //        surveyMapper.addSurveyResult(surveyWithItemVO);
 
-        return "redirect:/survey/main";
+        return "redirect:/mainSurvey";
     }
 
     @RequestMapping(value="voteSurvey", method = RequestMethod.POST) //설문조사 참여하기
@@ -166,14 +166,19 @@ public class SurveyController {
     }
 
     @RequestMapping("/searchSurvey") // 메인 검색
-    public String searchSurvey(Model model) throws Exception {
+    public String searchSurvey(Model model, @RequestParam("keyword") String keyword) throws Exception {
         SearchCriteria cri = new SearchCriteria();
         cri.setPage(1);
-        cri.setPerPageNum(2);
+        cri.setPerPageNum(10);
+
+        PageMaker pageMaker = new PageMaker();
+        pageMaker.makeSearch(keyword);
 
         List<SurveyVO> SurveyList = surveyMapper.selectSurveyList(cri);
+//        surveyMapper.searchInsert(keyword);
+        model.addAttribute("keyword",keyword); //키워드 전달
         model.addAttribute("surveysearch",SurveyList); //검색한 설문 리스트
-        return "mainSurvey";
+        return "searchSurvey";
     }
 
 //    @RequestMapping(value = "/mainsurvey")

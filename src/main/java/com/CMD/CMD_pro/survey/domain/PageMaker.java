@@ -48,40 +48,39 @@ public class PageMaker {
         next = endPage * cri.getPerPageNum() < totalCount ? true : false;
     }
 
-    // 페이지 쿼리 만드는 메소드
-    public String makeQuery(int page) {
-        UriComponents uri = UriComponentsBuilder.newInstance()
-                .queryParam("page", page)
-                .queryParam("perPageNum", cri.getPerPageNum())
-                .build();
-        return uri.toUriString();
-    }
-    public String makeQuery(int idx, int page) {
-        UriComponents uri = UriComponentsBuilder.newInstance()
-                .queryParam("idx", idx)
-                .queryParam("page", page)
-                .queryParam("perPageNum", cri.getPerPageNum())
-                .build();
-        return uri.toUriString();
-    }
-    private String encoding(String keyword) {
-        if(keyword == null || keyword.trim().length() == 0) {
-            return "";
-        }
-        try {
-            return URLEncoder.encode(keyword, "UTF-8");
-        } catch(UnsupportedEncodingException e) {
-            return "";
-        }
-    }
+//    // 페이지 쿼리 만드는 메소드
+//    public String makeQuery(int page) {
+//        UriComponents uri = UriComponentsBuilder.newInstance()
+//                .queryParam("page", page)
+//                .queryParam("perPageNum", cri.getPerPageNum())
+//                .build();
+//        return uri.toUriString();
+//    }
+//    public String makeQuery(int idx, int page) {
+//        UriComponents uri = UriComponentsBuilder.newInstance()
+//                .queryParam("idx", idx)
+//                .queryParam("page", page)
+//                .queryParam("perPageNum", cri.getPerPageNum())
+//                .build();
+//        return uri.toUriString();
+//    }
+//    private String encoding(String keyword) {
+//        if(keyword == null || keyword.trim().length() == 0) {
+//            return "";
+//        }
+//        try {
+//            return URLEncoder.encode(keyword, "UTF-8");
+//        } catch(UnsupportedEncodingException e) {
+//            return "";
+//        }
+//    }
 
     // 리스트 + 검색 + 페이징
-    public String makeSearch(int page) {
+    public String makeSearch(String keyword) {
         UriComponents uriComponents = UriComponentsBuilder.newInstance()
-                .queryParam("page", page)
                 .queryParam("perPageNum", cri.getPerPageNum())
                 .queryParam("searchType", ((SearchCriteria)cri).getSearchType())
-                .queryParam("keyword", encoding(((SearchCriteria)cri).getKeyword()))
+                .queryParam("keyword", keyword)
                 .build();
         return uriComponents.toUriString();
     }
