@@ -173,6 +173,7 @@ public class BoardListController {
     }
     @GetMapping("/write")                  //글쓰기
     public String write(@RequestParam("kind") String kind, @RequestParam("realm") String realm, Model model, HttpSession session) throws Exception{
+        String filename;
         String id = (String) session.getAttribute("id");
         if(id == null){
             model.addAttribute("msg","로그인이 되어있지 않습니다.");
@@ -180,17 +181,20 @@ public class BoardListController {
             return "alert";
         }
         UserVO user = userMapper.userLogin(id);
+        filename = user.getUser_profile();
         int maxBno = boardMapper.selectMax() + 1;
         model.addAttribute("user",user);
         model.addAttribute("kind", kind);
         model.addAttribute("realm",realm);
         model.addAttribute("maxBno", maxBno);
+        model.addAttribute("filename",filename);
         return "write";
     }
 
     @GetMapping("/view")    //글 상세보기
     public String BoardView(@RequestParam("bno") int bno, @RequestParam("kind") String kind, @RequestParam("realm") String realm, Model model, HttpSession session,HttpServletRequest request) throws Exception{
         String userID = (String)session.getAttribute("id");
+        String filename;
         String pageNumber = null;
         String option = "non";
         String search = "non";
@@ -238,6 +242,7 @@ public class BoardListController {
 
         List<CommentVO> commentList = boardMapper.CommentList(bno);
         int commentCount = boardMapper.CommentCount(bno);
+        filename = user.getUser_profile();
         model.addAttribute("commentCount",commentCount);
         model.addAttribute("commentList",commentList);
         model.addAttribute("page",pageNumber);
@@ -248,6 +253,7 @@ public class BoardListController {
         model.addAttribute("search_option",search_option);
         model.addAttribute("keyword",keyword);
         model.addAttribute("mainSearch",mainSearch);
+        model.addAttribute("filename",filename);
 
 
         return "view";
@@ -279,6 +285,8 @@ public class BoardListController {
         if(form.getFilename()==""){
             filename = "no";
         }
+        UserVO user = userMapper.userLogin(userID);
+        String profileName = user.getUser_profile();
         model.addAttribute("board",board); //저장된 board 객체를 모델로 담아 update.html로 전달
         model.addAttribute("filename",filename);
         model.addAttribute("option",option);
@@ -287,6 +295,7 @@ public class BoardListController {
         model.addAttribute("keyword",keyword);
         model.addAttribute("mainSearch",mainSearch);
         model.addAttribute("page",page);
+        model.addAttribute("profile_name", profileName);
         return "update";
     }
 

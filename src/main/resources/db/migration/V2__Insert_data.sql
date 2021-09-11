@@ -6,7 +6,7 @@ insert into users ( `user_id`,
                     `user_email`,
                     `user_gender`,
                     `user_manager`)
-values('aaaa', '0a0a','이주희', '23', 'DBA', 'aaaa@gmail.com', 'W',1);
+values('aaaa', '0a0a0a0a*','이주희', '23', 'DBA', 'aaaa@gmail.com', 'W',1);
 
 insert into users ( `user_id`,
                     `user_pwd`,
@@ -16,7 +16,7 @@ insert into users ( `user_id`,
                     `user_email`,
                     `user_gender`,
                     `user_manager`)
-values('ehfehfdl0927', '0927','김주희', '23', 'Backend', 'kimjoohe10@naver.com', 'W',1);
+values('ehfehfdl0927', 'kimjoohe10*','김주희', '23', 'Backend', 'kimjoohe10@naver.com', 'W',1);
 
 insert into users ( `user_id`,
                     `user_pwd`,
@@ -26,7 +26,7 @@ insert into users ( `user_id`,
                     `user_email`,
                     `user_gender`,
                     `user_manager`)
-values('bbbb11', '1111','음성준', '25', 'Frontend', 'bbbb@gmail.com', 'M',1);
+values('bbbb11', 'b1111111#','음성준', '25', 'Frontend', 'bbbb@gmail.com', 'M',1);
 
 insert into survey (`user_index`,
                     `survey_title`,
