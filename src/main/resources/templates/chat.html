@@ -48,8 +48,8 @@
                     for (var i = 0; i < result.length; i++) {
                         var html = '';
                         if (result[i][0].value == $('#friendID').val()) {
-                            html += '<div style="margin-left: 10px; margin-top: 20px;"><img class= "img-circle" style="width: 35px; height: 35px; border-top:  #003366d2; border-bottom: #003366d2" src="/display?filename=' + $('#friendImg').val() + '"' + '/><span style="margin-left: 4px; color: #003366d2; font-weight: bold;">'
-                                + result[i][0].value + '</span><br>' + '<div style="width: 200px;"><span style="word-break: break-all;">' + result[i][1].value + '</span></div>'
+                            html += '<div style="margin-left: 10px; margin-top: 20px;" align="left"><img class= "img-circle" style="width: 35px; height: 35px; border-top:  #003366d2; border-bottom: #003366d2" src="/display?filename=' + $('#friendImg').val() + '"' + '/><span style="margin-left: 4px; color: #003366d2; font-weight: bold;">'
+                                + result[i][0].value + '</span><br>' + '<div style="width: 200px;"><span>' + result[i][1].value + '</span></div>'
                                 + '<span style="font-size: 1px; color: grey;">' + result[i][2].value + '</span></div>';
                             $("#chatContainer").append(html);
                             $('#chatContainer').scrollTop($('#chatContainer')[0].scrollHeight);
