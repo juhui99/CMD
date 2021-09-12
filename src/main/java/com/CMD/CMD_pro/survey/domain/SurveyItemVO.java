@@ -22,16 +22,16 @@ public class SurveyItemVO {
                 + survey_item_content + "]";
     }
 
-    public static List<SurveyItemVO> initSurveyItemVO(ResultSet rs) throws SQLException {
-        List<SurveyItemVO> itemList = new ArrayList<SurveyItemVO>();
-        while (rs.next()) {
-            SurveyItemVO surveyItemVO = new SurveyItemVO();
-            surveyItemVO.setSurvey_item_index(rs.getInt("survey_item_index"));
-            surveyItemVO.setSurvey_index(rs.getInt("survey_index"));
-            surveyItemVO.setSurvey_item_content(rs.getString("survey_item_content"));
-            itemList.add(surveyItemVO);
-        }
-        return itemList;
-    }
+//    public static List<SurveyItemVO> initSurveyItemVO(ResultSet rs) throws SQLException {
+//        List<SurveyItemVO> itemList = new ArrayList<SurveyItemVO>();
+//        while (rs.next()) {
+//            SurveyItemVO surveyItemVO = new SurveyItemVO();
+//            surveyItemVO.setSurvey_item_index(rs.getInt("survey_item_index"));
+//            surveyItemVO.setSurvey_index(rs.getInt("survey_index"));
+//            surveyItemVO.setSurvey_item_content(rs.getString("survey_item_content"));
+//            itemList.add(surveyItemVO);
+//        }
+//        return itemList;
+//    }
 
 }

@@ -54,8 +54,8 @@ public class SurveyServiceimpl implements SurveyService {
 
     // 설문조사 보기 선택
     @Override
-    public void addSurveyResult(SurveyResultVO srvo) {
-        surveyMapper.addSurveyResult(srvo);
+    public void insertSurveyResult(SurveyResultVO srvo) {
+        surveyMapper.insertSurveyResult(srvo);
     }
 
 //    @Override

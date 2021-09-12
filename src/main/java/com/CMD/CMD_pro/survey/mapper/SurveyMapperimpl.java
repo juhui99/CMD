@@ -90,9 +90,9 @@ public class SurveyMapperimpl implements SurveyMapper{
 
     // 설문조사 보기 선택
     @Override
-    public void addSurveyResult(SurveyResultVO srvo) {
-        logger.info("addSurveyResult");
-        sqlSession.insert(namespace+".addSurveyResult", srvo);
+    public void insertSurveyResult(SurveyResultVO srvo) {
+        logger.info("insertSurveyResult");
+        sqlSession.insert(namespace+".insertSurveyResult", srvo);
     }
 
 //    @Override

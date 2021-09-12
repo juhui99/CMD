@@ -10,7 +10,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 public class SearchCriteria extends Criteria{
     private String searchType; // 검색 타입(카테고리)
     private String progressing;
-    private String search;
+//    private String search;
     private String keyword; // 검색 키워드
 
     @Override
@@ -18,16 +18,16 @@ public class SearchCriteria extends Criteria{
         return "SearchCriteria [searchType=" + searchType + ",keyword=" + keyword + "]";
     }
 
-    public String makeSearch() {
-        UriComponents uriComponents = UriComponentsBuilder.newInstance()
-                .queryParam("perPageNum", this.getPerPageNum())
-                .queryParam("searchType", this.getSearchType())
-                .queryParam("progressing", this.getProgressing())
-                .queryParam("search", this.getSearch())
-                .queryParam("keyword", this.getKeyword())
-                .build();
-        return uriComponents.toUriString();
-    }
+//    public String makeSearch() {
+//        UriComponents uriComponents = UriComponentsBuilder.newInstance()
+//                .queryParam("perPageNum", this.getPerPageNum())
+//                .queryParam("searchType", this.getSearchType())
+//                .queryParam("progressing", this.getProgressing())
+//                .queryParam("search", this.getSearch())
+//                .queryParam("keyword", this.getKeyword())
+//                .build();
+//        return uriComponents.toUriString();
+//    }
 
     public String getProgressing() {
         if (progressing == null || progressing.isEmpty()) {

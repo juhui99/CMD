@@ -76,11 +76,11 @@ public class PageMaker {
 //    }
 
     // 리스트 + 검색 + 페이징
-    public String makeSearch(String keyword) {
+    public String makeSearch(SearchCriteria cri) {
         UriComponents uriComponents = UriComponentsBuilder.newInstance()
                 .queryParam("perPageNum", cri.getPerPageNum())
                 .queryParam("searchType", ((SearchCriteria)cri).getSearchType())
-                .queryParam("keyword", keyword)
+                .queryParam("keyword", cri.getKeyword())
                 .build();
         return uriComponents.toUriString();
     }

@@ -17,7 +17,7 @@ public interface SurveyMapper {
     public SurveyItemVO selecyMySurveyResult(int survey_index, int user_index);
     public void insertSurvey(SurveyVO svo);
     public void insertSurveyItem(List<SurveyItemVO> itemlist);
-    public void addSurveyResult(SurveyResultVO srvo);
+    public void insertSurveyResult(SurveyResultVO srvo);
 //    public List<SurveyVO> selectSearchSurvey(SearchCriteria cri);
     public void closeSurvey(int survey_index);
     public void removeSurvey(int survey_index);

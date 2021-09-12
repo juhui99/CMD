@@ -6,17 +6,36 @@
   <meta name="viewport"
         content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Title</title>
+  <title>readSurvey_on</title>
 </head>
 <body>
-<table>
-  <tbody>
-  <tr th:each="surveyItemList : ${surveyItemList}">
-    <td th:text="${surveyItemList.survey_item_index}"></td>
-    <td th:text="${surveyItemList.survey_item_content}"></td>
-  </tr>
-  </tbody>
-</table>
+<!--<input type="hidden" id="survey_index" name="survey_index" value="${surveyList.survey_index}">-->
+<!--<input type="text" id="survey_title" name="survey_title" value="${survey.survey_title}">-->
+<!--<div>-->
+<!--  <label th:text="${surveyList.survey_title}">${surveyList.survey_title}</label>-->
+<!--</div>-->
+<div>
+  <table>
+    <tbody>
+    <tr th:each="surveyVO : ${surveyVO}">
+      <td th:text="${surveyVO.survey_title}"></td>
+      <td th:text="${surveyVO.survey_content}"></td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+<div>
+  <table>
+    <tbody>
+    <tr th:each="surveyItemList : ${surveyItemList}">
+      <td th:text="${surveyItemList.survey_item_index}"></td>
+      <td th:text="${surveyItemList.survey_item_content}"></td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
 
 </body>
 </html>

@@ -18,7 +18,7 @@ public interface SurveyService {
     public void addSurvey(SurveyVO surveyVO, SurveyWithItemVO surveyWithItemVO);
     public void	closeSurvey(int survey_index);
     public void removeSurvey(int survey_index);
-    public void addSurveyResult(SurveyResultVO srvo);
+    public void insertSurveyResult(SurveyResultVO srvo);
 //    public List<SurveyVO> getSearchMember(SearchCriteria cri);
 //    public void removeSurveyUnabled(String[] surseqlist, String realPath);
 }

@@ -6,7 +6,7 @@ insert into users ( `user_id`,
                     `user_email`,
                     `user_gender`,
                     `user_manager`)
-values('aaaa', '0a0a','이주희', '23', 'DBA', 'aaaa@gmail.com', 'W',1);
+values('aaaa', '0a0a','이주희', '24', 'DBA', 'aaaa@gmail.com', 'W',1);
 
 insert into users ( `user_id`,
                     `user_pwd`,
@@ -40,20 +40,48 @@ insert into survey (`user_index`,
                     `survey_content`,
                     `survey_end`,
                     `survey_count`)
-values(2,'test2','내용2','2021-09-5',4);
+values(2,'test2','내용2','2021-09-25',4);
+
+insert into survey (`user_index`,
+                    `survey_title`,
+                    `survey_content`,
+                    `survey_end`,
+                    `progressing`,
+                    `survey_count`)
+values(2,'test3','내용3','2021-10-05',0,3);
+
 
 insert into surveyItem (`survey_index`,
                         `survey_item_content`)
 values(1,'선택1');
+insert into surveyItem (`survey_index`,
+                        `survey_item_content`)
+values(1,'선택2');
+insert into surveyItem (`survey_index`,
+                        `survey_item_content`)
+values(1,'선택3');
+
 
 insert into surveyItem (`survey_index`,
                         `survey_item_content`)
+values(2,'선택1');
+insert into surveyItem (`survey_index`,
+                        `survey_item_content`)
 values(2,'선택2');
+insert into surveyItem (`survey_index`,
+                        `survey_item_content`)
+values(2,'선택3');
+
 
 insert into surveyResult (`survey_index`,
                           `survey_item_index`,
                           `user_index`)
 values(1,1,2);
+
+insert into surveyResult (`survey_index`,
+                          `survey_item_index`,
+                          `user_index`)
+values(1,1,1);
 
 insert into board       (`subject`,
                        `content`,
