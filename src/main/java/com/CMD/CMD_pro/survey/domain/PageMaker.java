@@ -36,10 +36,13 @@ public class PageMaker {
     }
 
     private void calcData() {
+        //마지막 번호
         endPage = (int) (Math.ceil(cri.getPage() / (double) displayPageNum) * displayPageNum);
+        //시작 번호
         startPage = (endPage - displayPageNum) + 1;
         if(startPage <= 0) startPage = 1;
 
+        //마지막번호 재계산
         int tempEndPage = (int) (Math.ceil(totalCount / (double) cri.getPerPageNum()));
         if (endPage > tempEndPage) {
             endPage = tempEndPage;
@@ -48,14 +51,14 @@ public class PageMaker {
         next = endPage * cri.getPerPageNum() < totalCount ? true : false;
     }
 
-//    // 페이지 쿼리 만드는 메소드
-//    public String makeQuery(int page) {
-//        UriComponents uri = UriComponentsBuilder.newInstance()
-//                .queryParam("page", page)
-//                .queryParam("perPageNum", cri.getPerPageNum())
-//                .build();
-//        return uri.toUriString();
-//    }
+    // 페이지 쿼리 만드는 메소드
+    public String makeQuery(int page) {
+        UriComponents uri = UriComponentsBuilder.newInstance()
+                .queryParam("page", page)
+                .queryParam("perPageNum", cri.getPerPageNum())
+                .build();
+        return uri.toUriString();
+    }
 //    public String makeQuery(int idx, int page) {
 //        UriComponents uri = UriComponentsBuilder.newInstance()
 //                .queryParam("idx", idx)
@@ -64,16 +67,16 @@ public class PageMaker {
 //                .build();
 //        return uri.toUriString();
 //    }
-//    private String encoding(String keyword) {
-//        if(keyword == null || keyword.trim().length() == 0) {
-//            return "";
-//        }
-//        try {
-//            return URLEncoder.encode(keyword, "UTF-8");
-//        } catch(UnsupportedEncodingException e) {
-//            return "";
-//        }
-//    }
+    private String encoding(String keyword) {
+        if(keyword == null || keyword.trim().length() == 0) {
+            return "";
+        }
+        try {
+            return URLEncoder.encode(keyword, "UTF-8");
+        } catch(UnsupportedEncodingException e) {
+            return "";
+        }
+    }
 
     // 리스트 + 검색 + 페이징
     public String makeSearch(SearchCriteria cri) {

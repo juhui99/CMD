@@ -11,8 +11,8 @@ public class Criteria {
 
     //초기값 세팅
     public Criteria() {
-        this.page = 1;
-        this.perPageNum = 10;
+        this.page = 1; //현재 페이지
+        this.perPageNum = 5;//페이지당 출력할 데이터 수
     }
 
     public int getPage() {

@@ -63,7 +63,7 @@ public class SurveyController {
             surveyItemList = surveyMapper.selectSurveyItems(survey_index);
 
             List<ResultDataSet> dataset  = surveyMapper.selectSurveyResultDataSet(survey_index);
-//
+
 //           for (int i = 0 ; i < surveyItemList.size(); i++) {
 //                SurveyItemVO vo = surveyItemList.get(i);
 //            }
@@ -72,6 +72,7 @@ public class SurveyController {
 //                dataSet.setSurvey_item_index(vo.getSurvey_item_index());
 //                dataset.add(dataSet);
 //            }
+
             model.addAttribute("surveyItemList", surveyItemList); //설문조사 선택 리스트보기
             model.addAttribute("dataset", dataset);
             return "readSurvey_off";
@@ -88,10 +89,10 @@ public class SurveyController {
 
         return "redirect:/survey/main?surveyclose=success"; //설문조사 마감 성공
     }
-    @RequestMapping(value="/insertSurvey",method = RequestMethod.GET)
-    public String AddSurveyGET() throws Exception {
-        return "insertSurvey";
-    }
+//    @RequestMapping(value="/insertSurvey",method = RequestMethod.GET)
+//    public String AddSurveyGET() throws Exception {
+//        return "insertSurvey";
+//    }
 
     @RequestMapping(value="insertSurvey", method = RequestMethod.POST) //설문조사 추가하기
     public String addSurvey(@RequestParam("survey_title") String survey_title, @RequestParam("survey_content") String survey_content,
@@ -126,7 +127,7 @@ public class SurveyController {
         }
         surveyWithItemVO.setSurveyItemList(surveyItemList);
 
-        return "redirect:/mainSurvey";
+        return "insert";
     }
 
     @RequestMapping(value="voteSurvey", method = RequestMethod.POST) //설문조사 참여하기

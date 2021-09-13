@@ -50,6 +50,62 @@ insert into survey (`user_index`,
                     `survey_count`)
 values(2,'test3','내용3','2021-10-05',0,3);
 
+insert into survey (`user_index`,
+                    `survey_title`,
+                    `survey_content`,
+                    `survey_end`,
+                    `survey_count`)
+values(1,'test4','내용4','2021-09-14',1);
+
+insert into survey (`user_index`,
+                    `survey_title`,
+                    `survey_content`,
+                    `survey_end`,
+                    `survey_count`)
+values(1,'test5','내용5','2021-09-14',1);
+
+insert into survey (`user_index`,
+                    `survey_title`,
+                    `survey_content`,
+                    `survey_end`,
+                    `survey_count`)
+values(1,'test6','내용6','2021-09-14',1);
+
+insert into survey (`user_index`,
+                    `survey_title`,
+                    `survey_content`,
+                    `survey_end`,
+                    `survey_count`)
+values(1,'test7','내용7','2021-09-14',1);
+
+insert into survey (`user_index`,
+                    `survey_title`,
+                    `survey_content`,
+                    `survey_end`,
+                    `survey_count`)
+values(1,'test8','내용8','2021-09-14',1);
+
+insert into survey (`user_index`,
+                    `survey_title`,
+                    `survey_content`,
+                    `survey_end`,
+                    `survey_count`)
+values(1,'test9','내용9','2021-09-14',1);
+
+insert into survey (`user_index`,
+                    `survey_title`,
+                    `survey_content`,
+                    `survey_end`,
+                    `survey_count`)
+values(1,'test10','내용10','2021-09-14',1);
+
+insert into survey (`user_index`,
+                    `survey_title`,
+                    `survey_content`,
+                    `survey_end`,
+                    `survey_count`)
+values(1,'test11','내용11','2021-09-14',1);
+
 
 insert into surveyItem (`survey_index`,
                         `survey_item_content`)

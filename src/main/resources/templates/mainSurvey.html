@@ -19,19 +19,26 @@
     </tr>
     </tbody>
 </table>
-<!--<input th:value="${pageMaker}">-->
-<!--<ul>-->
-<!--    <li> &lt;!&ndash;th:if="${pageMaker.startPage != 1}"&ndash;&gt;-->
-<!--        <a th:href="${pageMaker.startPage}"></a>-->
-<!--    </li>-->
-<!--<script type="text/javascript">-->
-<!--    createPagination(-->
-<!--        "${ cri.page }", //페이지블럭-->
-<!--        "${ pageMaker.totalPage }", //토탈페이지 뿌리기-->
-<!--        "${ pageMaker.displayPageNum }", //한페이지 몇개 출력?-->
-<!--        "${ cri.makeSearch() }" //url 만들기...-->
-<!--    );-->
-<!--</script>-->
+<nav aria-label="Page navigation example">
+    <ul class="pagination">
+<!--        <li th:if="${pageMaker.prev == true}">-->
+<!--            <a aria-label="prev" th:href="@{/mainSurvey?(cri.page=0)}">&lt;</a>-->
+<!--        </li>-->
+        <li>
+            <a th:href="@{/mainSurvey(cri.page=1)}" aria-label="First">
+                <span aria-hidden="true">First</span>
+            </a>
+        </li>
+
+        <li th:class="${pageMaker.prev == true}">
+            <a th:href="@pageMaker.startPage} ? '#' :@{/mainSurvey(page=${cri.page})}" aria-label="Previous">
+                <span aria-hidden="true">&lt;</span>
+            </a>
+        </li>
+
+
+    </ul>
+</nav>
 </ul>
 
 
