@@ -6,6 +6,7 @@ import com.CMD.CMD_pro.survey.mapper.SurveyMapper;
 import com.CMD.CMD_pro.user.domain.UserVO;
 import com.CMD.CMD_pro.user.mapper.UserMapper;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,13 +29,17 @@ public class SurveyController {
     @Autowired
     private SurveyMapper surveyMapper;
 
-    @RequestMapping(value = "/mainSurvey") //설문조사 메인화면
+    @RequestMapping(value = "/mainSurvey", method = RequestMethod.GET) //설문조사 메인화면
     public String mainSurvey(@ModelAttribute("cri") SearchCriteria cri, Model model) throws Exception {
 
         List<SurveyVO> surveyList = surveyMapper.selectSurveyList(cri);
         model.addAttribute("surveyList", surveyList);//survey 리스트 출력
 
-        PageMaker pageMaker = surveyMapper.selectCountPaging(cri);
+//        PageMaker pageMaker = surveyMapper.selectCountPaging(cri);
+        PageMaker pageMaker = new PageMaker();
+        pageMaker.setCri(cri);
+        pageMaker.setTotalCount(surveyMapper.selectCountPaging());
+
         model.addAttribute("pageMaker", pageMaker); // 게시판 하단의 페이징 관련, 이전페이지, 페이지 링크 , 다음 페이지
         return "mainSurvey";
     }
@@ -86,13 +91,13 @@ public class SurveyController {
         } catch (Exception e) {
             return "redirect:/survey/main?surveyclose=fail"; //닫는거 실패했을때
         }
-
         return "redirect:/survey/main?surveyclose=success"; //설문조사 마감 성공
     }
-//    @RequestMapping(value="/insertSurvey",method = RequestMethod.GET)
-//    public String AddSurveyGET() throws Exception {
-//        return "insertSurvey";
-//    }
+
+    @RequestMapping(value="/insertSurvey",method = RequestMethod.GET)
+    public String AddSurveyGET() throws Exception {
+        return "insertSurvey";
+    }
 
     @RequestMapping(value="insertSurvey", method = RequestMethod.POST) //설문조사 추가하기
     public String addSurvey(@RequestParam("survey_title") String survey_title, @RequestParam("survey_content") String survey_content,
@@ -126,8 +131,10 @@ public class SurveyController {
             surveyItemList.add(temp);
         }
         surveyWithItemVO.setSurveyItemList(surveyItemList);
+        surveyMapper.insertSurvey(surveyVO);
+        surveyMapper.insertSurveyItem(surveyItemList);
 
-        return "insert";
+        return "redirect:/mainSurvey";
     }
 
     @RequestMapping(value="voteSurvey", method = RequestMethod.POST) //설문조사 참여하기

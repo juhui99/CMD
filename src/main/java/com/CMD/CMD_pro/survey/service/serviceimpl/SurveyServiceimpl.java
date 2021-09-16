@@ -24,10 +24,10 @@ public class SurveyServiceimpl implements SurveyService {
         return surveyMapper.selectSurveyList(cri);
     }
 
-    @Override
-    public PageMaker getPagination(SearchCriteria cri) throws Exception {
-        return surveyMapper.selectCountPaging(cri);
-    }
+//    @Override
+//    public PageMaker getPagination(SearchCriteria cri) throws Exception {
+//        return surveyMapper.selectCountPaging(cri);
+//    }
 
     @Override
     public SurveyWithItemVO getSurveyItems(int survey_index) throws Exception {

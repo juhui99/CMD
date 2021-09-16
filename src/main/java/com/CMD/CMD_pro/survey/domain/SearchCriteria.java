@@ -17,15 +17,15 @@ public class SearchCriteria extends Criteria{
         return "SearchCriteria [searchType=" + searchType + ",keyword=" + keyword + "]";
     }
 
-    public String makeSearch() {
-        UriComponents uriComponents = UriComponentsBuilder.newInstance()
-                .queryParam("perPageNum", this.getPerPageNum())
-                .queryParam("searchType", this.getSearchType())
-                .queryParam("progressing", this.getProgressing())
-                .queryParam("keyword", this.getKeyword())
-                .build();
-        return uriComponents.toUriString();
-    }
+//    public String makeSearch() {
+//        UriComponents uriComponents = UriComponentsBuilder.newInstance()
+//                .queryParam("perPageNum", this.getPerPageNum())
+//                .queryParam("searchType", this.getSearchType())
+//                .queryParam("progressing", this.getProgressing())
+//                .queryParam("keyword", this.getKeyword())
+//                .build();
+//        return uriComponents.toUriString();
+//    }
 
     public String getProgressing() {
         if (progressing == null || progressing.isEmpty()) {

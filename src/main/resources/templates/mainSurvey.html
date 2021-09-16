@@ -7,41 +7,52 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>설문 테스트</title>
+    <style type="text/css">
+        li {list-style: none; float: left; padding: 6px;}
+    </style>
 </head>
 <body>
-<!--<input type="text" th:value="${surveysearch}">-->
-
 <table>
     <tbody>
+    <tr>
+        <th style="width: 10px">Index</th>
+        <th>TITLE</th>
+        <th style="width: 200px">Content</th>
+        <th style="width: 100px">reg</th>
+        <th style="width: 100px">end</th>
+        <th style="width: 40px">progressing</th>
+    </tr>
+
     <tr th:each="surveyList : ${surveyList}">
-        <td th:text="${surveyList.survey_title}"></td>
-        <td th:text="${surveyList.survey_content}"></td>
+        <td th:text="${surveyList.survey_index}">Index</td>
+        <td th:text="${surveyList.survey_title}">Title</td>
+        <td th:text="${surveyList.survey_content}">Content</td>
+        <td th:text="${surveyList.survey_reg}">reg</td>
+        <td th:text="${surveyList.survey_end}">end</td>
+        <td th:if="${surveyList.progressing} == 1" th:text="${surveyList.progressing}">진행중</td>
+        <td th:if="${surveyList.progressing} == 0" th:text="${surveyList.progressing}">마감</td>
     </tr>
     </tbody>
 </table>
-<nav aria-label="Page navigation example">
-    <ul class="pagination">
-<!--        <li th:if="${pageMaker.prev == true}">-->
-<!--            <a aria-label="prev" th:href="@{/mainSurvey?(cri.page=0)}">&lt;</a>-->
-<!--        </li>-->
-        <li>
-            <a th:href="@{/mainSurvey(cri.page=1)}" aria-label="First">
-                <span aria-hidden="true">First</span>
-            </a>
-        </li>
-
-        <li th:class="${pageMaker.prev == true}">
-            <a th:href="@pageMaker.startPage} ? '#' :@{/mainSurvey(page=${cri.page})}" aria-label="Previous">
-                <span aria-hidden="true">&lt;</span>
-            </a>
-        </li>
 
 
-    </ul>
-</nav>
+<ul class="pagination pagination-sm no-margin pull-right">
+    <li th:if="${pageMaker.prev} == true">
+        <a th:href="@{/mainSurvey?(page=${pageMaker.startPage - 1},perPageNum=${pageMaker.cri.perPageNum})}">&laquo;이전</a>
+    </li>
+<!--    <li th:each="page: ${pageMaker}" th:inline="text">-->
+<!--        <a th:href="@{/mainSurvey?}"></a>-->
+
+<!--    </li>-->
+    <li th:each="page,iterStat : ${#numbers.sequence(pageMaker.startPage,pageMaker.endPage)}"  th:classappend="${pageMaker.cri.page} == ${idx} ? active : null">
+        <a th:href="@{/mainSurvey?(page=${page},perPageNum=${pageMaker.cri.perPageNum})}" th:text="${page}"></a></li>
+    </li>
+
+    <li th:if="${pageMaker.next} == true and ${pageMaker.endPage >0}">
+        <a th:href="@{/mainSurvey?(page=${pageMaker.endPage + 1},perPageNum=${pageMaker.cri.perPageNum})}">&raquo;다음</a>
+    </li>
+
 </ul>
-
-
 
 </body>
 </html>

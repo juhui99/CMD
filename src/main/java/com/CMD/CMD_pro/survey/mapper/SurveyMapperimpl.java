@@ -15,7 +15,7 @@ import java.util.Map;
 
 @Repository
 public class SurveyMapperimpl implements SurveyMapper{
-    private static final Logger logger = LoggerFactory.getLogger(SurveyServiceimpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(SurveyMapperimpl.class);
     private String namespace = "com.CMD.CMD_pro.survey.mapper.SurveyMapper";
 
     @Autowired
@@ -29,14 +29,19 @@ public class SurveyMapperimpl implements SurveyMapper{
         return surveyList;
     }
 
+//    @Override
+//    public PageMaker selectCountPaging(SearchCriteria cri) throws Exception{
+//        logger.info("selectCountPaging");
+//        PageMaker pageMaker = new PageMaker();
+//        pageMaker.setCri(cri);
+//        int totalCount = sqlSession.selectOne(namespace+".selectCountPaging", cri);
+//        pageMaker.setTotalCount(totalCount);
+//        return pageMaker;
+//    }
+
     @Override
-    public PageMaker selectCountPaging(SearchCriteria cri) {
-        logger.info("selectCountPaging");
-        PageMaker pageMaker = new PageMaker();
-        pageMaker.setCri(cri);
-        int totalCount = sqlSession.selectOne(namespace+".selectCountPaging", cri);
-        pageMaker.setTotalCount(totalCount);
-        return pageMaker;
+    public int selectCountPaging() throws Exception{
+        return sqlSession.selectOne(namespace+".selectCountPaging");
     }
 
     // 아이템리스트가 포함된 select

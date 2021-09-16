@@ -109,19 +109,28 @@
             LEFT JOIN users ON survey.user_index = users.user_index
         WHERE survey_index > 0
         <include refid="search"/>
-        ORDER BY survey_index desc
+        ORDER BY survey_index desc, survey_reg desc
         LIMIT #{pageStart}, #{perPageNum}
     </select>
 
-    <!-- 총 게시물 개수 구하기 -->
-    <select id="selectCountPaging" parameterMap="searchCriteria" resultMap="pageMaker" resultType="int">
+<!--    &lt;!&ndash; 총 게시물 개수 구하기 &ndash;&gt;-->
+<!--    <select id="selectCountPaging" parameterMap="searchCriteria" resultMap="pageMaker">-->
+<!--        <![CDATA[-->
+<!--		SELECT COUNT(survey_index)-->
+<!--		FROM survey-->
+<!--		    LEFT JOIN users ON users.user_index = survey.user_index-->
+<!--		WHERE survey_index > 0-->
+<!--		]]>-->
+<!--        <include refid="search"></include>-->
+<!--    </select>-->
+
+    <select id="selectCountPaging" parameterMap="searchCriteria" resultType="int">
         <![CDATA[
-		SELECT COUNT(survey_index)
-		FROM survey
-		    LEFT JOIN users ON users.user_index = survey.user_index
-		WHERE survey_index > 0
-		]]>
-        <include refid="search"></include>
+        SELECT COUNT(survey_index)
+        FROM survey
+            LEFT JOIN users ON users.user_index = survey.user_index
+        WHERE survey_index > 0
+        ]]>
     </select>
 
     <select id="selectSurveyResultDataSet" parameterType="int" resultMap="resultDataSet">

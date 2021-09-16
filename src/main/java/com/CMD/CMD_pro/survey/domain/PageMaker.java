@@ -29,7 +29,17 @@ public class PageMaker {
                 + displayPageNum + "]";
     }
 
-    public int getTotalCount() {return totalCount;}
+    public Criteria getCri() {
+        return cri;
+    }
+    public void setCriteria(Criteria cri) {
+        this.cri = cri;
+    }
+
+    public int getTotalCount() {
+        return totalCount;
+    }
+
     public void setTotalCount(int totalCount) {
         this.totalCount = totalCount;
         calcData();
@@ -59,14 +69,15 @@ public class PageMaker {
                 .build();
         return uri.toUriString();
     }
-//    public String makeQuery(int idx, int page) {
-//        UriComponents uri = UriComponentsBuilder.newInstance()
-//                .queryParam("idx", idx)
-//                .queryParam("page", page)
-//                .queryParam("perPageNum", cri.getPerPageNum())
-//                .build();
-//        return uri.toUriString();
-//    }
+    public String makeQuery(int idx, int page) {
+        UriComponents uri = UriComponentsBuilder.newInstance()
+                .queryParam("idx", idx)
+                .queryParam("page", page)
+                .queryParam("perPageNum", cri.getPerPageNum())
+                .build();
+        return uri.toUriString();
+    }
+
     private String encoding(String keyword) {
         if(keyword == null || keyword.trim().length() == 0) {
             return "";
@@ -82,7 +93,7 @@ public class PageMaker {
     public String makeSearch(SearchCriteria cri) {
         UriComponents uriComponents = UriComponentsBuilder.newInstance()
                 .queryParam("perPageNum", cri.getPerPageNum())
-                .queryParam("searchType", ((SearchCriteria)cri).getSearchType())
+                .queryParam("searchType", cri.getSearchType())
                 .queryParam("keyword", cri.getKeyword())
                 .build();
         return uriComponents.toUriString();
