@@ -1,10 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://thymeleaf.org">
+      xmlns:th="http://thymeleaf.org" lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
     <script src="http://code.jquery.com/jquery-3.1.1.min.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="/libs/css/style.css">
@@ -253,18 +251,9 @@
                 </li>
 
 
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
-                        D-MBTI
-                    </a>
-                    <div class="dropdown-menu">
-                        <a class="dropdown-item" href="#">D-MBTI 하기</a>
-                        <a class="dropdown-item" href="#">D-MBTI 통계</a>
-                    </div>
-                </li>
 
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbardrop3" data-toggle="dropdown">
                         설문조사
                     </a>
                     <div class="dropdown-menu">
@@ -280,7 +269,7 @@
                 <a style="margin-left: 10px;" th:if="${session.id == null}"  href="/join">회원가입</a>
 
                 <li class="nav-item dropdown" th:if="${session.id != null}">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbardrop4" data-toggle="dropdown">
                         <img th:if="${!filename.equals('non') and session.id != null}" class= "img-circle" style="width: 35px; height: 35px; border-color:  #003366d2;" th:src="@{/display?(filename=${filename})}"/>
                         <img th:if="${filename.equals('non') and session.id != null}" class= "img-circle" style="width: 35px; height: 35px; border-color:  #003366d2;" src="/display?filename=default.png"/>
                         <span th:if="${session.id != null}" th:text="|${session.id}님|" style="margin-left: 3px;"></span>
