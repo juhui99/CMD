@@ -365,45 +365,45 @@
     <div class="container" style="margin: 30px 30%;">
         <div style="background: rgba(15,67,125,0.82); border: 2px solid #003366d2; border-top-left-radius: 5px; border-top-right-radius: 5px; width: 400px; text-align: center;">
             <span style="color: white;"> 채팅창</span>
-        <div  id="chatContainer"
-              style="background: white; border-top: 2px solid #003366d2; border-bottom: 2px solid #003366d2; width: 397px; height: 450px; padding-bottom: 20px;"></div>
-        <div style="margin: 10px 0px;">
-            <textarea th:if="${withdrawal == 0}" style="width: 300px; outline: none; resize:none; background: white; border:2px solid #003366d3; border-radius: 5px; width:300px; height: 93px; margin-top: 3px" id="chatContent"></textarea>
-            <button th:if="${withdrawal == 0}" style="outline: none; float: right;  cursor: pointer; color: honeydew!important; background: linear-gradient(to left, rgba(22, 40, 108, 0.55), #1969af ); border: 0; margin-top:30px; margin-bottom: 30px; margin-right: 3px; border-radius: 1em; padding-left: 30px; padding-right: 30px; padding-bottom: 10px; padding-top: 10px; font-family: 'Ubuntu', sans-serif; font-size: 14px;
+            <div  id="chatContainer"
+                  style="background: white; border-top: 2px solid #003366d2; border-bottom: 2px solid #003366d2; width: 397px; height: 450px; padding-bottom: 20px;"></div>
+            <div style="margin: 10px 0px;">
+                <textarea th:if="${withdrawal == 0}" style="width: 300px; outline: none; resize:none; background: white; border:2px solid #003366d3; border-radius: 5px; width:300px; height: 93px; margin-top: 3px" id="chatContent"></textarea>
+                <button th:if="${withdrawal == 0}" style="outline: none; float: right;  cursor: pointer; color: honeydew!important; background: linear-gradient(to left, rgba(22, 40, 108, 0.55), #1969af ); border: 0; margin-top:30px; margin-bottom: 30px; margin-right: 3px; border-radius: 1em; padding-left: 30px; padding-right: 30px; padding-bottom: 10px; padding-top: 10px; font-family: 'Ubuntu', sans-serif; font-size: 14px;
     box-shadow: 0 0 20px 1px rgba(0, 0, 0, 0.04);" onclick="submitChat();">전송</button>
-            <textarea th:if="${withdrawal == 1}" style="width: 300px; outline: none; resize:none; background: white; border:2px solid #003366d3; border-radius: 5px; width:300px; height: 93px; margin-top: 3px" readonly disabled>탈퇴한 회원으로 대화가 불가능한 사용자입니다.</textarea>
-            <input type="hidden" th:value="${friend}" id="friendID">
-            <input type="hidden" id="userImg" th:value="${filename}">
-            <input type="hidden" id="friendImg" th:value="${friendFile}">
+                <textarea th:if="${withdrawal == 1}" style="width: 300px; outline: none; resize:none; background: white; border:2px solid #003366d3; border-radius: 5px; width:300px; height: 93px; margin-top: 3px" readonly disabled>탈퇴한 회원으로 대화가 불가능한 사용자입니다.</textarea>
+                <input type="hidden" th:value="${friend}" id="friendID">
+                <input type="hidden" id="userImg" th:value="${filename}">
+                <input type="hidden" id="friendImg" th:value="${friendFile}">
+            </div>
         </div>
     </div>
-    </div>
 
 
 
-<!--
-    <div class="container" style="margin: 30px 30%;">
-        <div style="background: rgba(15,67,125,0.82); border: 2px solid #003366d2; border-top-left-radius: 5px; border-top-right-radius: 5px; width: 400px; text-align: center;">
-            <span style="color: white;">채팅창</span></div>
-        <div id="chatContainer"
-             style="background: white; border-top: 2px solid #003366d2; border-bottom: 2px solid #003366d2; width: 397px; height: 450px; padding-bottom: 20px;"></div>
-        <div style="margin-bottom: 30px;">
-            <textarea th:if="${withdrawal == 0}"
-                      style="outline: none; resize:none; background: white; border:2px solid #003366d3; border-radius: 5px; width:300px; height: 93px; margin-top: 3px;"
-                      id="chatContent"></textarea>
-            <button style="outline: none; float: right;  cursor: pointer; color: honeydew!important; background: linear-gradient(to left, rgba(22, 40, 108, 0.55), #1969af ); border: 0; margin-top:30px; margin-bottom: 30px; margin-right: 3px; border-radius: 1em; padding-left: 30px; padding-right: 30px; padding-bottom: 10px; padding-top: 10px; font-family: 'Ubuntu', sans-serif; font-size: 14px;
-            box-shadow: 0 0 20px 1px rgba(0, 0, 0, 0.04);" th:if="${withdrawal == 0}" onclick="submitChat();">전송
-            </button>
+    <!--
+        <div class="container" style="margin: 30px 30%;">
+            <div style="background: rgba(15,67,125,0.82); border: 2px solid #003366d2; border-top-left-radius: 5px; border-top-right-radius: 5px; width: 400px; text-align: center;">
+                <span style="color: white;">채팅창</span></div>
+            <div id="chatContainer"
+                 style="background: white; border-top: 2px solid #003366d2; border-bottom: 2px solid #003366d2; width: 397px; height: 450px; padding-bottom: 20px;"></div>
+            <div style="margin-bottom: 30px;">
+                <textarea th:if="${withdrawal == 0}"
+                          style="outline: none; resize:none; background: white; border:2px solid #003366d3; border-radius: 5px; width:300px; height: 93px; margin-top: 3px;"
+                          id="chatContent"></textarea>
+                <button style="outline: none; float: right;  cursor: pointer; color: honeydew!important; background: linear-gradient(to left, rgba(22, 40, 108, 0.55), #1969af ); border: 0; margin-top:30px; margin-bottom: 30px; margin-right: 3px; border-radius: 1em; padding-left: 30px; padding-right: 30px; padding-bottom: 10px; padding-top: 10px; font-family: 'Ubuntu', sans-serif; font-size: 14px;
+                box-shadow: 0 0 20px 1px rgba(0, 0, 0, 0.04);" th:if="${withdrawal == 0}" onclick="submitChat();">전송
+                </button>
 
-            <textarea th:if="${withdrawal == 1}"
-                      style="outline: none; resize:none; background: white; border:2px solid #003366d3; border-radius: 5px; width:300px; height: 93px; margin-top: 3px;"
-                      readonly disabled>탈퇴한 회원으로 대화가 불가능한 사용자입니다.</textarea>
-            <input type="hidden" th:value="${friend}" id="friendID">
-            <input type="hidden" id="userImg" th:value="${filename}">
-            <input type="hidden" id="friendImg" th:value="${friendFile}">
+                <textarea th:if="${withdrawal == 1}"
+                          style="outline: none; resize:none; background: white; border:2px solid #003366d3; border-radius: 5px; width:300px; height: 93px; margin-top: 3px;"
+                          readonly disabled>탈퇴한 회원으로 대화가 불가능한 사용자입니다.</textarea>
+                <input type="hidden" th:value="${friend}" id="friendID">
+                <input type="hidden" id="userImg" th:value="${filename}">
+                <input type="hidden" id="friendImg" th:value="${friendFile}">
+            </div>
         </div>
-    </div>
--->
+    -->
     <div class="footer-box">
         <div class="author">
             <p><b>Creators - </b>KimLeeEum</p>
@@ -481,6 +481,5 @@
         });
     });
 </script>
-</div>
 </body>
 </html>

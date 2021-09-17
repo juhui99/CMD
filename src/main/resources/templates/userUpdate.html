@@ -94,6 +94,7 @@
 
         target.checked = true;
     }
+
     function totalUnreadChat() {
         $.ajax({
             type: "POST",
@@ -441,7 +442,8 @@
                         <input type="text" id="user_name" name="user_name" placeholder="Name"
                                th:value="${user.user_name}">
                         <label class="tab1" for="user_age"><i class="fas fa-seedling"></i> 나이</label>
-                        <input type="number" id="user_age" name="user_age" placeholder="Age" th:value="${user.user_age}">
+                        <input type="number" id="user_age" name="user_age" placeholder="Age"
+                               th:value="${user.user_age}">
                     </div>
                     <div class="eye">
                         <label class="tab2" for="user_major"><i class="fas fa-briefcase"></i> 분야</label>
@@ -454,8 +456,12 @@
                             <option id="AI" value="AI">AI</option>
                             <option id="WhiteHat" value="WhiteHat">White-Hat</option>
                         </select>
-                        <input type="checkbox" id="w" name="user_gender" value="W">여성
-                        <input type="checkbox" id="m" name="user_gender" value="M">남성
+                        <label class="tab2" for="w"><i class="fas fa-venus"></i> 여성 </label>
+                        <input style="border-radius: 5px" type="checkbox" id="w" name="user_gender" value="W"
+                               onclick="clickCheck(this)">
+                        <label for="m" style="margin-left: 3%"><i class="fas fa-mars"></i> 남성 </label>
+                        <input style="border-radius: 5px" type="checkbox" id="m" name="user_gender" value="M"
+                               onclick="clickCheck(this)">
                         <hr style="margin-left: 0; width: 84%; background-color: #003366d2;">
                     </div>
                     <div class="eye">
@@ -464,17 +470,23 @@
                                th:value="${user.user_email}">
                         <hr style="margin-left: 0; width: 84%; background-color: #003366d2;">
                     </div>
-                    <button type="button" id="profile" value="N">프로필 수정</button>
-                    <div>
-                        <input id="file" type="file" name="files">
-                        <button id="defaultImgBtn" type="button">기본 이미지로 변경</button>
-                        <span id="defaultMessage" style="font-size: 5px; color: #003366d2;">기본이미지 선택완료</span>
+                    <div class="eye">
+                        <button class="smbutt2" type="button" id="profile" value="N">프로필 수정</button>
+                        <div>
+                            <input id="file" type="file" name="files">
+                            <button class="smbutt2" id="defaultImgBtn" type="button">기본 이미지로 변경</button>
+                            <span class="text-center" id="defaultMessage" style="font-size: 5px; color: #003366d2;">기본이미지 선택완료</span>
+                        </div>
                     </div>
-                    <input type="submit" id="submit" name="submit" value="수정">
-                    <input type="hidden" id="user_gender" th:value="${user.user_gender}">
-                    <input type="hidden" id="user_selected_major" th:value="${user.user_major}">
-                    <input type="hidden" id="modifyChek" name="modify" value="N">
-                    <input type="hidden" id="defaultImgCheck" name="default_img" value="N">
+
+                    <div class="eye">
+                        <input class="smbutt2" type="submit" id="submit" name="submit" value="수정">
+                        <input type="hidden" id="user_gender" th:value="${user.user_gender}">
+                        <input type="hidden" id="user_selected_major" th:value="${user.user_major}">
+                        <input type="hidden" id="modifyChek" name="modify" value="N">
+                        <input class="sbm" type="hidden" id="defaultImgCheck" name="default_img" value="N">
+                    </div>
+
                 </div>
             </div>
 

@@ -17,9 +17,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script type="text/javascript">
-        $(document).ready(function (){
-            if($('#filename').val() != 'no'){
-                $('#files').css("visibility","hidden");
+        $(document).ready(function () {
+            if ($('#filename').val() != 'no') {
+                $('#files').css("visibility", "hidden");
             }
 
             totalUnreadChat();
@@ -73,19 +73,20 @@
                 }
             });
         });
-        function deleteFile(){
+
+        function deleteFile() {
 
             $.ajax({
                 url: "/fileDelete",
                 type: "POST",
                 dataType: "json",
-                data: { bno : $("#bno").val()}
+                data: {bno: $("#bno").val()}
             });
 
-            $('#files').css("visibility","visible");
-            $('#clip').css("display","none");
-            $('#file').css("display","none");
-            $('#delete').css("display","none");
+            $('#files').css("visibility", "visible");
+            $('#clip').css("display", "none");
+            $('#file').css("display", "none");
+            $('#delete').css("display", "none");
 
         }
 
@@ -345,39 +346,58 @@
 
         </nav>
     </div>
-<div class="container">
-    <div>
-        <table>
-            <thead>
-            </thead>
-            <tbody>
-            <form action="/UpdateAction" method="post" enctype="multipart/form-data">
+    <div class="update_box"
+         style="margin-left: 5%; border-radius: 5px; margin-top: 40px; margin-bottom: 40px; padding:20px 40px; border: 2px solid #dddddd; width: 90%">
+        <h3>게시글 수정</h3>
+        <div>
+            <table>
+                <thead>
+                </thead>
+                <tbody>
+                <form action="/UpdateAction" method="post" enctype="multipart/form-data">
 
-                <tr>글 번호:<input type="hidden" th:value="${board.bno}" id="bno" name="bno"/></tr>
-                <tr>글 제목:<input type="text" th:value="${board.subject}" id="subject" name="subject"/><br></tr>
-                <tr><label for="content">내용</label><br></tr>
-                <tr><textarea th:text="${board.content}" id="content" name="content" rows="10" maxlength="2048"  style="width: 80%" ></textarea><br></tr>
-                <input type="hidden" name="kind" id="kind" th:value="${board.kind}">
-                <input type="hidden" name="realm" id="realm" th:value="${board.realm}">
-                <div>
-                    <input type="file" name="files" id="files">
-                </div>
-                <img id="clip" th:if="${!filename.equals('no')}" src="/img/clip.png" style="width:13px; margin-top: 3px; margin-right: 5px;"><a id="file" th:if="${!filename.equals('no')}" th:text="${filename}"></a><button th:if="${!filename.equals('no')}" id="delete" name="delete" type="button" onclick="deleteFile();">파일삭제</button>
-                <input type="hidden" name="filename" id="filename" th:value="${filename}">
-                <button type="submit">수정완료</button>
-                <input type="hidden" name="option" th:value="${option}">
-                <input type="hidden" name="search" th:value="${search}">
-                <input type="hidden" name="search_option" th:value="${search_option}">
-                <input type="hidden" name="keyword" th:value="${keyword}">
-                <input type="hidden" name="mainSearch" th:value="${mainSearch}">
-                <input type="hidden" name="page" th:value="${page}">
+                    <tr><input type="hidden" th:value="${board.bno}" id="bno" name="bno"/></tr>
+                    <tr><label
+                            style=" padding: 3.8px 8px; color: white; border: 0; border-radius: 5px; background: #003366d2;">글
+                        제목</label><input style="width: auto; margin-left: 10px; margin-bottom: 15px;" type="text"
+                                         th:value="${board.subject}" id="subject" name="subject"/><br></tr>
+                    <div style="border-top: 1px solid #003366d2;">
+                        <tr><label
+                                style="margin-top: 10px; padding: 3.8px 8px; color: white; border: 0; border-radius: 5px; background: #003366d2;"
+                                for="content">내용</label><br></tr>
+                        <tr><textarea th:text="${board.content}" id="content" name="content" rows="10" maxlength="2048"
+                                      style="height:400px; resize:none; width: 100%; margin-bottom: 10px;"></textarea><br>
+                        </tr>
+                        <input type="hidden" name="kind" id="kind" th:value="${board.kind}">
+                        <input type="hidden" name="realm" id="realm" th:value="${board.realm}">
+                    </div>
+                    <div style=" border-top: 1px solid #003366d2; padding-top: 10px;">
+                        <tr>
+                        <img id="clip" th:if="${!filename.equals('no')}" src="/img/clip.png"
+                             style="width:13px; margin-top: 3px; margin-right: 5px;">
+                        <a id="file" style="text-decoration:none; color: black" th:if="${!filename.equals('no')}" th:text="${filename}"></a>
+                        </tr>
+                        <br>
+                        <input type="file" name="files" id="files">
+                    </div>
+                    <button style="float: left; margin-left: 10px; color: white; border: 0; border-radius: 5px; background: #003366d2;" th:if="${!filename.equals('no')}" id="delete" name="delete" type="button"
+                            onclick="deleteFile();">파일삭제
+                    </button>
+                    <input type="hidden" name="filename" id="filename" th:value="${filename}">
+                    <button style="float:left; margin-left: 10px; color: white; border: 0; border-radius: 5px; background: #003366d2;" type="submit">수정완료</button>
+                    <input type="hidden" name="option" th:value="${option}">
+                    <input type="hidden" name="search" th:value="${search}">
+                    <input type="hidden" name="search_option" th:value="${search_option}">
+                    <input type="hidden" name="keyword" th:value="${keyword}">
+                    <input type="hidden" name="mainSearch" th:value="${mainSearch}">
+                    <input type="hidden" name="page" th:value="${page}">
 
-            </form>
-            </tbody>
-        </table>
+                </form>
+                </tbody>
+            </table>
+        </div>
+
     </div>
-
-</div>
     <div class="footer-box">
         <div class="author">
             <p><b>Creators - </b>KimLeeEum</p>

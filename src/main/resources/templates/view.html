@@ -15,11 +15,13 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <style>
-        table{
-            table-layout: fixed;word-break: break-all;
+        table {
+            table-layout: fixed;
+            word-break: break-all;
         }
-        td,th{
-            border-bottom:1px solid #dddddd;
+
+        td, th {
+            border-bottom: 1px solid #dddddd;
         }
 
         .frontend_board {
@@ -118,14 +120,14 @@
     }
 
 
-    $(document).ready(function (){
+    $(document).ready(function () {
 
-        $('#modal1').on('show.bs.modal', function (e){
+        $('#modal1').on('show.bs.modal', function (e) {
             var data = $(e.relatedTarget).data('id');
             $(".modal-body #sequence").val(data);
         });
 
-        $('#modal2').on('show.bs.modal', function (e){
+        $('#modal2').on('show.bs.modal', function (e) {
             var content = $(e.relatedTarget).data('content');
             var bno = $(e.relatedTarget).data('bno');
 
@@ -135,8 +137,8 @@
             $(".modal-body #contentBno").val(bno);
         });
 
-        if($("#recommendCheck").val() != 0){
-            $("#heart").attr("src","/img/heart2.png");
+        if ($("#recommendCheck").val() != 0) {
+            $("#heart").attr("src", "/img/heart2.png");
         }
 
         totalUnreadChat();
@@ -193,28 +195,28 @@
     });
 
 
-
-    function recommendChek(){
+    function recommendChek() {
         $.ajax({
             url: "/recommend",
             type: "POST",
-            dataType:"json",
-            data: {id: $("#user").val(),
+            dataType: "json",
+            data: {
+                id: $("#user").val(),
                 recommend: $("#recommend").val(),
                 bno: $("#bno").val(),
                 kind: $("#kind").val(),
-                realm: $("#realm").val()},
-            success: function (data){
+                realm: $("#realm").val()
+            },
+            success: function (data) {
                 $("#is_recommend").text(data);
-                if($("#heart").attr("src")=="/img/heart1.png"){
-                    $("#heart").attr("src","/img/heart2.png");
-                }else{
-                    $("#heart").attr("src","/img/heart1.png");
+                if ($("#heart").attr("src") == "/img/heart1.png") {
+                    $("#heart").attr("src", "/img/heart2.png");
+                } else {
+                    $("#heart").attr("src", "/img/heart1.png");
                 }
             }
         });
     }
-
 
 
 </script>
@@ -378,168 +380,251 @@
 
         </nav>
     </div>
-<div class="container">
-    <div>
-        <table>
-            <thead>
-            </thead>
-            <tbody>
-            <form action="/update" method="post">
+    <div class="view_box"
+         style="margin-left: 5%; border-radius: 5px; margin-top: 40px; margin-bottom: 40px; padding:20px 40px; border: 2px solid #dddddd; width: 90%">
+        <h3>게시글 작성</h3>
+        <div>
+            <table>
+                <thead>
+                </thead>
+                <tbody>
+                <form action="/update" method="post">
+                    <tr><label
+                            style=" padding: 3.8px 8px; color: white; border: 0; border-radius: 5px; background: #003366d2;">글
+                        번호</label> <input style="width: auto; margin-left: 10px; margin-bottom: 15px;" type="number"
+                                          th:value="${board.bno}" id="bno" name="bno" readonly/></tr>
+                    <br>
+                    <tr><label
+                            style=" margin-bottom:10px; padding: 3.8px 8px; color: white; border: 0; border-radius: 5px; background: #003366d2;">글
+                        제목</label><input style=" margin-left: 10px; margin-right: 10px;" type="text"
+                                         th:value="${board.subject}" id="subject" name="subject" readonly/></tr>
+                    <tr><label
+                            style=" padding: 3.8px 8px; color: white; border: 0; border-radius: 5px; background: #003366d2;">작성자</label><input
+                            style="margin-left: 10px; margin-right: 10px;" type="text" th:value="${board.writer}"
+                            name="writer" id="writer" readonly/></tr>
+                    <tr><label
+                            style=" padding: 3.8px 8px; color: white; border: 0; border-radius: 5px; background: #003366d2;">날짜</label><input
+                            style="margin-left: 10px;" type="text" th:value="${board.reg_date}" readonly/><br></tr>
+                    <div style="border-top: 1px solid #003366d2;">
+                        <tr><label
+                                style="margin-top: 10px; padding: 3.8px 8px; color: white; border: 0; border-radius: 5px; background: #003366d2; "
+                                for="content">내용</label><br></tr>
+                        <tr><textarea th:text="${board.content}" id="content" name="content" rows="10" maxlength="4096"
+                                      style="height:400px; resize:none; width: 100%; margin-bottom: 10px;"
+                                      readonly></textarea><br></tr>
+                        <input type="hidden" name="kind" id="kind" th:value="${board.kind}">
+                        <input type="hidden" name="realm" id="realm" th:value="${board.realm}">
+                        <input type="hidden" name="user" id="user" th:value="${session.id}">
+                        <input type="hidden" id="recommendCheck" th:value="${recommendCheck}">
+                        <input type="hidden" name="recommend" id="recommend" th:value="${board.recommend}">
+                    </div>
+                    <div style=" border-top: 1px solid #003366d2; padding-top: 10px;">
+                        <tr>
+                            <img th:if="${fileExistence=='yes'}" src="/img/clip.png"
+                                 style="width:13px; margin-top: 3px; margin-right: 5px;"><a
+                                style="text-decoration:none; color: black" th:if="${fileExistence=='yes'}"
+                                th:text="${file.fileoriginname}" th:href="@{/fileDown(bno=${board.bno})}"></a>
+                        </tr>
+                        <br>
+                        <input type="hidden" name="filename" id="filename" th:value="${file.fileoriginname}">
+                    </div>
+                    <tr><label
+                            style="margin-top: 10px; padding: 3.8px 8px; color: white; border: 0; border-radius: 5px; background: #003366d2;"
+                            for="content">조회수</label> <input style="margin-top: 10px; margin-bottom: 10px;" type="text"
+                                                             th:value="${board.hit}" readonly></tr>
+                    <tr>
+                        <button type="button"
+                                style="margin-left: 10px; border: 1px solid black; color: black; background: white; border-radius: 5px; "
+                                onclick="recommendChek();">
+                            <img id="heart" src="/img/heart1.png" style="width:13px;">
+                            <a th:text="${board.recommend}" style="margin-left: 1px;" id="is_recommend"></a></button>
+                        <br></tr>
+                    <a th:if="${option == 'non' and search == 'non' and mainSearch == 'non'}"
+                       th:href="@{/board(pageNumber=${page},kind=${kind},realm=${realm})}">
+                        <button type="button"
+                                style="border: 1px solid black; color: black; background: white; border-radius: 5px; ">
+                            목록
+                        </button>
+                    </a>
+                    <a th:if="${option != 'non'}" th:href="@{/totalHotTopic(kind='HOT게시판',realm=${realm})}">
+                        <button type="button">목록</button>
+                    </a>
+                    <a th:if="${search != 'non'}"
+                       th:href="@{/search_list(pageNumber=${page},search_option=${search_option},keyword=${keyword},kind=${kind},realm=${realm})}">
+                        <button type="button"
+                                style=" border: 1px solid black; color: black; background: white; border-radius: 5px; ">
+                            목록
+                        </button>
+                    </a>
+                    <a th:if="${mainSearch != 'non'}" th:href="@{/main_search(pageNumber=${page},keyword=${keyword})}">
+                        <button type="button">목록</button>
+                    </a>
+                    <button style="margin-left: 10px; border: 1px solid black; color: black; background: white; border-radius: 5px; "
+                            th:if="${session.id == board.writer}" type="submit">수정
+                    </button>
+                    <a th:if="${session.id == board.writer or user.user_manager == 1}"
+                       th:href="@{/delete(bno=${board.bno},kind=${board.kind},realm=${board.realm},writer=${board.writer})}">
+                        <button type="button"
+                                style="margin-left: 10px; border: 1px solid black; color: black; background: white; border-radius: 5px; ">
+                            삭제
+                        </button>
+                    </a>
+
+                    <input type="hidden" name="option" th:value="${option}">
+                    <input type="hidden" name="search" th:value="${search}">
+                    <input type="hidden" name="search_option" th:value="${search_option}">
+                    <input type="hidden" name="keyword" th:value="${keyword}">
+                    <input type="hidden" name="mainSearch" th:value="${mainSearch}">
+                    <input type="hidden" name="page" th:value="${page}">
+
+                </form>
+
+                </tbody>
+            </table>
+        </div>
 
 
-                <tr>글 번호: <input type="number"  th:value="${board.bno}" id="bno" name="bno" readonly/></tr>
-                <tr>작성자: <input type="text" th:value="${board.writer}" name="writer" id="writer" readonly/></tr>
-                <tr>조회수: <input type="text" th:value="${board.hit}" readonly></tr>
-                <tr><button type="button" style="margin-left: 20px;" onclick="recommendChek();">
-                    <img id="heart" src="/img/heart1.png" style="width:13px; margin-top: 3px;">
-                    <a th:text="${board.recommend}" style="margin-left: 1px;" id="is_recommend"></a></button><br></tr>
-                <tr>글 제목: <input type="text" th:value="${board.subject}" id="subject" name="subject" readonly/><br></tr>
-                <tr>날짜: <input type="text" th:value="${board.reg_date}" readonly/><br></tr>
-                <tr><label for="content">내용: </label><br></tr>
-                <tr><textarea th:text="${board.content}" id="content" name="content"  rows="10" maxlength="2048"  style="width: 80%" readonly></textarea><br></tr>
-                <input type="hidden" name="kind" id="kind" th:value="${board.kind}">
-                <input type="hidden" name="realm" id="realm" th:value="${board.realm}">
-                <input type="hidden" name="user" id="user" th:value="${session.id}">
-                <input type="hidden" id="recommendCheck" th:value="${recommendCheck}">
-                <input type="hidden" name="recommend" id="recommend" th:value="${board.recommend}">
-                <tr>
-                    <img th:if="${fileExistence=='yes'}" src="/img/clip.png" style="width:13px; margin-top: 3px; margin-right: 5px;"><a th:if="${fileExistence=='yes'}" th:text="${file.fileoriginname}" th:href="@{/fileDown(bno=${board.bno})}"></a>
-                </tr><br>
-                <input type="hidden" name="filename" id="filename" th:value="${file.fileoriginname}">
-                <a th:if="${option == 'non' and search == 'non' and mainSearch == 'non'}" th:href="@{/board(pageNumber=${page},kind=${kind},realm=${realm})}"><button type="button" >목록</button></a>
-                <a th:if="${option != 'non'}" th:href="@{/totalHotTopic(kind='HOT게시판',realm=${realm})}"><button type="button" >목록</button></a>
-                <a th:if="${search != 'non'}" th:href="@{/search_list(pageNumber=${page},search_option=${search_option},keyword=${keyword},kind=${kind},realm=${realm})}"><button type="button" >목록</button></a>
-                <a th:if="${mainSearch != 'non'}" th:href="@{/main_search(pageNumber=${page},keyword=${keyword})}"><button type="button" >목록</button></a>
-                <button th:if="${session.id == board.writer}" type="submit">수정</button>
-                <a th:if="${session.id == board.writer or user.user_manager == 1}" th:href="@{/delete(bno=${board.bno},kind=${board.kind},realm=${board.realm},writer=${board.writer})}"><button type="button">삭제</button></a>
-
+        <div style="border-top: 1px solid #003366d2; margin-top: 10px">
+            <form action="/commentInsert" method="post">
+                <img src="/img/profile.png" style="width:13px; margin-top: 3px; margin-right: 3px;"><input
+                    style="border: none; margin-top: 10px;" type="text" id="comment_writer" name="comment_writer"
+                    th:value="${session.id}"><br>
+                <textarea style="height:100px; resize:none; width: 90%; margin-bottom: 10px;" name="commentContent"
+                          placeholder="댓글을 입력하세요"></textarea>
+                <input type="submit"
+                       style="margin-top: 1px; margin-bottom:10px; margin-right: 7%; border: 0; color: white; border-radius: 5px; background: #003366d2;"
+                       value="등록">
+                <input type="hidden" id="board_bno" name="board_bno" th:value="${board.bno}">
+                <input type="hidden" id="board_kind" name="board_kind" th:value="${board.kind}">
+                <input type="hidden" id="board_realm" name="board_realm" th:value="${board.realm}">
+                <input type="hidden" name="pageNumber" th:value="${page}">
                 <input type="hidden" name="option" th:value="${option}">
                 <input type="hidden" name="search" th:value="${search}">
                 <input type="hidden" name="search_option" th:value="${search_option}">
                 <input type="hidden" name="keyword" th:value="${keyword}">
                 <input type="hidden" name="mainSearch" th:value="${mainSearch}">
-                <input type="hidden" name="page" th:value="${page}">
-
             </form>
-
-            </tbody>
-        </table>
+        </div>
+        <div style="border-top: 1px solid #003366d2; padding-top: 10px;">
+            <table style="width: 100%; border: 1px solid #dddddd; border-collapse: collapse;">
+                <thead>
+                <tr>
+                    <th colspan="3" style="text-align: left;"><img src="/img/comment.png"
+                                                                   style="width:15px; margin-top: 3px; margin-right: 5px; margin-left: 5px;"><span
+                            th:text="${commentCount}"></span></th>
+                </tr>
+                </thead>
+                <tbody style="padding-top: 10px;">
+                <tr th:each="comment: ${commentList}">
+                    <td colspan="2" style="text-align: left;">
+                        <span th:if="${comment.level == 1}" style="color: #808080; font-weight: bold;">ㄴ</span><img
+                            src="/img/profile.png"
+                            style="width:13px; margin-top: 3px; margin-right: 3px; margin-left: 6px;"><span
+                            style="margin-left:3px; font-size: 12px; font-weight: bold;"
+                            th:text="${comment.writer}"></span><br>
+                        <span th:if="${comment.level == 1}">&emsp;</span>
+                        <span style="margin-left:6px; font-size: 13px; margin-top: 3px;"
+                              th:text="${comment.content}"></span><br>
+                        <span style="margin-left:6px; color: grey; font-size: 6px;"
+                              th:text="${comment.reg_date}"></span>
+                    </td>
+                    <td>
+                        <button th:if="${comment.level == 0}" class="btn" data-toggle="modal" id="modalButton"
+                                th:data-id="${comment.c_bno}" data-target="#modal1">답글
+                        </button>
+                        <button th:if="${session.id == comment.writer}" class="btn" data-toggle="modal"
+                                id="modalButton2" th:data-content="${comment.content}" th:data-bno="${comment.c_bno}"
+                                data-target="#modal2">수정
+                        </button>
+                        <a th:if="${(session.id == comment.writer and comment.level == 0) or (user.user_manager == 1 and comment.level == 0)}"
+                           th:href="@{/commentDelete(bno=${board.bno},kind=${board.kind},realm=${board.realm},writer=${comment.writer},commentSequence=${comment.c_sequence},pageNumber=${page},option=${option},search=${search},search_option=${search_option},keyword=${keyword},mainSearch=${mainSearch})}">
+                            <button style=" border: 0; color: white; border-radius: 5px; background: #003366d2;"
+                                    type="button">삭제
+                            </button>
+                        </a>
+                        <a th:if="${(session.id == comment.writer and comment.level == 1) or (user.user_manager == 1 and comment.level == 1)}"
+                           th:href="@{/replyDelete(bno=${board.bno},kind=${board.kind},realm=${board.realm},writer=${comment.writer},commentBno=${comment.c_bno},pageNumber=${page},option=${option},search=${search},search_option=${search_option},keyword=${keyword},mainSearch=${mainSearch})}">
+                            <button style=" border: 0; color: white; border-radius: 5px; background: #003366d2;"
+                                    type="button">삭제
+                            </button>
+                        </a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 
-</div>
-
-<div class="container">
-    <form action="/commentInsert" method="post">
-        <img src="/img/profile.png" style="width:13px; margin-top: 3px; margin-right: 3px;"><input style="border: none; margin-top: 10px;" type="text" id="comment_writer" name="comment_writer" th:value="${session.id}"><br>
-        <textarea style="margin-top: 3px; width: 500px;"  name="commentContent" placeholder="댓글을 입력하세요"></textarea>
-        <input type="submit" style="margin-top: 10px; margin-bottom: 10px;" value="등록">
-        <input type="hidden" id="board_bno" name="board_bno" th:value="${board.bno}">
-        <input type="hidden" id="board_kind" name="board_kind" th:value="${board.kind}">
-        <input type="hidden" id="board_realm" name="board_realm" th:value="${board.realm}">
-        <input type="hidden" name="pageNumber" th:value="${page}">
-        <input type="hidden" name="option" th:value="${option}">
-        <input type="hidden" name="search" th:value="${search}">
-        <input type="hidden" name="search_option" th:value="${search_option}">
-        <input type="hidden" name="keyword" th:value="${keyword}">
-        <input type="hidden" name="mainSearch" th:value="${mainSearch}">
-    </form>
-</div>
-<div>
-    <table style="width: 80%; border: 1px solid #dddddd; border-collapse: collapse;">
-        <thead>
-        <tr>
-            <th colspan="3" style="text-align: left;"><img src="/img/comment.png" style="width:15px; margin-top: 3px; margin-right: 5px; margin-left: 5px;"><span th:text="${commentCount}"></span></th>
-        </tr>
-        </thead>
-        <tbody style="padding-top: 10px;">
-        <tr th:each="comment: ${commentList}">
-            <td colspan="2" style="text-align: left;">
-                <span th:if="${comment.level == 1}" style="color: #808080; font-weight: bold;">ㄴ</span><img src="/img/profile.png" style="width:13px; margin-top: 3px; margin-right: 3px;"><span style="font-size: 12px; font-weight: bold;" th:text="${comment.writer}"></span><br>
-                <span th:if="${comment.level == 1}">&emsp;</span>
-                <span style="font-size: 13px; margin-top: 3px;" th:text="${comment.content}"></span><br>
-                <span style="color: grey; font-size: 6px;" th:text="${comment.reg_date}"></span>
-            </td>
-            <td><button th:if="${comment.level == 0}" class="btn" data-toggle="modal" id="modalButton" th:data-id="${comment.c_bno}" data-target="#modal1">답글</button>
-                <button th:if="${session.id == comment.writer}" class="btn" data-toggle="modal" id="modalButton2" th:data-content="${comment.content}" th:data-bno="${comment.c_bno}" data-target="#modal2">수정</button>
-                <a th:if="${(session.id == comment.writer and comment.level == 0) or (user.user_manager == 1 and comment.level == 0)}" th:href="@{/commentDelete(bno=${board.bno},kind=${board.kind},realm=${board.realm},writer=${comment.writer},commentSequence=${comment.c_sequence},pageNumber=${page},option=${option},search=${search},search_option=${search_option},keyword=${keyword},mainSearch=${mainSearch})}"><button type="button">삭제</button></a>
-                <a th:if="${(session.id == comment.writer and comment.level == 1) or (user.user_manager == 1 and comment.level == 1)}" th:href="@{/replyDelete(bno=${board.bno},kind=${board.kind},realm=${board.realm},writer=${comment.writer},commentBno=${comment.c_bno},pageNumber=${page},option=${option},search=${search},search_option=${search_option},keyword=${keyword},mainSearch=${mainSearch})}"><button type="button">삭제</button></a>
-
-
-            </td>
-
-        </tr>
-        </tbody>
-    </table>
-</div>
-
-<div id="modal1" class="modal fade" role="dialog" tabindex="-1">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">답글 달기</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form action="/replyInsert" method="post">
-                    <img src="/img/profile.png" style="width:13px; margin-top: 3px; margin-right: 3px;"><input style="border: none;" type="text" name="comment_writer" th:value="${session.id}"><br>
-                    <textarea name="commentContent" style="width: 250px;" type="text"></textarea>
-                    <input type="submit" value="등록">
-                    <input type="hidden" name="board_bno" th:value="${board.bno}">
-                    <input type="hidden" id="sequence" name="c_sequence">
-                    <input type="hidden" name="board_kind" th:value="${board.kind}">
-                    <input type="hidden" name="board_realm" th:value="${board.realm}">
-                    <input type="hidden" name="pageNumber" th:value="${page}">
-                    <input type="hidden" name="option" th:value="${option}">
-                    <input type="hidden" name="search" th:value="${search}">
-                    <input type="hidden" name="search_option" th:value="${search_option}">
-                    <input type="hidden" name="keyword" th:value="${keyword}">
-                    <input type="hidden" name="mainSearch" th:value="${mainSearch}">
-
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+    <div id="modal1" class="modal fade" role="dialog" tabindex="-1">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">답글 달기</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="/replyInsert" method="post">
+                        <img src="/img/profile.png" style="width:13px; margin-top: 3px; margin-right: 3px;"><input
+                            style="border: none;" type="text" name="comment_writer" th:value="${session.id}"><br>
+                        <textarea name="commentContent" style="resize:none; width: 100%; height: 200px;"
+                                  type="text"></textarea>
+                        <input style=" padding: 8px 12px; color: white; border: 0;border-radius: 5px; background: #003366d2; width: 20%; margin-left: 40%; margin-right: 40%;" type="submit" value="등록">
+                        <input type="hidden" name="board_bno" th:value="${board.bno}">
+                        <input type="hidden" id="sequence" name="c_sequence">
+                        <input type="hidden" name="board_kind" th:value="${board.kind}">
+                        <input type="hidden" name="board_realm" th:value="${board.realm}">
+                        <input type="hidden" name="pageNumber" th:value="${page}">
+                        <input type="hidden" name="option" th:value="${option}">
+                        <input type="hidden" name="search" th:value="${search}">
+                        <input type="hidden" name="search_option" th:value="${search_option}">
+                        <input type="hidden" name="keyword" th:value="${keyword}">
+                        <input type="hidden" name="mainSearch" th:value="${mainSearch}">
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
 
-
-<div id="modal2" class="modal fade" role="dialog" tabindex="-1">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">댓글 수정</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form action="/commentUpdate" method="post">
-                    <img src="/img/profile.png" style="width:13px; margin-top: 3px; margin-right: 3px;"><input style="border: none;" type="text" name="comment_writer" th:value="${session.id}"><br>
-                    <textarea id="commentContent" name="commentContent" style="width: 250px;" type="text"></textarea>
-                    <input type="submit" value="등록">
-                    <input type="hidden" name="board_bno" th:value="${board.bno}">
-                    <input type="hidden" name="board_kind" th:value="${board.kind}">
-                    <input type="hidden" name="board_realm" th:value="${board.realm}">
-                    <input type="hidden" name="pageNumber" th:value="${page}">
-                    <input type="hidden" name="c_bno" id="contentBno">
-                    <input type="hidden" name="option" th:value="${option}">
-                    <input type="hidden" name="search" th:value="${search}">
-                    <input type="hidden" name="search_option" th:value="${search_option}">
-                    <input type="hidden" name="keyword" th:value="${keyword}">
-                    <input type="hidden" name="mainSearch" th:value="${mainSearch}">
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+    <div id="modal2" class="modal fade" role="dialog" tabindex="-1">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">댓글 수정</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="/commentUpdate" method="post">
+                        <img src="/img/profile.png" style="width:13px; margin-top: 3px; margin-right: 3px;"><input
+                            style="border: none;" type="text" name="comment_writer" th:value="${session.id}"><br>
+                        <textarea id="commentContent" name="commentContent" style="resize:none; width: 100%; height: 200px;"
+                                  type="text"></textarea>
+                        <input style=" padding: 8px 12px; color: white; border: 0;border-radius: 5px; background: #003366d2; width: 20%; margin-left: 40%; margin-right: 40%;" type="submit" value="등록">
+                        <input type="hidden" name="board_bno" th:value="${board.bno}">
+                        <input type="hidden" name="board_kind" th:value="${board.kind}">
+                        <input type="hidden" name="board_realm" th:value="${board.realm}">
+                        <input type="hidden" name="pageNumber" th:value="${page}">
+                        <input type="hidden" name="c_bno" id="contentBno">
+                        <input type="hidden" name="option" th:value="${option}">
+                        <input type="hidden" name="search" th:value="${search}">
+                        <input type="hidden" name="search_option" th:value="${search_option}">
+                        <input type="hidden" name="keyword" th:value="${keyword}">
+                        <input type="hidden" name="mainSearch" th:value="${mainSearch}">
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
     <div class="footer-box">
         <div class="author">

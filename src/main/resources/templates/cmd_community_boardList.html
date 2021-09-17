@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="/libs/css/style.css">
     <link rel="stylesheet" href="/libs/css/bootstrap.css">
     <link rel="stylesheet" href="/libs/css/community.css">
+    <link rel="stylesheet" href="/libs/css/community-sub.css">
     <script src="https://kit.fontawesome.com/717793cb2b.js" crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
@@ -104,6 +105,7 @@
     </script>
 </head>
 <style>
+
 
     /* Make the image fully responsive */
 
@@ -375,7 +377,7 @@
                             <img th:if="${!hotTopic1.equals('non')}" src="/img/user.png" style="width:13px;"><span
                                 th:if="${!hotTopic1.equals('non')}" th:text="|${hotTopic1.writer}님|"></span>
                             <p th:if="${!hotTopic1.equals('non')}" th:text="|${hotContent1}...|"></p>
-                            <p th:if="${hotTopic1.equals('non')}">인기게시물이 아직 존재하지 않습니다.</p>
+                            <p style="font-weight: 200" th:if="${hotTopic1.equals('non')}">인기게시물이 아직 존재하지 않습니다.</p>
                         </div>
                     </div>
                 </div>
@@ -394,7 +396,7 @@
                             <img th:if="${!hotTopic2.equals('non')}" src="/img/user.png" style="width:13px;"><span
                                 th:if="${!hotTopic2.equals('non')}" th:text="|${hotTopic2.writer}님|"></span>
                             <p th:if="${!hotTopic2.equals('non')}" th:text="|${hotContent2}...|"></p>
-                            <p th:if="${hotTopic2.equals('non')}">인기게시물이 아직 존재하지 않습니다.</p>
+                            <p style="font-weight: 200" th:if="${hotTopic2.equals('non')}">인기게시물이 아직 존재하지 않습니다.</p>
                         </div>
                     </div>
                 </div>
@@ -414,7 +416,7 @@
                             <img th:if="${!hotTopic3.equals('non')}" src="/img/user.png" style="width:13px;"><span
                                 th:if="${!hotTopic3.equals('non')}" th:text="|${hotTopic3.writer}님|"></span>
                             <p th:if="${!hotTopic3.equals('non')}" th:text="|${hotContent3}...|"></p>
-                            <p th:if="${hotTopic3.equals('non')}">인기게시물이 아직 존재하지 않습니다.</p>
+                            <p style="font-weight: 200" th:if="${hotTopic3.equals('non')}">인기게시물이 아직 존재하지 않습니다.</p>
                         </div>
                     </div>
                 </div>
@@ -433,7 +435,7 @@
                             <img th:if="${!hotTopic4.equals('non')}" src="/img/user.png" style="width:13px;"><span
                                 th:if="${!hotTopic4.equals('non')}" th:text="|${hotTopic4.writer}님|"></span>
                             <p th:if="${!hotTopic4.equals('non')}" th:text="|${hotContent4}...|"></p>
-                            <p th:if="${hotTopic4.equals('non')}">인기게시물이 아직 존재하지 않습니다.</p>
+                            <p style="font-weight: 200" th:if="${hotTopic4.equals('non')}">인기게시물이 아직 존재하지 않습니다.</p>
                         </div>
                     </div>
                 </div>
@@ -453,7 +455,7 @@
                             <img th:if="${!hotTopic5.equals('non')}" src="/img/user.png" style="width:13px;"><span
                                 th:if="${!hotTopic5.equals('non')}" th:text="|${hotTopic5.writer}님|"></span>
                             <p th:if="${!hotTopic5.equals('non')}" th:text="|${hotContent5}...|"></p>
-                            <p th:if="${hotTopic5.equals('non')}">인기게시물이 아직 존재하지 않습니다.</p>
+                            <p style="font-weight: 200" th:if="${hotTopic5.equals('non')}">인기게시물이 아직 존재하지 않습니다.</p>
                         </div>
                     </div>
                 </div>
@@ -468,10 +470,9 @@
         </div>
 
 
-        <div class="container">
-
+        <div class="find_container" style="margin-top: 20px; border-top: 1px solid  #03305e81; padding-top: 20px;">
             <form action="/search_list" method="post" onsubmit="return submitAction();">
-                <select name="search_option" id="search_option">
+                <select name="search_option" id="search_option" style="border-radius: 5px; margin-left: 5%; padding: 6px 4px;">
                     <option value="" selected disabled hidden>선택해주세요</option>
                     <option value="writer">작성자</option>
                     <option value="subject">제목</option>
@@ -480,39 +481,38 @@
                 </select>
                 <input type="hidden" name="kind" id="kind" th:value="${kind}">
                 <input type="hidden" name="realm" id="realm" th:value="${realm}">
-                <input type="text" name="keyword" id="keyword" placeholder="검색">
-                <input type="submit" value="조회">
+                <input style="border: 1px solid; border-radius: 5px; padding: 3.8px 4px;" type="text" name="keyword" id="keyword" placeholder="검색">
+                <input style="padding: 3.8px 8px; color: white; border: 0; border-radius: 5px; background: #003366d2;" type="submit" value="조회">
             </form>
-        </div>
-        <div class="container">
+
             <div>
-                <table style="text-align: center; border: 1px solid #dddddd" width="90%">
+                <table style="margin-top: 20px; margin-left: 5%; text-align: center; border: 2px solid #dddddd" width="90%">
                     <thead>
-                    <tr>
-                        <th>글 제목</th>
+                    <tr style="width:auto;font-size: 23px; border-bottom: 2px solid #dddddd;">
+                        <th style="padding-top: 10px; padding-bottom: 10px">글 제목</th>
                         <th>글 작성자</th>
                         <th>날짜</th>
                         <th></th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr th:each="board : ${board}">
-                        <td><a th:href="@{/view(bno=${board.bno},kind=${kind},realm=${realm},pageNumber=${page})}"
-                               th:text="${board.subject}"></a></td>
-                        <td th:text="${board.writer}"></td>
-                        <td th:text="${board.reg_date}"></td>
-                        <td th:if="${board.notice == 1}" style="color: red;">공지글</td>
+                    <tr style="border-bottom: 2px solid #dddddd;" th:each="board : ${board}">
+                        <td style="padding-top: 7px; padding-bottom: 7px; font-size: 15px;"><a style="text-decoration: none; color: black;" th:href="@{/view(bno=${board.bno},kind=${kind},realm=${realm},pageNumber=${page})}"x
+                                                                                               th:text="${board.subject}"></a></td>
+                        <td style="font-size: 15px;" th:text="${board.writer}"></td>
+                        <td style=" font-size: 15px;" th:text="${board.reg_date}"></td>
+                        <td class="ttd" th:if="${board.notice == 1}" style="color: red; width:auto; font-size: 15px;">공지글</td>
                     </tr>
 
                     </tbody>
                 </table>
-                <button type="button" th:onclick="'location.href=\''+@{/write(kind=${kind},realm=${realm})}+'\''">글쓰기
+                <button style="float:right; margin-top: 20px;margin-right: 7%; border: 0; color: white; border-radius: 5px; background: #003366d2;" type="button" th:onclick="'location.href=\''+@{/write(kind=${kind},realm=${realm})}+'\''">글쓰기
                 </button>
             </div>
 
             <div style="display: block; text-align: center;">
                 <ul class="pagination pagination-sm"
-                    style="margin: 0 auto; margin-top: 20px; margin-bottom: 20px; margin-left: auto;">
+                    style="margin: 0 auto; margin-top: 20px; margin-bottom: 20px; margin-left: 5%;">
                     <li class="page-item" th:if="${startPage != 1}"><a class="page-link"
                                                                        th:href="@{/board(pageNumber=${startPage} - 1,kind=${kind},realm=${realm})}">&lt;</a>
                     </li>
@@ -525,7 +525,7 @@
                     </li>
                     <li class="page-item"><a class="page-link"
                                              th:href="@{/board(pageNumber=${page},kind=${kind},realm=${realm})}"
-                                             th:text="${page}" style="background-color: #006DCC;"></a></li>
+                                             th:text="${page}" style="background-color: #006DCC; color: white"></a></li>
                     <li class="page-item" th:if="${count > 0}"
                         th:each="idx,iterStat : ${#numbers.sequence(page + 1, target2 + page )}">
                         <a class="page-link" th:if="${idx < startPage + 10 and idx > page}"
@@ -540,24 +540,26 @@
                     </li>
                 </ul>
             </div>
+
         </div>
 
-        <div class="footer-box">
-            <div class="author">
-                <p><b>Creators - </b>KimLeeEum</p>
-                <p><b>email - </b>energizun1001@gamil.com</p>
-                <p><b>Domain - </b>www.cmdev.com</p>
-            </div>
-            <div class="link">
-                <ul>
-                    <li><a href="https://github.com/" target="_blank"><i class="fab fa-github"> GitHub</i></a></li>
-                    <li><a href="https://stackoverflow.com/" target="_blank"><i class="fab fa-stack-overflow">
-                        Stack-Overflow</i></a></li>
-                </ul>
-                <input type="hidden" id="userID" th:value="${session.id}">
-            </div>
-        </div>
-        <div class="eyebrow"><p>@2021 prod by 김이음</p></div>
     </div>
+    <div class="footer-box">
+        <div class="author">
+            <p><b>Creators - </b>KimLeeEum</p>
+            <p><b>email - </b>energizun1001@gamil.com</p>
+            <p><b>Domain - </b>www.cmdev.com</p>
+        </div>
+        <div class="link">
+            <ul>
+                <li><a href="https://github.com/" target="_blank"><i class="fab fa-github"> GitHub</i></a></li>
+                <li><a href="https://stackoverflow.com/" target="_blank"><i class="fab fa-stack-overflow">
+                    Stack-Overflow</i></a></li>
+            </ul>
+            <input type="hidden" id="userID" th:value="${session.id}">
+        </div>
+    </div>
+    <div class="eyebrow"><p>@2021 prod by 김이음</p></div>
+</div>
 </body>
 </html>
