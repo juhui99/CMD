@@ -489,7 +489,7 @@
                         <td style="padding-top: 7px; padding-bottom: 7px; font-size: 15px;"><a style="text-decoration: none; color: black;" th:href="@{/view(bno=${board.bno},kind=${kind},realm=${realm},pageNumber=${page})}"x
                                                                                                th:text="${board.subject}"></a></td>
                         <td style="font-size: 15px;" th:text="${board.writer}"></td>
-                        <td style=" font-size: 15px;" th:text="${board.reg_date}"></td>
+                        <td style=" font-size: 15px;" th:text="${board.real_date}"></td>
                         <td class="ttd" th:if="${board.notice == 1}" style="color: red; width:auto; font-size: 15px;">공지글</td>
                     </tr>
 

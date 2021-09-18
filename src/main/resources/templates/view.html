@@ -394,7 +394,7 @@
                             name="writer" id="writer" readonly/></tr>
                     <tr><label
                             style=" padding: 3.8px 8px; color: white; border: 0; border-radius: 5px; background: #003366d2;">날짜</label><input
-                            style="margin-left: 10px;" type="text" th:value="${board.reg_date}" readonly/><br></tr>
+                            style="margin-left: 10px;" type="text" th:value="${board.real_date}" readonly/><br></tr>
                     <div style="border-top: 1px solid #003366d2;">
                         <tr><label
                                 style="margin-top: 10px; padding: 3.8px 8px; color: white; border: 0; border-radius: 5px; background: #003366d2; "
@@ -437,7 +437,8 @@
                         </button>
                     </a>
                     <a th:if="${option != 'non'}" th:href="@{/totalHotTopic(kind='HOT게시판',realm=${realm})}">
-                        <button type="button">목록</button>
+                        <button type="button"
+                                style="border: 1px solid black; color: black; background: white; border-radius: 5px; ">목록</button>
                     </a>
                     <a th:if="${search != 'non'}"
                        th:href="@{/search_list(pageNumber=${page},search_option=${search_option},keyword=${keyword},kind=${kind},realm=${realm})}">
@@ -447,7 +448,8 @@
                         </button>
                     </a>
                     <a th:if="${mainSearch != 'non'}" th:href="@{/main_search(pageNumber=${page},keyword=${keyword})}">
-                        <button type="button">목록</button>
+                        <button type="button"
+                                style="border: 1px solid black; color: black; background: white; border-radius: 5px; ">목록</button>
                     </a>
                     <button style="margin-left: 10px; border: 1px solid black; color: black; background: white; border-radius: 5px; "
                             th:if="${session.id == board.writer}" type="submit">수정

@@ -247,6 +247,16 @@
 
 
                 <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbardrop2" data-toggle="dropdown">
+                        D-MBTI
+                    </a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="#">D-MBTI 하기</a>
+                        <a class="dropdown-item" href="#">D-MBTI 통계</a>
+                    </div>
+                </li>
+
+                <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbardrop3" data-toggle="dropdown">
                         설문조사
                     </a>
@@ -279,80 +289,68 @@
         </nav>
     </div>
 
-
-    <div>
-        <table style="margin-top: 20px; margin-left: 5%; text-align: center; border: 2px solid #dddddd" width="90%">
-            <thead>
-            <tr style="width:auto;font-size: 23px; border-bottom: 2px solid #dddddd;">
-                <th style="padding-top: 10px; padding-bottom: 10px">글 제목</th>
-                <th>글 작성자</th>
-                <th>날짜</th>
-                <th></th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr style="border-bottom: 2px solid #dddddd;" th:each="board : ${board}">
-                <td style="padding-top: 7px; padding-bottom: 7px; font-size: 15px;"><a style="text-decoration: none; color: black;" th:href="@{/view(bno=${board.bno},kind=${kind},realm=${realm},pageNumber=${page})}"x
-                                                                                       th:text="${board.subject}"></a></td>
-                <td style="font-size: 15px;" th:text="${board.writer}"></td>
-                <td style=" font-size: 15px;" th:text="${board.reg_date}"></td>
-                <td class="ttd" th:if="${board.notice == 1}" style="color: red; width:auto; font-size: 15px;">공지글</td>
-            </tr>
-
-            </tbody>
-        </table>
-        <button style="float:right; margin-top: 20px;margin-right: 7%; border: 0; color: white; border-radius: 5px; background: #003366d2;" type="button" th:onclick="'location.href=\''+@{/write(kind=${kind},realm=${realm})}+'\''">글쓰기
-        </button>
-    </div>
-
-    <div style="display: block; text-align: center;">
-        <ul class="pagination pagination-sm"
-            style="margin: 0 auto; margin-top: 20px; margin-bottom: 20px; margin-left: 5%;">
-            <li class="page-item" th:if="${startPage != 1}"><a class="page-link"
-                                                               th:href="@{/board(pageNumber=${startPage} - 1,kind=${kind},realm=${realm})}">&lt;</a>
-            </li>
-            <li class="page-item" th:if="${startPage == 1}"><a class="page-link" style="color: gray;">&lt;</a>
-            </li>
-            <li class="page-item" th:if="${startPage >0 and page != 1 and page > startPage}"
-                th:each="idx,iterStat : ${#numbers.sequence(startPage, page - 1)}">
-                <a class="page-link" th:if="${idx > 0 and page != 1}"
-                   th:href="@{/board(pageNumber=${idx},kind=${kind},realm=${realm})}" th:text="${idx}"> </a>
-            </li>
-            <li class="page-item"><a class="page-link"
-                                     th:href="@{/board(pageNumber=${page},kind=${kind},realm=${realm})}"
-                                     th:text="${page}" style="background-color: #006DCC; color: white"></a></li>
-            <li class="page-item" th:if="${count > 0}"
-                th:each="idx,iterStat : ${#numbers.sequence(page + 1, target2 + page )}">
-                <a class="page-link" th:if="${idx < startPage + 10 and idx > page}"
-                   th:href="@{/board(pageNumber=${idx},kind=${kind},realm=${realm})}" th:text="${idx}"></a>
-            </li>
-            <li class="page-item" th:if="${target2 >= 1 and target2 + page > startPage + 9}">
-                <a class="page-link"
-                   th:href="@{/board(pageNumber=${startPage + 10},kind=${kind},realm=${realm})}">></a>
-            </li>
-            <li class="page-item" th:if="${target2 + page <= startPage + 9}">
-                <a class="page-link" style="color: gray;">></a>
-            </li>
-        </ul>
-    </div>
-
-</div>
-
-        <div class="footer-box">
-            <div class="author">
-                <p><b>Creators - </b>KimLeeEum</p>
-                <p><b>email - </b>energizun1001@gamil.com</p>
-                <p><b>Domain - </b>www.cmdev.com</p>
-            </div>
-            <div class="link">
-                <ul>
-                    <li><a href="https://github.com/" target="_blank"><i class="fab fa-github"> GitHub</i></a></li>
-                    <li><a href="https://stackoverflow.com/" target="_blank"><i class="fab fa-stack-overflow"> Stack-Overflow</i></a></li>
-                </ul>
-                <input type="hidden" id="userID" th:value="${session.id}">
-            </div>
+    <div class="container" style="margin-top: 40px;">
+        <div>
+            <h2 style="color: #003366d2; font-weight: bold;">커뮤니티</h2>
+            <table style="text-align: center; border: 1px solid #dddddd" width="90%">
+                <thead>
+                <tr>
+                    <th style="padding-top: 10px; padding-bottom: 10px">글 제목</th>
+                    <th>글 작성자</th>
+                    <th>날짜</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="board : ${board}">
+                    <td><a th:href="@{/view(bno=${board.bno},kind=${board.kind},realm=${board.realm},pageNumber=${page},mainSearch='mainSearch',keyword=${keyword})}" th:text="${board.subject}"></a></td>
+                    <td th:text="${board.writer}"></td>
+                    <td th:text="${board.real_date}"></td>
+                    <td th:if="${board.notice == 1}" style="color: red;">공지글</td>
+                </tr>
+                </tbody>
+            </table>
         </div>
-        <div class="eyebrow"><p>@2021 prod by 김이음</p></div>
+
+        <div style="display: block; text-align: center;">
+            <ul class="pagination pagination-sm" style="margin: 0 auto; margin-top: 20px; margin-bottom: 20px;">
+                <li class="page-item" th:if="${startPage != 1}"><a class="page-link" th:href="@{/main_search(pageNumber=${startPage} - 1,keyword=${keyword})}">&lt;</a></li>
+                <li class="page-item" th:if="${startPage == 1}"><a class="page-link" style="color: gray;">&lt;</a></li>
+                <li class="page-item" th:if="${startPage >0 and page != 1 and page > startPage}" th:each="idx,iterStat : ${#numbers.sequence(startPage, page - 1)}">
+                    <a class="page-link" th:if="${idx > 0 and page != 1}" th:href="@{/main_search(pageNumber=${idx},keyword=${keyword})}" th:text="${idx}"> </a>
+                </li>
+                <li class="page-item"><a class="page-link" th:href="@{/main_search(pageNumber=${page},keyword=${keyword})}" th:text="${page}" style="background-color: #006DCC;"></a></li>
+                <li class="page-item" th:if="${count > 0}" th:each="idx,iterStat : ${#numbers.sequence(page + 1, target2 + page )}" >
+                    <a class="page-link" th:if="${idx < startPage + 10 and idx > page}" th:href="@{/main_search(pageNumber=${idx},keyword=${keyword})}" th:text="${idx}"></a>
+                </li>
+                <li class="page-item" th:if="${target2 >= 1 and target2 + page > startPage + 9}">
+                    <a class="page-link" th:href="@{/main_search(pageNumber=${startPage + 10},keyword=${keyword})}">></a>
+                </li>
+                <li class="page-item" th:if="${target2 + page <= startPage + 9}">
+                    <a class="page-link" style="color: gray;">></a>
+                </li>
+            </ul>
+        </div>
+
+
     </div>
+
+
+    <div class="footer-box">
+        <div class="author">
+            <p><b>Creators - </b>KimLeeEum</p>
+            <p><b>email - </b>energizun1001@gamil.com</p>
+            <p><b>Domain - </b>www.cmdev.com</p>
+        </div>
+        <div class="link">
+            <ul>
+                <li><a href="https://github.com/" target="_blank"><i class="fab fa-github"> GitHub</i></a></li>
+                <li><a href="https://stackoverflow.com/" target="_blank"><i class="fab fa-stack-overflow"> Stack-Overflow</i></a></li>
+            </ul>
+            <input type="hidden" id="userID" th:value="${session.id}">
+        </div>
+    </div>
+    <div class="eyebrow"><p>@2021 prod by 김이음</p></div>
+</div>
 </body>
 </html>

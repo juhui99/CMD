@@ -22,7 +22,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.*;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 //@RestController
@@ -55,6 +57,12 @@ public class BoardListController {
             off = (Integer.parseInt(pageNumber) - 1) * 20;
         }
         List<BoardVO> board = boardMapper.boardList(off, kind, realm);
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        for (int i = 0; i < board.size(); i++){
+            Date reg_date = board.get(i).getReg_date();
+            String real_date = format.format(reg_date);
+            board.get(i).setReal_date(real_date);
+        }
 
         int target =(Integer.parseInt(pageNumber) - 1) * 10;
         int target1 = boardMapper.targetPage(target);
@@ -222,8 +230,14 @@ public class BoardListController {
             model.addAttribute("url","login"); //메세지와 url을 모델로 담아 알림창을 띄울 alert.html로 전달
             return "alert";
         }
-        boardMapper.boardHit(bno); //게시물 메퍼의 해당 게시물 조회수 증가 메소드 실행
-        BoardVO board = boardMapper.boardView(bno,kind,realm); //파라미터로 받은 bno를 담아 게시물 메퍼의 boardView 메소드 실행된 결과를 board에 저장
+        boardMapper.boardHit(bno);
+        BoardVO board = boardMapper.boardView(bno,kind,realm);
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date reg_date = board.getReg_date();
+        String real_date = format.format(reg_date);
+        board.setReal_date(real_date);
+
+
         int recommendCheck = boardMapper.recommendCheck(kind,realm,bno,userID);
         UserVO user = userMapper.userLogin(userID);
         model.addAttribute("user",user);
@@ -409,7 +423,13 @@ public class BoardListController {
             target2 = 0;
         }
         int resultCount = count - (page * 20); //현재페이지 이후부터의 남은 게시물 갯수
-        List<BoardVO> board = boardMapper.boardSearch(search_option, keyword,kind,realm,off); //저장된 변수들을 파라미터로 담아 boardSearch 실행후 결과를 board에 저장
+        List<BoardVO> board = boardMapper.boardSearch(search_option, keyword,kind,realm,off);
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        for (int i = 0; i < board.size(); i++){
+            Date reg_date = board.get(i).getReg_date();
+            String real_date = format.format(reg_date);
+            board.get(i).setReal_date(real_date);
+        }
 
         if(session.getAttribute("id") != null) {
             String userID = (String) session.getAttribute("id");
@@ -487,6 +507,12 @@ public class BoardListController {
         }
         int resultCount = count - (page * 20); //현재페이지 이후부터의 남은 게시물 갯수
         List<BoardVO> board = boardMapper.boardSearch(search_option, keyword,kind,realm,off); //저장된 변수들을 파라미터로 담아 boardSearch 실행후 결과를 board에 저장
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        for (int i = 0; i < board.size(); i++){
+            Date reg_date = board.get(i).getReg_date();
+            String real_date = format.format(reg_date);
+            board.get(i).setReal_date(real_date);
+        }
         if(session.getAttribute("id") != null) {
             String userID = (String) session.getAttribute("id");
             UserVO user = userMapper.userLogin(userID);
@@ -873,6 +899,12 @@ public class BoardListController {
     public String main_search(SearchForm form,Model model,HttpServletRequest request,HttpSession session) throws Exception{
         String keyword = form.getKeyword();
         List<BoardVO> board = boardMapper.mainSearch(keyword);
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        for (int i = 0; i < board.size(); i++){
+            Date reg_date = board.get(i).getReg_date();
+            String real_date = format.format(reg_date);
+            board.get(i).setReal_date(real_date);
+        }
         String pageNumber = "1";
         int off = 0;
         int target2 = 0; //새로
@@ -930,6 +962,12 @@ public class BoardListController {
     @GetMapping("/main_search")
     public String main_search2(SearchForm form,Model model,HttpServletRequest request, @RequestParam("keyword") String keyword,HttpSession session) throws Exception{
         List<BoardVO> board = boardMapper.mainSearch(keyword);
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        for (int i = 0; i < board.size(); i++){
+            Date reg_date = board.get(i).getReg_date();
+            String real_date = format.format(reg_date);
+            board.get(i).setReal_date(real_date);
+        }
         String pageNumber = "1";
         int off = 0;
         int target2 = 0; //새로
