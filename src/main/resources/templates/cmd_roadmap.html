@@ -18,84 +18,6 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@500&display=swap" rel="stylesheet">
-    <script type="text/javascript">
-        function totalUnreadChat() {
-            $.ajax({
-                type: "POST",
-                url: "/getTotalUnreadChat",
-                dataType: "json",
-                data: {
-                    id: $("#userID").val()
-                },
-                success: function (result) {
-                    if (result >= 1) {
-                        $('#totalUnread').html(result);
-                    } else {
-                        $('#totalUnread').html('');
-                    }
-                }
-            });
-        }
-
-        function getInfiniteTotalUnread() {
-            setInterval(function () {
-                totalUnreadChat();
-            }, 4000);
-        }
-
-        $(document).ready(function () {
-            totalUnreadChat();
-            getInfiniteTotalUnread();
-
-            $(".board").css("display", "none");
-
-            $(".frontend").hover(function () {
-                $(".frontend_board").css("display", "block");
-                $(".backend_board").css("display", "none");
-                $(".DBA_board").css("display", "none");
-                $(".AI_board").css("display", "none");
-                $(".WH_board").css("display", "none");
-
-            });
-            $(".backend").hover(function () {
-                $(".backend_board").css("display", "block");
-                $(".frontend_board").css("display", "none");
-                $(".DBA_board").css("display", "none");
-                $(".AI_board").css("display", "none");
-                $(".WH_board").css("display", "none");
-            });
-            $(".DBA").hover(function () {
-                $(".DBA_board").css("display", "block");
-                $(".backend_board").css("display", "none");
-                $(".frontend_board").css("display", "none");
-                $(".AI_board").css("display", "none");
-                $(".WH_board").css("display", "none");
-            });
-            $(".AI").hover(function () {
-                $(".AI_board").css("display", "block");
-                $(".DBA_board").css("display", "none");
-                $(".backend_board").css("display", "none");
-                $(".frontend_board").css("display", "none");
-                $(".WH_board").css("display", "none");
-            });
-            $(".WH").hover(function () {
-                $(".WH_board").css("display", "block");
-                $(".AI_board").css("display", "none");
-                $(".DBA_board").css("display", "none");
-                $(".backend_board").css("display", "none");
-                $(".frontend_board").css("display", "none");
-
-            });
-            $("#withdrawal").click(function () {
-                var id = $("#userID").val();
-                if (confirm("정말로 회원탈퇴를 하시겠습니까?")) {
-                    location.href = "/withdrawalCheck";
-                } else {
-                    alert("회원탈퇴를 취소합니다.");
-                }
-            });
-        });
-    </script>
 
     <style>
         /* Make the image fully responsive */
@@ -269,6 +191,7 @@
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbardrop1" data-toggle="dropdown">
                         채팅
+                        <span id="totalUnread" class="badge badge-info"></span>
                     </a>
                     <div class="dropdown-menu">
                         <a class="dropdown-item" href="/friendsFind">친구 찾기</a>
@@ -280,6 +203,7 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/cmd_roadmap">로드맵</a>
                 </li>
+
 
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbardrop3" data-toggle="dropdown">
@@ -296,7 +220,6 @@
                     <a th:if="${session.id == null}" href="/login"><i class="far fa-user"></i> 로그인</a>
                     <a style="margin-left: 10px;" th:if="${session.id == null}" href="/join">회원가입</a>
                 </li>
-
 
                 <li class="nav-item dropdown" th:if="${session.id != null}">
                     <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
@@ -506,75 +429,224 @@
                 <div class="timeline">
                     <div class="year">
                         <div class="inner">
-                            <span>2016</span>
+                            <span>Roadmap</span>
                         </div>
                     </div>
 
                     <ul class="days">
                         <li class="day">
                             <div class="events">
-                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eius perferendis vitae,
-                                    facere accusantium magni, explicabo mollitia quidem odio autem, iste optio?
-                                    Consequuntur ratione dolorum velit maiores quam odit odio suscipit.</p>
-                                <div class="date">18 October (Monday)</div>
+                                <p style="overflow-y: scroll; height: 250px; text-align: left;">사용자가 웹 사이트 또는 웹 애플리케이션의
+                                    URL을 입력하거나 모바일 애플리케이션을 다운로드할 때, 사용자들은 아주 깔끔한 레이아웃을 가진 인터페이스를 보게 됩니다. 이렇게 사용자가 마주 보는
+                                    인터페이스를 테크놀로지 분야에서 ‘프론트엔드’라고 부릅니다. 프론트엔드는 사용하기 쉽고 완전한 기능을 갖춘 인터페이스를 갖추었을 때만 사용자들의 참여를
+                                    끌어내기 때문에 아주 중요한 요소가 됩니다. 서비스의 경쟁력을 유지하기 위해서는, 매끄럽게 동작하는 강력한 프론트엔드를 구축하는 것이 매우
+                                    중요합니다.</p>
+                                <div class="date">Frontend (의미)</div>
                             </div>
                         </li>
-
                         <li class="day">
                             <div class="events">
-                                <p>Lorem dolor sit amet, consectetur adipisicing elit. Eius perferendis vitae, facere
-                                    accusantium magni, explicabo mollitia quidem odio autem, iste optio? Consequuntur
-                                    ratione dolorum velit maiores quam odit odio suscipit.</p>
-                                <div class="date">18 October (Monday)</div>
+                                <div class="day__img">
+                                    <img src="/img/frontend_info.png" alt=""/>
+                                    <p class="caption">
+                                        Frontend
+                                    </p>
+                                </div>
+                                <div class="date">Frontend (사진)</div>
+                            </div>
+                        </li>
+                        <li class="day">
+                            <div class="events">
+                                <p style="overflow-y: scroll; height: 250px; text-align: left;">프론트엔드 개발은 주로 웹 및 모바일
+                                    솔루션의 사용자 인터페이스(UI)와 사용자 경험(UX)을 만드는 데 초점을 맞추고 있습니다. 슬라이더,
+                                    드롭다운(drop-down) 메뉴, 레이아웃, 폰트, 컬러 등 모든 요소가 프론트엔드 개발을 이루는 부분입니다. 시선을 사로잡는 프론트엔드를 만드는
+                                    데는 HTML, CSS, 자바스크립트(Javascript)가 중요한 역할을 합니다. 최종적인 사용자 인터페이스를 디자인하기 전에는 목업(Mockup),
+                                    와이어 프레임(Wire-frame), 클릭할 수 있는 프로토타입(Prototype)을 만들어야 합니다. 이런 도구들은 애플리케이션의 사용자 경험 안에
+                                    있는 이슈들을 확인할 수 있게 도와줍니다. 그리고 만약 그런 이슈들을 알게 된다면 문제를 해결할 수 있다는 것이고, 결국에는 영향력 있는 프론트엔드를
+                                    개발하는 것이 수월해지게 됩니다. 모바일 또는 웹 애플리케이션을 위한 완벽한 프론트엔드를 만들기 위해서는, 여러분의 구체적인 요구사항·목표·기회 등을
+                                    이해하고 그에 따른 프론트엔드를 만들어 낼 수 있는 개발업체와 협업하는 것이 매우 중요합니다.
+                                </p>
+                                <div class="date">개발 방법</div>
                             </div>
                         </li>
 
                         <li class="day">
                             <div class="events">
                                 <div class="day__img">
-                                    <img src="http://placehold.it/400x300" alt=""/>
+                                    <img src="/img/frontend_lan.png" alt=""/>
                                     <p class="caption">
-                                        Lorem ipsum dolor sit amet.
+                                        frontend-language
                                     </p>
                                 </div>
-                                <div class="date">18 October (Monday)</div>
+                                <div class="date">주 사용 언어</div>
                             </div>
                         </li>
 
                         <li class="day">
                             <div class="events">
-                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eius perferendis vitae,
-                                    facere accusantium magni, explicabo mollitia quidem odio autem, iste optio?
-                                    Consequuntur ratione dolorum velit maiores quam odit odio suscipit.</p>
-                                <div class="date">18 October (Monday)</div>
+                                <p style="overflow-y: scroll; height: 250px; text-align: left;">이름 그대로 하이퍼텍스트와 마크업 언어로
+                                    구성되어 있습니다. 하이퍼텍스트는 웹 페이지들 사이의 연결(하이퍼링크)를 나타냅니다. 반면에 마크업 언어는
+                                    데이터를 기술하는 언어입니다. 한 마디로 문서가 화면에 표시되는 형식을 나타내거나 데이터의 논리적인 구조를 명시하기 위한 규칙들을 정의한 언어의
+                                    일종이라고 할 수 있는데요. 그리하여 웹 페이지에 문단, 동영상, 제목, 표 등을 정의하고 그 구조와 의미를 정의하는 데 사용됩니다.</p>
+                                <div class="date">1. HTML
+                                    <br>(Hyper Text Markup Language)
+                                </div>
                             </div>
                         </li>
 
                         <li class="day">
                             <div class="events">
-                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eius perferendis vitae,
-                                    facere accusantium magni, explicabo mollitia quidem odio autem, iste optio?
-                                    Consequuntur ratione dolorum velit maiores quam odit odio suscipit.</p>
-                                <div class="date">18 October (Monday)</div>
+                                <p style="overflow-y: scroll; height: 250px; text-align: left;">CSS는 종속 스타일 시트(Cascading
+                                    Style Sheets)의 약자입니다. 스타일 시트라는 단어에서 알 수 있듯이 CSS는 마크업 언어로 작성된
+                                    것이 실제로 화면에 어떻게 보이는지 그 스타일(표현)을 정해 주는 언어입니다. 즉 HTML 콘텐츠를 크기, 색상, 위치 변경 등으로 예쁘게 꾸미는,
+                                    디자인 담당이라고 할 수 있는데요. CSS의 사용으로 구조(내용)와 표현(스타일)이 함께 움직이는 것이 아니라 서로 분리될 수 있습니다. CSS는
+                                    개발자가 웹페이지에 다양한 스타일을 적용할 수 있게 해줌으로써 애플리케이션 페이지를 표시하는 프로세스를 보다 단순하게 만들어 줍니다. CSS는 또한 한
+                                    번에 여러 웹 페이지의 레이아웃을 제어할 수 있어 일일이 디자인을 적용해야 할 수고로움을 덜어줍니다.</p>
+                                <div class="date">2. CSS (Cascading Style Sheets)</div>
                             </div>
                         </li>
-
+                        <li class="day">
+                            <div class="events">
+                                <p style="overflow-y: scroll; height: 250px; text-align: left;">HTML과 CSS가 결합되어 웹페이지 상에서
+                                    올려진다고 하여 끝이 아니라, 그것이 실행되어야 의미가 있는데요. 스크립트 언어인 자바스크립트는 HTML과 CSS를 통해 만들어진 웹 페이지가
+                                    동작하도록 만들어 줍니다. 사용자들을 위해 상호작용하는 애플리케이션은 자바스크립트를 통해 구현 가능하게 된 것이라고 볼 수 있죠. 자바스크립트는
+                                    어마어마할 정도로 인기가 많은 언어로써, 객체 기반 언어이기에 객체 지향형 프로그래밍과 함수형 프로그래밍 모두를 표현할 수 있습니다. 게다가 동적이며
+                                    소스 코드를 직접 해석하여 바로 실행할 수 있는 인터프리터 언어이기 때문에 타입을 명시할 필요가 없다는 특성이 있습니다. 그렇기에 웹사이트의 기능성을
+                                    향상하는데 사용되며, 웹 기반의 소프트웨어 또는 게임들을 실행할 수 있게 해 주는 역할을 합니다.</p>
+                                <div class="date">3. JS(Javascript)</div>
+                            </div>
+                        </li>
+                        <li class="day">
+                            <div class="events">
+                                <p style="overflow-y: scroll; height: 250px; text-align: left;">2012년 마이크로소프트가 발표한
+                                    타입스크립트(TypeScript)는 자바스크립트(JavaScript)를 기반으로 정적 타입 문법을 추가한 프로그래밍 언어이다. 요즘은 대형 SI
+                                    프로젝트에서 흔하게 사용되고 있으며 개발자 구인 시 우대 사항 기술로도 자주 언급되고 있다. 자바스크립트는 동적 타입의 인터프리터 언어로 런타임에서
+                                    오류를 발견할 수 있다. 이에 반해 타입스크립트는 정적 타입의 컴파일 언어이며 타입스크립트 컴파일러 또는 바벨(Babel)을 통해 자바스크립트 코드로
+                                    변환된다. 코드 작성 단계에서 타입을 체크해 오류를 확인할 수 있고 미리 타입을 결정하기 때문에 실행 속도가 매우 빠르다는 장점이 있다. 하지만 코드
+                                    작성 시 매번 타입을 결정해야 하기 때문에 번거롭고 코드량이 증가하며 컴파일 시간이 오래 걸린다는 단점이 있다. 그래도 타입스크립트 사용을 고려해야
+                                    하는 이유는
+                                    <br><br>
+                                    - 높은 수준의 코드 탐색과 디버깅
+                                    타입스크립트는 코드에 목적을 명시하고 목적에 맞지 않는 타입의 변수나 함수들에서 에러를 발생시켜 버그를 사전에 제거한다. 또한 코드 자동완성이나 실행
+                                    전 피드백을 제공하여 작업과 동시에 디버깅이 가능해 생산성을 높일 수 있다. 실제로 한 연구에 따르면 모든 자바스크립트 버그의 15%가 사전에
+                                    타입스크립트로 감지할 수 있다고 한다.
+                                    <br><br>
+                                    - 자바스크립트 호환
+                                    타입스크립트는 자바스크립트와 100% 호환된다. 따라서 프론트엔드 또는 백엔드 어디든 자바스크립트를 사용할 수 있는 곳이라면 타입스크립트도 쓸 수
+                                    있다. 타입스크립트는 앱과 웹을 구현하는 자바스크립트와 동일한 용도로 사용 가능하며 서버 단에서 개발이 이루어지는 복잡한 대형 프로젝트에서도 빛을
+                                    발한다.
+                                    <br><br>
+                                    - 강력한 생태계
+                                    타입스크립트는 그리 오래되지 않은 언어임에도 불구하고 강력한 생태계를 가지고 있다. 대부분의 라이브러리들이 타입스크립트를 지원하며 마이크로소프트의
+                                    비주얼 스튜디오 코드(VSCode)를 비롯해 각종 에디터가 타입스크립트 관련 기능과 플러그인을 지원한다.
+                                    <br><br>
+                                    - 점진적 전환 가능
+                                    기존의 자바스크립트 프로젝트를 타입스크립트로 전환하는데 부담이 있다면 추가 기능이나 특정 기능에만 타입스크립트를 도입함으로써 프로젝트를 점진적으로
+                                    전환할 수 있다. 자바스크립트에 주석을 추가하는 것에서부터 시작해 시간이 지남에 따라 코드베이스가 완전이 바뀌도록 준비 기간을 가질 수 있다.
+                                    <br><br>
+                                    하지만 새로운 프로그래밍 언어에 대한 러닝 커브(Learning Curve), 상대적으로 낮은 가독성, 코드량 증가 등의 이유로 타입스크립트 사용을
+                                    망설이는 개발자가 많다. 프로젝트 성격에 따라 타입스크립트를 사용할지 결정하면 된다. 프로젝트의 규모가 크고 복잡할수록, 유지보수가 중요한 장기
+                                    프로젝트일수록 타입스크립트의 이점이 부각될 것이다.
+                                </p>
+                                <div class="date">4. TS(Typescript)</div>
+                            </div>
+                        </li>
                         <li class="day">
                             <div class="events">
                                 <div class="day__img">
-                                    <img src="http://placehold.it/400x300" alt=""/>
+                                    <img src="/img/frontend_fram.png" alt=""/>
                                     <p class="caption">
-                                        Lorem ipsum dolor sit amet.
+                                        Framwork & Library
                                     </p>
                                 </div>
-                                <div class="date">18 October (Monday)</div>
+                                <div class="date">주요 프레임워크 & 라이브러리</div>
                             </div>
                         </li>
+                        <li class="day">
+                            <div class="events">
+                                <p style="overflow-y: scroll; height: 250px; text-align: left;">프레임워크라는 것입니다. 최근에는
+                                    자바스크립트로 웹페이지뿐만 아니라, 스마트폰이나 데스크탑에서 동작하는 애플리케이션을 개발할 수 있는데, Angular는
+                                    이를 지원하기 위한 기능들을 갖추고 있습니다.
+                                    또한, 타입스크립트를 주력언어로 채택하여 정적 타입을 제공하고 있습니다. 정적 타입의 도입으로 코드 어시스트, 타입 체크, 리팩토링을 지원하는 강력한
+                                    도구 사용이 가능해지며, 객체지향적 프로그래밍에 적합해집니다. 이는 많은 개발자 간의 협업이 필요한 대규모 애플리케이션 개발에 보다 효과적입니다.
+                                    Angular가 제공하는 또 다른 강력한 도구는 Angular CLI입니다. 프레임워크에 익숙하지 않은 초심자들이 가장 어렵게 생각하는 장벽 중 하나인
+                                    개발환경 구축을 Angular CLI가 제공하는 명령 하나만으로 간단히 해결할 수 있습니다. 아울러 다른 프레임워크가 제공하는 CLI와는 달리 추가적인
+                                    명령들을 통해 개발환경 구축뿐만 아니라, 개발 전반에 걸쳐 편리함을 제공합니다.
+                                    그리고 Angular는 컴플리트 프레임워크에 걸맞게 Router, Forms, HTTP 등 다양한 모듈을 지원합니다. 또한 RxJS를 내장하고 있어
+                                    HTTP 뿐만 아니라 모든 이벤트를 스트림으로 RxJS의 옵저버 패턴에 의해 유연하게 제어할 수 있습니다. 그 밖에도 애니메이션을 위한 Angular
+                                    Animations, 국제화를 위한 i18n 모듈, 테스팅 모듈 등도 제공하고 있습니다.
+                                    또 다른 특징으로 컴포넌트 기반 개발을 중심으로 한다는 점을 들 수 있습니다. 컴포넌트 기반으로 개발한다는 것은 컴포넌트의 형태로 사용자 인터페이스를
+                                    정의하고, 자바스크립트 파일뿐 아니라 템플릿 역할을 할 HTML 파일이나 스타일시트가 담긴 CSS 파일도 컴포넌트에 포함한다는 것입니다. 이 파일들은
+                                    컴포넌트마다 자동으로 생성됩니다.
+                                    또한 Angular는 타입스크립트의 문법인 'decorator'를 많이 활용하는 선언적 코딩 스타일을 사용합니다. 태그명, 템플릿 파일, CSS 파일에
+                                    대한 정보를 decorator 문법으로 전달하고 있습니다.
+                                </p>
+                                <div class="date">1. 앵귤러(Angular)</div>
+                            </div>
+                        </li>
+
+                        <li class="day">
+                            <div class="events">
+                                <p style="overflow-y: scroll; height: 250px; text-align: left;">React의 특징은 Angular와 달리
+                                    개발에 필요한 모듈을 기본으로 제공하지 않고, 서드파티(Third party) 라이브러리에 의존한다는 점입니다. 공식적으로 React는 작은
+                                    자바스크립트 UI 라이브러리일 뿐, 그 외의 것은 사용자에게 일임하고 있습니다. 대신 다른 프레임워크에 비해 방대한 에코시스템이 존재합니다. 사용자는
+                                    자유롭게 개발에 필요한 모듈을 결정하고 선택할 수 있습니다. 커다란 에코시스템은 React의 장점으로 보이지만 사용자에게 책임이라는 부담을 지우기도
+                                    합니다. 그러나 다행스럽게도 React 진영이 이러한 사용자 부담에 대해 완전히 손놓고 있지는 않습니다. Angular CLI와 마찬가지로 초심자의
+                                    빠른 개발환경 구축을 위해서 Create React App이라는 툴을 제공하여 진입 장벽을 낮추고 있습니다.
+                                    React 역시 컴포넌트 기반의 개발을 채택하고 있습니다. 그러나 컴포넌트의 구현은 자바스크립트에 조금 더 치중되어 있습니다. 다른 프레임워크들이
+                                    HTML 마크업 기반으로 그 위에 템플릿 문법을 추가해 컴포넌트의 구조와 구성요소를 정의하는 반면, React는 XML 포맷의 템플릿을 직접
+                                    자바스크립트에 내장시키는 형태로 JSX 기술을 주력으로 사용하는 것을 권장하고 있습니다. 그렇기 때문에 다른 프레임워크에 비하여 더 자바스크립트에
+                                    집중된 형태의 컴포넌트가 나타나게 됩니다.
+                                    React가 Angular와 구별되는 또 다른 특징 중 하나는 가상 DOM을 이용한다는 것입니다. 가상 DOM은 가상 트리 형태의 자료구조에 실제
+                                    DOM 트리가 매핑된 형태로 동작합니다. 전통적인 DOM은 한 요소에서 변경이 발생하더라도 전체 트리구조를 업데이트하기도 합니다. 따라서 렌더링 성능이
+                                    떨어질 수 있는 불안요소가 있습니다. 가상 DOM은 가상 DOM 내의 변경사항을 추적하여 전체 트리의 다른 부분에 영향을 주지 않고, 매핑된 실제
+                                    DOM상의 특정요소만 업데이트할 수 있게 도와 줍니다. 일반적으로 가상 DOM이 실제 DOM을 조작하는 것에 비해 성능이 뛰어나다고 볼 수 있습니다.
+                                    하지만 Angular는 실제 DOM 위에서 동작함에도 변경감지 구현 기능이 따로 존재하여 성능을 높이고 있다는 것을 참고하시기 바랍니다.
+                                    React만의 특징이 한 가지 더 있습니다. 바로 데이터 바인딩 방법입니다. 데이터 바인딩은 모델(비즈니스 로직)과 뷰(UI) 간에 데이터를 동기화하는
+                                    프로세스입니다. 기본적으로 단방향과 양방향이라는 두 가지 구현방식이 있습니다. 두 방법의 차이는 모델-뷰(Model-View) 업데이트 처리
+                                    방식입니다. 양방향 데이터 바인딩은 뷰가 변경되면 모델도 변경되며 모델이 변경되면 뷰도 변경되는 처리방식입니다. React는 단방향 데이터 바인딩을
+                                    사용합니다. 모델이 변경되면 뷰가 변경되는 방법만을 허용하고, 뷰가 변경된 경우 모델을 변경시키지 않습니다. 뷰가 변경된 경우 모델을 변경하는 코드를
+                                    작성해야 합니다. 단방향 데이터 바인딩은 일반적으로 예측 가능성이 높기 때문에 코드가 더 안정적이지만, 양방향 바인딩에 비해서 코드 작성시간이 더
+                                    필요합니다. 참고로 Angular와 Vue.js는 단방향 데이터 바인딩과 양방향 데이터 바인딩 모두 지원합니다.
+                                </p>
+                                <div class="date">2. 리액트(React)</div>
+                            </div>
+                        </li>
+                        <li class="day">
+                            <div class="events">
+                                <p style="overflow-y: scroll; height: 250px; text-align: left;">Vue.js도 React처럼 가상 DOM을
+                                    사용하고, 컴포넌트 기반 개발을 중심으로 합니다. 그러나 React와 구별되는 Vue.js만의 특징은 컴포넌트의 자바스크립트 집중도가 낮다는 점입니다.
+                                    즉 JSX를 권장하는 React와는 달리, 컴포넌트 구조와 구성요소를 작성할 때 Angular처럼 HTML 마크업 기반의 템플릿 문법을 사용합니다.
+                                    Vue.js 컴포넌트 작성 시 보통 '단일 파일 컴포넌트'라는 .vue 확장자를 가지는 파일을 사용합니다. 이 파일은 HTML 마크업 기반의 템플릿
+                                    부분과 자바스크립트 부분 그리고 CSS를 작성하는 스타일 시트 부분으로 나뉩니다. React에 비해 기존 HTML, CSS에만 익숙한 웹 디자이너가
+                                    Vue.js를 접했을 때 컴포넌트 구성요소와 구조를 쉽게 이해할 수 있습니다. 따라서 React보다 기존 웹 디자이너와의 협업이 쉬워지는 장점이
+                                    있습니다.
+                                    다른 프레임워크들과 마찬가지로 Vue.js도 CLI 툴을 제공합니다. 그리고 애플리케이션 개발에 필요한 다른 모듈을 React처럼 사용자에게 책임을
+                                    맡기지 않고 가이드 문서를 통해 특정모듈을 권장하고 있습니다. Angular처럼 내장모듈로 정해진 것은 아니지만 React처럼 방임에 가깝게 두지도
+                                    않고 둘 사이를 절충한다고 볼 수 있습니다.
+                                    주목할 만한 것은 대기업 직원이 주도하고 있는 다른 프레임워크들과 달리 Vue.js는 커뮤니티가 주도하는 프레임워크라는 것입니다. 문서나 코드의 품질이
+                                    떨어질까 우려될 수도 있으나, 다행스럽게도 공식문서가 여러 나라의 언어로 잘 번역되어 있을 뿐만 아니라, 문서의 구성이 예제 위주로 되어 있어 필요한
+                                    내용만 빠르게 발췌하여 적용할 수 있습니다. 이는 진입장벽을 낮춰주는 또 다른 장점으로, React에 비해 초심자에게 비교적 접근성이 뛰어나다고 볼 수
+                                    있습니다
+                                </p>
+                                <div class="date">3. Vue.js</div>
+                            </div>
+                        </li>
+                        <li class="day">
+                            <div class="events">
+                                <p style="overflow-y: scroll; height: 250px; text-align: left;">Html,css ▶ js ▶ 버전관리
+                                    ▶ 웹보안지식(HTTP) ▶ typescript and 프레임워크 및 라이브러리 선택(angular, react, vue.js, bootstrap,
+                                    jquery등등)
+                                </p>
+                                <div class="date">공부순서 추천</div>
+                            </div>
+                        </li>
+
                     </ul>
 
                     <div class="year year--end">
                         <div class="inner">
-                            <span>2017</span>
+                            <span>Frontend</span>
                         </div>
                     </div>
                 </div>
@@ -717,7 +789,7 @@
                                     때는 여전히 MVC 형태로 개발되는 경우도 볼 수 있다. 그러다 보니 HTML/CSS, JavaScript 등 기본적인 프론트 엔드 기술을 알아 두는
                                     것이 필요하다.
                                 </p>
-                                <div class="date">7. 기본적인 프론트 엔드 기술 (Basic Frontend Skill)</div>
+                                <div class="date">7. 기본적인 프론트 엔드 기술<br> (Basic Frontend Skill)</div>
                             </div>
                         </li>
                         <li class="day">
@@ -902,7 +974,7 @@
                 <div class="timeline">
                     <div class="year">
                         <div class="inner">
-                            <span>2016</span>
+                            <span>Roadmap</span>
                         </div>
                     </div>
 
@@ -912,7 +984,7 @@
                                 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eius perferendis vitae,
                                     facere accusantium magni, explicabo mollitia quidem odio autem, iste optio?
                                     Consequuntur ratione dolorum velit maiores quam odit odio suscipit.</p>
-                                <div class="date">18 October (Monday)</div>
+                                <div class="date">DBA (의미)</div>
                             </div>
                         </li>
 
@@ -1437,23 +1509,94 @@
     >>>>>>> origin/master
 </div>
 <!-- jQuery CDN - Slim version (=without AJAX) -->
-<script
-        src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
-        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
-        crossorigin="anonymous"
-></script>
-<!-- Popper.JS -->
-<script
-        src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
-        integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
-        crossorigin="anonymous"
-></script>
-<!-- Bootstrap JS -->
-<script
-        src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js"
-        integrity="sha384-+YQ4JLhjyBLPDQt//I+STsc9iw4uQqACwlvpslubQzn4u2UU2UFM80nGisd026JF"
-        crossorigin="anonymous"
-></script>
+
+<script type="text/javascript">
+    function totalUnreadChat(){
+        $.ajax({
+            type : "POST",
+            url : "/getTotalUnreadChat",
+            dataType: "json",
+            data : {
+                id : $("#userID").val()
+            },
+            success: function(result) {
+                if(result >= 1) {
+                    $('#totalUnread').html(result);
+                } else {
+                    $('#totalUnread').html('');
+                }
+            }
+        });
+    }
+
+    function getInfiniteTotalUnread() {
+        setInterval(function() {
+            totalUnreadChat();
+        }, 4000);
+    }
+    $(document).ready(function (){
+        totalUnreadChat();
+        getInfiniteTotalUnread();
+        $(".board").css("display","none");
+
+
+        $(".frontend").hover(function () {
+            $(".frontend_board").css("display","block");
+            $(".backend_board").css("display","none");
+            $(".DBA_board").css("display","none");
+            $(".AI_board").css("display","none");
+            $(".WH_board").css("display","none");
+
+        });
+        $(".backend").hover(function () {
+            $(".backend_board").css("display","block");
+            $(".frontend_board").css("display","none");
+            $(".DBA_board").css("display","none");
+            $(".AI_board").css("display","none");
+            $(".WH_board").css("display","none");
+        });
+        $(".DBA").hover(function () {
+            $(".DBA_board").css("display","block");
+            $(".backend_board").css("display","none");
+            $(".frontend_board").css("display","none");
+            $(".AI_board").css("display","none");
+            $(".WH_board").css("display","none");
+        });
+        $(".AI").hover(function () {
+            $(".AI_board").css("display","block");
+            $(".DBA_board").css("display","none");
+            $(".backend_board").css("display","none");
+            $(".frontend_board").css("display","none");
+            $(".WH_board").css("display","none");
+        });
+        $(".WH").hover(function () {
+            $(".WH_board").css("display","block");
+            $(".AI_board").css("display","none");
+            $(".DBA_board").css("display","none");
+            $(".backend_board").css("display","none");
+            $(".frontend_board").css("display","none");
+
+        });
+
+        $("#withdrawal").click(function (){
+            var id = $("#userID").val();
+            if(confirm("정말로 회원탈퇴를 하시겠습니까?")){
+                location.href = "/withdrawalCheck";
+            } else {
+                alert("회원탈퇴를 취소합니다.");
+            }
+        });
+    });
+
+    function submitAction(){
+        if($("#search_option").val() != "writer"&& $("#search_option").val() != "subject"
+            && $("#search_option").val() != "content" && $("#search_option").val() != "all"){
+            alert("검색옵션을 선택해주세요.");
+            $("#search_option").focus();
+            return false;
+        }
+    }
+</script>
 
 </body>
 </html>

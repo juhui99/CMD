@@ -19,7 +19,7 @@
     <script type="text/javascript">
         $(document).ready(function () {
             if ($('#filename').val() != 'no') {
-                $('#files').css("visibility", "hidden");
+                $('.filebox').css("visibility", "hidden");
             }
 
             totalUnreadChat();
@@ -72,6 +72,17 @@
                     alert("회원탈퇴를 취소합니다.");
                 }
             });
+
+            $("#files").on('change',function(){
+
+                if(window.FileReader){
+                    var filename = $("#files")[0].files[0].name;
+                }
+                else {
+                    var filename = $(this).val().split('/').pop().split('\\').pop();
+                };
+                $(".upload-name").val(filename);
+            });
         });
 
         function deleteFile() {
@@ -83,7 +94,7 @@
                 data: {bno: $("#bno").val()}
             });
 
-            $('#files').css("visibility", "visible");
+            $('.filebox').css("visibility", "visible");
             $('#clip').css("display", "none");
             $('#file').css("display", "none");
             $('#delete').css("display", "none");
@@ -183,6 +194,47 @@
         .show > .btn-success.dropdown-toggle:focus {
             box-shadow: 0 0 0 0.2rem #003366d2;
         }
+
+        .filebox input[type="file"] {
+            position: absolute;
+            width: 0;
+            height: 0;
+            padding: 0;
+            overflow: hidden;
+            border: 0;
+        }
+
+        .filebox label {
+            display: inline-block;
+            padding: 5px;
+            color: #fff;
+            font-size: inherit;
+            line-height: normal;
+            vertical-align: middle;
+            cursor: pointer;
+            border: 1px solid #003366d2;
+            border-radius: .25em;
+            height: 30px;
+        }
+
+        /* named upload */
+        .filebox .upload-name {
+
+            display: inline-block;
+            padding: 4px 8px;
+            font-size: inherit;
+            font-family: inherit;
+            line-height: normal;
+            vertical-align: middle;
+            background-color: #FFFFFF;
+            border: 1px solid black;
+            border-radius: .25em;
+            -webkit-appearance: none; /* 네이티브 외형 감추기 */
+            -moz-appearance: none;
+            appearance: none;
+
+        }
+
 
     </style>
 </head>
@@ -368,13 +420,17 @@
                         <a id="file" style="text-decoration:none; color: black" th:if="${!filename.equals('no')}" th:text="${filename}"></a>
                         </tr>
                         <br>
-                        <input type="file" name="files" id="files">
+                        <div class="filebox" style="display: inline-block;">
+                            <input type="file" id="files" name="files">
+                            <input class="upload-name" value="파일선택">
+                            <label for="files" style="background: #003366d2; margin-top: 10px; padding-right: 5px; padding-top: 2px;">업로드</label>
+                        </div>
                     </div>
-                    <button style="float: left; margin-left: 10px; color: white; border: 0; border-radius: 5px; background: #003366d2;" th:if="${!filename.equals('no')}" id="delete" name="delete" type="button"
+                    <button style="float: left; margin-left: 10px; margin-top: 3px; color: white; border: 0; border-radius: 5px; background: #003366d2;" th:if="${!filename.equals('no')}" id="delete" name="delete" type="button"
                             onclick="deleteFile();">파일삭제
                     </button>
                     <input type="hidden" name="filename" id="filename" th:value="${filename}">
-                    <button style="float:left; margin-left: 10px; color: white; border: 0; border-radius: 5px; background: #003366d2;" type="submit">수정완료</button>
+                    <button style="float:right; color: white; border: 0; border-radius: 5px; background: #003366d2;" type="submit">수정완료</button>
                     <input type="hidden" name="option" th:value="${option}">
                     <input type="hidden" name="search" th:value="${search}">
                     <input type="hidden" name="search_option" th:value="${search_option}">

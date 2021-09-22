@@ -14,4 +14,5 @@ public class ChatVO {
     private String chat_content;
     private Date chat_time;
     private int chat_read;
+    private String real_time;
 }
