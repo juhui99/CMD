@@ -260,6 +260,18 @@
     });
 
     function submitAction() {
+
+        var fileCheck = $("#file").val();
+        var profileModify = $("#profile").val();
+        var defaultImgCheck = $("#defaultImgCheck").val();
+        if (!fileCheck &&  profileModify == "Y" && defaultImgCheck == "N") {
+            alert("프로필 사진을 첨부해주세요.");
+            return false;
+        }
+        if (fileCheck && defaultImgCheck == "Y") {
+            $("#defaultImgCheck").val("N");
+        }
+
         if ($("#user_pwd").val() == "") {
             alert("비밀번호를 입력해주세요.");
             $("#user_pwd").focus();
@@ -292,16 +304,6 @@
             return true;
         }
 
-        var fileCheck = $("#file").val();
-        var profileModify = $("#profile").val();
-        var defaultImgCheck = $("#defaultImgCheck").val();
-        if (!fileCheck&& profileModify == "Y" && defaultImgCheck == "N") {
-            alert("프로필 사진을 첨부해주세요.");
-            return false;
-        }
-        if (fileCheck && defaultImgCheck == "Y") {
-            $("#defaultImgCheck").val("N");
-        }
     }
 
 
