@@ -1,7 +1,6 @@
 package com.CMD.CMD_pro.survey.mapper;
 
 import com.CMD.CMD_pro.survey.domain.*;
-import com.CMD.CMD_pro.survey.service.serviceimpl.SurveyServiceimpl;
 import org.apache.ibatis.session.SqlSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -74,7 +73,7 @@ public class SurveyMapperimpl implements SurveyMapper{
     }
 
     @Override
-    public SurveyItemVO selecyMySurveyResult(int survey_index, int user_index) {
+    public SurveyItemVO selectMySurveyResult(int survey_index, int user_index) {
         logger.info("selecyMySurveyResult");
         Map<String, Integer> params = new HashMap<>();
         params.put("survey_seq", survey_index);

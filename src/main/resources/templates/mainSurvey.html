@@ -25,7 +25,9 @@
 
     <tr th:each="surveyList : ${surveyList}">
         <td th:text="${surveyList.survey_index}">Index</td>
-        <td th:text="${surveyList.survey_title}">Title</td>
+        <td><a th:href="@{/readSurvey(survey_index=${surveyList.survey_index},progressing=${surveyList.progressing})}"
+               th:text="${surveyList.survey_title}"></a></td>
+<!--        <td th:text="${surveyList.survey_title}">Title</td>-->
         <td th:text="${surveyList.survey_content}">Content</td>
         <td th:text="${surveyList.survey_reg}">reg</td>
         <td th:text="${surveyList.survey_end}">end</td>
@@ -40,19 +42,15 @@
     <li th:if="${pageMaker.prev} == true">
         <a th:href="@{/mainSurvey?(page=${pageMaker.startPage - 1},perPageNum=${pageMaker.cri.perPageNum})}">&laquo;이전</a>
     </li>
-<!--    <li th:each="page: ${pageMaker}" th:inline="text">-->
-<!--        <a th:href="@{/mainSurvey?}"></a>-->
-
-<!--    </li>-->
     <li th:each="page,iterStat : ${#numbers.sequence(pageMaker.startPage,pageMaker.endPage)}"  th:classappend="${pageMaker.cri.page} == ${idx} ? active : null">
         <a th:href="@{/mainSurvey?(page=${page},perPageNum=${pageMaker.cri.perPageNum})}" th:text="${page}"></a></li>
     </li>
-
     <li th:if="${pageMaker.next} == true and ${pageMaker.endPage >0}">
         <a th:href="@{/mainSurvey?(page=${pageMaker.endPage + 1},perPageNum=${pageMaker.cri.perPageNum})}">&raquo;다음</a>
     </li>
-
 </ul>
+
+<button onclick="location.href='/insertSurvey'">설문조사 추가</button>
 
 </body>
 </html>

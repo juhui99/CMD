@@ -48,7 +48,7 @@ insert into survey (`user_index`,
                     `survey_end`,
                     `progressing`,
                     `survey_count`)
-values(2,'test3','내용3','2021-10-05',0,3);
+values(2,'test3','내용3','2021-10-05',1,3);
 
 insert into survey (`user_index`,
                     `survey_title`,
@@ -91,20 +91,6 @@ insert into survey (`user_index`,
                     `survey_end`,
                     `survey_count`)
 values(1,'test9','내용9','2021-09-14',1);
-
-insert into survey (`user_index`,
-                    `survey_title`,
-                    `survey_content`,
-                    `survey_end`,
-                    `survey_count`)
-values(1,'test10','내용10','2021-09-14',1);
-
-insert into survey (`user_index`,
-                    `survey_title`,
-                    `survey_content`,
-                    `survey_end`,
-                    `survey_count`)
-values(1,'test11','내용11','2021-09-14',1);
 
 
 insert into surveyItem (`survey_index`,

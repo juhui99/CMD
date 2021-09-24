@@ -14,27 +14,27 @@
 <!--<div>-->
 <!--  <label th:text="${surveyList.survey_title}">${surveyList.survey_title}</label>-->
 <!--</div>-->
-<div>
-  <table>
-    <tbody>
-    <tr th:each="surveyVO : ${surveyVO}">
-      <td th:text="${surveyVO.survey_title}"></td>
-      <td th:text="${surveyVO.survey_content}"></td>
-    </tr>
-    </tbody>
-  </table>
-</div>
 
-<div>
-  <table>
-    <tbody>
-    <tr th:each="surveyItemList : ${surveyItemList}">
-      <td th:text="${surveyItemList.survey_item_index}"></td>
-      <td th:text="${surveyItemList.survey_item_content}"></td>
-    </tr>
-    </tbody>
-  </table>
-</div>
+<table>
+  <tbody style="word-break: break-all">
+  <tr th:each="surveyVO : ${surveyVO}">
+    <td th:text="${surveyVO.survey_title}"></td>
+    <td th:text="${surveyVO.survey_content}"></td>
+  </tr>
+  </tbody>
+</table>
+
+<table>
+  <tbody>
+  <tr th:each="surveyItemList : ${surveyItemList}">
+    <td th:text="${surveyItemList.survey_item_index}"></td>
+    <td th:text="${surveyItemList.survey_item_content}"></td>
+  </tr>
+  </tbody>
+</table>
+
+
+
 
 
 </body>
