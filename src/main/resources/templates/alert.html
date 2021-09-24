@@ -14,8 +14,13 @@
     /*<![CDATA[*/
     var url = /*[[ ${url} ]]*/;
     /*]]*/
-    alert(message);
-    document.location.href = url;
+    if(url != "back") {
+        alert(message);
+        document.location.href = url;
+    } else{
+        alert(message);
+        history.back();
+    }
 
 </script>
 </body>

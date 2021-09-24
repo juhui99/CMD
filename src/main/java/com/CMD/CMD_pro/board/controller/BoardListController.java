@@ -898,128 +898,137 @@ public class BoardListController {
     @PostMapping("/main_search")
     public String main_search(SearchForm form,Model model,HttpServletRequest request,HttpSession session) throws Exception{
         String keyword = form.getKeyword();
-        List<BoardVO> board = boardMapper.mainSearch(keyword);
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        for (int i = 0; i < board.size(); i++){
-            Date reg_date = board.get(i).getReg_date();
-            String real_date = format.format(reg_date);
-            board.get(i).setReal_date(real_date);
-        }
-        String pageNumber = "1";
-        int off = 0;
-        int target2 = 0; //새로
-        if(request.getParameter("pageNumber") != null){
-            pageNumber = request.getParameter("pageNumber");
-        }
-        if(Integer.parseInt(pageNumber) == 1){
-            off = 0;
-        }
-        else{
-            off = (Integer.parseInt(pageNumber) - 1) * 20;
-        }
+        if(keyword.matches(".*[ㄱ-ㅎㅏ-ㅣ가-힣a-zA-Z0-9].*")) {
 
-        int target =(Integer.parseInt(pageNumber) - 1) * 10;
-        int target1 = boardMapper.targetPage(target);
-        target1 = target1 / 10;
-        int startPage = (Integer.parseInt(pageNumber) / 10) * 10 + 1;
-        if(Integer.parseInt(pageNumber) % 10 == 0) startPage -= 10;
-        int page = Integer.parseInt(pageNumber);
-        int count = boardMapper.mainSearchCount(keyword);
-        if((count - (page * 20)) % 10 != 0 && count - (page * 20) > 0 ){ //새로 매앞에꺼만 20고침
-            target2 = ((count - (page * 20)) / 20) + 1; //고침
-        } else if((count - (page * 20)) % 10 == 0 && count - (page * 20) > 0) { //새로
-            if((count -(page * 20)) % 20 > 1){
-                target2 = ((count - (page * 20)) / 20) + 1;
+            List<BoardVO> board = boardMapper.mainSearch(keyword);
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            for (int i = 0; i < board.size(); i++) {
+                Date reg_date = board.get(i).getReg_date();
+                String real_date = format.format(reg_date);
+                board.get(i).setReal_date(real_date);
             }
-            else {
-                target2 = ((count - (page * 20)) / 20); //고침
+            String pageNumber = "1";
+            int off = 0;
+            int target2 = 0; //새로
+            if (request.getParameter("pageNumber") != null) {
+                pageNumber = request.getParameter("pageNumber");
             }
-        } else {
-            target2 = 0;
-        }
-        int resultCount = count - (page * 20); //현재페이지 이후부터의 남은 게시물 갯수
-        String filename = null;
-        if(session.getAttribute("id") != null) {
-            String userID = (String) session.getAttribute("id");
-            UserVO user = userMapper.userLogin(userID);
-            if (user.getUser_profile() == null) {
-                filename = "non";
+            if (Integer.parseInt(pageNumber) == 1) {
+                off = 0;
             } else {
-                filename = user.getUser_profile();
+                off = (Integer.parseInt(pageNumber) - 1) * 20;
             }
+
+            int target = (Integer.parseInt(pageNumber) - 1) * 10;
+            int target1 = boardMapper.targetPage(target);
+            target1 = target1 / 10;
+            int startPage = (Integer.parseInt(pageNumber) / 10) * 10 + 1;
+            if (Integer.parseInt(pageNumber) % 10 == 0) startPage -= 10;
+            int page = Integer.parseInt(pageNumber);
+            int count = boardMapper.mainSearchCount(keyword);
+            if ((count - (page * 20)) % 10 != 0 && count - (page * 20) > 0) { //새로 매앞에꺼만 20고침
+                target2 = ((count - (page * 20)) / 20) + 1; //고침
+            } else if ((count - (page * 20)) % 10 == 0 && count - (page * 20) > 0) { //새로
+                if ((count - (page * 20)) % 20 > 1) {
+                    target2 = ((count - (page * 20)) / 20) + 1;
+                } else {
+                    target2 = ((count - (page * 20)) / 20); //고침
+                }
+            } else {
+                target2 = 0;
+            }
+            int resultCount = count - (page * 20); //현재페이지 이후부터의 남은 게시물 갯수
+            String filename = null;
+            if (session.getAttribute("id") != null) {
+                String userID = (String) session.getAttribute("id");
+                UserVO user = userMapper.userLogin(userID);
+                if (user.getUser_profile() == null) {
+                    filename = "non";
+                } else {
+                    filename = user.getUser_profile();
+                }
+            }
+            boardMapper.searchInsert(keyword);
+            model.addAttribute("filename", filename);
+            model.addAttribute("board", board); //반환된 결과인 board를 모델로 담아 search.html로 전달
+            model.addAttribute("keyword", keyword); //키워드 전달
+            model.addAttribute("startPage", startPage);
+            model.addAttribute("page", page);
+            model.addAttribute("count", resultCount);
+            model.addAttribute("target2", target2);
+            return "main_search";
+        } else {
+            model.addAttribute("msg","검색어를 입력해주세요.");
+            model.addAttribute("url","back"); //메세지와 url을 모델로 담아 알림창을 띄울 alert.html로 전달
+            return "alert";
         }
-        boardMapper.searchInsert(keyword);
-        model.addAttribute("filename", filename);
-        model.addAttribute("board",board); //반환된 결과인 board를 모델로 담아 search.html로 전달
-        model.addAttribute("keyword",keyword); //키워드 전달
-        model.addAttribute("startPage",startPage);
-        model.addAttribute("page",page);
-        model.addAttribute("count",resultCount);
-        model.addAttribute("target2",target2);
-        return "main_search";
     }
 
     @GetMapping("/main_search")
     public String main_search2(SearchForm form,Model model,HttpServletRequest request, @RequestParam("keyword") String keyword,HttpSession session) throws Exception{
-        List<BoardVO> board = boardMapper.mainSearch(keyword);
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        for (int i = 0; i < board.size(); i++){
-            Date reg_date = board.get(i).getReg_date();
-            String real_date = format.format(reg_date);
-            board.get(i).setReal_date(real_date);
-        }
-        String pageNumber = "1";
-        int off = 0;
-        int target2 = 0; //새로
-        if(request.getParameter("pageNumber") != null){
-            pageNumber = request.getParameter("pageNumber");
-        }
-        if(Integer.parseInt(pageNumber) == 1){
-            off = 0;
-        }
-        else{
-            off = (Integer.parseInt(pageNumber) - 1) * 20;
-        }
-
-        int target =(Integer.parseInt(pageNumber) - 1) * 10;
-        int target1 = boardMapper.targetPage(target);
-        target1 = target1 / 10;
-        int startPage = (Integer.parseInt(pageNumber) / 10) * 10 + 1;
-        if(Integer.parseInt(pageNumber) % 10 == 0) startPage -= 10;
-        int page = Integer.parseInt(pageNumber);
-        int count = boardMapper.mainSearchCount(keyword);
-        if((count - (page * 20)) % 10 != 0 && count - (page * 20) > 0 ){ //새로 매앞에꺼만 20고침
-            target2 = ((count - (page * 20)) / 20) + 1; //고침
-        } else if((count - (page * 20)) % 10 == 0 && count - (page * 20) > 0) { //새로
-            if((count -(page * 20)) % 20 > 1){
-                target2 = ((count - (page * 20)) / 20) + 1;
+        if(keyword.matches(".*[ㄱ-ㅎㅏ-ㅣ가-힣a-zA-Z0-9].*")) {
+            List<BoardVO> board = boardMapper.mainSearch(keyword);
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            for (int i = 0; i < board.size(); i++) {
+                Date reg_date = board.get(i).getReg_date();
+                String real_date = format.format(reg_date);
+                board.get(i).setReal_date(real_date);
             }
-            else {
-                target2 = ((count - (page * 20)) / 20); //고침
+            String pageNumber = "1";
+            int off = 0;
+            int target2 = 0; //새로
+            if (request.getParameter("pageNumber") != null) {
+                pageNumber = request.getParameter("pageNumber");
             }
-        } else {
-            target2 = 0;
-        }
-        int resultCount = count - (page * 20); //현재페이지 이후부터의 남은 게시물 갯수
-        String filename = null;
-        if(session.getAttribute("id") != null) {
-            String userID = (String) session.getAttribute("id");
-            UserVO user = userMapper.userLogin(userID);
-            if (user.getUser_profile() == null) {
-                filename = "non";
+            if (Integer.parseInt(pageNumber) == 1) {
+                off = 0;
             } else {
-                filename = user.getUser_profile();
+                off = (Integer.parseInt(pageNumber) - 1) * 20;
             }
+
+            int target = (Integer.parseInt(pageNumber) - 1) * 10;
+            int target1 = boardMapper.targetPage(target);
+            target1 = target1 / 10;
+            int startPage = (Integer.parseInt(pageNumber) / 10) * 10 + 1;
+            if (Integer.parseInt(pageNumber) % 10 == 0) startPage -= 10;
+            int page = Integer.parseInt(pageNumber);
+            int count = boardMapper.mainSearchCount(keyword);
+            if ((count - (page * 20)) % 10 != 0 && count - (page * 20) > 0) { //새로 매앞에꺼만 20고침
+                target2 = ((count - (page * 20)) / 20) + 1; //고침
+            } else if ((count - (page * 20)) % 10 == 0 && count - (page * 20) > 0) { //새로
+                if ((count - (page * 20)) % 20 > 1) {
+                    target2 = ((count - (page * 20)) / 20) + 1;
+                } else {
+                    target2 = ((count - (page * 20)) / 20); //고침
+                }
+            } else {
+                target2 = 0;
+            }
+            int resultCount = count - (page * 20); //현재페이지 이후부터의 남은 게시물 갯수
+            String filename = null;
+            if (session.getAttribute("id") != null) {
+                String userID = (String) session.getAttribute("id");
+                UserVO user = userMapper.userLogin(userID);
+                if (user.getUser_profile() == null) {
+                    filename = "non";
+                } else {
+                    filename = user.getUser_profile();
+                }
+            }
+            boardMapper.searchInsert(keyword);
+            model.addAttribute("filename", filename);
+            model.addAttribute("board", board); //반환된 결과인 board를 모델로 담아 search.html로 전달
+            model.addAttribute("keyword", keyword); //키워드 전달
+            model.addAttribute("startPage", startPage);
+            model.addAttribute("page", page);
+            model.addAttribute("count", resultCount);
+            model.addAttribute("target2", target2);
+            return "main_search";
+        } else {
+            model.addAttribute("msg","검색어를 입력해주세요.");
+            model.addAttribute("url","back"); //메세지와 url을 모델로 담아 알림창을 띄울 alert.html로 전달
+            return "alert";
         }
-        boardMapper.searchInsert(keyword);
-        model.addAttribute("filename", filename);
-        model.addAttribute("board",board); //반환된 결과인 board를 모델로 담아 search.html로 전달
-        model.addAttribute("keyword",keyword); //키워드 전달
-        model.addAttribute("startPage",startPage);
-        model.addAttribute("page",page);
-        model.addAttribute("count",resultCount);
-        model.addAttribute("target2",target2);
-        return "main_search";
     }
 
     @GetMapping("/cmd_roadmap")

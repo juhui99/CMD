@@ -82,11 +82,12 @@ public class UserController {
     @RequestMapping(value = "/idChk", method = RequestMethod.POST)
     public int idChk(HttpServletRequest req) throws Exception{
         String user_id = req.getParameter("id");
-        if(user_id == ""){
+        if(user_id.matches(".*[ㄱ-ㅎㅏ-ㅣ가-힣a-zA-Z0-9].*")){
+            int result = userMapper.idChk(user_id);
+            return result;
+        }else {
             return -1;
         }
-        int result = userMapper.idChk(user_id);
-        return result;
     }
 
     @GetMapping("/login")
@@ -210,23 +211,34 @@ public class UserController {
             else {
                 String userID = (String) session.getAttribute("id");
                 String fileName = files.getOriginalFilename();
-                String fileNameExtension = FilenameUtils.getExtension(fileName).toLowerCase();
                 File destinationFile;
                 String destinationFileName;
                 String fileUrl = "C:\\images\\";
-                do {
-                    destinationFileName = RandomStringUtils.randomAlphanumeric(32) + "." + fileNameExtension;
-                    destinationFile = new File(fileUrl + destinationFileName);
+                String fileNameExtension = FilenameUtils.getExtension(fileName).toLowerCase();
+                if(fileNameExtension.equals("jpg") || fileNameExtension.equals("png") || fileNameExtension.equals("jpeg")){
+                    do {
+                        destinationFileName = RandomStringUtils.randomAlphanumeric(32) + "." + fileNameExtension;
+                        destinationFile = new File(fileUrl + destinationFileName);
 
-                } while (destinationFile.exists());
-                destinationFile.getParentFile().mkdirs();
-                files.transferTo(destinationFile);
-                userMapper.userProfile(destinationFileName, userID);
+                    } while (destinationFile.exists());
+                    destinationFile.getParentFile().mkdirs();
+                    files.transferTo(destinationFile);
+                    userMapper.userProfile(destinationFileName, userID);
+                    model.addAttribute("msg","회원정보가 수정되었습니다.");
+                    model.addAttribute("url","main");
+                    return "alert";
+                } else{
+                    model.addAttribute("msg","이미지 파일만 업로드 가능합니다.");
+                    model.addAttribute("url","back");
+                    return "alert";
+                }
+
             }
         }
         model.addAttribute("msg","회원정보가 수정되었습니다.");
         model.addAttribute("url","main");
         return "alert";
+
     }
 
     @GetMapping("/display")
