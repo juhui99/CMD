@@ -1,5 +1,6 @@
 package com.CMD.CMD_pro.survey.mapper;
 
+import ch.qos.logback.core.joran.spi.ConsoleTarget;
 import com.CMD.CMD_pro.survey.domain.*;
 import org.apache.ibatis.session.SqlSession;
 import org.slf4j.Logger;
@@ -80,6 +81,10 @@ public class SurveyMapperimpl implements SurveyMapper{
         params.put("member_seq", user_index);
         return sqlSession.selectOne(namespace+".selectMySurveyResult", params);
     }
+//    @Override
+//    public int maxSurveyIndex(SurveyVO surveyVO){
+//        return sqlSession.selectOne(namespace+".maxSurveyIndex");
+//    }
 
     @Override
     public void insertSurveyItem(List<SurveyItemVO> itemlist) {
@@ -88,12 +93,19 @@ public class SurveyMapperimpl implements SurveyMapper{
         while (itemir.hasNext()) {
             SurveyItemVO surveyItemVO = itemir.next();
 //            surveyItemVO.setSurvey_index(surveyVO.getSurvey_index());
-            surveyItemVO.setSurvey_index(sqlSession.selectOne(namespace+".maxSurveyIndex"));
+//            surveyItemVO.setSurvey_index(sqlSession.selectOne(namespace+".maxSurveyIndex"));
+
+            int index = sqlSession.selectOne(namespace+".maxSurveyIndex");
+
+            System.out.println(index);
+
             sqlSession.insert(namespace+".insertSurveyItem", surveyItemVO);
 
         }
         System.out.println("addsurveyitem 성공");
     }
+
+
 
     // 설문조사 보기 선택
     @Override

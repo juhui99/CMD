@@ -18,6 +18,7 @@ public interface SurveyMapper {
 //    public SurveyWithDatasetVO selectSurveyResult(int survey_index) throws Exception;
     public void insertSurvey(SurveyVO surveyVO);
     public void insertSurveyItem(List<SurveyItemVO> itemlist);
+//    public int maxSurveyIndex(SurveyVO surveyVO);
     public void insertSurveyResult(SurveyResultVO srvo);
 //    public List<SurveyVO> selectSearchSurvey(SearchCriteria cri);
     public void closeSurvey(int survey_index);
