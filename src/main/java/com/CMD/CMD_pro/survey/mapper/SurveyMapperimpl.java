@@ -87,7 +87,10 @@ public class SurveyMapperimpl implements SurveyMapper{
         Iterator<SurveyItemVO> itemir = itemlist.iterator();
         while (itemir.hasNext()) {
             SurveyItemVO surveyItemVO = itemir.next();
+//            surveyItemVO.setSurvey_index(surveyVO.getSurvey_index());
+            surveyItemVO.setSurvey_index(sqlSession.selectOne(namespace+".maxSurveyIndex"));
             sqlSession.insert(namespace+".insertSurveyItem", surveyItemVO);
+
         }
         System.out.println("addsurveyitem 성공");
     }

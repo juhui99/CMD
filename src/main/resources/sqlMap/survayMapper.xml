@@ -54,8 +54,13 @@
 
     <insert id="insertSurvey" parameterMap="surveyVO">
         INSERT INTO survey (survey_index, user_index, survey_title, survey_content, survey_end)
-        VALUES (#{survey_index}, #{user_index}, #{survey_title}, #{survey_content}, #{survey_end})
+        VALUES (#{survey_index}+1, #{user_index}, #{survey_title}, #{survey_content}, #{survey_end})
     </insert>
+
+    <select id="maxSurveyIndex" resultType="int">
+        SELECT MAX(survey_index)
+        FROM survey
+    </select>
 
     <insert id="insertSurveyItem" parameterMap="surveyItemVO">
         INSERT INTO surveyItem (survey_item_index, survey_index, survey_item_content)

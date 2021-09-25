@@ -114,16 +114,26 @@ insert into surveyItem (`survey_index`,
                         `survey_item_content`)
 values(2,'선택3');
 
+insert into surveyItem (`survey_index`,
+                        `survey_item_content`)
+values(3,'선택1');
+insert into surveyItem (`survey_index`,
+                        `survey_item_content`)
+values(3,'선택2');
+insert into surveyItem (`survey_index`,
+                        `survey_item_content`)
+values(3,'선택3');
 
-insert into surveyResult (`survey_index`,
-                          `survey_item_index`,
-                          `user_index`)
-values(1,1,2);
 
-insert into surveyResult (`survey_index`,
-                          `survey_item_index`,
-                          `user_index`)
-values(1,1,1);
+-- insert into surveyResult (`survey_index`,
+--                           `survey_item_index`,
+--                           `user_index`)
+-- values(1,1,2);
+--
+-- insert into surveyResult (`survey_index`,
+--                           `survey_item_index`,
+--                           `user_index`)
+-- values(1,1,1);
 
 insert into board       (`subject`,
                        `content`,
