@@ -32,6 +32,7 @@ public class SurveyController {
     @RequestMapping(value = "/mainSurvey", method = RequestMethod.GET) //설문조사 메인화면
     public String mainSurvey(@ModelAttribute("cri") SearchCriteria cri, Model model) throws Exception {
 
+
         List<SurveyVO> surveyList = surveyMapper.selectSurveyList(cri);
         model.addAttribute("surveyList", surveyList);//survey 리스트 출력
 
@@ -47,12 +48,12 @@ public class SurveyController {
     @RequestMapping(value = "/readSurvey") //진행중인 설문조사 읽기
     public String readSurvey(@RequestParam("survey_index") int survey_index, @RequestParam("progressing") int progressing,
                              @ModelAttribute("cri") SearchCriteria cri, Model model, HttpSession session) throws Exception{
-        String userID = (String)session.getAttribute("id");
-        if(userID == null){ //로그인 확인
-            model.addAttribute("message","로그인이 되어있지 않습니다.");
-            model.addAttribute("url","login");
-            return "alert";
-        }
+//        String userID = (String)session.getAttribute("id");
+//        if(userID == null){ //로그인 확인
+//            model.addAttribute("message","로그인이 되어있지 않습니다.");
+//            model.addAttribute("url","login");
+//            return "alert";
+//        }
 
         boolean isProgressing = progressing == 1 ? true : false;
         List<SurveyItemVO> surveyItemList = null;

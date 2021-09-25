@@ -7,6 +7,43 @@
         content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>readSurvey_on</title>
+  <script>
+    $("#surveyVote").on("click", function(event) {
+      event.preventDefault();
+      var form = $("#voteform")[0];
+      var formData = new FormData(form);
+
+      $.ajax({
+        url: '/voteSurvey',
+        processData: false,
+        contentType: false,
+        data: formData,
+        type: "POST",
+        cache: false,
+        success: function(ret) {
+          if (!ret.result) {
+            noticePopupInit({
+              message: ret.message,
+            });
+          } else {
+            noticePopupInit({
+              message: ret.message,
+              complete: setTimeout(function() {
+                location.href = "/mainSurvey";
+              }, 3000)
+            });
+          }
+        },
+        error: function() {
+          noticePopupInit({
+            message : "서버 에러. 잠시후에 시도하세요"
+          });
+        }
+      });
+    });
+
+
+  </script>
 </head>
 <body>
 <!--<input type="hidden" id="survey_index" name="survey_index" value="${surveyList.survey_index}">-->
@@ -14,28 +51,23 @@
 <!--<div>-->
 <!--  <label th:text="${surveyList.survey_title}">${surveyList.survey_title}</label>-->
 <!--</div>-->
+<form id="voteform" method="post">
+  <table>
+    <tbody>
+    <tr th:each="surveyVO : ${surveyVO}">
+      <td th:text="${surveyVO.survey_title}"></td>
+      <td th:text="${surveyVO.survey_content}"></td>
+    </tr>
+    </tbody>
+  </table>
 
-<table>
-  <tbody style="word-break: break-all">
-  <tr th:each="surveyVO : ${surveyVO}">
-    <td th:text="${surveyVO.survey_title}"></td>
-    <td th:text="${surveyVO.survey_content}"></td>
-  </tr>
-  </tbody>
-</table>
+  <div th:each="surveyItemList : ${surveyItemList}" class="form-check">
+    <input type="checkbox" class="form-check-input">
+    <label th:text="${surveyItemList.survey_item_content}" class="form-check-td"></label>
+  </div>
 
-<table>
-  <tbody>
-  <tr th:each="surveyItemList : ${surveyItemList}">
-    <td th:text="${surveyItemList.survey_item_index}"></td>
-    <td th:text="${surveyItemList.survey_item_content}"></td>
-  </tr>
-  </tbody>
-</table>
-
-
-
-
-
+  <button id="surveyVote" >투표</button>
+  <button onclick="location.href='/mainSurvey'">목록</button>
+</form>
 </body>
 </html>
