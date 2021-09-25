@@ -5,6 +5,7 @@
 <mapper namespace="com.CMD.CMD_pro.survey.mapper.SurveyMapper">
     <parameterMap id="surveyVO" type="com.CMD.CMD_pro.survey.domain.SurveyVO"/>
     <parameterMap id="surveyItemVO" type="com.CMD.CMD_pro.survey.domain.SurveyItemVO"/>
+    <parameterMap id="surveyWithItemVO" type="com.CMD.CMD_pro.survey.domain.SurveyWithItemVO"/>
     <parameterMap id="surveyResultVO" type="com.CMD.CMD_pro.survey.domain.SurveyResultVO"/>
     <parameterMap id="searchCriteria" type="com.CMD.CMD_pro.survey.domain.SearchCriteria"/>
     <parameterMap id="resultDataSet" type="com.CMD.CMD_pro.survey.domain.ResultDataSet"/>
@@ -53,17 +54,20 @@
 
     <insert id="insertSurvey" parameterMap="surveyVO">
         INSERT INTO survey (survey_index, user_index, survey_title, survey_content, survey_end)
-        VALUES (survey_index.nextval, #{user_index}, #{survey_title}, #{survey_content}, #{survey_end})
+        VALUES (#{survey_index}, #{user_index}, #{survey_title}, #{survey_content}, #{survey_end})
     </insert>
 
     <insert id="insertSurveyItem" parameterMap="surveyItemVO">
-            INSERT INTO surveyItem
-            VALUES (survey_item_index.nextval, survey_index.currval, #{survey_item_content})
+        INSERT INTO surveyItem (survey_item_index, survey_index, survey_item_content)
+        VALUES
+        <foreach collection="list" item="item" separator=" , ">
+               (#{item.survey_item_index}, #{item.survey_index}, #{item.survey_item_content})
+        </foreach>
     </insert>
 
     <insert id="insertSurveyResult" parameterMap="surveyResultVO">
         INSERT INTO surveyResult (survey_result_index, survey_index, survey_item_index, user_index)
-        VALUES (survey_result_index.nextval, #{survey_index}, #{survey_item_index}, #{user_index})
+        VALUES (#{survey_result_index}, #{survey_index}, #{survey_item_index}, #{user_index})
     </insert>
 
     <select id="selectSurvey" parameterType="int" resultMap="surveyVO">

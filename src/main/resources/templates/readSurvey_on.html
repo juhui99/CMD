@@ -7,37 +7,32 @@
         content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>readSurvey_on</title>
-  <script>
+  <script type="text/javascript">
+
     $("#surveyVote").on("click", function(event) {
+      //preventDefault 는 기본으로 정의된 이벤트를 작동하지 못하게 하는 메서드이다. submit을 막음
       event.preventDefault();
+
+      // Get form
       var form = $("#voteform")[0];
+      // Create an FormData object
       var formData = new FormData(form);
 
       $.ajax({
         url: '/voteSurvey',
-        processData: false,
-        contentType: false,
-        data: formData,
+        processData: false, // 데이터 객체를 문자열로 바꿀지에 대한 값이다. true면 일반문자
+        contentType: false, // 해당 타입을 true로 하면 일반 text로 구분
+        data: formData, //위에서 선언한 fromdata
         type: "POST",
-        cache: false,
-        success: function(ret) {
-          if (!ret.result) {
-            noticePopupInit({
-              message: ret.message,
-            });
-          } else {
-            noticePopupInit({
-              message: ret.message,
-              complete: setTimeout(function() {
-                location.href = "/mainSurvey";
-              }, 3000)
-            });
-          }
+        dataType:'json',
+        cache:false,
+        success: function(data) {
+          console.log("success : ", data);
+          alert("성공");
         },
-        error: function() {
-          noticePopupInit({
-            message : "서버 에러. 잠시후에 시도하세요"
-          });
+        error: function(e) {
+          console.log("error : ", e);
+          alert("에러");
         }
       });
     });
@@ -46,11 +41,7 @@
   </script>
 </head>
 <body>
-<!--<input type="hidden" id="survey_index" name="survey_index" value="${surveyList.survey_index}">-->
-<!--<input type="text" id="survey_title" name="survey_title" value="${survey.survey_title}">-->
-<!--<div>-->
-<!--  <label th:text="${surveyList.survey_title}">${surveyList.survey_title}</label>-->
-<!--</div>-->
+
 <form id="voteform" method="post">
   <table>
     <tbody>
@@ -61,13 +52,17 @@
     </tbody>
   </table>
 
-  <div th:each="surveyItemList : ${surveyItemList}" class="form-check">
-    <input type="checkbox" class="form-check-input">
-    <label th:text="${surveyItemList.survey_item_content}" class="form-check-td"></label>
+  <h2 class="tm-block-title">목록</h2>
+  <div class="form-group col-lg-12">
+    <div th:each="surveyItemList : ${surveyItemList}" class="form-check">
+      <input type="checkbox" class="form-check-input">
+      <label th:text="${surveyItemList.survey_item_content}" class="form-check-td"></label>
+    </div>
   </div>
 
-  <button id="surveyVote" >투표</button>
-  <button onclick="location.href='/mainSurvey'">목록</button>
+  <button id="surveyVote">투표</button>
 </form>
+<button id="surveyClose">마감</button><br>
+<button onclick="location.href= '/mainSurvey'">목록</button>
 </body>
 </html>

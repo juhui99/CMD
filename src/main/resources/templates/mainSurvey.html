@@ -16,23 +16,22 @@
     <tbody>
     <tr>
         <th style="width: 10px">Index</th>
-        <th>TITLE</th>
-        <th style="width: 200px">Content</th>
-        <th style="width: 100px">reg</th>
-        <th style="width: 100px">end</th>
-        <th style="width: 40px">progressing</th>
+        <th>제목, 질문내용</th>
+        <th style="width: 200px">내용</th>
+        <th style="width: 100px">시작</th>
+        <th style="width: 100px">마감</th>
+        <th style="width: 40px">진행여부</th> <!--(1 = 진행중, 0 = 마감)-->
     </tr>
 
     <tr th:each="surveyList : ${surveyList}">
-        <td th:text="${surveyList.survey_index}">Index</td>
+        <td th:text="${surveyList.survey_index}"></td>
         <td><a th:href="@{/readSurvey(survey_index=${surveyList.survey_index},progressing=${surveyList.progressing})}"
                th:text="${surveyList.survey_title}"></a></td>
-<!--        <td th:text="${surveyList.survey_title}">Title</td>-->
-        <td th:text="${surveyList.survey_content}">Content</td>
-        <td th:text="${surveyList.survey_reg}">reg</td>
-        <td th:text="${surveyList.survey_end}">end</td>
-        <td th:if="${surveyList.progressing} == 1" th:text="${surveyList.progressing}">진행중</td>
-        <td th:if="${surveyList.progressing} == 0" th:text="${surveyList.progressing}">마감</td>
+        <td th:text="${surveyList.survey_content}"></td>
+        <td th:text="${surveyList.survey_reg}"></td>
+        <td th:text="${surveyList.survey_end}"></td>
+        <td th:if="${surveyList.progressing} == 1" th:text="${surveyList.progressing}"></td>
+        <td th:if="${surveyList.progressing} == 0" th:text="${surveyList.progressing}"></td>
     </tr>
     </tbody>
 </table>

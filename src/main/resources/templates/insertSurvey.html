@@ -1,83 +1,71 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
-    <script type="text/javascript">
-        $(document).ready(function () {
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>insertSurvey</title>
+<!--    <script type="text/javascript">-->
+<!--        $(document).ready(function (){-->
+<!--            $('.addSurveyItem_btn').on('click',function (){-->
+<!--                var item = $("<div class='item'><span></span> " +-->
+<!--                    "<input id='name' autocomplete='off' name='survey_item_content' type='text'> " +-->
+<!--                    "<button class='minusSurveyitem_btn'> <b> x </b></button></div>");-->
+<!--                $(this).parent().find('.items').append(item);-->
+<!--            });-->
 
-            $('.addq_btn').on('click', function () {
-                var q = $("<div class='q'><span></span> <input id='name' autocomplete='off' name='itemcontent' type='text' "
-                    + "class='form-control littleq'> <button type='button' class='minusq_btn'><b> x</b></button></div>"
-                );
-                $(this).parent().find('.qbox').append(q);
-            });
+<!--            $(document).on('click', 'minusSurveyitem_btn', function (){-->
+<!--                $(this).parent().remove();-->
+<!--            });-->
 
-            $(document).on('click', '.minusq_btn', function () {
-                $(this).parent().remove();
-            });
-
-            $(document).on('click', 'button', function () {
-                $('.addsurveybox').find('.q').each(function (i) {
-                    $(this).find('span').text(i + 1);
-                });
-            });
-
-            $("#submit_btn").on("click", function (event) {
-                event.preventDefault();
-                var ed = $("#expire_date").val();
-                var offset = $("#expire_date").offset();
-                if (ed == "") {
-                    $("#expire_date").attr("style", "border:solid 2px pink");
-                    $('html, body').animate({scrollTop: offset.top - 100}, 2000);
-                    noticePopupInit({message: "마감기한을 설정하지않으면 설문을 등록할 수 없습니다.."});
-                } else {
-                    var now = new Date().format("yyyyMMdd");
-                    var edate = ed.split("/")[0] + ed.split("/")[1] + ed.split("/")[2];
-                    var interval = eval(edate - now);
-                    if (interval <= 0) {
-                        $("#expire_date").attr("style", "border:solid 2px pink");
-                        $('html, body').animate({scrollTop: offset.top - 100}, 2000);
-                        noticePopupInit({message: "마감기한은 현재날짜와 같거나,이전일 수 없습니다..."});
-                        $("#expire_date").val("");
-                    }
-                    if (interval >= 1) {
-                        //alert(interval);
-                        noticePopupInit({message: "설문등록중입니다^^"});
-                        $("#addSurveyForm").submit();
-                    }
-                }
-            });
-        });
-
-    </script>
-</head>
+<!--            $(document).on('click', 'button', function (){-->
+<!--                $('.addsurveybox').find('.item').each(function (i){-->
+<!--                    $(this).find('span').text(i+1);-->
+<!--                });-->
+<!--            });-->
+<!--        });-->
+<!--    </script>-->
+<!--</head>-->
 <body>
-<form action="insertSurvey" method="post" enctype="multipart/form-data"
-      class="tm-edit-product-form">
 
-    <h2 class="tm-block-title d-inline-block">설문지 등록하기</h2>
+<form action="/insertSurvey" method="post" enctype="multipart/form-data" >
+    <div class="form-group">
+        <label for="writer">작성자</label>
+        <input type="text" id="writer" name="writer" th:value="${session.id}" readonly><br>
+        <label for="survey_title"> 제목</label>
+        <input type="text" id="survey_title" name="survey_title" placeholder="제목을 입력하세요"><br>
+        <label for="survey_content"> 내용</label>
+        <textarea type="text" id="survey_content" name="survey_content" maxlength="2048" placeholder="내용을 입력하세요"></textarea><br>
 
-<label for="expire_date">마감 기한</label>
-<input id="expire_date" name="end_date" type="text" class="datepicker-here form-control validate" autocomplete="off"/>
+        <div class="form-group mb-3 col-xs-12 col-sm-6">
+            <label for="survey_end">마감기한</label>
+            <input type="text" id="survey_end" name="survey_end" autocomplete="off"/>
+        </div>
+        <div class="col-xl-6 col-lg-6 col-md-12 bigbox surveybox">
+            <div id="addsurveybox" class="form-group mb-3 addsurveybox">
+                <label for="survey_item_content">질문</label><br>
+                <input type="text" value="" id="survey_item_content" autocomplete="off" name="survey_title" class="form-control validate survey_item_content"> <br>
+                <div class="items">
+                    <div class="item">
+                        <span>1</span> <input type="text" value="" autocomplete="off" name="itemcontent" class="form-control littleq">
+                    </div>
+                    <div class="item">
+                        <span>2</span> <input type="text" value="" autocomplete="off" name="itemcontent" class="form-control littleq">
+                    </div>
+                </div>
 
-<h3 class="q_num">질문</h3>
-<input id="qno" autocomplete="off" name="title" type="text" class="form-control validate qno" value=""> <br>
-<div class="qbox">
-    <div class="q">
-        <span>1</span> <input value="" name="itemcontent" type="text"
-                              class="form-control littleq" autocomplete="off">
+                <button class="addSurveyItem_btn">
+                    <b> + </b>
+                </button>
+            </div>
+        </div>
+    <button type="submit">설문지등록하기</button>
     </div>
-    <div class="q">
-        <span>2</span> <input value="" name="itemcontent" type="text"
-                              class="form-control littleq" autocomplete="off">
-    </div>
-</div>
-<button type="button" class="addq_btn">
-    <b> +</b>
-</button>
 
-<button  id="submit_btn" type="button" class="btn btn-primary btn-block text-uppercase">설문지등록하기</button>
+</form>
 
 </body>
 </html>

@@ -38,11 +38,4 @@ public class SurveyWithItemVO extends SurveyVO {
     public void setSurveyItemList(List<SurveyItemVO> surveyItemList) {
         this.surveyItemList = surveyItemList;
     }
-//    public static SurveyWithItemVO initSurveyWithItemVO(ResultSet rs) throws SQLException {
-//        SurveyWithItemVO surveyWithItemVO = new SurveyWithItemVO();
-//        ResultSet itemRs = (ResultSet) rs.getObject("surveyItemList");
-//        surveyWithItemVO.initSurveyVO(rs);
-//        surveyWithItemVO.setSurveyItemList(SurveyItemVO.initSurveyItemVO(itemRs));
-//        return surveyWithItemVO;
-//    }
 }
