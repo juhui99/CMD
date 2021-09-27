@@ -35,7 +35,7 @@ public class SurveyWithItemVO extends SurveyVO {
 //    public void setMySurvey(SurveyItemVO mySurvey) {
 //        this.mySurvey = mySurvey;
 //    }
-    public void setSurveyItemList(List<SurveyItemVO> surveyItemList) {
-        this.surveyItemList = surveyItemList;
-    }
+//    public void setSurveyItemList(List<SurveyItemVO> surveyItemList) {
+//        this.surveyItemList = surveyItemList;
+//    }
 }

@@ -1,18 +1,16 @@
 package com.CMD.CMD_pro.survey.controller;
 
-import com.CMD.CMD_pro.board.controller.UpdateForm;
+
 import com.CMD.CMD_pro.survey.domain.*;
 import com.CMD.CMD_pro.survey.mapper.SurveyMapper;
 import com.CMD.CMD_pro.user.domain.UserVO;
 import com.CMD.CMD_pro.user.mapper.UserMapper;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.ibatis.session.SqlSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -31,7 +29,6 @@ public class SurveyController {
 
     @RequestMapping(value = "/mainSurvey", method = RequestMethod.GET) //설문조사 메인화면
     public String mainSurvey(@ModelAttribute("cri") SearchCriteria cri, Model model) throws Exception {
-
 
         List<SurveyVO> surveyList = surveyMapper.selectSurveyList(cri);
         model.addAttribute("surveyList", surveyList);//survey 리스트 출력
@@ -96,26 +93,25 @@ public class SurveyController {
     }
 
     @RequestMapping(value="/insertSurvey",method = RequestMethod.GET)
-    public String AddSurveyGET() throws Exception {
+    public String AddSurveyGET(Model model, HttpSession session) throws Exception {
+        String userID = (String)session.getAttribute("id");
+        if(userID == null){ //로그인 확인
+            model.addAttribute("msg","로그인이 되어있지 않습니다.");
+            model.addAttribute("url","login");
+            return "alert";
+        }
+        UserVO user = userMapper.userLogin(userID);
+        if(user.getUser_manager() == 0){ //매니저만 추가가능
+            model.addAttribute("msg","접근할 수 없는 권한입니다.");
+            model.addAttribute("url","login");
+            return "alert";
+        }
         return "insertSurvey";
     }
 
     @RequestMapping(value="insertSurvey", method = RequestMethod.POST) //설문조사 추가하기
     public String addSurvey(@RequestParam("survey_title") String survey_title, @RequestParam("survey_content") String survey_content,
-                            @RequestParam("itemcontent") String [] itemcontent, @RequestParam("survey_end") String survey_end,
-                            @RequestParam("writer") String writer, HttpServletRequest request, Model model, HttpSession session) throws Exception {
-
-        String userID = (String)session.getAttribute("id");
-        if(userID == null){ //로그인 확인
-            model.addAttribute("message","로그인이 되어있지 않습니다.");
-            model.addAttribute("url","login");
-            return "alert";
-        }
-        UserVO user = userMapper.userLogin(userID);
-        if(!userID.equals(writer) && user.getUser_manager()==0){ //매니저만 추가가능
-            model.addAttribute("message","접근할 수 없는 권한입니다.");
-            return "alert";
-        }
+                            @RequestParam("itemcontent") String [] itemcontent, @RequestParam("survey_end") String survey_end) throws Exception {
         SurveyVO surveyVO = new SurveyVO();
         SurveyWithItemVO surveyWithItemVO = new SurveyWithItemVO();
 
@@ -126,13 +122,15 @@ public class SurveyController {
         surveyVO.setSurvey_content(survey_content);
         //surveyVO.setUser_index(user.getUser_index());
         List<SurveyItemVO> surveyItemList = new ArrayList<>();
+
+//        surveyWithItemVO.setSurveyItemList(surveyItemList);
+        surveyMapper.insertSurvey(surveyVO);
         for (int i = 0; i < itemcontent.length; i++) {
             SurveyItemVO temp  = new SurveyItemVO();
             temp.setSurvey_item_content(itemcontent[i]);
+            temp.setSurvey_index(surveyVO.getSurvey_index());
             surveyItemList.add(temp);
         }
-        surveyWithItemVO.setSurveyItemList(surveyItemList);
-        surveyMapper.insertSurvey(surveyVO);
         surveyMapper.insertSurveyItem(surveyItemList);
 
         return "redirect:/mainSurvey";
@@ -159,7 +157,7 @@ public class SurveyController {
     }
 
     @RequestMapping("/removeSurvey") //설문조사 지우기
-    public String removeSurvey(@RequestParam("survey_index") int survey_index, @RequestParam("writer") String writer,
+    public String removeSurvey(@RequestParam("survey_index") int survey_index,
                                Model model, HttpSession session) throws Exception{
         String userID = (String)session.getAttribute("id");
         if(userID == null){ //로그인 확인
@@ -168,7 +166,7 @@ public class SurveyController {
             return "alert";
         }
         UserVO user = userMapper.userLogin(userID);
-        if(!userID.equals(writer) && user.getUser_manager()==0){ //매니저만 설문 삭제 가능
+        if(user.getUser_manager() == 0){ //매니저만 설문 삭제 가능
             model.addAttribute("message","접근할 수 없습니다.");
             return "alert";
         }

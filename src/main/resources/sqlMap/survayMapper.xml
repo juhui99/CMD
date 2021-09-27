@@ -52,9 +52,11 @@
 <!--        </if>-->
 <!--    </sql>-->
 
-    <insert id="insertSurvey" parameterMap="surveyVO">
-        INSERT INTO survey (survey_index, user_index, survey_title, survey_content, survey_end)
-        VALUES (#{survey_index}, #{user_index}, #{survey_title}, #{survey_content}, #{survey_end})
+    <insert id="insertSurvey" parameterMap="surveyVO" useGeneratedKeys="true"
+            keyColumn="survey_index"
+            keyProperty="survey_index">
+        INSERT INTO survey (user_index, survey_title, survey_content, survey_end)
+        VALUES (#{user_index}, #{survey_title}, #{survey_content}, #{survey_end})
     </insert>
 
     <select id="maxSurveyIndex" resultType="int">
