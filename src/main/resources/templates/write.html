@@ -1,32 +1,533 @@
-<!DOCTYPE html>
+<!doctype html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://thymeleaf.org" lang="ko">
 
-
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/libs/css/style.css">
+    <link rel="stylesheet" href="/libs/css/bootstrap.css">
+    <script src="https://kit.fontawesome.com/717793cb2b.js" crossorigin="anonymous"></script>
+    <title>CMD</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+
+        function submitAction() {
+
+            if ($("#subject").val() == "") {
+                alert("제목을 입력해주세요.");
+                $("#subject").focus();
+                return false;
+            }
+
+
+        }
+
+        function totalUnreadChat() {
+            $.ajax({
+                type: "POST",
+                url: "/getTotalUnreadChat",
+                dataType: "json",
+                data: {
+                    id: $("#userID").val()
+                },
+                success: function (result) {
+                    if (result >= 1) {
+                        $('#totalUnread').html(result);
+                    } else {
+                        $('#totalUnread').html('');
+                    }
+                }
+            });
+        }
+
+        function getInfiniteTotalUnread() {
+            setInterval(function () {
+                totalUnreadChat();
+            }, 4000);
+        }
+
+        $(document).ready(function(){
+            var fileTarget = $('.filebox .upload-hidden');
+
+            fileTarget.on('change', function(){
+                if(window.FileReader){
+                    // 파일명 추출
+                    var filename = $(this)[0].files[0].name;
+                }
+
+                else {
+                    // Old IE 파일명 추출
+                    var filename = $(this).val().split('/').pop().split('\\').pop();
+                };
+
+                $(this).siblings('.upload-name').val(filename);
+            });
+
+            //preview image
+            var imgTarget = $('.preview-image .upload-hidden');
+
+            imgTarget.on('change', function(){
+                var parent = $(this).parent();
+                parent.children('.upload-display').remove();
+
+                if(window.FileReader){
+                    //image 파일만
+                    if (!$(this)[0].files[0].type.match(/image\//)) return;
+
+                    var reader = new FileReader();
+                    reader.onload = function(e){
+                        var src = e.target.result;
+                        parent.prepend('<div class="upload-display"><div class="upload-thumb-wrap"><img src="'+src+'" class="upload-thumb"></div></div>');
+                    }
+                    reader.readAsDataURL($(this)[0].files[0]);
+                }
+
+                else {
+                    $(this)[0].select();
+                    $(this)[0].blur();
+                    var imgSrc = document.selection.createRange().text;
+                    parent.prepend('<div class="upload-display"><div class="upload-thumb-wrap"><img class="upload-thumb"></div></div>');
+
+                    var img = $(this).siblings('.upload-display').find('img');
+                    img[0].style.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(enable='true',sizingMethod='scale',src=\""+imgSrc+"\")";
+                }
+            });
+        });
+    </script>
+    <style>
+        /* Make the image fully responsive */
+
+        .frontend_board {
+            display: none;
+        }
+
+
+        .carousel {
+            margin: 4% auto;
+            width: 94%;
+        }
+
+        .carousel-inner img {
+            width: 100%;
+            height: auto;
+            border-radius: 25px;
+        }
+
+        .carousel-inner {
+            border-radius: 25px;
+
+        }
+
+        .carousel-caption {
+            font-size: 25px;
+        }
+
+        .btn-success {
+            color: #fff;
+            background-color: #003366d2;
+            border-color: #003366d2;
+        }
+
+        .btn-success:hover {
+            color: #fff;
+            background-color: #003366d2;
+            border-color: #003366d2;
+        }
+
+        .btn-success:focus, .btn-success.focus {
+            color: #fff;
+            background-color: #003366d2;
+            border-color: #003366d2;
+            box-shadow: 0 0 0 0.2rem #003366d2;
+        }
+
+        .btn-success.disabled, .btn-success:disabled {
+            color: #fff;
+            background-color: #003366d2;
+            border-color: #003366d2;
+        }
+
+        .btn-success:not(:disabled):not(.disabled):active, .btn-success:not(:disabled):not(.disabled).active,
+        .show > .btn-success.dropdown-toggle {
+            color: #fff;
+            background-color: #003366d2;
+            border-color: #003366d2;
+        }
+
+        .img-circle {
+            border-radius: 50%;
+            border: 1px solid #003366d2;
+        }
+
+        .btn-success:not(:disabled):not(.disabled):active:focus, .btn-success:not(:disabled):not(.disabled).active:focus,
+        .show > .btn-success.dropdown-toggle:focus {
+            box-shadow: 0 0 0 0.2rem #003366d2;
+        }
+
+        input[type=checkbox] {
+
+            -ms-transform: scale(2); /* IE */
+
+            -moz-transform: scale(2); /* FF */
+
+            -webkit-transform: scale(2); /* Safari and Chrome */
+
+            -o-transform: scale(2); /* Opera */
+
+            padding: 9px;
+
+        }
+
+        .where {
+            display: block;
+            margin: 25px 15px;
+            font-size: 11px;
+            color: #000;
+            text-decoration: none;
+            font-family: verdana;
+            font-style: italic;
+        }
+
+        .filebox input[type="file"] {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip:rect(0,0,0,0);
+            border: 0;
+        }
+
+        .filebox label {
+            display: inline-block;
+            padding: .5em .75em;
+            color: #999;
+            font-size: inherit;
+            line-height: normal;
+            vertical-align: middle;
+            background-color: #fdfdfd;
+            cursor: pointer;
+            border: 1px solid #ebebeb;
+            border-bottom-color: #e2e2e2;
+            border-radius: .25em;
+        }
+
+        /* named upload */
+        .filebox .upload-name {
+            display: inline-block;
+            padding: 4px 8px;
+            font-size: inherit;
+            font-family: inherit;
+            line-height: normal;
+            vertical-align: middle;
+            background-color: #FFFFFF;
+            border: 1px solid black;
+            border-radius: .25em;
+            -webkit-appearance: none; /* 네이티브 외형 감추기 */
+            -moz-appearance: none;
+            appearance: none;
+        }
+
+        /* imaged preview */
+        .filebox .upload-display {
+            margin-bottom: 5px;
+        }
+
+        @media(min-width: 768px) {
+            .filebox .upload-display {
+                display: inline-block;
+                margin-right: 5px;
+                margin-bottom: 0;
+            }
+        }
+
+        .filebox .upload-thumb-wrap {
+            display: inline-block;
+            width: 54px;
+            padding: 2px;
+            vertical-align: middle;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #fff;
+        }
+
+        .filebox .upload-display img {
+            display: block;
+            max-width: 100%;
+            width: 100% \9;
+            height: auto;
+        }
+
+        .filebox.bs3-primary label {
+            margin-top: 6px;
+            padding: 3.8px 8px; color: white; border: 0; border-radius: 5px; background: #003366d2;
+        }
+
+    </style>
+
 </head>
 <body>
-<form action="/board" method="post" enctype="multipart/form-data">
-    <div class="form-group">
-        <label for="writer">작성자</label>
-        <input type="text" id="writer" name="writer" th:value="${session.id}" readonly>
-        <label for="subject">제목</label>
-        <input type="text" id="subject" name="subject" placeholder="제목을 입력하세요">
-        <label th:if="${user.user_manager == 1}">공지글 여부</label><input th:if="${user.user_manager == 1}" type="checkbox" id="notice" name="notice" value="1" ><br>
-        <label for="content">내용</label><br>
-        <textarea  id="content" name="content" placeholder="내용을 입력하세요" rows="10" maxlength="2048"  style="width: 80%"></textarea><br>
-        <input type="hidden" name="kind" id="kind" th:value="${kind}">
-        <input type="hidden" name="realm" id="realm" th:value="${realm}">
-        <input type="hidden" name="bno" id="bno" th:value="${maxBno}">
+<div class="container">
+    <div class="header-box">
+        <div class="logo"><a href="/main"><img src="/img/CMD-logo.png" alt="logo" height="100%"></a></div>
+        <div class="search">
+            <nav class="navbar navbar-expand-sm  navbar-dark">
+                <form class="form-inline" action="/main_search" method="post">
+                    <input class="form-control mr-sm-2" name="keyword" type="text" placeholder="Search">
+                    <button class="btn btn-success" type="submit">Search</button>
+                </form>
+            </nav>
+        </div>
+        <div class="keyword" id="ranking"></div>
+    </div>
+
+    <div class="menu-navbar">
+        <nav class="navbar navbar-expand-sm ">
+            <!-- Links -->
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="/main">메인</a>
+                </li>
+                <!-- Dropdown -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="/cmd_community">
+                        커뮤니티
+                    </a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item frontend" href="/cmdDetail?realm=Frontend">Frontend</a>
+                        <a class="dropdown-item frontend_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/totalHotTopic?kind=HOT게시판&realm=Frontend">HOT게시판</a>
+                        <a class="dropdown-item frontend_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=정보팁게시판&realm=Frontend">정보&팁게시판</a>
+                        <a class="dropdown-item frontend_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=자유게시판&realm=Frontend">자유게시판</a>
+                        <a class="dropdown-item frontend_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=질문게시판&realm=Frontend">질문게시판</a>
+                        <a class="dropdown-item frontend_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=협업게시판&realm=Frontend">협업게시판</a>
+                        <a class="dropdown-item frontend_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=로드맵공유게시판&realm=Frontend">로드맵공유게시판</a>
+                        <a class="dropdown-item backend" href="/cmdDetail?realm=Backend">Backend</a>
+                        <a class="dropdown-item backend_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/totalHotTopic?kind=HOT게시판&realm=Backend">HOT게시판</a>
+                        <a class="dropdown-item backend_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=정보팁게시판&realm=Backend">정보&팁게시판</a>
+                        <a class="dropdown-item backend_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=자유게시판&realm=Backend">자유게시판</a>
+                        <a class="dropdown-item backend_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=질문게시판&realm=Backend">질문게시판</a>
+                        <a class="dropdown-item backend_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=협업게시판&realm=Backend">협업게시판</a>
+                        <a class="dropdown-item backend_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=로드맵공유게시판&realm=Backend">로드맵공유게시판</a>
+                        <a class="dropdown-item DBA" href="/cmdDetail?realm=DBA">DBA</a>
+                        <a class="dropdown-item DBA_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/totalHotTopic?kind=HOT게시판&realm=DBA">HOT게시판</a>
+                        <a class="dropdown-item DBA_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=정보팁게시판&realm=DBA">정보&팁게시판</a>
+                        <a class="dropdown-item DBA_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=자유게시판&realm=DBA">자유게시판</a>
+                        <a class="dropdown-item DBA_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=질문게시판&realm=DBA">질문게시판</a>
+                        <a class="dropdown-item DBA_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=협업게시판&realm=DBA">협업게시판</a>
+                        <a class="dropdown-item DBA_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=로드맵공유게시판&realm=DBA">로드맵공유게시판</a>
+                        <a class="dropdown-item AI" href="/cmdDetail?realm=AI">A.I</a>
+                        <a class="dropdown-item AI_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/totalHotTopic?kind=HOT게시판&realm=AI">HOT게시판</a>
+                        <a class="dropdown-item AI_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=정보팁게시판&realm=AI">정보&팁게시판</a>
+                        <a class="dropdown-item AI_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=자유게시판&realm=AI">자유게시판</a>
+                        <a class="dropdown-item AI_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=질문게시판&realm=AI">질문게시판</a>
+                        <a class="dropdown-item AI_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=협업게시판&realm=AI">협업게시판</a>
+                        <a class="dropdown-item AI_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=로드맵공유게시판&realm=AI">로드맵공유게시판</a>
+                        <a class="dropdown-item WH" href="/cmdDetail?realm=WhiteHat">White-Hat</a>
+                        <a class="dropdown-item WH_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/totalHotTopic?kind=HOT게시판&realm=WhiteHat">HOT게시판</a>
+                        <a class="dropdown-item WH_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=정보팁게시판&realm=WhiteHat">정보&팁게시판</a>
+                        <a class="dropdown-item WH_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=자유게시판&realm=WhiteHat">자유게시판</a>
+                        <a class="dropdown-item WH_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=질문게시판&realm=WhiteHat">질문게시판</a>
+                        <a class="dropdown-item WH_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=협업게시판&realm=WhiteHat">협업게시판</a>
+                        <a class="dropdown-item WH_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=로드맵공유게시판&realm=WhiteHat">로드맵공유게시판</a>
+
+                    </div>
+                </li>
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbardrop1" data-toggle="dropdown">
+                        채팅
+                        <span id="totalUnread" class="badge badge-info"></span>
+                    </a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="/friendsFind">친구 찾기</a>
+                        <a class="dropdown-item" href="/friendsList">친구 목록</a>
+                        <a class="dropdown-item" href="/chatBox">채팅 목록</a>
+                    </div>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="/cmd_roadmap">로드맵</a>
+                </li>
 
 
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbardrop3" data-toggle="dropdown">
+                        설문조사
+                    </a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="#">설문조사 하기</a>
+                        <a class="dropdown-item" href="#">설문조사 통계</a>
+                    </div>
+                </li>
+            </ul>
+            <ul class="login-box">
+                <li class="nav-item">
+                    <a th:if="${session.id == null}" href="/login"><i class="far fa-user"></i> 로그인</a>
+                    <a style="margin-left: 10px;" th:if="${session.id == null}" href="/join">회원가입</a>
+                </li>
+
+                <li class="nav-item dropdown" th:if="${session.id != null}">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+                        <img th:if="${!filename.equals('non') and session.id != null}" class="img-circle"
+                             style="width: 35px; height: 35px; border-color:  #003366d2;"
+                             th:src="@{/display?(filename=${filename})}"/>
+                        <img th:if="${filename.equals('non') and session.id != null}" class="img-circle"
+                             style="width: 35px; height: 35px; border-color:  #003366d2;"
+                             src="/display?filename=default.png"/>
+                        <span th:if="${session.id != null}" th:text="|${session.id}님|" style="margin-left: 3px;"></span>
+                    </a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" th:if="${session.id != null}" href="/userUpdateCheck">회원정보 수정</a>
+                        <a class="dropdown-item" th:if="${session.id != null}" href="/logoutAction">로그아웃</a>
+                        <a class="dropdown-item" th:if="${session.id != null}" href="#" id="withdrawal">회원탈퇴</a>
+                    </div>
+                </li>
+            </ul>
+
+        </nav>
     </div>
-    <div>
-       <input type="file" name="files">
+    <div class="write_box"
+         style="margin-left: 5%; border-radius: 5px; margin-top: 40px; margin-bottom: 40px; padding-top: 40px; border: 2px solid #dddddd; width: 90%">
+        <h3 style="margin-left: 5%;">
+        게시글 작성</h3>
+        <form action="/board" method="post" enctype="multipart/form-data" onsubmit="return submitAction();">
+            <div style="margin-left: 5%; margin-right: 5%" class="form-group">
+                <div style="margin-bottom: 10px">
+                    <label style="padding: 3.8px 8px; color: white; border: 0; border-radius: 5px; background: #003366d2;"
+                           for="writer">작성자</label>
+                    <input type="text" id="writer" name="writer" th:value="${session.id}" readonly>
+                    <label style="margin-left:20px;padding: 3.8px 8px; color: white; border: 0; border-radius: 5px; background: #003366d2;"
+                           for="subject">제목</label>
+                    <input type="text" id="subject" name="subject" placeholder="제목을 입력하세요">
+                    <label style="padding: 3.8px 8px; color: white; border: 0; border-radius: 5px; background: #003366d2; margin-left: 20px;" th:if="${user.user_manager == 1}">공지글 여부</label>
+                    <input style="margin-left: 6px" th:if="${user.user_manager == 1}" type="checkbox" id="notice" name="notice" value="1">
+                </div>
+                <div style="border-top: 1px solid #003366d2; padding-bottom:30px; margin-bottom: 20px; border-bottom: 1px solid #003366d2;">
+                        <textarea id="content" name="content" placeholder="내용을 입력하세요" rows="10" maxlength="4096"
+                                  style="resize:none; width: 100%; height: 300px; margin-top: 30px"></textarea>
+                </div>
+
+                <input type="hidden" name="kind" id="kind" th:value="${kind}">
+                <input type="hidden" name="realm" id="realm" th:value="${realm}">
+                <input type="hidden" name="bno" id="bno" th:value="${maxBno}">
+                    <div class="filebox bs3-primary preview-image">
+                        <input class="upload-name" value="파일선택" disabled="disabled" style="width: 200px;">
+
+                        <label for="input_file">업로드</label>
+                        <input type="file" id="input_file" class="upload-hidden" name="files">
+                        <button style="float:right; margin-top: 5px;margin-right: 7%; border: 0; color: white; border-radius: 5px; background: #003366d2;" type="submit">등록</button>
+                    </div>
+
+
+            </div>
+        </form>
     </div>
-    <button type="submit">등록</button>
-</form>
+    <div class="footer-box">
+        <div class="author">
+            <p><b>Creators - </b>KimLeeEum</p>
+            <p><b>email - </b>energizun1001@gamil.com</p>
+            <p><b>Domain - </b>www.cmdev.com</p>
+        </div>
+        <div class="link">
+            <ul>
+                <li><a href="https://github.com/" target="_blank"><i class="fab fa-github"> GitHub</i></a></li>
+                <li><a href="https://stackoverflow.com/" target="_blank"><i class="fab fa-stack-overflow">
+                    Stack-Overflow</i></a></li>
+            </ul>
+            <input type="hidden" id="userID" th:value="${session.id}">
+        </div>
+    </div>
+    <div class="eyebrow"><p>@2021 prod by 김이음</p></div>
+
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        totalUnreadChat();
+        getInfiniteTotalUnread();
+        $(".board").css("display", "none");
+
+
+        $(".frontend").hover(function () {
+            $(".frontend_board").css("display", "block");
+            $(".backend_board").css("display", "none");
+            $(".DBA_board").css("display", "none");
+            $(".AI_board").css("display", "none");
+            $(".WH_board").css("display", "none");
+
+        });
+        $(".backend").hover(function () {
+            $(".backend_board").css("display", "block");
+            $(".frontend_board").css("display", "none");
+            $(".DBA_board").css("display", "none");
+            $(".AI_board").css("display", "none");
+            $(".WH_board").css("display", "none");
+        });
+        $(".DBA").hover(function () {
+            $(".DBA_board").css("display", "block");
+            $(".backend_board").css("display", "none");
+            $(".frontend_board").css("display", "none");
+            $(".AI_board").css("display", "none");
+            $(".WH_board").css("display", "none");
+        });
+        $(".AI").hover(function () {
+            $(".AI_board").css("display", "block");
+            $(".DBA_board").css("display", "none");
+            $(".backend_board").css("display", "none");
+            $(".frontend_board").css("display", "none");
+            $(".WH_board").css("display", "none");
+        });
+        $(".WH").hover(function () {
+            $(".WH_board").css("display", "block");
+            $(".AI_board").css("display", "none");
+            $(".DBA_board").css("display", "none");
+            $(".backend_board").css("display", "none");
+            $(".frontend_board").css("display", "none");
+
+        });
+        $("#withdrawal").click(function () {
+            var id = $("#userID").val();
+            if (confirm("정말로 회원탈퇴를 하시겠습니까?")) {
+                location.href = "/withdrawalCheck";
+            } else {
+                alert("회원탈퇴를 취소합니다.");
+            }
+        });
+    });
+</script>
 </body>
-</html>
+</html>ㅊ

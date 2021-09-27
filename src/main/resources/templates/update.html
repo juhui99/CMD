@@ -4,65 +4,462 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/libs/css/style.css">
     <link rel="stylesheet" href="/libs/css/bootstrap.css">
+    <script src="https://kit.fontawesome.com/717793cb2b.js" crossorigin="anonymous"></script>
+    <title>Title</title>
     <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
     <script src="/libs/js/bootstrap.js"></script>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script type="text/javascript">
-        $(document).ready(function (){
-            if($('#filename').val() != 'no'){
-                $('#files').css("visibility","hidden");
+        $(document).ready(function () {
+            if ($('#filename').val() != 'no') {
+                $('.filebox').css("visibility", "hidden");
             }
+
+            totalUnreadChat();
+            getInfiniteTotalUnread();
+            $(".board").css("display", "none");
+
+
+            $(".frontend").hover(function () {
+                $(".frontend_board").css("display", "block");
+                $(".backend_board").css("display", "none");
+                $(".DBA_board").css("display", "none");
+                $(".AI_board").css("display", "none");
+                $(".WH_board").css("display", "none");
+
+            });
+            $(".backend").hover(function () {
+                $(".backend_board").css("display", "block");
+                $(".frontend_board").css("display", "none");
+                $(".DBA_board").css("display", "none");
+                $(".AI_board").css("display", "none");
+                $(".WH_board").css("display", "none");
+            });
+            $(".DBA").hover(function () {
+                $(".DBA_board").css("display", "block");
+                $(".backend_board").css("display", "none");
+                $(".frontend_board").css("display", "none");
+                $(".AI_board").css("display", "none");
+                $(".WH_board").css("display", "none");
+            });
+            $(".AI").hover(function () {
+                $(".AI_board").css("display", "block");
+                $(".DBA_board").css("display", "none");
+                $(".backend_board").css("display", "none");
+                $(".frontend_board").css("display", "none");
+                $(".WH_board").css("display", "none");
+            });
+            $(".WH").hover(function () {
+                $(".WH_board").css("display", "block");
+                $(".AI_board").css("display", "none");
+                $(".DBA_board").css("display", "none");
+                $(".backend_board").css("display", "none");
+                $(".frontend_board").css("display", "none");
+
+            });
+            $("#withdrawal").click(function () {
+                var id = $("#userID").val();
+                if (confirm("정말로 회원탈퇴를 하시겠습니까?")) {
+                    location.href = "/withdrawalCheck";
+                } else {
+                    alert("회원탈퇴를 취소합니다.");
+                }
+            });
+
+            $("#files").on('change',function(){
+
+                if(window.FileReader){
+                    var filename = $("#files")[0].files[0].name;
+                }
+                else {
+                    var filename = $(this).val().split('/').pop().split('\\').pop();
+                };
+                $(".upload-name").val(filename);
+            });
         });
-        function deleteFile(){
+
+        function deleteFile() {
 
             $.ajax({
                 url: "/fileDelete",
                 type: "POST",
                 dataType: "json",
-                data: { bno : $("#bno").val()}
+                data: {bno: $("#bno").val()}
             });
 
-            $('#files').css("visibility","visible");
-            $('#clip').css("display","none");
-            $('#file').css("display","none");
-            $('#delete').css("display","none");
+            $('.filebox').css("visibility", "visible");
+            $('#clip').css("display", "none");
+            $('#file').css("display", "none");
+            $('#delete').css("display", "none");
 
         }
+
+        function totalUnreadChat() {
+            $.ajax({
+                type: "POST",
+                url: "/getTotalUnreadChat",
+                dataType: "json",
+                data: {
+                    id: $("#userID").val()
+                },
+                success: function (result) {
+                    if (result >= 1) {
+                        $('#totalUnread').html(result);
+                    } else {
+                        $('#totalUnread').html('');
+                    }
+                }
+            });
+        }
+
+        function getInfiniteTotalUnread() {
+            setInterval(function () {
+                totalUnreadChat();
+            }, 4000);
+        }
     </script>
+    <style>
+        /* Make the image fully responsive */
+
+        .frontend_board {
+            display: none;
+        }
+
+
+        .carousel {
+            margin: 4% auto;
+            width: 94%;
+        }
+
+        .carousel-inner img {
+            width: 100%;
+            height: auto;
+            border-radius: 25px;
+        }
+
+        .carousel-inner {
+            border-radius: 25px;
+
+        }
+
+        .carousel-caption {
+            font-size: 25px;
+        }
+
+        .btn-success {
+            color: #fff;
+            background-color: #003366d2;
+            border-color: #003366d2;
+        }
+
+        .btn-success:hover {
+            color: #fff;
+            background-color: #003366d2;
+            border-color: #003366d2;
+        }
+
+        .btn-success:focus, .btn-success.focus {
+            color: #fff;
+            background-color: #003366d2;
+            border-color: #003366d2;
+            box-shadow: 0 0 0 0.2rem #003366d2;
+        }
+
+        .btn-success.disabled, .btn-success:disabled {
+            color: #fff;
+            background-color: #003366d2;
+            border-color: #003366d2;
+        }
+
+        .btn-success:not(:disabled):not(.disabled):active, .btn-success:not(:disabled):not(.disabled).active,
+        .show > .btn-success.dropdown-toggle {
+            color: #fff;
+            background-color: #003366d2;
+            border-color: #003366d2;
+        }
+
+        .img-circle {
+            border-radius: 50%;
+            border: 1px solid #003366d2;
+        }
+
+        .btn-success:not(:disabled):not(.disabled):active:focus, .btn-success:not(:disabled):not(.disabled).active:focus,
+        .show > .btn-success.dropdown-toggle:focus {
+            box-shadow: 0 0 0 0.2rem #003366d2;
+        }
+
+        .filebox input[type="file"] {
+            position: absolute;
+            width: 0;
+            height: 0;
+            padding: 0;
+            overflow: hidden;
+            border: 0;
+        }
+
+        .filebox label {
+            display: inline-block;
+            padding: 5px;
+            color: #fff;
+            font-size: inherit;
+            line-height: normal;
+            vertical-align: middle;
+            cursor: pointer;
+            border: 1px solid #003366d2;
+            border-radius: .25em;
+            height: 30px;
+        }
+
+        /* named upload */
+        .filebox .upload-name {
+
+            display: inline-block;
+            padding: 4px 8px;
+            font-size: inherit;
+            font-family: inherit;
+            line-height: normal;
+            vertical-align: middle;
+            background-color: #FFFFFF;
+            border: 1px solid black;
+            border-radius: .25em;
+            -webkit-appearance: none; /* 네이티브 외형 감추기 */
+            -moz-appearance: none;
+            appearance: none;
+
+        }
+
+
+    </style>
 </head>
 <body>
 <div class="container">
-    <div>
-        <table>
-            <thead>
-            </thead>
-            <tbody>
-            <form action="/UpdateAction" method="post" enctype="multipart/form-data">
-
-                <tr>글 번호:<input type="number" th:value="${board.bno}" id="bno" name="bno"/></tr>
-                <tr>글 제목:<input type="text" th:value="${board.subject}" id="subject" name="subject"/><br></tr>
-                <tr><label for="content">내용</label><br></tr>
-                <tr><textarea th:text="${board.content}" id="content" name="content" rows="10" maxlength="2048"  style="width: 80%" ></textarea><br></tr>
-                <input type="hidden" name="kind" id="kind" th:value="${board.kind}">
-                <input type="hidden" name="realm" id="realm" th:value="${board.realm}">
-                <div>
-                    <input type="file" name="files" id="files">
-                </div>
-                <img id="clip" th:if="${!filename.equals('no')}" src="/img/clip.png" style="width:13px; margin-top: 3px; margin-right: 5px;"><a id="file" th:if="${!filename.equals('no')}" th:text="${filename}"></a><button th:if="${!filename.equals('no')}" id="delete" name="delete" type="button" onclick="deleteFile();">파일삭제</button>
-                <input type="hidden" name="filename" id="filename" th:value="${filename}">
-                <button type="submit">수정완료</button>
-                <input type="hidden" name="option" th:value="${option}">
-                <input type="hidden" name="search" th:value="${search}">
-                <input type="hidden" name="search_option" th:value="${search_option}">
-                <input type="hidden" name="keyword" th:value="${keyword}">
-                <input type="hidden" name="mainSearch" th:value="${mainSearch}">
-                <input type="hidden" name="page" th:value="${page}">
-
-            </form>
-            </tbody>
-        </table>
+    <div class="header-box">
+        <div class="logo"><a href="/main"><img src="/img/CMD-logo.png" alt="logo" height="100%"></a></div>
+        <div class="search">
+            <nav class="navbar navbar-expand-sm  navbar-dark">
+                <form class="form-inline" action="/main_search" method="post">
+                    <input class="form-control mr-sm-2" name="keyword" type="text" placeholder="Search">
+                    <button class="btn btn-success" type="submit">Search</button>
+                </form>
+            </nav>
+        </div>
+        <div class="keyword" id="ranking"></div>
     </div>
+
+    <div class="menu-navbar">
+        <nav class="navbar navbar-expand-sm ">
+            <!-- Links -->
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="/main">메인</a>
+                </li>
+                <!-- Dropdown -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="/cmd_community">
+                        커뮤니티
+                    </a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item frontend" href="/cmdDetail?realm=Frontend">Frontend</a>
+                        <a class="dropdown-item frontend_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/totalHotTopic?kind=HOT게시판&realm=Frontend">HOT게시판</a>
+                        <a class="dropdown-item frontend_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=정보팁게시판&realm=Frontend">정보&팁게시판</a>
+                        <a class="dropdown-item frontend_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=자유게시판&realm=Frontend">자유게시판</a>
+                        <a class="dropdown-item frontend_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=질문게시판&realm=Frontend">질문게시판</a>
+                        <a class="dropdown-item frontend_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=협업게시판&realm=Frontend">협업게시판</a>
+                        <a class="dropdown-item frontend_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=로드맵공유게시판&realm=Frontend">로드맵공유게시판</a>
+                        <a class="dropdown-item backend" href="/cmdDetail?realm=Backend">Backend</a>
+                        <a class="dropdown-item backend_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/totalHotTopic?kind=HOT게시판&realm=Backend">HOT게시판</a>
+                        <a class="dropdown-item backend_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=정보팁게시판&realm=Backend">정보&팁게시판</a>
+                        <a class="dropdown-item backend_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=자유게시판&realm=Backend">자유게시판</a>
+                        <a class="dropdown-item backend_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=질문게시판&realm=Backend">질문게시판</a>
+                        <a class="dropdown-item backend_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=협업게시판&realm=Backend">협업게시판</a>
+                        <a class="dropdown-item backend_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=로드맵공유게시판&realm=Backend">로드맵공유게시판</a>
+                        <a class="dropdown-item DBA" href="/cmdDetail?realm=DBA">DBA</a>
+                        <a class="dropdown-item DBA_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/totalHotTopic?kind=HOT게시판&realm=DBA">HOT게시판</a>
+                        <a class="dropdown-item DBA_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=정보팁게시판&realm=DBA">정보&팁게시판</a>
+                        <a class="dropdown-item DBA_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=자유게시판&realm=DBA">자유게시판</a>
+                        <a class="dropdown-item DBA_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=질문게시판&realm=DBA">질문게시판</a>
+                        <a class="dropdown-item DBA_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=협업게시판&realm=DBA">협업게시판</a>
+                        <a class="dropdown-item DBA_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=로드맵공유게시판&realm=DBA">로드맵공유게시판</a>
+                        <a class="dropdown-item AI" href="/cmdDetail?realm=AI">A.I</a>
+                        <a class="dropdown-item AI_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/totalHotTopic?kind=HOT게시판&realm=AI">HOT게시판</a>
+                        <a class="dropdown-item AI_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=정보팁게시판&realm=AI">정보&팁게시판</a>
+                        <a class="dropdown-item AI_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=자유게시판&realm=AI">자유게시판</a>
+                        <a class="dropdown-item AI_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=질문게시판&realm=AI">질문게시판</a>
+                        <a class="dropdown-item AI_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=협업게시판&realm=AI">협업게시판</a>
+                        <a class="dropdown-item AI_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=로드맵공유게시판&realm=AI">로드맵공유게시판</a>
+                        <a class="dropdown-item WH" href="/cmdDetail?realm=WhiteHat">White-Hat</a>
+                        <a class="dropdown-item WH_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/totalHotTopic?kind=HOT게시판&realm=WhiteHat">HOT게시판</a>
+                        <a class="dropdown-item WH_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=정보팁게시판&realm=WhiteHat">정보&팁게시판</a>
+                        <a class="dropdown-item WH_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=자유게시판&realm=WhiteHat">자유게시판</a>
+                        <a class="dropdown-item WH_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=질문게시판&realm=WhiteHat">질문게시판</a>
+                        <a class="dropdown-item WH_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=협업게시판&realm=WhiteHat">협업게시판</a>
+                        <a class="dropdown-item WH_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=로드맵공유게시판&realm=WhiteHat">로드맵공유게시판</a>
+
+                    </div>
+                </li>
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbardrop1" data-toggle="dropdown">
+                        채팅
+                        <span id="totalUnread" class="badge badge-info"></span>
+                    </a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="/friendsFind">친구 찾기</a>
+                        <a class="dropdown-item" href="/friendsList">친구 목록</a>
+                        <a class="dropdown-item" href="/chatBox">채팅 목록</a>
+                    </div>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="/cmd_roadmap">로드맵</a>
+                </li>
+
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbardrop3" data-toggle="dropdown">
+                        설문조사
+                    </a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="#">설문조사 하기</a>
+                        <a class="dropdown-item" href="#">설문조사 통계</a>
+                    </div>
+                </li>
+            </ul>
+            <ul class="login-box">
+                <li class="nav-item">
+                    <a th:if="${session.id == null}" href="/login"><i class="far fa-user"></i> 로그인</a>
+                    <a style="margin-left: 10px;" th:if="${session.id == null}" href="/join">회원가입</a>
+                </li>
+
+                <li class="nav-item dropdown" th:if="${session.id != null}">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+                        <img th:if="${!profile_name.equals('non') and session.id != null}" class="img-circle"
+                             style="width: 35px; height: 35px; border-color:  #003366d2;"
+                             th:src="@{/display?(filename=${profile_name})}"/>
+                        <img th:if="${profile_name.equals('non') and session.id != null}" class="img-circle"
+                             style="width: 35px; height: 35px; border-color:  #003366d2;"
+                             src="/display?filename=default.png"/>
+                        <span th:if="${session.id != null}" th:text="|${session.id}님|" style="margin-left: 3px;"></span>
+                    </a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" th:if="${session.id != null}" href="/userUpdateCheck">회원정보 수정</a>
+                        <a class="dropdown-item" th:if="${session.id != null}" href="/logoutAction">로그아웃</a>
+                        <a class="dropdown-item" th:if="${session.id != null}" href="#" id="withdrawal">회원탈퇴</a>
+                    </div>
+                </li>
+            </ul>
+
+        </nav>
+    </div>
+    <div class="update_box"
+         style="margin-left: 5%; border-radius: 5px; margin-top: 40px; margin-bottom: 40px; padding:20px 40px; border: 2px solid #dddddd; width: 90%">
+        <h3>게시글 수정</h3>
+        <div>
+            <table>
+                <thead>
+                </thead>
+                <tbody>
+                <form action="/UpdateAction" method="post" enctype="multipart/form-data">
+
+                    <tr><input type="hidden" th:value="${board.bno}" id="bno" name="bno"/></tr>
+                    <tr><label
+                            style=" padding: 3.8px 8px; color: white; border: 0; border-radius: 5px; background: #003366d2;">글
+                        제목</label><input style="width: auto; margin-left: 10px; margin-bottom: 15px;" type="text"
+                                         th:value="${board.subject}" id="subject" name="subject"/><br></tr>
+                    <div style="border-top: 1px solid #003366d2;">
+                        <tr><label
+                                style="margin-top: 10px; padding: 3.8px 8px; color: white; border: 0; border-radius: 5px; background: #003366d2;"
+                                for="content">내용</label><br></tr>
+                        <tr><textarea th:text="${board.content}" id="content" name="content" rows="10" maxlength="2048"
+                                      style="height:400px; resize:none; width: 100%; margin-bottom: 10px;"></textarea><br>
+                        </tr>
+                        <input type="hidden" name="kind" id="kind" th:value="${board.kind}">
+                        <input type="hidden" name="realm" id="realm" th:value="${board.realm}">
+                    </div>
+                    <div style=" border-top: 1px solid #003366d2; padding-top: 10px;">
+                        <tr>
+                        <img id="clip" th:if="${!filename.equals('no')}" src="/img/clip.png"
+                             style="width:13px; margin-top: 3px; margin-right: 5px;">
+                        <a id="file" style="text-decoration:none; color: black" th:if="${!filename.equals('no')}" th:text="${filename}"></a>
+                        </tr>
+                        <br>
+                        <div class="filebox" style="display: inline-block;">
+                            <input type="file" id="files" name="files">
+                            <input class="upload-name" value="파일선택">
+                            <label for="files" style="background: #003366d2; margin-top: 10px; padding-right: 5px; padding-top: 2px;">업로드</label>
+                        </div>
+                    </div>
+                    <button style="float: left; margin-left: 10px; margin-top: 3px; color: white; border: 0; border-radius: 5px; background: #003366d2;" th:if="${!filename.equals('no')}" id="delete" name="delete" type="button"
+                            onclick="deleteFile();">파일삭제
+                    </button>
+                    <input type="hidden" name="filename" id="filename" th:value="${filename}">
+                    <button style="float:right; color: white; border: 0; border-radius: 5px; background: #003366d2;" type="submit">수정완료</button>
+                    <input type="hidden" name="option" th:value="${option}">
+                    <input type="hidden" name="search" th:value="${search}">
+                    <input type="hidden" name="search_option" th:value="${search_option}">
+                    <input type="hidden" name="keyword" th:value="${keyword}">
+                    <input type="hidden" name="mainSearch" th:value="${mainSearch}">
+                    <input type="hidden" name="page" th:value="${page}">
+
+                </form>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+    <div class="footer-box">
+        <div class="author">
+            <p><b>Creators - </b>KimLeeEum</p>
+            <p><b>email - </b>energizun1001@gamil.com</p>
+            <p><b>Domain - </b>www.cmdev.com</p>
+        </div>
+        <div class="link">
+            <ul>
+                <li><a href="https://github.com/" target="_blank"><i class="fab fa-github"> GitHub</i></a></li>
+                <li><a href="https://stackoverflow.com/" target="_blank"><i class="fab fa-stack-overflow">
+                    Stack-Overflow</i></a></li>
+            </ul>
+            <input type="hidden" id="userID" th:value="${session.id}">
+        </div>
+    </div>
+    <div class="eyebrow"><p>@2021 prod by 김이음</p></div>
 
 </div>
 

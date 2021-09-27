@@ -103,10 +103,6 @@
     </script>
 </head>
 <style>
-    h1 {
-        margin: auto 44%;
-    }
-
 
     /* Make the image fully responsive */
 
@@ -282,17 +278,6 @@
                     <a class="nav-link" href="cmd_roadmap.html">로드맵</a>
                 </li>
 
-
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbardrop2" data-toggle="dropdown">
-                        D-MBTI
-                    </a>
-                    <div class="dropdown-menu">
-                        <a class="dropdown-item" href="#">D-MBTI 하기</a>
-                        <a class="dropdown-item" href="#">D-MBTI 통계</a>
-                    </div>
-                </li>
-
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbardrop3" data-toggle="dropdown">
                         설문조사
@@ -320,10 +305,9 @@
                         <span th:if="${session.id != null}" th:text="|${session.id}님|" style="margin-left: 3px;"></span>
                     </a>
                     <div class="dropdown-menu">
-                        <a style="margin-left: 10px;" th:if="${session.id != null}" href="/userUpdateCheck">회원정보
-                            수정</a></br>
-                        <a style="margin-left: 10px;" th:if="${session.id != null}" href="/logoutAction">로그아웃</a><br>
-                        <a style="margin-left: 10px;" th:if="${session.id != null}" href="#" id="withdrawal">회원탈퇴</a>
+                        <a class="dropdown-item" th:if="${session.id != null}" href="/userUpdateCheck">회원정보 수정</a>
+                        <a class="dropdown-item" th:if="${session.id != null}" href="/logoutAction">로그아웃</a>
+                        <a class="dropdown-item" th:if="${session.id != null}" href="#" id="withdrawal">회원탈퇴</a>
                     </div>
                 </li>
             </ul>
@@ -335,14 +319,14 @@
         <h6 class="text-center">< 인공지능(A.I) 개발자는 ></h6>
         <p class="text-center">프론트엔드 개발자는 웹사이트에서 보여지는 글꼴, 생각, 메뉴 등
             <br>사용자에게 시각적으로 보여지는 부분을 구축하고 배치하는 역할을 합니다.<br>
-            <span>즉, 사용자가 웹사이트를 이용할 때, 사이트와 직접적으로 상호작용하여 접촉하는 부분을 프론트 엔드라고 합니다.</span>
+            <span class="bld">즉, 사용자가 웹사이트를 이용할 때, 사이트와 직접적으로 상호작용하여 접촉하는 부분을 프론트 엔드라고 합니다.</span>
         </p>
     </div>
 
     <div th:if="${realm == 'Frontend'}" class="community_frontend_info">
         <h1 class="text-center">Frontend</h1>
         <h6 class="text-center">< 프론트엔드(Frontend) 개발자는 ></h6>
-        <p class="text-center"><span>
+        <p class="text-center"><span class="bld">
                 웹사이트에서 보여지는 글꼴, 생각, 메뉴 등 사용자에게 시각적으로 보여지는 부분을 구축하고 배치하는 역할을 합니다.<br>
                 즉, 사용자가 웹사이트를 이용할 때, 사이트와 직접적으로 상호작용하여 접촉하는 부분을 프론트 엔드라고 합니다.</span>
         </p>
@@ -352,27 +336,27 @@
         <h1 class="text-center">Backend</h1>
         <h6 class="text-center">< 백엔드(Back end)개발자는 ></h6>
         <p class="text-center">
-              <span>프론트엔드, 백엔드의 완전한 분리 구조를 지향하는 업무 스타일의 개발 방식으로서 백엔드의 DB와 API 서버 개발을 맡고,
+              <span class="bld">프론트엔드, 백엔드의 완전한 분리 구조를 지향하는 업무 스타일의 개발 방식으로서 백엔드의 DB와 API 서버 개발을 맡고,
                 <br> 이와 다른 방식의 업무 스타일 직군으로는 웹퍼블리셔(UI 개발)와 개발자(서버 개발자)의 업무 분리 방식이 있습니다.
                 <br> 이 경우는 주로 서버사이드가 클라이언트를 감싸는 방식이고, 전반적인 비지니스 로직은 개발자가 맡습니다.
                 <br>좀 더 들어가면 MVC에서 Model, Controller가 백엔드의 소관입니다.</span>
         </p>
     </div>
 
-    <div th:if="${realm == 'DBA'}" class="community_frontend_info">
+    <div th:if="${realm == 'DBA'}" class="community_dba_info">
         <h1 class="text-center">DBA</h1>
         <h6 class="text-center">< 데이터베이스관리자(Data Base Administration) ></h6>
-        <p class="text-center"><span>컴퓨터를 사용하여 각종 데이터를 체계적으로 수집,정리, 가공 및 입력하여
+        <p class="text-center"><span class="bld">컴퓨터를 사용하여 각종 데이터를 체계적으로 수집,정리, 가공 및 입력하여
               <br> 데이터베이스를 구축, 관리하는 일을 합니다.</span>
         </p>
     </div>
 
-    <div th:if="${realm == 'WhiteHat'}" class="community_eis_info">
+    <div th:if="${realm == 'WhiteHat'}" class="community_whh_info">
         <h1 class="text-center">White-Hat</h1>
         <h6 class="text-center">< White-Hat은 ></h6>
         <p class="text-center">프론트엔드 개발자는 웹사이트에서 보여지는 글꼴, 생각, 메뉴 등
             <br>사용자에게 시각적으로 보여지는 부분을 구축하고 배치하는 역할을 합니다.<br>
-            <span>즉, 사용자가 웹사이트를 이용할 때, 사이트와 직접적으로 상호작용하여 접촉하는 부분을 프론트 엔드라고 합니다.</span>
+            <span class="bld">즉, 사용자가 웹사이트를 이용할 때, 사이트와 직접적으로 상호작용하여 접촉하는 부분을 프론트 엔드라고 합니다.</span>
         </p>
     </div>
     <div class="community_ai_box">
@@ -413,7 +397,7 @@
                             <a th:href="@{/view(bno=${board.bno},kind=${kind},realm=${realm},pageNumber=${page},search='search',search_option=${search_option},keyword=${keyword})}"
                                th:text="${board.subject}"></a></td>
                         <td th:text="${board.writer}"></td>
-                        <td th:text="${board.reg_date}"></td>
+                        <td th:text="${board.real_date}"></td>
                         <td th:if="${board.notice == 1}" style="color: red;">공지글</td>
                     </tr>
                     </tbody>

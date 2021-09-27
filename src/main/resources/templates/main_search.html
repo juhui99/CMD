@@ -280,77 +280,77 @@
                         <span th:if="${session.id != null}" th:text="|${session.id}님|" style="margin-left: 3px;"></span>
                     </a>
                     <div class="dropdown-menu">
-                        <a style="margin-left: 10px;" th:if="${session.id != null}" href="/userUpdateCheck">회원정보 수정</a></br>
-                        <a style="margin-left: 10px;" th:if="${session.id != null}" href="/logoutAction">로그아웃</a><br>
-                        <a style="margin-left: 10px;" th:if="${session.id != null}" href="#" id="withdrawal">회원탈퇴</a>
+                        <a class="dropdown-item" th:if="${session.id != null}" href="/userUpdateCheck">회원정보 수정</a>
+                        <a class="dropdown-item" th:if="${session.id != null}" href="/logoutAction">로그아웃</a>
+                        <a class="dropdown-item" th:if="${session.id != null}" href="#" id="withdrawal">회원탈퇴</a>
                     </div>
                 </li>
             </ul>
         </nav>
     </div>
 
-        <div class="container" style="margin-top: 40px;">
-            <div>
-                <h2 style="color: #003366d2; font-weight: bold;">커뮤니티</h2>
-                <table style="text-align: center; border: 1px solid #dddddd" width="90%">
-                    <thead>
-                    <tr>
-                        <th>글 번호</th>
-                        <th>글 작성자</th>
-                        <th>글 제목</th>
-                        <th>날짜</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr th:each="board : ${board}">
-                        <td><a th:href="@{/view(bno=${board.bno},kind=${board.kind},realm=${board.realm},pageNumber=${page},mainSearch='mainSearch',keyword=${keyword})}" th:text="${board.subject}"></a></td>
-                        <td th:text="${board.writer}"></td>
-                        <td th:text="${board.reg_date}"></td>
-                        <td th:if="${board.notice == 1}" style="color: red;">공지글</td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
+    <div class="container" style="margin-top: 40px;">
+        <div>
+            <h2 style="color: #003366d2; font-weight: bold;">커뮤니티</h2>
+            <table style="text-align: center; border: 1px solid #dddddd" width="90%">
+                <thead>
+                <tr>
+                    <th style="padding-top: 10px; padding-bottom: 10px">글 제목</th>
+                    <th>글 작성자</th>
+                    <th>날짜</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="board : ${board}">
+                    <td><a th:href="@{/view(bno=${board.bno},kind=${board.kind},realm=${board.realm},pageNumber=${page},mainSearch='mainSearch',keyword=${keyword})}" th:text="${board.subject}"></a></td>
+                    <td th:text="${board.writer}"></td>
+                    <td th:text="${board.real_date}"></td>
+                    <td th:if="${board.notice == 1}" style="color: red;">공지글</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
 
-            <div style="display: block; text-align: center;">
-                <ul class="pagination pagination-sm" style="margin: 0 auto; margin-top: 20px; margin-bottom: 20px;">
-                    <li class="page-item" th:if="${startPage != 1}"><a class="page-link" th:href="@{/main_search(pageNumber=${startPage} - 1,keyword=${keyword})}">&lt;</a></li>
-                    <li class="page-item" th:if="${startPage == 1}"><a class="page-link" style="color: gray;">&lt;</a></li>
-                    <li class="page-item" th:if="${startPage >0 and page != 1 and page > startPage}" th:each="idx,iterStat : ${#numbers.sequence(startPage, page - 1)}">
-                        <a class="page-link" th:if="${idx > 0 and page != 1}" th:href="@{/main_search(pageNumber=${idx},keyword=${keyword})}" th:text="${idx}"> </a>
-                    </li>
-                    <li class="page-item"><a class="page-link" th:href="@{/main_search(pageNumber=${page},keyword=${keyword})}" th:text="${page}" style="background-color: #006DCC;"></a></li>
-                    <li class="page-item" th:if="${count > 0}" th:each="idx,iterStat : ${#numbers.sequence(page + 1, target2 + page )}" >
-                        <a class="page-link" th:if="${idx < startPage + 10 and idx > page}" th:href="@{/main_search(pageNumber=${idx},keyword=${keyword})}" th:text="${idx}"></a>
-                    </li>
-                    <li class="page-item" th:if="${target2 >= 1 and target2 + page > startPage + 9}">
-                        <a class="page-link" th:href="@{/main_search(pageNumber=${startPage + 10},keyword=${keyword})}">></a>
-                    </li>
-                    <li class="page-item" th:if="${target2 + page <= startPage + 9}">
-                        <a class="page-link" style="color: gray;">></a>
-                    </li>
-                </ul>
-            </div>
-
-
+        <div style="display: block; text-align: center;">
+            <ul class="pagination pagination-sm" style="margin: 0 auto; margin-top: 20px; margin-bottom: 20px;">
+                <li class="page-item" th:if="${startPage != 1}"><a class="page-link" th:href="@{/main_search(pageNumber=${startPage} - 1,keyword=${keyword})}">&lt;</a></li>
+                <li class="page-item" th:if="${startPage == 1}"><a class="page-link" style="color: gray;">&lt;</a></li>
+                <li class="page-item" th:if="${startPage >0 and page != 1 and page > startPage}" th:each="idx,iterStat : ${#numbers.sequence(startPage, page - 1)}">
+                    <a class="page-link" th:if="${idx > 0 and page != 1}" th:href="@{/main_search(pageNumber=${idx},keyword=${keyword})}" th:text="${idx}"> </a>
+                </li>
+                <li class="page-item"><a class="page-link" th:href="@{/main_search(pageNumber=${page},keyword=${keyword})}" th:text="${page}" style="background-color: #006DCC;"></a></li>
+                <li class="page-item" th:if="${count > 0}" th:each="idx,iterStat : ${#numbers.sequence(page + 1, target2 + page )}" >
+                    <a class="page-link" th:if="${idx < startPage + 10 and idx > page}" th:href="@{/main_search(pageNumber=${idx},keyword=${keyword})}" th:text="${idx}"></a>
+                </li>
+                <li class="page-item" th:if="${target2 >= 1 and target2 + page > startPage + 9}">
+                    <a class="page-link" th:href="@{/main_search(pageNumber=${startPage + 10},keyword=${keyword})}">></a>
+                </li>
+                <li class="page-item" th:if="${target2 + page <= startPage + 9}">
+                    <a class="page-link" style="color: gray;">></a>
+                </li>
+            </ul>
         </div>
 
 
-        <div class="footer-box">
-            <div class="author">
-                <p><b>Creators - </b>KimLeeEum</p>
-                <p><b>email - </b>energizun1001@gamil.com</p>
-                <p><b>Domain - </b>www.cmdev.com</p>
-            </div>
-            <div class="link">
-                <ul>
-                    <li><a href="https://github.com/" target="_blank"><i class="fab fa-github"> GitHub</i></a></li>
-                    <li><a href="https://stackoverflow.com/" target="_blank"><i class="fab fa-stack-overflow"> Stack-Overflow</i></a></li>
-                </ul>
-                <input type="hidden" id="userID" th:value="${session.id}">
-            </div>
-        </div>
-        <div class="eyebrow"><p>@2021 prod by 김이음</p></div>
     </div>
+
+
+    <div class="footer-box">
+        <div class="author">
+            <p><b>Creators - </b>KimLeeEum</p>
+            <p><b>email - </b>energizun1001@gamil.com</p>
+            <p><b>Domain - </b>www.cmdev.com</p>
+        </div>
+        <div class="link">
+            <ul>
+                <li><a href="https://github.com/" target="_blank"><i class="fab fa-github"> GitHub</i></a></li>
+                <li><a href="https://stackoverflow.com/" target="_blank"><i class="fab fa-stack-overflow"> Stack-Overflow</i></a></li>
+            </ul>
+            <input type="hidden" id="userID" th:value="${session.id}">
+        </div>
+    </div>
+    <div class="eyebrow"><p>@2021 prod by 김이음</p></div>
+</div>
 </body>
 </html>

@@ -167,16 +167,6 @@
                 </li>
 
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbardrop2" data-toggle="dropdown">
-                        D-MBTI
-                    </a>
-                    <div class="dropdown-menu">
-                        <a class="dropdown-item" href="#">D-MBTI 하기</a>
-                        <a class="dropdown-item" href="#">D-MBTI 통계</a>
-                    </div>
-                </li>
-
-                <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbardrop3" data-toggle="dropdown">
                         설문조사
                     </a>
@@ -203,10 +193,9 @@
                         <span th:if="${session.id != null}" th:text="|${session.id}님|" style="margin-left: 3px;"></span>
                     </a>
                     <div class="dropdown-menu">
-                        <a style="margin-left: 10px;" th:if="${session.id != null}" href="/userUpdateCheck">회원정보
-                            수정</a></br>
-                        <a style="margin-left: 10px;" th:if="${session.id != null}" href="/logoutAction">로그아웃</a><br>
-                        <a style="margin-left: 10px;" th:if="${session.id != null}" href="#" id="withdrawal">회원탈퇴</a>
+                        <a class="dropdown-item" th:if="${session.id != null}" href="/userUpdateCheck">회원정보 수정</a>
+                        <a class="dropdown-item" th:if="${session.id != null}" href="/logoutAction">로그아웃</a>
+                        <a class="dropdown-item" th:if="${session.id != null}" href="#" id="withdrawal">회원탈퇴</a>
                     </div>
                 </li>
             </ul>

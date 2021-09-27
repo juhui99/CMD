@@ -3,11 +3,11 @@
       xmlns:th="http://thymeleaf.org" lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
     <script src="http://code.jquery.com/jquery-3.1.1.min.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="/libs/css/style.css">
     <link rel="stylesheet" href="/libs/css/bootstrap.css">
+    <link rel="stylesheet" href="/libs/css/join.css">
     <script src="https://kit.fontawesome.com/717793cb2b.js" crossorigin="anonymous"></script>
     <title>CMD</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
@@ -291,16 +291,6 @@
 
 
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbardrop2" data-toggle="dropdown">
-                        D-MBTI
-                    </a>
-                    <div class="dropdown-menu">
-                        <a class="dropdown-item" href="#">D-MBTI 하기</a>
-                        <a class="dropdown-item" href="#">D-MBTI 통계</a>
-                    </div>
-                </li>
-
-                <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbardrop3" data-toggle="dropdown">
                         설문조사
                     </a>
@@ -328,10 +318,9 @@
                         <span th:if="${session.id != null}" th:text="|${session.id}님|" style="margin-left: 3px;"></span>
                     </a>
                     <div class="dropdown-menu">
-                        <a style="margin-left: 10px;" th:if="${session.id != null}" href="/userUpdateCheck">회원정보
-                            수정</a></br>
-                        <a style="margin-left: 10px;" th:if="${session.id != null}" href="/logoutAction">로그아웃</a><br>
-                        <a style="margin-left: 10px;" th:if="${session.id != null}" href="#" id="withdrawal">회원탈퇴</a>
+                        <a class="dropdown-item" th:if="${session.id != null}" href="/userUpdateCheck">회원정보 수정</a>
+                        <a class="dropdown-item" th:if="${session.id != null}" href="/logoutAction">로그아웃</a>
+                        <a class="dropdown-item" th:if="${session.id != null}" href="#" id="withdrawal">회원탈퇴</a>
                     </div>
                 </li>
             </ul>
@@ -339,15 +328,13 @@
         </nav>
     </div>
     <div>
-        <form action="/PasswordCheck" method="post" onsubmit="return submitAction();">
-
-            <h4 th:text="|${id}님의 이메일로 인증코드를 전송했습니다.|"></h4>
-            <h4>전송된 인증코드를 입력해주세요.</h4>
+        <form class="form-box" action="/PasswordCheck" method="post" onsubmit="return submitAction();">
 
             <div class="form-group">
-                <label for="user_code">*인증코드</label>
-                <input type="text" id="user_code" name="user_code" placeholder="인증코드 입력">
-                <input type="submit" id="submit" name="submit" value="확인">
+                <p class="sign-up2 text-center" th:text="|${id}님의 이메일로 인증코드를 전송했습니다.|"></p>
+                <p class="sign-up1 text-center"><b>* </b><i class="fas fa-envelope"></i> 전송된 코드를 입력하시오.</p>
+                <input class="checkbtt" type="text" id="user_code" name="user_code" placeholder="인증코드 입력">
+                <input class="checkbtts" type="submit" id="submit" name="submit" value="확인">
                 <input type="hidden" name="correct_code" th:value="${code}">
                 <input type="hidden" name="user_id" th:value="${id}">
             </div>
