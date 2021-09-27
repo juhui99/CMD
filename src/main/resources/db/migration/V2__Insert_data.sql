@@ -6,7 +6,17 @@ insert into users ( `user_id`,
                     `user_email`,
                     `user_gender`,
                     `user_manager`)
-values('aaaa', '0a0a','이주희', '24', 'DBA', 'aaaa@gmail.com', 'W',0);
+values('aaaa', '0a0a','이주희', '24', 'DBA', 'aaaa@gmail.com', 'W',1);
+
+insert into users ( `user_id`,
+                    `user_pwd`,
+                    `user_name`,
+                    `user_age`,
+                    `user_major`,
+                    `user_email`,
+                    `user_gender`,
+                    `user_manager`)
+values('aaaaa', '0a0a0','주희', '23', '보안', 'aaaaa@gmail.com', 'W',0);
 
 insert into users ( `user_id`,
                     `user_pwd`,
