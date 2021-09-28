@@ -17,14 +17,6 @@
 
     <!-- 검색기능을 위한 동적SQL -->
     <sql id="search">
-        <choose>
-            <when test="progressing == null or progressing.isEmpty()">
-                AND progressing = 1
-            </when>
-            <otherwise>
-                AND progressing = #{progressing}
-            </otherwise>
-        </choose>
         <if test="searchType != null and !searchType.isEmpty()">
             <bind name="keyword" value="'%' +  keyword  + '%'" />
             <!-- SearchCriteria.keyword로 넘어옴 -->
@@ -106,10 +98,10 @@
         WHERE survey_index = #{survey_index}
     </delete>
 
-    <!-- 리스트 + 페이징 + 검색 -->
+    <!-- 리스트 + 페이징  -->
     <select id="selectSurveyList" parameterMap="searchCriteria" resultMap="surveyVO">
         SELECT
-        survey_index, survey.user_index, survey_title, survey_content, survey_reg, survey_end, progressing,
+            survey_index, survey_title, survey.user_index, survey_reg, survey_content, progressing, survey_end,
                (
                    SELECT COUNT(survey_result_index)
                    FROM surveyResult

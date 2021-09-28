@@ -63,8 +63,8 @@
 <!--  <button id="surveyRemove" type="submit">삭제</button><br>-->
 <!--  <a th:href="@{/closeSurvey?(survey_index=${surveyList.survey_index}}"><button>마감</button></a>-->
 </form>
-<a th:href="@{/closeSurvey(survey_index=${surveyVO.survey_index})}"><button>마감</button></a>
-<a th:href="@{/removeSurvey(survey_index=${surveyVO.survey_index})}"><button>삭제</button></a>
+<a th:href="@{/closeSurvey(survey_index=${surveyVO.survey_index})}"><button>마감</button></a><br>
+<a th:href="@{/removeSurvey(survey_index=${surveyVO.survey_index})}"><button>삭제</button></a><br>
 <!--<button onclick="location.href= '/closeSurvey?()'">마감</button>-->
 <!--<button onclick="location.href= '/removeSurvey?()'">삭제</button>-->
 <button onclick="location.href= '/mainSurvey'">목록</button>
