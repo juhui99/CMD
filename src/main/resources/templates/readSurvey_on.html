@@ -9,36 +9,34 @@
   <title>readSurvey_on</title>
   <script type="text/javascript">
 
-    $("#surveyVote").on("click", function(event) {
-      //preventDefault 는 기본으로 정의된 이벤트를 작동하지 못하게 하는 메서드이다. submit을 막음
-      event.preventDefault();
-
-      // Get form
-      var form = $("#voteform")[0];
-      // Create an FormData object
-      var formData = new FormData(form);
-
-      $.ajax({
-        url: '/voteSurvey',
-        processData: false, // 데이터 객체를 문자열로 바꿀지에 대한 값이다. true면 일반문자
-        contentType: false, // 해당 타입을 true로 하면 일반 text로 구분
-        data: formData, //위에서 선언한 fromdata
-        type: "POST",
-        dataType:'json',
-        cache:false,
-        success: function(data) {
-          console.log("success : ", data);
-          alert("성공");
-        },
-        error: function(e) {
-          console.log("error : ", e);
-          alert("에러");
-        }
-      });
-    });
-
-
-  </script>
+    // $("#surveyVote").on("click", function(event) {
+    //   //preventDefault 는 기본으로 정의된 이벤트를 작동하지 못하게 하는 메서드이다. submit을 막음
+    //   event.preventDefault();
+    //
+    //   // Get form
+    //   var form = $("#voteform")[0];
+    //   // Create an FormData object
+    //   var formData = new FormData(form);
+    //
+    //   $.ajax({
+    //     url: '/voteSurvey',
+    //     processData: false, // 데이터 객체를 문자열로 바꿀지에 대한 값이다. true면 일반문자
+    //     contentType: false, // 해당 타입을 true로 하면 일반 text로 구분
+    //     data: formData, //위에서 선언한 fromdata
+    //     type: "POST",
+    //     dataType:'json',
+    //     cache:false,
+    //     success: function(data) {
+    //       console.log("success : ", data);
+    //       alert("성공");
+    //     },
+    //     error: function(e) {
+    //       console.log("error : ", e);
+    //       alert("에러");
+    //     }
+    //   });
+    // });
+      </script>
 </head>
 <body>
 
@@ -53,7 +51,7 @@
   </table>
 
   <h2 class="tm-block-title">목록</h2>
-  <div class="form-group col-lg-12">
+  <div class="form-group">
     <div th:each="surveyItemList : ${surveyItemList}" class="form-check">
       <input type="checkbox" class="form-check-input">
       <label th:text="${surveyItemList.survey_item_content}" class="form-check-td"></label>
@@ -61,8 +59,14 @@
   </div>
 
   <button id="surveyVote">투표</button>
+<!--  <button id="surveyClose" type="submit">마감</button><br>-->
+<!--  <button id="surveyRemove" type="submit">삭제</button><br>-->
+<!--  <a th:href="@{/closeSurvey?(survey_index=${surveyList.survey_index}}"><button>마감</button></a>-->
 </form>
-<button id="surveyClose">마감</button><br>
+<a th:href="@{/closeSurvey(survey_index=${surveyVO.survey_index})}"><button>마감</button></a>
+<a th:href="@{/removeSurvey(survey_index=${surveyVO.survey_index})}"><button>삭제</button></a>
+<!--<button onclick="location.href= '/closeSurvey?()'">마감</button>-->
+<!--<button onclick="location.href= '/removeSurvey?()'">삭제</button>-->
 <button onclick="location.href= '/mainSurvey'">목록</button>
 </body>
 </html>

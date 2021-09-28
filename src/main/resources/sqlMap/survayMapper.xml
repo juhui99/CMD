@@ -97,7 +97,7 @@
     </select>
 
     <update id="closeSurvey" parameterType="int">
-        UPDATE survey set PROGRESSING = 0
+        UPDATE survey set progressing = 0
         WHERE survey_index = #{survey_index}
     </update>
 

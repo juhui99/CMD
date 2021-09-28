@@ -83,17 +83,31 @@ public class SurveyController {
     }
 
     @RequestMapping("/closeSurvey") //설문조사 마감처리
-    public String closeSurvey(@RequestParam("survey_index") int survey_index) {
+    public String closeSurvey(@RequestParam("survey_index") int survey_index, HttpSession session, Model model) throws Exception{
+        String userID = (String)session.getAttribute("id");
+        if(userID == null){ //로그인 확인
+            model.addAttribute("msg","로그인이 되어있지 않습니다.");
+            model.addAttribute("url","login");
+            return "alert";
+        }
+        UserVO user = userMapper.userLogin(userID);
+        if(user.getUser_manager() == 0){ //매니저만 설문 마감 가능
+            model.addAttribute("msg","접근할 수 없습니다.");
+            return "alert";
+        }
         try {
+            model.addAttribute("msg","설문조사를 마감하시겠습니까?");
             surveyMapper.closeSurvey(survey_index);
         } catch (Exception e) {
-            return "redirect:/survey/main?surveyclose=fail"; //닫는거 실패했을때
+            model.addAttribute("msg","ERROR");
+            return "redirect:/mainSurvey"; //닫는거 실패했을때
         }
-        return "redirect:/survey/main?surveyclose=success"; //설문조사 마감 성공
+        model.addAttribute("msg","설문조사를 마감하였습니다.");
+        return "redirect:/mainSurvey"; //설문조사 마감 성공
     }
 
     @RequestMapping(value="/insertSurvey",method = RequestMethod.GET)
-    public String AddSurveyGET(Model model, HttpSession session) throws Exception {
+    public String addSurveyGET(Model model, HttpSession session) throws Exception {
         String userID = (String)session.getAttribute("id");
         if(userID == null){ //로그인 확인
             model.addAttribute("msg","로그인이 되어있지 않습니다.");
@@ -115,7 +129,7 @@ public class SurveyController {
         SurveyVO surveyVO = new SurveyVO();
         SurveyWithItemVO surveyWithItemVO = new SurveyWithItemVO();
 
-        String pattern = "yyyy-MM-dd";
+        String pattern = "YYYY-MM-DD";
         SimpleDateFormat sdf = new SimpleDateFormat(pattern);
         surveyVO.setSurvey_end(sdf.parse(survey_end));
         surveyVO.setSurvey_title(survey_title);
@@ -161,22 +175,24 @@ public class SurveyController {
                                Model model, HttpSession session) throws Exception{
         String userID = (String)session.getAttribute("id");
         if(userID == null){ //로그인 확인
-            model.addAttribute("message","로그인이 되어있지 않습니다.");
+            model.addAttribute("msg","로그인이 되어있지 않습니다.");
             model.addAttribute("url","login");
             return "alert";
         }
         UserVO user = userMapper.userLogin(userID);
         if(user.getUser_manager() == 0){ //매니저만 설문 삭제 가능
-            model.addAttribute("message","접근할 수 없습니다.");
+            model.addAttribute("msg","접근할 수 없습니다.");
             return "alert";
         }
+        model.addAttribute("msg","설문조사를 삭제하시겠습니까?");
         try {
             surveyMapper.removeSurvey(survey_index);
-            //model.addAttribute("msg","설문조사가 삭제되었습니다.");
         } catch (Exception e) {
-            return "redirect:/survey/main?surveyremove=fail";
+            model.addAttribute("msg","ERROR");
+            return "redirect:/mainSurvey";
         }
-        return "redirect:/survey/main?surveyremove=success";
+        model.addAttribute("msg","설문조사가 삭제되었습니다.");
+        return "redirect:/mainSurvey";
     }
 
     @RequestMapping("/searchSurvey") // 메인 검색
