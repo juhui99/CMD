@@ -1,0 +1,2014 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://thymeleaf.org" lang="ko">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/libs/css/style.css">
+    <link rel="stylesheet" href="/libs/css/roadmap.css">
+    <link rel="stylesheet" href="/libs/css/bootstrap.css">
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="https://kit.fontawesome.com/717793cb2b.js" crossorigin="anonymous"></script>
+    <title>CMD</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@500&display=swap" rel="stylesheet">
+    <script type="text/javascript">
+        function totalUnreadChat() {
+            $.ajax({
+                type: "POST",
+                url: "/getTotalUnreadChat",
+                dataType: "json",
+                data: {
+                    id: $("#userID").val()
+                },
+                success: function (result) {
+                    if (result >= 1) {
+                        $('#totalUnread').html(result);
+                    } else {
+                        $('#totalUnread').html('');
+                    }
+                }
+            });
+        }
+
+        function getInfiniteTotalUnread() {
+            setInterval(function () {
+                totalUnreadChat();
+            }, 4000);
+        }
+
+        $(document).ready(function () {
+            totalUnreadChat();
+            getInfiniteTotalUnread();
+
+            $(".board").css("display", "none");
+
+            $(".frontend").hover(function () {
+                $(".frontend_board").css("display", "block");
+                $(".backend_board").css("display", "none");
+                $(".DBA_board").css("display", "none");
+                $(".AI_board").css("display", "none");
+                $(".WH_board").css("display", "none");
+
+            });
+            $(".backend").hover(function () {
+                $(".backend_board").css("display", "block");
+                $(".frontend_board").css("display", "none");
+                $(".DBA_board").css("display", "none");
+                $(".AI_board").css("display", "none");
+                $(".WH_board").css("display", "none");
+            });
+            $(".DBA").hover(function () {
+                $(".DBA_board").css("display", "block");
+                $(".backend_board").css("display", "none");
+                $(".frontend_board").css("display", "none");
+                $(".AI_board").css("display", "none");
+                $(".WH_board").css("display", "none");
+            });
+            $(".AI").hover(function () {
+                $(".AI_board").css("display", "block");
+                $(".DBA_board").css("display", "none");
+                $(".backend_board").css("display", "none");
+                $(".frontend_board").css("display", "none");
+                $(".WH_board").css("display", "none");
+            });
+            $(".WH").hover(function () {
+                $(".WH_board").css("display", "block");
+                $(".AI_board").css("display", "none");
+                $(".DBA_board").css("display", "none");
+                $(".backend_board").css("display", "none");
+                $(".frontend_board").css("display", "none");
+
+            });
+            $("#withdrawal").click(function () {
+                var id = $("#userID").val();
+                if (confirm("정말로 회원탈퇴를 하시겠습니까?")) {
+                    location.href = "/withdrawalCheck";
+                } else {
+                    alert("회원탈퇴를 취소합니다.");
+                }
+            });
+        });
+    </script>
+
+    <style>
+        /* Make the image fully responsive */
+
+        .frontend_board {
+            display: none;
+        }
+
+
+        .carousel {
+            margin: 4% auto;
+            width: 94%;
+        }
+
+        .carousel-inner img {
+            width: 100%;
+            height: auto;
+            border-radius: 25px;
+        }
+
+        .carousel-inner {
+            border-radius: 25px;
+
+        }
+
+        .carousel-caption {
+            font-size: 25px;
+        }
+
+        .btn-success {
+            color: #fff;
+            background-color: #003366d2;
+            border-color: #003366d2;
+        }
+
+        .btn-success:hover {
+            color: #fff;
+            background-color: #003366d2;
+            border-color: #003366d2;
+        }
+
+        .btn-success:focus, .btn-success.focus {
+            color: #fff;
+            background-color: #003366d2;
+            border-color: #003366d2;
+            box-shadow: 0 0 0 0.2rem #003366d2;
+        }
+
+        .btn-success.disabled, .btn-success:disabled {
+            color: #fff;
+            background-color: #003366d2;
+            border-color: #003366d2;
+        }
+
+        .btn-success:not(:disabled):not(.disabled):active, .btn-success:not(:disabled):not(.disabled).active,
+        .show > .btn-success.dropdown-toggle {
+            color: #fff;
+            background-color: #003366d2;
+            border-color: #003366d2;
+        }
+
+        .img-circle {
+            border-radius: 50%;
+            border: 1px solid #003366d2;
+        }
+
+        .btn-success:not(:disabled):not(.disabled):active:focus, .btn-success:not(:disabled):not(.disabled).active:focus,
+        .show > .btn-success.dropdown-toggle:focus {
+            box-shadow: 0 0 0 0.2rem #003366d2;
+        }
+
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header-box">
+        <div class="logo"><a href="/main"><img src="/img/CMD-logo.png" alt="logo" height="100%"></a></div>
+        <div class="search">
+            <nav class="navbar navbar-expand-sm  navbar-dark">
+                <form class="form-inline" action="/main_search" method="post">
+                    <input class="form-control mr-sm-2" name="keyword" type="text" placeholder="Search">
+                    <button class="btn btn-success" type="submit">Search</button>
+                </form>
+            </nav>
+        </div>
+        <div class="keyword">실시간 검색</div>
+    </div>
+
+    <div class="menu-navbar">
+        <nav class="navbar navbar-expand-sm ">
+            <!-- Links -->
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="/main">메인</a>
+                </li>
+                <!-- Dropdown -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="/cmd_community">
+                        커뮤니티
+                    </a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item frontend" href="/cmdDetail?realm=Frontend">Frontend</a>
+                        <a class="dropdown-item frontend_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/totalHotTopic?kind=HOT게시판&realm=Frontend">HOT게시판</a>
+                        <a class="dropdown-item frontend_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=정보팁게시판&realm=Frontend">정보&팁게시판</a>
+                        <a class="dropdown-item frontend_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=자유게시판&realm=Frontend">자유게시판</a>
+                        <a class="dropdown-item frontend_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=질문게시판&realm=Frontend">질문게시판</a>
+                        <a class="dropdown-item frontend_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=협업게시판&realm=Frontend">협업게시판</a>
+                        <a class="dropdown-item frontend_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=로드맵공유게시판&realm=Frontend">로드맵공유게시판</a>
+                        <a class="dropdown-item backend" href="/cmdDetail?realm=Backend">Backend</a>
+                        <a class="dropdown-item backend_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/totalHotTopic?kind=HOT게시판&realm=Backend">HOT게시판</a>
+                        <a class="dropdown-item backend_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=정보팁게시판&realm=Backend">정보&팁게시판</a>
+                        <a class="dropdown-item backend_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=자유게시판&realm=Backend">자유게시판</a>
+                        <a class="dropdown-item backend_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=질문게시판&realm=Backend">질문게시판</a>
+                        <a class="dropdown-item backend_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=협업게시판&realm=Backend">협업게시판</a>
+                        <a class="dropdown-item backend_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=로드맵공유게시판&realm=Backend">로드맵공유게시판</a>
+                        <a class="dropdown-item DBA" href="/cmdDetail?realm=DBA">DBA</a>
+                        <a class="dropdown-item DBA_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/totalHotTopic?kind=HOT게시판&realm=DBA">HOT게시판</a>
+                        <a class="dropdown-item DBA_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=정보팁게시판&realm=DBA">정보&팁게시판</a>
+                        <a class="dropdown-item DBA_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=자유게시판&realm=DBA">자유게시판</a>
+                        <a class="dropdown-item DBA_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=질문게시판&realm=DBA">질문게시판</a>
+                        <a class="dropdown-item DBA_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=협업게시판&realm=DBA">협업게시판</a>
+                        <a class="dropdown-item DBA_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=로드맵공유게시판&realm=DBA">로드맵공유게시판</a>
+                        <a class="dropdown-item AI" href="/cmdDetail?realm=AI">A.I</a>
+                        <a class="dropdown-item AI_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/totalHotTopic?kind=HOT게시판&realm=AI">HOT게시판</a>
+                        <a class="dropdown-item AI_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=정보팁게시판&realm=AI">정보&팁게시판</a>
+                        <a class="dropdown-item AI_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=자유게시판&realm=AI">자유게시판</a>
+                        <a class="dropdown-item AI_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=질문게시판&realm=AI">질문게시판</a>
+                        <a class="dropdown-item AI_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=협업게시판&realm=AI">협업게시판</a>
+                        <a class="dropdown-item AI_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=로드맵공유게시판&realm=AI">로드맵공유게시판</a>
+                        <a class="dropdown-item WH" href="/cmdDetail?realm=WhiteHat">White-Hat</a>
+                        <a class="dropdown-item WH_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/totalHotTopic?kind=HOT게시판&realm=WhiteHat">HOT게시판</a>
+                        <a class="dropdown-item WH_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=정보팁게시판&realm=WhiteHat">정보&팁게시판</a>
+                        <a class="dropdown-item WH_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=자유게시판&realm=WhiteHat">자유게시판</a>
+                        <a class="dropdown-item WH_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=질문게시판&realm=WhiteHat">질문게시판</a>
+                        <a class="dropdown-item WH_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=협업게시판&realm=WhiteHat">협업게시판</a>
+                        <a class="dropdown-item WH_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=로드맵공유게시판&realm=WhiteHat">로드맵공유게시판</a>
+
+                    </div>
+                </li>
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbardrop1" data-toggle="dropdown">
+                        채팅
+                        <span id="totalUnread" class="badge badge-info"></span>
+                    </a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="/friendsFind">친구 찾기</a>
+                        <a class="dropdown-item" href="/friendsList">친구 목록</a>
+                        <a class="dropdown-item" href="/chatBox">채팅 목록</a>
+                    </div>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="/cmd_roadmap">로드맵</a>
+                </li>
+
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbardrop3" data-toggle="dropdown">
+                        설문조사
+                    </a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="#">설문조사 하기</a>
+                        <a class="dropdown-item" href="#">설문조사 통계</a>
+                    </div>
+                </li>
+            </ul>
+            <ul class="login-box">
+                <li class="nav-item">
+                    <a th:if="${session.id == null}" href="/login"><i class="far fa-user"></i> 로그인</a>
+                    <a style="margin-left: 10px;" th:if="${session.id == null}" href="/join">회원가입</a>
+                </li>
+
+                <li class="nav-item dropdown" th:if="${session.id != null}">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+                        <img th:if="${!filename.equals('non') and session.id != null}" class="img-circle"
+                             style="width: 35px; height: 35px; border-color:  #003366d2;"
+                             th:src="@{/display?(filename=${filename})}"/>
+                        <img th:if="${filename.equals('non') and session.id != null}" class="img-circle"
+                             style="width: 35px; height: 35px; border-color:  #003366d2;"
+                             src="/display?filename=default.png"/>
+                        <span th:if="${session.id != null}" th:text="|${session.id}님|" style="margin-left: 3px;"></span>
+                    </a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" th:if="${session.id != null}" href="/userUpdateCheck">회원정보 수정</a>
+                        <a class="dropdown-item" th:if="${session.id != null}" href="/logoutAction">로그아웃</a>
+                        <a class="dropdown-item" th:if="${session.id != null}" href="#" id="withdrawal">회원탈퇴</a>
+                    </div>
+                </li>
+            </ul>
+
+        </nav>
+    </div>
+
+
+    <div class="roadmap">
+        <div class="roadmap-tabs">
+            <input id="basic" type="radio" name="tab_item" checked>
+            <label class="tab_item" for="basic">Basic</label>
+            <input id="frontend" type="radio" name="tab_item">
+            <label class="tab_item" for="frontend">Frontend</label>
+            <input id="backend" type="radio" name="tab_item">
+            <label class="tab_item" for="backend">Backend</label>
+            <input id="dba" type="radio" name="tab_item">
+            <label class="tab_item" for="dba">DBA</label>
+            <input id="ai" type="radio" name="tab_item">
+            <label class="tab_item" for="ai">A.I</label>
+            <input id="whitehat" type="radio" name="tab_item">
+            <label class="tab_item" for="whitehat">White-hat</label>
+
+            <div class="tab_content" id="basic_content" style="width: 100%; height: 500px; overflow-y: scroll;">
+                <div class="main-timeline">
+
+                    <!-- start experience section-->
+                    <div class="timeline">
+                        <div class="icon"></div>
+                        <div class="step-content">
+                            <div class="step-outer">
+                                    <span class="step">
+                                            <span class="order">1 Step</span>
+                                    <span class="subject">컴퓨터</span>
+                                    </span>
+                            </div>
+                        </div>
+                        <div class="timeline-content">
+                            <h5 class="title">컴퓨터 구조</h5>
+                            <p class="description" style="overflow-y: scroll; height: 250px; text-align: left;">
+                                컴퓨터 구조론은 글자 그대로 컴퓨터의 기본적인 하드웨어의 작동 원리와 구성에 대한 내용을 다루는 분야. 부울 대수(Boolean Algebra)와 논리 표현을
+                                익히고, 이를 하드웨어로 어떻게 구현하는지 공부하고 집적회로(IC)의 동작원리를 배운다.
+                                CPU, 메모리, 입출력의 구성이나 주변 장치와의 통신방법 등도 포함된다. 소프트웨어를 하는 사람의 입장에서 컴퓨터 구조론은 '어셈블리어'를 익히고,
+                                동작원리를 아는 데 의의가 있다.
+                                컴퓨터 구조론은 컴퓨터를 만드는 데 필요한 내용을 공부하는 것이지만, 컴퓨터 구조론을 공부하는 것과 컴퓨터를 만드는 일에는 아주 큰 격차가 있다는 사실을
+                                알아야 한다.
+                                만일, 여러분이 컴퓨터를 만들고 싶다면 납땜질을 배우거나 원칩 마이크로 컴퓨터를 공부하는 것이 훨씬 빠를 것이다.
+                            </p>
+                        </div>
+                    </div>
+                    <!-- end experience section-->
+
+                    <!-- start experience section-->
+                    <div class="timeline">
+                        <div class="icon"></div>
+                        <div class="step-content">
+                            <div class="step-outer">
+                                    <span class="step">
+                                            <span class="order">2 Step</span>
+                                    <span class="subject">운영체제</span>
+                                    </span>
+                            </div>
+                        </div>
+                        <div class="timeline-content">
+                            <h5 class="title">운영체제</h5>
+                            <p class="description" style="overflow-y: scroll; height: 250px; text-align: left;">
+                                컴퓨터와 운영체제의 구조, 가상 기억 장치, 멀티 태스킹, 프로세스 스케쥴링 등의 기본 개념 및 이들과 관련된 이슈를 공부한다.
+                                대부분의 강좌에서 유닉스 운영체제의 구조와 작동원리를 실사례로 많이 사용한다. 유닉스는 C로 소스가 쓰여 있어 구체적으로 설명하기에 좋기 때문이다.
+                                운영체제는 프로그램이 운영되는 환경을 제공하기 때문에 운영체제론은 소프트웨어를 개발하는 사람들에게 중요한 내용을 많이 담고 있다.
+                                물론 메모리 관리, CPU 스케쥴링 알고리즘, 주변장치 관리 등에 대한 학습이 실제 코딩에 직접 사용되지 않더라도, 조금 규모가 있는 소프트웨어를 제작하는
+                                경우 운영체제가 갖고 있는 여러 가지 정책에 대한 구현은 여러분이 소프트웨어 아키텍처를 설계하는 데 적지 않은 도움을 준다.
+                                특히 '무슨 무슨 서버'라는 이름이 붙는 소프트웨어를 만든다면, 운영체제 전반에 대한 이해는 아주 필수적이다.
+                            </p>
+                        </div>
+                    </div>
+                    <!-- end experience section-->
+
+                    <div class="timeline">
+                        <div class="icon"></div>
+                        <div class="step-content">
+                            <div class="step-outer">
+                                    <span class="step">
+                                            <span class="order">3 Step</span>
+                                    <span class="subject">언어</span>
+                                    </span>
+                            </div>
+                        </div>
+                        <div class="timeline-content">
+                            <h5 class="title">프로그래밍 언어</h5>
+                            <p class="description" style="overflow-y: scroll; height: 250px; text-align: left;">
+                                개발자는 컴퓨터와 의사소통이 절대적으로 필요하기 때문에 그 수단이 되는 프로그래밍언어(: 컴퓨터와 사람이 대화가 가능하게 해주는 언어이다.)를
+                                처음에 하나쯤은 배워두는게 좋다. 프로그래밍 언어는 여러가지가 있는데 초기에 생겨난 언어, 예를 들면 C언어 같은 초기 언어들은 사람보다
+                                컴퓨터가 더 이해하기 쉬운 언어 즉, 컴퓨터쪽에 가까운 언어가 있다. 또 점차 시간이 지나면서 컴퓨터 보다 사람이 이해하기 쉬운 언어
+                                자바, 파이썬, 자바스크립트등 이 외에도 여러가지 언어들이 생겨났다. 초기에 생긴 언어라 해서 안좋고 또 최근에 생긴 언어라해서 좋다
+                                라고 절대 말할 수는 없다. 각 언어마다 장단점과 특징이 있으니 자신이 사용해보고 싶은 언어 한가지를
+                                겁 먹지말고 하나만 배워보자. 또 요즘에는 코딩을 쉽게 할 수 있도록 도와주는 IDE, 프레임워크가 굉장히 많이 발전되었고,
+                                원하는 기능을 사용하고 싶을때 기초적인 프로그래밍 지식만 있다면 단지 호출만 하면 되는 API들도 굉장히 많아졌다.
+                                또한 이미 구현된 좋은 오픈소스들도 굉장히 많아졌고. 복사-붙여넣기하고 살짝만 커스터마이징 해주면 자신만의 코드가 완성되는 시대가 왔다.
+                                여러분의 애플리케이션에서 파서가 필요하고 이를 직접 구현해야 한다면 컴파일러 이론이 필요하겠지만, 흔하지 않은 일이다.
+                                그래서 기본적으로 시작하기전에 어떤 프로그래밍언어든 좋으니 가볍게 하나를 선택해서 배워보자.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- start experience section-->
+                    <div class="timeline">
+                        <div class="icon"></div>
+                        <div class="step-content">
+                            <div class="step-outer">
+                                    <span class="step">
+                                            <span class="order">4 Step</span>
+                                    <span class="subject">문제해결</span>
+                                    </span>
+                            </div>
+                        </div>
+                        <div class="timeline-content">
+                            <h5 class="title">자료구조 & 알고리즘</h5>
+                            <p class="description" style="overflow-y: scroll; height: 250px;  text-align: left;">
+                                컴퓨터 프로그램 설계에 널리 사용되는 자료구조와 알고리즘, 알고리즘에 대한 복잡도를 분석하는 방법 등을 제공하며 각종 검색, 정렬 프로그래밍을 통해 실제로
+                                구현해 보고 복잡도를 분석한다.
+                                일반적인 애플리케이션에서 자료구조를 직접 설계하고 구현할 필요성은 점차 줄어들고 있다.
+                                자료구조의 많은 내용이 클래스 라이브러리로 구축돼 이를 잘 활용하거나 데이터베이스에 자료를 저장하는 것이 일반화적인 현상으로 자리잡았기 때문이다.
+                                비정형화된 자료는 복잡한 자료구조를 쓰는 것보다 XML로 저장하거나 전송하는 것이 상당히 보편화됐다.
+                                예를 들어 C++ 프로그래머가 직접 자료구조를 만들지 않아도 되도록 CArray, CList, CMap 같은 세 개의 클래스는 각각 가변 길이 배열, 양방향
+                                리스트, 해시를 구현하고 있다.
+                                이 정도면 웬만한 비즈니스 애플리케이션을 작성하기에 충분하다.
+                                마찬가지로 자바도 이런 기능을 가진 벡터나 해시 테이블 등을 클래스 라이브러리로 제공하고 있다.
+                                더 고급 기능이 필요하면 직접 작성하는 것보다는 표준화한 자료구조와 알고리즘을 제공하는 C++의 STL을 이용해도 된다.
+                                하지만, 자료구조나 알고리즘에 대한 이해 없이 이런 내용을 사용하는 것은 불가능하다.
+                                자료구조는 적어도 양방향 리스트를 자신이 사용하는 언어로 직접 구현하는 수준까지 해봐야 한다.
+                                대부분 프로그래머가 메모리 기반의 정렬/탐색 알고리즘은 기본으로 공부하지만, 실제는 파일 기반의 탐색과 정렬이 오히려 더 중요할 수 있다.
+                                따라서 정렬의 경우 파일 기반의 병합 정렬 정도까지 마스터하는 것이 좋다.
+                            </p>
+                        </div>
+                    </div>
+                    <!-- end experience section-->
+
+                    <!-- start experience section-->
+                    <div class="timeline">
+                        <div class="icon"></div>
+                        <div class="step-content">
+                            <div class="step-outer">
+                                    <span class="step">
+                                            <span class="order">5 Step</span>
+                                    <span class="subject">데이터</span>
+                                    </span>
+                            </div>
+                        </div>
+                        <div class="timeline-content">
+                            <h5 class="title">데이터베이스</h5>
+                            <p class="description" style="overflow-y: scroll; height: 250px;  text-align: left;">
+                                관계형 데이터베이스 구조와 동작 등에 대한 이슈를 공부하며, 정규화 방법과 데이터베이스 설계, 튜닝 등에 필요한 여러 가지 이론을 공부한다.
+                                대부분의 애플리케이션에서 데이터베이스 사용은 필수적인 사항으로 SQL, ERD 작성, 정규화, 설계, 구축, 데이터베이스 애플리케이션 작성 등은 대부분의
+                                개발자에게 요구되는 기술이 됐다.
+                                특히 SQL에 대한 이해와 사용이 가장 중요하며, 데이터베이스 설계에 대한 이해가 필수적이다.
+                            </p>
+                        </div>
+                    </div>
+                    <!-- end experience section-->
+
+
+                    <!-- end experience section-->
+                    <div class="timeline">
+                        <div class="icon"></div>
+                        <div class="step-content">
+                            <div class="step-outer">
+                                    <span class="step">
+                                            <span class="order">Wrap Up</span>
+                                    <span class="subject">개발자</span>
+                                    </span>
+                            </div>
+                        </div>
+                        <div class="timeline-content">
+                            <h5 class="title">중요하지 않은 것은 하나도 없다.</h5>
+                            <p class="description" style="overflow-y: scroll; height: 250px; text-align: left;">
+                                실제 컴퓨터에 대한 이해가 전혀 없는 사람도 대략 4∼6개월 정도의 학습을 거치면 실전에서 애플리케이션을 개발할 정도의 능력이 배양된다. 하지만 여기서 모든
+                                것이 해결되는 것은 아니다. 1년이나 2년이 지나면, '프로그램 짤 수 있다'는 정도의 내공(?)에 부족함을 느끼게 되는 것은 어쩌면 당연한 일인지도 모른다.
+                                소프트웨어 개발에 따른 다양한 이슈를 소화하고, 실제 기술의 장단점을 논의하기 위해서는 조금은 다른 지식이 필요하다. 예컨대 개발된 애플리케이션의 수행 효율을
+                                향상하기 위한 성능 튜닝, 이식, 프로그램 설치와 배포, 팀 개발을 이끌어 가는 프로젝트 관리 등의 프로그래밍 이외의
+                                이슈를 만나면,
+                                '프로그램을 짤 수 있다'만으로는 해결되지 않는 구석이 많다는 사실을 깨닫게 된다. 즉, 기본기의 중요성을 절감하게 되는 것이다. 이 위의 기본적인 5 스텝이
+                                정답이 아닐 수 있고 이 과정 말고도 더 좋은 방법이 있을 수 있다.
+                                꼭 참고하고 자신에게 맞는 방법을 선택하자. 그리고 이 외에도 개발자로 중요하지 않은 것은 하나도 없다.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="tab_content" id="frontend_content" style="width: 100%; height: 500px; overflow-y: scroll;">
+                <div class="timeline">
+                    <div class="year">
+                        <div class="inner">
+                            <span>Roadmap</span>
+                        </div>
+                    </div>
+
+                    <ul class="days">
+                        <li class="day">
+                            <div class="events">
+                                <p style="overflow-y: scroll; height: 250px; text-align: left;">사용자가 웹 사이트 또는 웹 애플리케이션의
+                                    URL을 입력하거나 모바일 애플리케이션을 다운로드 할 때, 사용자들은 아주 깔끔한 레이아웃을 가진 인터페이스를 보게 된다. 이렇게 사용자가 마주 보는
+                                    인터페이스를 테크놀로지 분야에서 ‘프론트엔드’라고 부른다. 프론트엔드는 사용하기 쉽고 완전한 기능을 갖춘 인터페이스를 갖추었을 때만 사용자들의 참여를
+                                    끌어내기 때문에 아주 중요한 요소가 된다. 서비스의 경쟁력을 유지하기 위해서는, 매끄럽게 동작하는 강력한 프론트엔드를 구축하는 것이 매우
+                                    중요하다.</p>
+                                <div class="date">Frontend (의미)</div>
+                            </div>
+                        </li>
+                        <li class="day">
+                            <div class="events">
+                                <div class="day__img">
+                                    <img src="/img/frontend_info.png" alt=""/>
+                                    <p class="caption">
+                                        Frontend
+                                    </p>
+                                </div>
+                                <div class="date">Frontend (사진)</div>
+                            </div>
+                        </li>
+                        <li class="day">
+                            <div class="events">
+                                <p style="overflow-y: scroll; height: 250px; text-align: left;">프론트엔드 개발은 주로 웹 및 모바일
+                                    솔루션의 사용자 인터페이스(UI)와 사용자 경험(UX)을 만드는 데 초점을 맞추고 있다. 슬라이더,
+                                    드롭다운(drop-down) 메뉴, 레이아웃, 폰트, 컬러 등 모든 요소가 프론트엔드 개발을 이루는 부분인데. 시선을 사로잡는 프론트엔드를 만드는
+                                    데는 HTML, CSS, 자바스크립트(Javascript)가 중요한 역할을 한다. 최종적인 사용자 인터페이스를 디자인하기 전에는 목업(Mockup),
+                                    와이어 프레임(Wire-frame), 클릭할 수 있는 프로토타입(Prototype)을 만들어야 한다. 이런 도구들은 애플리케이션의 사용자 경험 안에
+                                    있는 이슈들을 확인할 수 있게 도와준다. 그리고 만약 그런 이슈들을 알게 된다면 문제를 해결할 수 있다는 것이고, 결국에는 영향력 있는 프론트엔드를
+                                    개발하는 것이 수월해지게 된다. 모바일 또는 웹 애플리케이션을 위한 완벽한 프론트엔드를 만들기 위해서는, 여러분의 구체적인 요구사항·목표·기회 등을
+                                    이해하고 그에 따른 프론트엔드를 만들어 낼 수 있는 개발업체와 협업하는 것이 매우 중요하다.
+                                </p>
+                                <div class="date">개발 방법</div>
+                            </div>
+                        </li>
+
+                        <li class="day">
+                            <div class="events">
+                                <div class="day__img">
+                                    <img src="/img/frontend_lan.png" alt=""/>
+                                    <p class="caption">
+                                        frontend-language
+                                    </p>
+                                </div>
+                                <div class="date">주 사용 언어</div>
+                            </div>
+                        </li>
+
+                        <li class="day">
+                            <div class="events">
+                                <p style="overflow-y: scroll; height: 250px; text-align: left;">이름 그대로 하이퍼텍스트와 마크업 언어로
+                                    구성되어 있다. 하이퍼텍스트는 웹 페이지들 사이의 연결(하이퍼링크)를 나타내는데, 반면에 마크업 언어는
+                                    데이터를 기술하는 언어입니다. 한 마디로 문서가 화면에 표시되는 형식을 나타내거나 데이터의 논리적인 구조를 명시하기 위한 규칙들을 정의한 언어의
+                                    일종이라고 볼 수 있는데. 그리하여 웹 페이지에 문단, 동영상, 제목, 표 등을 정의하고 그 구조와 의미를 정의하는 데 사용된다.</p>
+                                <div class="date">1. HTML
+                                    <br>(Hyper Text Markup Language)
+                                </div>
+                            </div>
+                        </li>
+
+                        <li class="day">
+                            <div class="events">
+                                <p style="overflow-y: scroll; height: 250px; text-align: left;">CSS는 종속 스타일 시트(Cascading
+                                    Style Sheets)의 약자이다. 스타일 시트라는 단어에서 알 수 있듯이 CSS는 마크업 언어로 작성된
+                                    것이 실제로 화면에 어떻게 보이는지 그 스타일(표현)을 정해 주는 언어이다. 즉, HTML 콘텐츠를 크기, 색상, 위치 변경 등으로 예쁘게 꾸미는,
+                                    디자인 담당이라고 할 수 있는데, CSS의 사용으로 구조(내용)와 표현(스타일)이 함께 움직이는 것이 아니라 서로 분리될 수 있다. CSS는
+                                    개발자가 웹페이지에 다양한 스타일을 적용할 수 있게 해줌으로써 애플리케이션 페이지를 표시하는 프로세스를 보다 단순하게 만들어 준다. CSS는 또한 한
+                                    번에 여러 웹 페이지의 레이아웃을 제어할 수 있어 일일이 디자인을 적용해야 할 수고로움을 덜어준다.</p>
+                                <div class="date">2. CSS (Cascading Style Sheets)</div>
+                            </div>
+                        </li>
+                        <li class="day">
+                            <div class="events">
+                                <p style="overflow-y: scroll; height: 250px; text-align: left;">HTML과 CSS가 결합되어 웹페이지 상에서
+                                    올려진다고 하여 끝이 아니라, 그것이 실행되어야 의미가 있다. 스크립트 언어인 자바스크립트는 HTML과 CSS를 통해 만들어진 웹 페이지가
+                                    동작하도록 만들어 준다. 사용자들을 위해 상호작용하는 애플리케이션은 자바스크립트를 통해 구현 가능하게 된 것이라고 볼 수 있는데, 자바스크립트는
+                                    어마어마할 정도로 인기가 많은 언어로써, 객체 기반 언어이기에 객체 지향형 프로그래밍과 함수형 프로그래밍 모두를 표현할 수 있다. 게다가 동적이며
+                                    소스 코드를 직접 해석하여 바로 실행할 수 있는 인터프리터 언어이기 때문에 타입을 명시할 필요가 없다는 특성이 있다. 그렇기에 웹사이트의 기능성을
+                                    향상하는데 사용되며, 웹 기반의 소프트웨어 또는 게임들을 실행할 수 있게 해 주는 역할을 합니다.</p>
+                                <div class="date">3. Javascript</div>
+                            </div>
+                        </li>
+                        <li class="day">
+                            <div class="events">
+                                <p style="overflow-y: scroll; height: 250px; text-align: left;">2012년 마이크로소프트가 발표한
+                                    타입스크립트(TypeScript)는 자바스크립트(JavaScript)를 기반으로 정적 타입 문법을 추가한 프로그래밍 언어이다. 요즘은 대형 SI
+                                    프로젝트에서 흔하게 사용되고 있으며 개발자 구인 시 우대 사항 기술로도 자주 언급되고 있다. 자바스크립트는 동적 타입의 인터프리터 언어로 런타임에서
+                                    오류를 발견할 수 있다. 이에 반해 타입스크립트는 정적 타입의 컴파일 언어이며 타입스크립트 컴파일러 또는 바벨(Babel)을 통해 자바스크립트 코드로
+                                    변환된다. 코드 작성 단계에서 타입을 체크해 오류를 확인할 수 있고 미리 타입을 결정하기 때문에 실행 속도가 매우 빠르다는 장점이 있다. 하지만 코드
+                                    작성 시 매번 타입을 결정해야 하기 때문에 번거롭고 코드량이 증가하며 컴파일 시간이 오래 걸린다는 단점이 있다. 그래도 타입스크립트 사용을 고려해야
+                                    하는 이유는
+                                    - 높은 수준의 코드 탐색과 디버깅
+                                    타입스크립트는 코드에 목적을 명시하고 목적에 맞지 않는 타입의 변수나 함수들에서 에러를 발생시켜 버그를 사전에 제거한다. 또한 코드 자동완성이나 실행
+                                    전 피드백을 제공하여 작업과 동시에 디버깅이 가능해 생산성을 높일 수 있다. 실제로 한 연구에 따르면 모든 자바스크립트 버그의 15%가 사전에
+                                    타입스크립트로 감지할 수 있다고 한다.
+                                    <br><br>
+                                    - 자바스크립트 호환
+                                    타입스크립트는 자바스크립트와 100% 호환된다. 따라서 프론트엔드 또는 백엔드 어디든 자바스크립트를 사용할 수 있는 곳이라면 타입스크립트도 쓸 수
+                                    있다. 타입스크립트는 앱과 웹을 구현하는 자바스크립트와 동일한 용도로 사용 가능하며 서버 단에서 개발이 이루어지는 복잡한 대형 프로젝트에서도 빛을
+                                    발한다.
+                                    <br><br>
+                                    - 강력한 생태계
+                                    타입스크립트는 그리 오래되지 않은 언어임에도 불구하고 강력한 생태계를 가지고 있다. 대부분의 라이브러리들이 타입스크립트를 지원하며 마이크로소프트의
+                                    비주얼 스튜디오 코드(VSCode)를 비롯해 각종 에디터가 타입스크립트 관련 기능과 플러그인을 지원한다.
+                                    <br><br>
+                                    - 점진적 전환 가능
+                                    기존의 자바스크립트 프로젝트를 타입스크립트로 전환하는데 부담이 있다면 추가 기능이나 특정 기능에만 타입스크립트를 도입함으로써 프로젝트를 점진적으로
+                                    전환할 수 있다. 자바스크립트에 주석을 추가하는 것에서부터 시작해 시간이 지남에 따라 코드베이스가 완전이 바뀌도록 준비 기간을 가질 수 있다.
+                                    <br><br>
+                                    하지만 새로운 프로그래밍 언어에 대한 러닝 커브(Learning Curve), 상대적으로 낮은 가독성, 코드량 증가 등의 이유로 타입스크립트 사용을
+                                    망설이는 개발자가 많다. 프로젝트 성격에 따라 타입스크립트를 사용할지 결정하면 된다. 프로젝트의 규모가 크고 복잡할수록, 유지보수가 중요한 장기
+                                    프로젝트일수록 타입스크립트의 이점이 부각될 것이다.
+                                </p>
+                                <div class="date">4. TS(Typescript)</div>
+                            </div>
+                        </li>
+                        <li class="day">
+                            <div class="events">
+                                <div class="day__img">
+                                    <img src="/img/frontend_fram.png" alt=""/>
+                                    <p class="caption">
+                                        Framwork & Library
+                                    </p>
+                                </div>
+                                <div class="date">주요 프레임워크 & 라이브러리</div>
+                            </div>
+                        </li>
+                        <li class="day">
+                            <div class="events">
+                                <p style="overflow-y: scroll; height: 250px; text-align: left;"> 최근에는
+                                    자바스크립트로 웹페이지뿐만 아니라, 스마트폰이나 데스크탑에서 동작하는 애플리케이션을 개발할 수 있는데, Angular는
+                                    이를 지원하기 위한 기능들을 갖추고 있다.
+                                    또한, 타입스크립트를 주력언어로 채택하여 정적 타입을 제공하고 있다. 정적 타입의 도입으로 코드 어시스트, 타입 체크, 리팩토링을 지원하는 강력한
+                                    도구 사용이 가능해지며, 객체지향적 프로그래밍에 적합해진다. 이는 많은 개발자 간의 협업이 필요한 대규모 애플리케이션 개발에 보다 효과적이다.
+                                    Angular가 제공하는 또 다른 강력한 도구는 Angular CLI이다. 프레임워크에 익숙하지 않은 초심자들이 가장 어렵게 생각하는 장벽 중 하나인
+                                    개발환경 구축을 Angular CLI가 제공하는 명령 하나만으로 간단히 해결할 수 있다. 아울러 다른 프레임워크가 제공하는 CLI와는 달리 추가적인
+                                    명령들을 통해 개발환경 구축뿐만 아니라, 개발 전반에 걸쳐 편리함을 제공한다.
+                                    그리고 Angular는 컴플리트 프레임워크에 걸맞게 Router, Forms, HTTP 등 다양한 모듈을 지원한다. 또한 RxJS를 내장하고 있어
+                                    HTTP 뿐만 아니라 모든 이벤트를 스트림으로 RxJS의 옵저버 패턴에 의해 유연하게 제어할 수 있다. 그 밖에도 애니메이션을 위한 Angular
+                                    Animations, 국제화를 위한 i18n 모듈, 테스팅 모듈 등도 제공하고 있다.
+                                    또 다른 특징으로 컴포넌트 기반 개발을 중심으로 한다는 점을 들 수 있다. 컴포넌트 기반으로 개발한다는 것은 컴포넌트의 형태로 사용자 인터페이스를
+                                    정의하고, 자바스크립트 파일뿐 아니라 템플릿 역할을 할 HTML 파일이나 스타일시트가 담긴 CSS 파일도 컴포넌트에 포함한다는 것이다. 이 파일들은
+                                    컴포넌트마다 자동으로 생성되고,
+                                    또한 Angular는 타입스크립트의 문법인 'decorator'를 많이 활용하는 선언적 코딩 스타일을 사용한다. 태그명, 템플릿 파일, CSS 파일에
+                                    대한 정보를 decorator 문법으로 전달하고 있다.
+                                </p>
+                                <div class="date">1. 앵귤러(Angular)</div>
+                            </div>
+                        </li>
+
+                        <li class="day">
+                            <div class="events">
+                                <p style="overflow-y: scroll; height: 250px; text-align: left;">React의 특징은 Angular와 달리
+                                    개발에 필요한 모듈을 기본으로 제공하지 않고, 서드파티(Third party) 라이브러리에 의존한다는 점이다. 공식적으로 React는 작은
+                                    자바스크립트 UI 라이브러리일 뿐, 그 외의 것은 사용자에게 일임하고 있다. 대신 다른 프레임워크에 비해 방대한 에코시스템이 존재한다. 사용자는
+                                    자유롭게 개발에 필요한 모듈을 결정하고 선택할 수 있다. 커다란 에코시스템은 React의 장점으로 보이지만 사용자에게 책임이라는 부담을 지우기도
+                                    한다. 그러나 다행스럽게도 React 진영이 이러한 사용자 부담에 대해 완전히 손놓고 있지는 않는데, Angular CLI와 마찬가지로 초심자의
+                                    빠른 개발환경 구축을 위해서 Create React App이라는 툴을 제공하여 진입 장벽을 낮추고 있다.
+                                    React 역시 컴포넌트 기반의 개발을 채택하고 있다. 그러나 컴포넌트의 구현은 자바스크립트에 조금 더 치중되어 있고 다른 프레임워크들이
+                                    HTML 마크업 기반으로 그 위에 템플릿 문법을 추가해 컴포넌트의 구조와 구성요소를 정의하는 반면, React는 XML 포맷의 템플릿을 직접
+                                    자바스크립트에 내장시키는 형태로 JSX 기술을 주력으로 사용하는 것을 권장하고 있다. 그렇기 때문에 다른 프레임워크에 비하여 더 자바스크립트에
+                                    집중된 형태의 컴포넌트가 나타나게 된다.
+                                    React가 Angular와 구별되는 또 다른 특징 중 하나는 가상 DOM을 이용한다는 것이다. 가상 DOM은 가상 트리 형태의 자료구조에 실제
+                                    DOM 트리가 매핑된 형태로 동작하고 전통적인 DOM은 한 요소에서 변경이 발생하더라도 전체 트리구조를 업데이트하기도 한다. 따라서 렌더링 성능이
+                                    떨어질 수 있는 불안요소가 있다. 가상 DOM은 가상 DOM 내의 변경사항을 추적하여 전체 트리의 다른 부분에 영향을 주지 않고, 매핑된 실제
+                                    DOM상의 특정요소만 업데이트할 수 있게 도와 준다. 일반적으로 가상 DOM이 실제 DOM을 조작하는 것에 비해 성능이 뛰어나다고 볼 수 있다.
+                                    하지만 Angular는 실제 DOM 위에서 동작함에도 변경감지 구현 기능이 따로 존재하여 성능을 높이고 있다는 것을 참고해야 할 것이다.
+                                    React만의 특징이 한 가지 가 더 있는데. 바로 데이터 바인딩 방법이다. 데이터 바인딩은 모델(비즈니스 로직)과 뷰(UI) 간에 데이터를 동기화하는
+                                    프로세스이다. 기본적으로 단방향과 양방향이라는 두 가지 구현방식이 있다. 두 방법의 차이는 모델-뷰(Model-View) 업데이트 처리
+                                    방식이다. 양방향 데이터 바인딩은 뷰가 변경되면 모델도 변경되며 모델이 변경되면 뷰도 변경되는 처리방식이다. React는 단방향 데이터 바인딩을
+                                    사용한다. 모델이 변경되면 뷰가 변경되는 방법만을 허용하고, 뷰가 변경된 경우 모델을 변경시키지 않는다. 뷰가 변경된 경우 모델을 변경하는 코드를
+                                    작성해야 한다. 단방향 데이터 바인딩은 일반적으로 예측 가능성이 높기 때문에 코드가 더 안정적이지만, 양방향 바인딩에 비해서 코드 작성시간이 더
+                                    필요하다. 참고로 Angular와 Vue.js는 단방향 데이터 바인딩과 양방향 데이터 바인딩 모두 지원한다.
+                                </p>
+                                <div class="date">2. 리액트(React)</div>
+                            </div>
+                        </li>
+                        <li class="day">
+                            <div class="events">
+                                <p style="overflow-y: scroll; height: 250px; text-align: left;">Vue.js도 React처럼 가상 DOM을
+                                    사용하고, 컴포넌트 기반 개발을 중심으로 한다. 그러나 React와 구별되는 Vue.js만의 특징은 컴포넌트의 자바스크립트 집중도가 낮다는 점이다.
+                                    즉 JSX를 권장하는 React와는 달리, 컴포넌트 구조와 구성요소를 작성할 때 Angular처럼 HTML 마크업 기반의 템플릿 문법을 사용한다.
+                                    Vue.js 컴포넌트 작성 시 보통 '단일 파일 컴포넌트'라는 .vue 확장자를 가지는 파일을 사용한다. 이 파일은 HTML 마크업 기반의 템플릿
+                                    부분과 자바스크립트 부분 그리고 CSS를 작성하는 스타일 시트 부분으로 나뉜다. React에 비해 기존 HTML, CSS에만 익숙한 웹 디자이너가
+                                    Vue.js를 접했을 때 컴포넌트 구성요소와 구조를 쉽게 이해할 수 있다. 따라서 React보다 기존 웹 디자이너와의 협업이 쉬워지는 장점이
+                                    있다.
+                                    다른 프레임워크들과 마찬가지로 Vue.js도 CLI 툴을 제공한다. 그리고 애플리케이션 개발에 필요한 다른 모듈을 React처럼 사용자에게 책임을
+                                    맡기지 않고 가이드 문서를 통해 특정모듈을 권장하고 있다. Angular처럼 내장모듈로 정해진 것은 아니지만 React처럼 방임에 가깝게 두지도
+                                    않고 둘 사이를 절충한다고 볼 수 있다.
+                                    주목할 만한 것은 대기업 직원이 주도하고 있는 다른 프레임워크들과 달리 Vue.js는 커뮤니티가 주도하는 프레임워크라는 것이다. 문서나 코드의 품질이
+                                    떨어질까 우려될 수도 있으나, 다행스럽게도 공식문서가 여러 나라의 언어로 잘 번역되어 있을 뿐만 아니라, 문서의 구성이 예제 위주로 되어 있어 필요한
+                                    내용만 빠르게 발췌하여 적용할 수 있다. 이는 진입장벽을 낮춰주는 또 다른 장점으로, React에 비해 초심자에게 비교적 접근성이 뛰어나다고 볼 수
+                                    있다.
+                                </p>
+                                <div class="date">3. Vue.js</div>
+                            </div>
+                        </li>
+                        <li class="day">
+                            <div class="events">
+                                <p style="overflow-y: scroll; height: 250px; text-align: left;">Html,css ▶ js ▶ 버전관리
+                                    ▶ 웹보안지식(HTTP) ▶ typescript and 프레임워크 및 라이브러리 선택(angular, react, vue.js, bootstrap,
+                                    jquery등등)
+                                </p>
+                                <div class="date">공부순서 추천</div>
+                            </div>
+                        </li>
+
+                    </ul>
+
+                    <div class="year year--end">
+                        <div class="inner">
+                            <span>Frontend</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tab_content" id="backend_content" style="width: 100%; height: 500px; overflow-y: scroll;">
+                <div class="timeline">
+                    <div class="year">
+                        <div class="inner">
+                            <span>Roadmap</span>
+                        </div>
+                    </div>
+
+                    <ul class="days">
+                        <li class="day">
+                            <div class="events">
+                                <p style="overflow-y: scroll; height: 250px; text-align: left;">백 엔드는 웹사이트나 웹 애플리케이션 또는
+                                    모바일 솔루션의 프로세스와 관련된 서버 측(Server-side)과 데이터베이스를 관리해 주는 테크놀로지이다. 프론트 엔드가 눈에 직접 보이는
+                                    영역이었다면, 백 엔드는 눈에 보이지 않는 서버에서 작용하는 기술을 다룬다.
+                                    백 엔드는 소프트웨어 개발 프로세스에서 서버 측 개발 분야이다. 백 엔드에서는 데이터를 저장하고 관리하며, 웹사이트의 클라이언트
+                                    측(Client-side)에서 모든 것이 매끄럽게 작동할 수 있게 한다. 백 엔드는 사용자들이 직접 보거나 상호작용할 수는 없지만, 소프트웨어 개발의
+                                    중요한 일부분으로, 프론트 엔드에 있는 사용자들이 취하는 행동들을 처리한다. 즉, 클라이언트들은 백 엔드에 간접적으로 액세스하는 것이다. 백 엔드
+                                    개발에는 사용자 인터페이스가 없는 시스템 컴포넌트 작업, API 작성, 라이브러리 생성, 데이터베이스 통합 등 다양한 활동들이 포함되어 있다.
+                                </p>
+                                <div class="date">Backend(의미)</div>
+                            </div>
+                        </li>
+
+                        <li class="day">
+                            <div class="events">
+                                <div class="day__img">
+                                    <img src="/img/backend_info.png" alt=""/>
+                                    <p class="caption">
+                                        frontend vs backend
+                                    </p>
+                                </div>
+                                <div class="date">Backend(사진)</div>
+                            </div>
+                        </li>
+                        <li class="day">
+                            <div class="events">
+                                <div class="day__img">
+                                    <img src="/img/backend_know.png" alt=""/>
+                                    <p class="caption">
+                                        Backend Basic
+                                    </p>
+                                </div>
+                                <div class="date">필요한 지식</div>
+                            </div>
+                        </li>
+                        <li class="day">
+                            <div class="events">
+                                <p style="overflow-y: scroll; height: 250px; text-align: left;">백 엔드 개발자의 시작은 바로 프론트 엔드와
+                                    연동하기 위한 API 개발이다. 그래서 백 엔드 개발자가 되기로 마음을 먹었다면 ‘원하는 기능의 API를 만든다’ 라고 생각할 수 있다. 그 중에서도
+                                    REST API를 시작하면 좋은 이유는 오랫동안 API개발의 표준처럼 사용되어 왔고 서버개발의 전반적인 흐름을 이해하는데 도움이 되기 때문이다.
+                                    최근에는 GraphQL을 도입하는 회사들도 많아지고 개발 생산성도 좋은 편이지만 아직 까지는 좋은 백 엔드 개발자가 되기 위해서는 REST API를
+                                    먼저 익히고 학습하는 것이 큰 도움이 될 수 있다.</p>
+                                <div class="date">1. API 개발 (REST API)</div>
+                            </div>
+                        </li>
+
+
+                        <li class="day">
+                            <div class="events">
+                                <p style="overflow-y: scroll; height: 250px; text-align: left;">앞서 얘기한 REST API를 실제로
+                                    개발하기 위해 필요한 도구가 바로 개발 언어와 웹 프레임워크이다. 백 엔드 개발을 위한 개발 언어와 웹 프레임워크는 NodeJS (JavaScript,
+                                    TypeScript), Ruby On Rails, Python Django, Spring Boot(Java, Kotlin), golang 등 아주
+                                    다양하다. 대부분 개발 언어와 웹 프레임워크 선택을 위해 많이 고민할 텐데 이미 잘 알고 있는 개발언어가 있다면 그 개발 언어에 맞는 웹 프레임워크를
+                                    선택할 것을 추천한다. golang의 경우 다른 언어 대비 웹 프레임워크가 정형화되어 있지는 않지만 golang을 제외하고는 쉽게 설정하고 서버를 띄울
+                                    수 있도록 웹 프레임워크가 잘 되어 있다.
+                                    또한 개발 언어와 웹 프레임워크를 처음부터 고민 중이라면 ReactJS, NextJS 등 훌륭한 프론트 엔드 개발 언어와 같은 언어를 사용한다는
+                                    점에서, NodeJS (TypeScript)를 추천한다. TypeScript 이후 기존 JavaScript의 단점들을 보완하여 정적 타입 체킹을 통해
+                                    자동완성이나 잘못된 변수/함수 사용에 대한 에러 알림 등이 가능해져 개발 시 안정적인 코드를 만들 수 있다.</p>
+                                <div class="date">2. 개발 언어와 웹 프레임워크 <br>(Language & Web Framework)</div>
+                            </div>
+                        </li>
+
+                        <li class="day">
+                            <div class="events">
+                                <p style="overflow-y: scroll; height: 250px; text-align: left;">앞서 선정한 개발 언어와 웹 프레임워크를
+                                    통해 API 개발에 성공했다면 다음에 필요한 내용이 개발한 API를 어떻게 서버에 올려서 API 서비스를 실행할까 일 것이다. 최근에는 기존의 서버의
+                                    개념과 다른 Serverless가 유행하고 실제 코드만 있으면 바로 서비스할 수 있을 정도로 만들어주는 서비스 들이 많이 있지만 백 엔드 개발자가
+                                    되기로 마음을 먹었다면 일단 AWS의 EC2 Instance 와 친해져야 한다. 그리고 EC2 Instance에 올라가는 이미지들이 주로 Linux
+                                    기반의 OS라서 Linux 주요 커맨드 들도 잘 알고 있으면 도움이 된다. AWS EC2 Instance를 이해했다면 조금 이해하기 어려운 개념 일
+                                    수도 있지만 그 후로 AWS Elastic Beanstalk과 같은 관리형 플랫폼 서비스를 이해하면 큰 도움이 된다. 이는 PaaS 라고도 볼 수
+                                    있는데 원하는 개발 결과물 코드만 있으면 기본 인프라 구성, 배포, 애플리케이션 버전 제어, 자동 확장 기능까지 전체 시스템을 구축해준다. 간단하더라도
+                                    웹 프레임워크를 통해 API 개발을 성공했다면 AWS Elastic Beanstalk 환경을 구성해서 배포까지 해볼 것을 추천한다. 이에는 Load
+                                    Balancer, Auto Scaling, SSL 적용, 네트워크 구성 등 AWS Elastic Beanstalk에 내부에서 동작하는 요소들이
+                                    포함된다.</p>
+                                <div class="date">3. 서버 기본 지식 (Server)</div>
+                            </div>
+                        </li>
+                        <li class="day">
+                            <div class="events">
+                                <p style="overflow-y: scroll; height: 250px; text-align: left;">앞서 얘기한 REST API를 실제로
+                                    웹 프레임워크를 통해 API 개발을 서버 또는 AWS 위에 올렸다면 그 뒤로 필요한 지식은 네트워크에 대한 기본 지식이다. 일단 REST API의
+                                    기반이 되는 HTTP 부터 원하는 도메인에 연결하여 서비스하기 위한 DNS, EC2에 접속하기 위한 SSH 연결, 그리고 서버가 올라가기 위한
+                                    기본 네트워크 구성 (VPC, Routing Table, Subnet)등 서버 동작 전체를 잘 이해하기 위해서는 네트워크에 대한 기본 지식이
+                                    필요하다.</p>
+                                <div class="date">4. 네트워크 기본 지식 (Network)</div>
+                            </div>
+                        </li>
+
+                        <li class="day">
+                            <div class="events">
+                                <p style="overflow-y: scroll; height: 250px; text-align: left;">앞서 선정한 개발 언어와 웹 프레임워크를
+                                    데이터베이스는 백 엔드 개발자로서 가장 중요한 분야라고 할 수 있다. API 개발이 백 엔드 개발 중에서 프론트 엔드와 연동하는 가장 앞 단에 있다면
+                                    데이터베이스의 경우는 가장 뒷 단에서 개발하고자 하는 서비스를 위해 필요한 데이터를 체계적으로 저장하는 데이터 저장소의 역할을 한다. 데이터베이스의
+                                    종류는 MySQL와 같은 관계형 데이터베이스 (Relational Database: RDB) 에서부터 MongoDB, Redis,
+                                    ElasticSearch 등 NoSQL 까지 다양한 종류가 있는데, 백 엔드 개발자를 시작 한다면 가장 보편적이고 이해가 용이한 MySQL와 같은
+                                    관계형 데이터베이스부터 시작 하는 것을 추천한다.
+                                    RDB 데이터베이스는 데이터를 정형화하고 모델링하는 연습을 할 수 있고 현재 다양한 데이터 베이스가 쓰이고 있지만 여전히 현업에서 가장 우선적으로
+                                    고려되는 저장소이며 데이터를 다룰 수 있는 SQL 쿼리의 개념을 이해하기가 비교적 수월하다.
+                                    데이터베이스에서 중요한 개념 중에 하나는 바로 CRUD이다. CRUD는 대부분의 데이터베이스의 기본적인 데이터 처리 기능인 Create(생성),
+                                    Read(읽기), Update(갱신), Delete(삭제)를 가리키는 말이다.
+                                    그리고 실제 Create(생성), Read(읽기), Update(갱신), Delete(삭제) 등의 CRUD 개발 작업을 할 때 실제 쿼리를 이용하여
+                                    개발하는 경우도 있지만 ORM (Object-relational mapping) 같은 추상화된 프레임워크를 사용하는 경우가 많다. 결국 API
+                                    개발하면서 필요한 데이터베이스를 설계하고 ORM을 이용하여 간단하게 데이터베이스와 연동하는 코드를 작성할 수 있다.
+                                </p>
+                                <div class="date">5. 데이터베이스 (Database)</div>
+                            </div>
+                        </li>
+                        <li class="day">
+                            <div class="events">
+                                <p style="overflow-y: scroll; height: 250px; text-align: left;">앞서 선정한 개발 언어와 웹 프레임워크를
+                                    데이터베이스가 서비스에 필요한 데이터를 저장한다면 사진, 동영상 등 서비스에 필요한 파일들은 어디에 저장할까? 서비스에 필요한 서비스들을 저장하는
+                                    공간이 바로 분산 스토리지 (Distributed Storage)이다. 분산 스토리지라는 단어가 생소할 수 있는데 클라우드 기반의 파일 저장소라고
+                                    생각하면 된다. 보편적인 AWS S3 (Simple Storage Service) 가 바로 분산 스토리지 중의 하나이다. 과거에는 서버에서 직접
+                                    파일들을 관리하는 경우도 있었는데 구글 파일 시스템 (Google File System) 논문을 발표하고 AWS S3 (Simple Storage
+                                    Service) 가 보편화 되면서 분산 스토리지가 백 엔드 개발을 위한 파일 저장소로 자리 잡게 되었다.
+                                </p>
+                                <div class="date">6. 분산 스토리지 (Distributed Storage)</div>
+                            </div>
+                        </li>
+                        <li class="day">
+                            <div class="events">
+                                <p style="overflow-y: scroll; height: 250px; text-align: left;">앞서 선정한 개발 언어와 웹 프레임워크를
+                                    백 엔드 개발자도 프론트 엔드 개발을 할 줄 알아야 할까? 정답은 ‘백 엔드 개발자도 기본적인 프론트 엔드 기술을 알아야 한다’이다. 예전에만 해도 백
+                                    엔드 개발자, 프론트 엔드 개발자가 명확히 나뉘어 있지 않고 웹 프로젝트 자체가 뷰를 포함한 MVC 형태로 구현되는 경우가 많았다. 최근에는 프론트
+                                    엔드 개발과 백 엔드 API 개발이 명확하게 나뉘는 형태의 아키텍처가 주류를 이루고 있긴 하지만 내부 백오피스, 관리페이지 (Admin) 등을 개발할
+                                    때는 여전히 MVC 형태로 개발되는 경우도 볼 수 있다. 그러다 보니 HTML/CSS, JavaScript 등 기본적인 프론트 엔드 기술을 알아 두는
+                                    것이 필요하다.
+                                </p>
+                                <div class="date">7. 기본적인 프론트 엔드 기술<br> (Basic Frontend Skill)</div>
+                            </div>
+                        </li>
+                        <li class="day">
+                            <div class="events">
+                                <div class="day__img">
+                                    <img src="/img/backend_lib_fra.png" alt=""/>
+                                    <p class="caption">
+                                        Framework, Library
+                                    </p>
+                                </div>
+                                <div class="date">관련언어와 프레임워크</div>
+                            </div>
+                        </li>
+                        <li class="day">
+                            <div class="events">
+                                <p style="overflow-y: scroll; height: 250px; text-align: left;">앞서 선정한 개발 언어와 웹 프레임워크를
+                                    PHP(Hypertext Preprocessor)는 개발을 위해서 고안된 서버 측 스크립트 언어이자 수많은 웹 시스템의 기반이 되는 언어이다.
+                                    우리나라에서도 다수의 인터넷 쇼핑몰, 커뮤니티 등이 PHP거나 PHP 기반으로 제작되어 있다. 브라우저가 서버에 웹 페이지를 요청하면 서버는 그 웹
+                                    페이지를 보내는데 이때 필요한 게 PHP이다. 수신한 HTML 문서를 해석하여 화면에 띄울 때 필요한 게 JavaScript였다면, PHP는
+                                    브라우저에서 요청한 웹 페이지 즉 서버에 있는 데이터가 사용자와 상호작용하는 웹 어플리케이션으로 진화하여 브라우저로 넘어가도록 처리하는 데 필요하다.
+                                    PHP로 작성된 코드를 HTML 코드 안에 추가하면 웹 서버는 해당 코드를 해석하여 자동으로 HTML 문서를 생성하기에 동적으로 빠르게 HTML 문서를
+                                    만들 수 있다. 이처럼 PHP는 HTML을 프로그래밍적으로 생성해 주고, 데이터베이스와 상호작용하면서 데이터를 저장하고, 표현하는 서버와 브라우저 간의
+                                    다리 역할을 한다고 볼 수도 있다.
+                                    <br><br>
+                                    -관련 프레임워크 Laravel
+
+                                </p>
+                                <div class="date">1. PHP</div>
+                            </div>
+                        </li>
+                        <li class="day">
+                            <div class="events">
+                                <p style="overflow-y: scroll; height: 250px; text-align: left;">앞서 선정한 개발 언어와 웹 프레임워크를
+                                    노드는 크로스 플랫폼의 오픈소스 런타임(run time) 환경으로써, 브라우저의 외부에서 자바스크립트 코드를 실행할 수 있게 해 준다. 노드가
+                                    개발됨으로써 자바스크립트가 웹 브라우저를 벗어나 모바일이나 웹 애플리케이션용 API와 같은 백 엔드 서비스 개발에도 사용되는 범용 프로그래밍 언어가 될
+                                    수 있었다. 노드는 내장 HTTP 서버 라이브러리를 포함하고 있어 웹 서버에서 별도의 소프트웨어 없이 동작하는 것이 가능하다. 또한 확장성이 뛰어나고
+                                    반응속도가 빠르며 많은 양의 요청도 처리 가능하기에 웹서버의 동작을 더욱 효과적으로 통제할 수 있다. 하지만 언어가 아니라 소프트웨어 플랫폼이어서
+                                    서버를 직접 구현해야 한다는 특징이 있다.
+                                    <br><br>
+                                    -관련 프레임워크 Express
+
+                                </p>
+                                <div class="date">2. Node.js</div>
+                            </div>
+                        </li>
+                        <li class="day">
+                            <div class="events">
+                                <p style="overflow-y: scroll; height: 250px; text-align: left;">앞서 선정한 개발 언어와 웹 프레임워크를
+                                    자바스크립트는 백 엔드와 프론트 엔드 모두에서 사용할 수 있다. 웹은 물론 모바일 하이브리드 앱, 서버 사이드(Node.js), 데스크톱, 머신
+                                    러닝(TensorFlow.js) 등 다양하게 활용되며 크로스 플랫폼에서 중요한 역할을 하는 세계에서 가장 인기 있는 언어이기도 하다.
+                                    <br><br>
+                                    *크로스 플랫폼: 둘 이상의 다양한 플랫폼에서 실행 가능한 소프트웨어(ex. 애플리케이션의 안드로이드 버전, 아이폰 버전 동시 출시)
+                                </p>
+                                <div class="date">3. JavaScript</div>
+                            </div>
+                        </li>
+                        <li class="day">
+                            <div class="events">
+                                <p style="overflow-y: scroll; height: 250px; text-align: left;">앞서 선정한 개발 언어와 웹 프레임워크를
+                                    C++은 C언어의 문법과 기능을 모두 사용할 수 있는 C언어 기반 프로그래밍 언어이다. C언어에 여러 가지 기능을 추가한 버전에 가깝다고 볼 수 있다.
+                                    객체지향과 일반화 프로그래밍을 사실상 거의 주된 패턴으로 사용하기 때문에 객체지향 프로그래밍 언어라고 알려져 있기도 하지만 사실은 객체지향은 물론
+                                    절차지향도 가능한 멀티 패러다임 언어이다. 요즘에도 경쟁력을 갖추기 위해서 가장 널리 사용되는 프로그래밍 언어이며, 백 엔드 언어로도 많은 인기를 얻고
+                                    있다.
+                                </p>
+                                <div class="date">4. C++</div>
+                            </div>
+                        </li>
+                        <li class="day">
+                            <div class="events">
+                                <p style="overflow-y: scroll; height: 250px; text-align: left;">앞서 선정한 개발 언어와 웹 프레임워크를
+                                    가장 인기 있는 프로그래밍 언어 중 하나이자 객체지향 프로그래밍 언어인 자바의 가장 큰 특징은 플랫폼 종속성이 낮다는 것이다. 운영체제에 Java
+                                    Virtual Machine(JVM)을 설치하면 Java 기반 프로그램은 어떤 환경에서도 완벽하게 똑같이 동작한다. 이는 가상머신이 각각의 운영체제에
+                                    맞춰서 돌아갈 수 있도록 제작되었기 때문이다. 앞서 살핀 자바스크립트는 HTML과 CSS가 존재한다는 가정하에 실행되었는데, Java는 특정 플랫폼에
+                                    의존하지 않는 독립성을 갖추고 있다. 생산성과 안정성, 기기 호환성이 높고 소스코드 가독성이 좋아 개발자 커뮤니티에서 널리 사용되고 있다.
+                                    <br><br>
+                                    -관련기술과 프레임워크로 JSP, Spring 등 사용
+                                </p>
+                                <div class="date">5. Java</div>
+                            </div>
+                        </li>
+                        <li class="day">
+                            <div class="events">
+                                <p style="overflow-y: scroll; height: 250px; text-align: left;">앞서 선정한 개발 언어와 웹 프레임워크를
+                                    개발자들이 시스템을 효율적으로 통합하고, 빠르게 작업할 수 있게 해 주는 최고의 프로그래밍 언어인 파이썬은 딥러닝, 데이터 사이언스, 인공지능 분야에서
+                                    가장 많이 사용된다. 그럴 수 있는 것은 파이썬의 문법은 배우기 매우 쉬울 뿐만 아니라 응용력이 좋기 때문이다. 파이썬은 언어 자체가 64bit를
+                                    넘어가고 허수를 기본 지원하고 소수점과 유리수를 정밀하게 다룰 수 있는 등 과학과 공학 분야에서 필요한 여러 기능을 기본적으로 제공하다. 게다가
+                                    접근성이 좋고 문법이 통일되어 있어서 어떤 결과물(프로그램)에 대한 피드백이 활발하게 이루어지고 이는 궁극적으로 생산성 향상으로 이어진다. 현업에서도
+                                    사용하기 쉽고 입문하기도 쉬워 교육과 실무 현장 모두에서 인기 있는 언어이다.
+                                    <br><br>
+                                    -관련 프레임워크 Django
+                                </p>
+                                <div class="date">6. Python</div>
+                            </div>
+                        </li>
+                        <li class="day">
+                            <div class="events">
+                                <div class="day__img">
+                                    <img src="/img/backend_infra.png" alt=""/>
+                                    <p class="caption">
+                                        Infra
+                                    </p>
+                                </div>
+                                <div class="date">Infra 종류</div>
+                            </div>
+                        </li>
+                        <li class="day">
+                            <div class="events">
+                                <p style="overflow-y: scroll; height: 250px; text-align: left;">로컬 컴퓨터에서 서비스를 하는 것이 아닌
+                                    클라우드에 내 서버를 올려 서비스할 수 있는 기술
+                                    <br><br>
+                                    -AWS, Google Cloud, MS Azure, Severless
+
+                                </p>
+                                <div class="date">1. 클라우드 서비스</div>
+                            </div>
+                        </li>
+                        <li class="day">
+                            <div class="events">
+                                <p style="overflow-y: scroll; height: 250px; text-align: left;"> 컨테이너 기반의 오픈소스 가상화 플랫폼.
+                                    OS를 가상화한 Virtual Machine의 진화버전. 서버 실행 환경을 추상화 하고 동일한 인터페이스를 제공해 프로그램의 배포와 관리를 쉽게
+                                    도와줌. 도커 이미지를 일반컴퓨터와 클라우드 어디에서 든 실행할 수 있다.
+                                </p>
+                                <div class="date">2. Docker(Container)</div>
+                            </div>
+                        </li>
+                        <li class="day">
+                            <div class="events">
+                                <p style="overflow-y: scroll; height: 250px; text-align: left;">지속적 통합, 지속적 제공이라는 뜻으로 개발
+                                    단계를 자동화하여 앱을 짧은 주기로 고객에게 배포하는 방법(참고) 대표적인 플랫폼으로 Kubernetes(Orchestration)가 있다.
+                                    <br><br>
+                                    (Continous Integration/Continuous Delivery) 파이프라인
+                                </p>
+                                <div class="date">3. CI/CD</div>
+                            </div>
+                        </li>
+                        <li class="day">
+                            <div class="events">
+                                <p style="overflow-y: scroll; height: 250px; text-align: left;">앞서 선정한 개발 언어와 웹 프레임워크를
+                                    메시지 기반의 미들웨어로 메시지를 이용하여 여러 어플리케이션, 시스템, 서비스들을 연결해주는 솔루션
+                                </p>
+                                <div class="date">4. Message Queues</div>
+                            </div>
+                        </li>
+                        <li class="day">
+                            <div class="events">
+                                <p style="overflow-y: scroll; height: 250px; text-align: left;">앞다양한 기계들을 이어지게 만들어 각각의
+                                    application을 같은 상호작용을 제공한다. 미들웨어 덕분에 하나의 시스템으로 구성된다.
+                                </p>
+                                <div class="date">5. Distributed Systems
+                                    <br>(분산 시스템)
+                                </div>
+                            </div>
+                        </li>
+                        <li class="day">
+                            <div class="events">
+                                <p style="overflow-y: scroll; height: 250px; text-align: left;">Distributed Cache(분산
+                                    캐시), Load Balancing,Reliability & Scaleability 등..
+                                </p>
+                                <div class="date">6. 그 외</div>
+                            </div>
+                        </li>
+                        <li class="day">
+                            <div class="events">
+                                <p style="overflow-y: scroll; height: 250px; text-align: left;">자바 ▶JSP + 기본적인 프론트 엔드 지식
+                                    HTML, JS ▶ Spring ▶데이터 베이스 (MYSQL, Oracle, MogoDB등..) + API
+                                    (RESTful API, GraphQL, gRPC 등..) ▶Infra
+                                </p>
+                                <div class="date">공부순서 추천</div>
+                            </div>
+                        </li>
+                    </ul>
+
+                    <div class="year year--end">
+                        <div class="inner">
+                            <span>Backend</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab_content" id="dba_content" style="width: 100%; height: 500px; overflow-y: scroll;">
+                <div class="timeline">
+                    <div class="year">
+                        <div class="inner">
+                            <span>Roadmap</span>
+                        </div>
+                    </div>
+
+                    <ul class="days">
+                        <li class="day">
+                            <div class="events">
+                                <p style="overflow-y: scroll; height: 250px; text-align: left;">데이터베이스관리자는 컴퓨터를 사용하여 각종
+                                    데이터를 체계적으로 수집, 정리, 가공 및 입력하여 데이터베이스를 구축, 관리, 분석하는 일을 한다. (한 조직 내에서 데이터베이스를 설치, 구성,
+                                    업그레이드, 관리, 감시하는 일을 한다 -> 자료복구, 백업보전, 데이터보전, 보안 접근케어, 데이터베이스 튜닝, 성능개발 테스트지원, 트러블 슈팅
+                                    해결 등)</p>
+                                <div class="date">DBA (의미)</div>
+                            </div>
+                        </li>
+                        <li class="day">
+                            <div class="events">
+                                <div class="day__img">
+                                    <img src="/img/dba_info.png" alt=""/>
+                                    <p class="caption">
+                                        DB Administrator
+                                    </p>
+                                </div>
+                                <div class="date">DBA (사진)</div>
+                            </div>
+                        </li>
+
+                        <li class="day">
+                            <div class="events">
+                                <div class="day__img">
+                                    <img src="/img/dba_k.png" alt=""/>
+                                    <p class="caption">
+                                        DBA Necessity
+                                    </p>
+                                </div>
+                                <div class="date">DBA 필요성</div>
+                            </div>
+                        </li>
+                        <li class="day">
+                            <div class="events">
+                                <p style="overflow-y: scroll; height: 250px; text-align: left;">
+                                    1) 자원이 공유되는 경우,자원 사용에 대한 사용자 간 갈등은 필연적으로 발생<br><br>
+                                    2) 데이터 아이템의 명칭과 그 정의<br><br>
+                                    - 같은 소속부서 아이템을 어떤 사용자는 부서번호(Dept number)로 명명하고
+                                    다른 사용자는 팀번호(Team number)로 명명<br><br>
+                                    3) 데이터에 대한 서로 다른 접근 방식을 주장<br>
+                                    - 한쪽에서는 해당 부품들의 기능적 분류에 따라 접근할 것을 주장하고<br>
+                                    - 다른 한쪽에서는 공급자별 분류에 따를 것을 주장<br>
+                                    - 데이터에 대한 여러 가지의 접근 경로가 수립 시스템의 전반적 성능이 저하<br><br>
+                                    4) 조직간 정보시스템을 사용하는 경우 범 조직적 기준이 개발되고 이행되어야 함</p>
+                                <div class="date">1. 데이터 자원에 대한 중재 <br>기능을 수행하기 위해 출현</div>
+                            </div>
+                        </li>
+                        <li class="day">
+                            <div class="events">
+                                <p style="overflow-y: scroll; height: 250px; text-align: left;">
+                                    1) 관리적,정책적인 사항<br>
+                                    - DB 사용자들과 효율적 의사소통을 하는데 필요<br>
+                                    - 외부 스키마 및 개념 스키마를 정의하는 기본적인 책임<br><br>
+                                    2) 데이터베이스의 기술적 부분<br>
+                                    - DB 상세설계, DB의 효율적 사용을 위한 기술적 지원<br>
+                                    - 내부 스키마를 정의하는 기본적인 책임</p>
+                                <div class="date">2. 중재 기능을 수행하기 위해<br> 요구되는 전문가적 지식과 경험</div>
+                            </div>
+                        </li>
+
+                        <li class="day">
+                            <div class="events">
+                                <p style="overflow-y: scroll; height: 250px; text-align: left;">
+                                    1) DBMS설계와 조작의 책임<br>
+                                    - 데이터베이스의 구성요소 결정<br>
+                                    - 스키마를 정의<br>
+                                    - 저장구조와 액세스 방법<br>
+                                    - 보안 및 권한부여 정책<br>
+                                    - 데이터의 유효성 검사방법을 수립<br>
+                                    - 백업, 회복 절차를 정함<br>
+                                    - 무결성을 유지하기위한 대책 수립<br>
+                                    - 시스템의 성능향상<br>
+                                    - 새로운 요구사항에 대응한 DB 재구성<br>
+                                    - 데이터 사전의 조직, 액세스, 유지관리<br><br>
+                                    2) 행정적 책임<br>
+                                    - 데이터의 표현이나 문서화 표준 설정, 시행<br>
+                                    - 사용자의 요구와 불평 해결<br><br>
+                                    3) 시스템 감독 및 분석 책임<br>
+                                    - 시스템 성능 모니터링<br>
+                                    - 각종 통계를 종합 분석<br>
+                                </p>
+                                <div class="date">DBA 역할</div>
+                            </div>
+                        </li>
+
+                        <li class="day">
+                            <div class="events">
+                                <div class="day__img">
+                                    <img src="/img/dba_pro.jpeg" alt=""/>
+                                    <p class="caption">
+                                        DBA project
+                                    </p>
+                                </div>
+                                <div class="date">프로젝트 DBA 단계</div>
+                            </div>
+                        </li>
+                        <li class="day">
+                            <div class="events">
+                                <p style="overflow-y: scroll; height: 250px; text-align: left;">
+                                    - 요구분석 (DBA,데이터모델러)<br>
+                                    - 현황분석 (DBA,데이터모델러)<br>
+                                    - 명명규칙 정의 (DBA)<br>
+                                    - 용어사전 정의 (데이터모델러)<br>
+                                    - 도메인정의 (데이터모델러)<br>
+                                    - 논리 ERD(정규화) (데이터모델러)<br>
+                                    - 코드정의 (데이터모델러)<br>
+                                    - 데이터모델링 가이드 작성 (데이터모델러,DBA)<br>
+                                    - 설계자 데이터모델링 교육 (데이터모델러)
+                                </p>
+                                <div class="date">1. 분석단계</div>
+                            </div>
+                        </li>
+
+                        <li class="day">
+                            <div class="events">
+                                <p style="overflow-y: scroll; height: 250px; text-align: left;">
+                                    - 물리ERD(반정규화) (데이터모델러,데이터모델관리 도구)<br>
+                                    - 파라미터 설계 (DBA)<br>
+                                    - 사용자/보안 설계 (DBA)<br>
+                                    - 데이터파일 설계 (DBA)<br>
+                                    - 테이블스페이스 설계 (DBA)<br>
+                                    - ROLE 정의(Privilege설계) (DBA)<br>
+                                    - VIEW, 트리거 설계 (DBA)<br>
+                                    - Function, Procedure설계 (DBA)<br>
+                                    - 인덱스 설계 (DBA)<br>
+                                    - 테이블크기 분석 (DBA)<br>
+                                    - 디스크 볼륨 구성(H/W) (H/W,DBA)<br>
+                                    - 내/외부 인터페이스 설계 (응용,DBA)<br>
+                                    - SQL 개발 가이드 작성 (DBA)<br>
+                                    - 개발자 SQL 교육 (DBA)
+                                </p>
+
+                                <div class="date">2. 설계단계</div>
+                            </div>
+                        </li>
+                        <li class="day">
+                            <div class="events">
+                                <p style="overflow-y: scroll; height: 250px; text-align: left;">
+                                    - ERD 검토 및 변경관리 (데이터모델러,데이터모델관리 도구)<br>
+                                    - DB 스키마 변경관리 (DBA)<br>
+                                    - DB SCRIPT 변경관리 (DBA)<br>
+                                    - DB 장애처리 (DBA,벤더엔지니어)<br>
+                                    - 산물출 변경관리
+                                </p>
+                                <div class="date">3. 구축단계</div>
+                            </div>
+                        </li>
+                        <li class="day">
+                            <div class="events">
+                                <p style="overflow-y: scroll; height: 250px; text-align: left;">
+                                    - 시험 데이터 설치 및 전환 (응용,DBA)<br>
+                                    - SQL 성능분석 및 DBMS 튜닝 (DBA,성능관리 도구)<br>
+                                    - ERD 검토 및 변경관리 (데이터모델러,데이터모델관리 도구)<br>
+                                    - DB 스키마 변경관리 (DBA)<br>
+                                    - DB SCRIPT 변경관리 (DBA)<br>
+                                    - DB 장애처리 (DBA,벤더엔지니어)
+                                    - 산물출 변경관리
+                                </p>
+                                <div class="date">4. 시험단계</div>
+                            </div>
+                        </li>
+                        <li class="day">
+                            <div class="events">
+                                <p style="overflow-y: scroll; height: 250px; text-align: left;">
+                                    - DBMS 설치 (DBA,벤더엔지니어)<br>
+                                    - 환경설정 및 DB 스키마 생성 (DBA)<br>
+                                    - DB 장애처리 (DBA,벤더엔지니어)<br>
+                                    - SQL 성능분석 및 DBMS 튜닝 (DBA,성능관리 도구)<br>
+                                    - 초기 데이터 설치 및 전환 (응용,DBA)<br>
+                                    - 운영자 지침서 작성 (DBA)<br>
+                                    - 운영자 교육 (DBA, 외부교육)
+                                </p>
+                                <div class="date">5. 전개단계</div>
+                            </div>
+                        </li>
+                        <li class="day">
+                            <div class="events">
+                                <p style="overflow-y: scroll; height: 250px; text-align: left;">
+                                    - ERD 검토 및 변경관리 (모델러,데이터모델관리 도구)<br>
+                                    - DB 스키마 변경관리 (DBA)<br>
+                                    - DB SCRIPT 변경관리 (DBA)<br>
+                                    - DB 장애처리 (DBA,벤더엔지니어)<br>
+                                    - SQL 성능분석 및 튜닝 (DBA,성능관리 도구)<br>
+                                    - DB 백업 및 복구 (DBA,백업관리 도구)<br>
+                                    - 산물출 변경관리
+                                </p>
+                                <div class="date"> 6. 운영단계</div>
+                            </div>
+                        </li>
+                        <li class="day">
+                            <div class="events">
+                                <div class="day__img">
+                                    <img src="/img/dba_lan.png" alt=""/>
+                                    <p class="caption">
+                                        DBA Language
+                                    </p>
+                                </div>
+                                <div class="date">DBA 언어</div>
+                            </div>
+                        </li>
+                        <li class="day">
+                            <div class="events">
+                                <p style="overflow-y: scroll; height: 250px; text-align: left;">분명히 요즘 대세 프로그램 언어이면서 가장
+                                    널리 사용되는 범용 언어인 파이썬(Python)은 시스템 관리에서 웹 도구, 데이터베이스 관리 및 통합에 이르기까지 거의 모든 분야와 연결되어
+                                    있다. 방대한 라이브러리로 데이터 과학자와 인공지능 분야에서 특히 인기가 많고 RPA(Robotic Process Autumation)와 같은 사무
+                                    자동화 분야에도 널리 쓰이고 있다.
+                                    파이썬은 기존 프레임 워크에 사용하고자 하는 기능들을 연결해주면 데이터 분석, 표시 및 저장을 모두 하나의 개발 플랫폼에서 수행하여 개발 시간을 단축할
+                                    수 있다. 또한 파이썬의 활용을 위한 커뮤니티가 잘 구축되어 있기 때문에 프로그램 개발에 많은 지원을 받을 수 있다는 것이 장점이다.</p>
+                                <div class="date">1. Python</div>
+                            </div>
+                        </li>
+                        <li class="day">
+                            <div class="events">
+                                <p style="overflow-y: scroll; height: 250px; text-align: left;">SQL(Structured Query
+                                    Language)은 전 세계적으로 가장 널리 사용되고 있는 데이터베이스 서버를 위한 사실상의 표준 프로그래밍 언어이다. SQL은 언어 디자인에 대해
+                                    비판을 받고 있지만, 강력하고 확장 가능하며 표현식, 쿼리 및 문을 혼합하여 크고 작은 데이터 세트에 접근하고 정보를 추출하는 다양한 방법을 제공하는
+                                    것으로 알려져 있다. 다만 여러 공급 업체가 SQL 기반 소프트웨어를 채택했지만 모든 SQL 응용 프로그램이 호환되지는 않는다는 것은 한계점이다.
+                                    이전의 SQL 개발자에서 다음 개발자로의 구현 간에 알려진 이식성이 부족하여 DBA를 처음 접하는 사용자에게 고통이 커질 수 있다.</p>
+                                <div class="date">2. SQL<br>(Oracle, MySQL PostgreSQL, SQLserver)</div>
+                            </div>
+                        </li>
+                        <li class="day">
+                            <div class="events">
+                                <p style="overflow-y: scroll; height: 250px; text-align: left;">
+                                    R(알)은 통계 컴퓨팅에 기반을 두고으며 파이썬과 더불어 데이터 마이닝(Data Mining), 통계 및 데이터 분석에 널리 사용되는 언어이다. 데이터 세트가 상당히 크고
+                                    복잡한 경우라도 R은 분석을 위한 수학적 방정식을 포함하는 컴퓨팅 요구 사항을 처리하고 데이터를 시각화하고 저장하는 데 완벽한 언어이다. 엑셀에
+                                    저장된 데이터를 복사해서 붙여 넣기 하는 형태로 R에 데이터를 입력이 가능해 편리하며 머신러닝을 위한 알고리즘들도 패키지로 제공되고 있다.</p>
+                                <div class="date">3. R</div>
+                            </div>
+                        </li>
+                        <li class="day">
+                            <div class="events">
+                                <p style="overflow-y: scroll; height: 250px; text-align: left;">C#은 C++의 연산력과 Visual
+                                    Basic의 편의의성을 결합하기 위한 목적으로 마이크로소프트사에서 만든 객체지향 프로그래밍 언어이다. C++가 기반이며, 자바 언어와 유사한 특징을
+                                    갖고 있다.
+                                    C 프로그래밍 언어는 다양한 버전을 가지고 있는데 시스템 하드웨어에서 바로 실행되는 앱을 개발할 때 유연성과 효율성을 제공한다. 또한 크로스 플랫폼
+                                    지원을 제공하는 데 활용할 수 있으며, 데이터를 호스팅하는 서버와 호스팅된 데이터에 액세스하는 시스템 (또는 앱) 모두의 리소스를 최대화하기 위해
+                                    관계형 데이터베이스와 연결된 애플리케이션을 개발하는 데 사용할 수도 있다. C, C ++ 및 C#으로 개발된 네이티브 앱의 고성능 특성은 복잡한
+                                    프로그래밍 특성에 대한 보상이라고 할 수 있다. 쉽게 말해서 프로그램을 코딩하기는 좀 어렵지만 그만큼 기계가 잘 알아 들을 수 있는 형태로
+                                    프로그램이 구성되기 때문에 실행 속도가 빠르다고 보면 된다.</p>
+                                <div class="date">4. C#</div>
+                            </div>
+                        </li>
+                        <li class="day">
+                            <div class="events">
+                                <p style="overflow-y: scroll; height: 250px; text-align: left;">복잡한 대화형 웹 사이트를 위해 웹 개발자가
+                                    PHP를 프로그래밍 언어로 선택하기도 하지만, PHP는 서버측 스크립팅을 사용하여 웹사이트가 데이터베이스로부터 호출된 데이터를 빠르고 효율적으로
+                                    저장하고 작성이 가능하도록 해주고 있다. 데이터베이스와 강력한 관계를 맺고 있는 언어라고 볼 수 있다. 워드프레스(WordPress) 플랫폼은
+                                    PHP로 구축되었으며 데이터베이스와 긴밀하게 통합되어 웹 개발을 간소화하고 템플릿 시스템을 기반으로 웹 사이트를 구축하며 HTML 기반 사이트가
+                                    지원되는 모든 플랫폼과 앱에서 더 빠르게 웹 페이지가 로딩되도록 지원한다.</p>
+                                <div class="date">5. PHP</div>
+                            </div>
+                        </li>
+                        <li class="day">
+                            <div class="events">
+                                <p style="overflow-y: scroll; height: 250px; text-align: left;">
+                                    SQL, PL/SQL(SQL의 확장언어) ▶ 리눅스 ▶ 서버(OS) ▶ Linux1, Linux2 ▶ Python ▶ Java ▶ 하둡
+                                    (D.B수집/분석
+                                    프로그래밍) ▶ R프로그래밍</p>
+                                <div class="date">공부순서 추천</div>
+                            </div>
+                        </li>
+                    </ul>
+                    <div class="year year--end">
+                        <div class="inner">
+                            <span>DBA</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab_content" id="ai_content" style="width: 100%; height: 500px; overflow-y: scroll;">
+                <div class="timeline">
+                    <div class="year">
+                        <div class="inner">
+                            <span>Roadmap</span>
+                        </div>
+                    </div>
+
+                    <ul class="days">
+                        <li class="day">
+                            <div class="events">
+                                <p style="overflow-y: scroll; height: 250px; text-align: left;">인공 지능 프로그래머는 인공 지능 (AI)
+                                    분야에서 소프트웨어 및 응용 프로그램을 위한 코드를 만드는 것을 전문으로 하는 컴퓨터 프로그래머를 뜻하며,
+                                    인공의 뇌구조에 대한 지식을 바탕으로 로봇이 인간과 같이 사고하고, 의사결정 등을 하도록 인공지능 알고리즘을 개발하거나 프로그램으로 구현하는 기술을
+                                    개발한다.</p>
+                                <div class="date">A.I (의미)</div>
+                            </div>
+                        </li>
+                        <li class="day">
+                            <div class="events">
+                                <div class="day__img">
+                                    <img src="/img/ai_info.jpeg" alt=""/>
+                                    <p class="caption">
+                                        A.I Connection
+                                    </p>
+                                </div>
+                                <div class="date">A.I (사진)</div>
+                            </div>
+                        </li>
+                        <li class="day">
+                            <div class="events">
+                                <div class="day__img">
+                                    <img src="/img/ai_kind.png" alt=""/>
+                                    <p class="caption">
+                                        A.I Kinds
+                                    </p>
+                                </div>
+                                <div class="date">A.I (종류)</div>
+                            </div>
+                        </li>
+
+                        <li class="day">
+                            <div class="events">
+                                <p style="overflow-y: scroll; height: 250px; text-align: left;">데이터 마이닝(Data Mining)과
+                                    유사하게 정형, 비정형 형태를 포함한 다양한 데이터로부터 지식과 인사이트를 추출하는데 과학적 방법론, 프로세스, 알고리즘, 시스템을 동원하는
+                                    융합분야다.
+                                    이는 데이터를 통해 실제 현상을 이해하고 분석하는데 통계학, 데이터 분석, 기계학습과 연관된 방법론을 통합하는 개념으로 정의되기도 한다.</p>
+                                <div class="date">1. 데이터 사이언스</div>
+                            </div>
+                        </li>
+
+                        <li class="day">
+                            <div class="events">
+                                <p style="overflow-y: scroll; height: 250px; text-align: left;">데이터를 수집하고 관리하며 유지하는 일을
+                                    담당하는 것이 바로 데이터 엔지니어링이다. 특정 기업이 매일같이 생산하는 엄청난 양의 데이터를 제대로 수집하고 관리하며, 의사결정을 내리기 위해
+                                    데이터가 필요할 경우 제대로 찾아내어 전달하는 일을 한다. 때문에, 데이터 엔지니어의 핵심역량은 ‘데이터를 제대로 쌓고 관리할 수 있는 구조를 세울 수
+                                    있다’라고 볼 수 있다. 따라서 대량의 데이터를 수집하고 관리, 처리하는 인프라 툴인 Hadoop, MapReduce나 데이터베이스를 다루는 MySQL
+                                    등에 능숙해야 한다.</p>
+                                <div class="date">2. 데이터 엔지니어링</div>
+                            </div>
+                        </li>
+
+                        <li class="day">
+                            <div class="events">
+                                <p style="overflow-y: scroll; height: 250px; text-align: left;">데이터 엔지니어링이 데이터 분석과 수집의
+                                    실제 응용을 다루는 데이터 과학의 분야라면, 빅데이터 엔지니어는 데이터 생산에서 활용까지 전 과정을 담당하는 기술자이다.
+                                    빅데이터 엔지니어는 데이터를 추출해 알고리즘을 설계하고 머신 러닝 모델을 실제로 구축하는 기술자이다. 이들은 수학과 알고리즘 등 복잡한 로직에 익숙해야
+                                    하며, 컴퓨터 알고리즘의 설계 및 분석 최적화, 실험 평가를 반복하면서 알고리즘의 이론과 실제 응용 사이의 격차를 해소하는 직업이다. 주로 기존
+                                    비즈니스 애플리케이션 논리체계와 기계학습의 논리 체계를 결합해 문제를 해결하는 역할을 한다.</p>
+                                <div class="date">3. 빅데이터 엔지니어링</div>
+                            </div>
+                        </li>
+
+                        <li class="day">
+                            <div class="events">
+                                <p style="overflow-y: scroll; height: 250px; text-align: left;">데이터를 구문 분석하고 해당 데이터를 통해
+                                    학습한 후 정보를 바탕으로 결정을 내리기 위해 학습한 내용을 적용하는 알고리즘을 뜻한다.
+                                    머신 러닝은 모든 종류의 자동화된 작업을 부추기며, 악성 코드를 추적하는 데이터 보안 회사부터 유리한 거래에 대해 알림을 받고 싶어 하는 재무
+                                    전문가까지 여러 산업에 걸쳐 존재한다. AI 알고리즘은 가상의 개인 비서처럼 끊임없이 학습하도록 프로그래밍 되었으며, 이 작업을 상당히 잘
+                                    수행한다.</p>
+                                <div class="date">4. 머신 러닝</div>
+                            </div>
+                        </li>
+
+                        <li class="day">
+                            <div class="events">
+                                <p style="overflow-y: scroll; height: 250px; text-align: left;">실질적으로 딥 러닝은 머신 러닝의 하위
+                                    개념으로, 실제로 머신 러닝에 해당하며 비슷한 방식으로 작동한다(두 용어가 때로 비슷하게 사용되는 이유이기도 함). 하지만 둘의 기능은 다르다. 딥
+                                    러닝은 알고리즘을 계층으로 구성하여 자체적으로 배우고 지능적인 결정을 내릴 수 있는 "인공 신경망"을 만든다. 즉 머신 러닝을 구현하는 알고리즘 중의
+                                    하나가 인공신경망(Neural Network)과 딥러닝(Deep Learning)인 것이며, 딥 러닝은 인공신경망에서 발전된 형태로 심화신경망 또는
+                                    개선된 인공신경망 등으로 불리기도 한다. 기본 머신 러닝 모델은 그 기능이 무엇이든 점진적으로 향상되는데, 이때 AI 알고리즘이 부정확한 예측을
+                                    반환하면 엔지니어가 개입하여 조정해야 한다. 딥 러닝 모델을 사용하면 알고리즘이 자체 신경망을 통해 예측의 정확성 여부를 스스로 판단할 수 있다.</p>
+                                <div class="date">5. 딥 러닝</div>
+                            </div>
+                        </li>
+
+                        <li class="day">
+                            <div class="events">
+                                <div class="day__img">
+                                    <img src="/img/ai_tech.png" alt=""/>
+                                    <p class="caption">
+                                        A.I Technology
+                                    </p>
+                                </div>
+                                <div class="date">A.I관련 기술분야</div>
+                            </div>
+                        </li>
+
+                        <li class="day">
+                            <div class="events">
+                                <p style="overflow-y: scroll; height: 250px; text-align: left;">
+                                    패턴인식(Pattern Recongnition)<br>
+                                    - 기계에 의하여 도형, 문자, 음성 등을 식별시키는 것<br>
+                                    - 제한된 분야에서 실용화 되고 있으며, 지속적으로 발전
+                                    <br><br>
+                                    자연어처리(Natural language Processing)<br>
+                                    - 인간의 평상 언어를 컴퓨터에 인식 시켜 특정 Task를 처리 하는 것<br>
+                                    - 정보검색, 질의응답 시스템, 자동 통•번역 등
+                                </p>
+                                <div class="date">패턴인식 & 자연어처리</div>
+                            </div>
+                        </li>
+
+                        <li class="day">
+                            <div class="events">
+                                <p style="overflow-y: scroll; height: 250px; text-align: left;">
+                                    자동제어(Automatic Control)<br>
+                                    - 제어대상에 미리 설정한 목표 값과 검출된 Feedback 신호를 비교하여 그 오차를 자동으로 조정하는 방식
+                                    <br><br>
+                                    인지로봇공학(Recongnition Robotics)<br>
+                                    - 로봇에 관한 과학이자 기술학으로 제한된 시간과 계산자원을 활용해 복잡한 환경의
+                                    복잡한 목표를 달성하도록 하는 인지 능력을 로봇에게 부여하는 기술
+                                </p>
+                                <div class="date">자동제어 & 인지로봇공학</div>
+                            </div>
+                        </li>
+
+                        <li class="day">
+                            <div class="events">
+                                <p style="overflow-y: scroll; height: 250px; text-align: left;">
+                                    컴퓨터 비전(Computer Vision)<br>
+                                    - 로봇의 눈으 만드는 연구 분야로 컴퓨터가 실세계 정보를 취득하는 모든 과정을 다룸
+                                    <br><br>
+                                    가상현실(Virtual Reality)<br>
+                                    - 특정한 환경이나 상황을 컴퓨터로 구현하여 그것을 사용하는 사람이 실제 주변 환경과 상호작용을 한는 것처럼 만들어주는 I/F기술
+                                </p>
+                                <div class="date">컴퓨터비전 & 가상현실</div>
+                            </div>
+                        </li>
+
+                        <li class="day">
+                            <div class="events">
+                                <p style="overflow-y: scroll; height: 250px; text-align: left;">
+                                    양자 컴퓨터(Quantum Computer)<br>
+                                    - 양자역학의 원리에 따라 구동되는 컴퓨터<br>
+                                    - 아직 연구 단계의 수준이지만, 구글이 구매한"D-Wave 2"는 현재구조 컴퓨터 대비 약 1억배의 연산능력을 보유한 것으로 알려짐
+                                    <br><br>
+                                    자동추론(Automated Reasoning)<br>
+                                    - 계산기 과학의 한 분야로 추론의 다양한 측면을 이해함으로써 컴퓨터에 의한 완전한 자동추론을 가능하게 하는 소프트웨어 개발을 목표로 함
+                                </p>
+                                <div class="date">양자 컴퓨터 & 자동추론</div>
+                            </div>
+                        </li>
+
+                        <li class="day">
+                            <div class="events">
+                                <p style="overflow-y: scroll; height: 250px; text-align: left;">
+                                    사이버네틱스(Cybernetics)<br>
+                                    - 생물과 기계사이의 제어와 통신 문제를 종합적으로 연구하는 분야
+                                    <br><br>
+                                    데이터마이닝(Data Mining)<br>
+                                    - 많은 데이터 가운데 숨겨져 있는 유용한 상관 관계를 발견하여 미래에 실행 가능한 정보를 추출해 내고 이를 의사 결정에 활용하는 과정
+                                </p>
+                                <div class="date">사이버네틱스 & 데이터마이닝</div>
+                            </div>
+                        </li>
+
+                        <li class="day">
+                            <div class="events">
+                                <p style="overflow-y: scroll; height: 250px; text-align: left;">
+                                    지능엔진(Intelligent Agent)<br>
+                                    - 인공지능적 기능을 가진 소프트웨어 엔진<br>
+                                    - 사용자를 보조하고 반복된 컴퓨터 관련 업무를 인간을 대신하여 실시하는 소프트웨어
+                                    <br><br>
+                                    시멘틱 웹(Semantic Web)<br>
+                                    - 컴퓨터가 정보자원의 뜻을 이해하고, 논리적 추론까지 할 수 있는 차세대 지능형 웹
+                                </p>
+                                <div class="date">지능엔진 & 시멘틱 웹</div>
+                            </div>
+                        </li>
+
+                        <li class="day">
+                            <div class="events">
+                                <div class="day__img">
+                                    <img src="/img/ai_base.png" alt=""/>
+                                    <p class="caption">
+                                        A.I Plan
+                                    </p>
+                                </div>
+                                <div class="date">A.I 공부방법</div>
+                            </div>
+                        </li>
+
+                        <li class="day">
+                            <div class="events">
+                                <p style="overflow-y: scroll; height: 250px; text-align: left;">
+                                    인공지능 방면으로 진로를 생각하고 있다면 인공지능에 대한 관심, SW 구현능력, 그리고 수학 이 3가지 요소의 균형이 필요하다. 반드시 순서가 있는
+                                    것은 아니다. 어떤 방향이든 시작할 수 있다 만, 균형을 조금씩 잡는 것은 꼭 필요하다.
+                                </p>
+                                <div class="date">1. 기초부분</div>
+                            </div>
+                        </li>
+
+                        <li class="day">
+                            <div class="events">
+                                <p style="overflow-y: scroll; height: 250px; text-align: left;">
+                                    인공지능은 수학을 기반으로 작성된 알고리즘이기 때문에 수학에 관한 이해가 없이는 그 구조나 흐름을 파악하기 어렵다. 대부분의 연구 결과나 참고할
+                                    자료들은 수학의 이론에 기반하여 수식으로 작성이 되어있으므로 수학에 대한 이해가 없다면 '무엇을 의미하는지'를 파악하기 어려워진다. AI 시스템은
+                                    사람의 생각을 흉내 낸다고 정의할 수 있다. 그럼 AI는 사람의 어떤 생각을 따라 해야 할까? 합리성을 따라야 한다. 그리고 AI는 사람처럼 실수하면
+                                    안 될 정도로 여러 중요 분야에 활용되기 때문에 정량적으로 매우 정확하게 생각해야 한다. 이때 수학이 필요한 것이다. 사람은 일상에서 수학 공식을
+                                    활용하지 않는다. 직관이라는 것에 의존한다. 반면 AI에서는 직관을 기대하기 어렵다. 대신에 사람이 수학으로 법칙을 표현하거나 수학에 근거하여 판단하는
+                                    것에 착안해 AI에 이러한 직관 혹은 생각을 심어줘야 한다.
+                                </p>
+                                <div class="date">2. 수학부분</div>
+                            </div>
+                        </li>
+
+                        <li class="day">
+                            <div class="events">
+                                <p style="overflow-y: scroll; height: 250px; text-align: left;">
+                                    컴퓨터언어의 기본적인 내용을 배우고 나면 인공지능을 다루기 전에 데이터를 처리할 수 있는 numpy, 분석도구 툴인 Pandas, 그리고 시각화
+                                    라이브러리인 Matplotlib, 딥러닝의 툴인 keras, tensorflow 등을 배울 수 있다.
+                                    이러한 도구들은 다양한 데이터를 가지고 연습을 해야 손에 익으므로 공개되어 있는 실전 데이터들을 다루는 책들을 통해 배울 수도 있고, 온라인 강의에서
+                                    예제 데이터를 가지고 실습을 하는 과정도 많이 개발되어 있다.
+                                </p>
+                                <div class="date">3. 코딩부분</div>
+                            </div>
+                        </li>
+
+
+                        <li class="day">
+                            <div class="events">
+                                <div class="day__img">
+                                    <img src="/img/ai_language.jpeg" alt=""/>
+                                    <p class="caption">
+                                        A.I Language
+                                    </p>
+                                </div>
+                                <div class="date">A.I 개발자 언어</div>
+                            </div>
+                        </li>
+
+                        <li class="day">
+                            <div class="events">
+                                <p style="overflow-y: scroll; height: 250px; text-align: left;">
+                                    현재 2021년을 바라보며 인공지능 AI 서비스 개발 수요는 나날이 커지고 있다. 여기에서 가장 상승세를 띄는 언어는 파이썬 Python이다. 대부분
+                                    어떤 언어를 사용하든 장단점이 있는 건 사실이다. 현재 대부분 파이썬을 활용할 때 패키징은 아나콘다 Anaconda를 사용한다. 파이썬은 광범위하게
+                                    사용되는 Numpy는 이제 Tensor 연산에서 표준 API나 다름없다. 그리고 판다스 Pandas를 통해 R의 강력하고 유연한 데이터프레임을
+                                    파이썬에서 사용할 수 있다. 자연어처리 NLP 에는 유명한 NLTK와 빠른 속도를 자랑하는 SpaCy가 있다. 머신 러닝의 경우 실전에서 검증된
+                                    Scikit-learn이 있다. 딥 러닝에서는 모든 라이브러리 (텐서플로우, 파이토치, 체이너, 아파치 MX넷, 테아노 등) 프로젝트가 사실 파이썬을
+                                    사용해 가장 우선적으로 개발된다.
+                                    최첨단 딥러닝 연구 논문을 확인하다 보면 소스코드를 제공하는 대다수 연구가 '파이썬' 코드를 제공한다는 것을 알 수 있다. 파이썬은 라이브러리 외의
+                                    다른 부분도 있다. IPython은 주피터(Jupyter)노트북이 되면서 파이썬 중심 성격이 흐려졌지만 주피터 노트북 사용자와 온라인에서 공유되는
+                                    노트북의 대부분이 여전히 파이썬을 사용한다. 파이썬은 AI 연구의 가장 상위권에 있는 언어이다. 대부분 머신러닝, 딥러닝 프레임워크에 사용된다.
+                                </p>
+                                <div class="date">1. Python <br>(AI 개발분야에서 가장 최적화된 만능 1위 언어)</div>
+                            </div>
+                        </li>
+
+                        <li class="day">
+                            <div class="events">
+                                <p style="overflow-y: scroll; height: 250px; text-align: left;">
+                                    JVM 언어는 (자바, 스칼라, 코틀린, 클로저 등)도 여전히 인공지능 AI 애플리케이션 개발을 위해 사용되고 있다. 자연어처리 (코어 NLP), 텐서
+                                    연산 (ND4J), GPU 가속 딥러닝 스택(DL4J) 등 분야를 불문하고 파이프라인의 모든 부분에서 다양한 라이브러리가 존재한다. 더불어 아파치
+                                    스파크, 아파치 하둡과 같은 빅데이터 플랫폼에 대한 접근도 용이한 언어이다.
+                                    여기서 자바 Java는 대부분 엔터프라이즈에서 공용어로 새로운 언어 구성자가 투입된 자바 8 이상 버전부터는 좀 더 수월하게 활용할 수 있도록 되어
+                                    자바로 AI 애플리케이션을 작성하는 과정은 다소 지루할 수 있어도 소기의 목적은 달성할 수 있다. 개발 및 배포, 모니터링을 위한 기존의 모든 자바
+                                    인프라를 사용할 수 있다.
+                                </p>
+                                <div class="date">2. JAVA & JVM</div>
+                            </div>
+                        </li>
+
+                        <li class="day">
+                            <div class="events">
+                                <p style="overflow-y: scroll; height: 250px; text-align: left;">
+                                    AI 애플리케이션을 만들기 위한 목적으로 자바스크립트가 큰 영향을 미치진 않는다. 하지만 구글 TensorFlow.js는 계속 개선되면서 Keras 및
+                                    텐서플로우 모델을 브라우저에 배포하거나, GPU 가속 계산을 위해 웹GL을 사용해서 Node.js를 통해 배포하는 흥미로운 방법을 제공하고 있다. 단,
+                                    TensorFlow.js가 나온 이후에도 AI 자바스크립트 개발자들이 대부분 AI 영역으로 모이진 않는다. 자바스크립트 주변 생태계의 라이브러리가
+                                    파이썬과 같은 언어에 비해 적은 것이 이유일 수 있다. 또한 서버 측면에서 파이썬 옵션을 사용할 때에 비해 Node.js로 모델을 배포해서 얻는
+                                    실질적인 이점이 별로 없다. 따라서 자바스크립트 기반 AI 애플리케이션은 주로 브라우저 기반으로 남을 가능성이 있다.
+                                </p>
+                                <div class="date">3. JavaScript</div>
+                            </div>
+                        </li>
+                        <li class="day">
+                            <div class="events">
+                                <p style="overflow-y: scroll; height: 250px; text-align: left;">
+                                    스위프트 19년도에는 하위권에 해당하는 언어였지만 지금은 다르다. 바로 텐서플로우 TensorFlow용 스위프트가 등장했기 때문이다. 최신 텐서플로우
+                                    기능을 완전한 형식으로 바인딩하고, 마치 파이썬을 사용하는 것처럼 파이썬 라이브러리를 가져올 수 있는 기능을 제공하고 있다.
+                                    현재 패스트AI 팀은 스위프트 버전의 라이브러리를 개발 중이라고 한다. LLVM 컴파일러의 텐서 지능이 높아지면서 모델 생성과 실행에 관해 많은
+                                    최적화가 이뤄질 것으로 기대하고 있다. 지금 당장 투입하여 활용할 수 있진 않지만 딥러닝 개발의 다음 세대를 향해 묻는다면 스위프트를 주시할 필요가
+                                    있다.
+                                </p>
+                                <div class="date">4. Swift</div>
+                            </div>
+                        </li>
+                        <li class="day">
+                            <div class="events">
+                                <p style="overflow-y: scroll; height: 250px; text-align: left;">
+                                    R은 데이터 과학자들이 선호하는 언어이다. 개발자 시각에서 R의 데이터프레임 접근은 다소 혼란스럽다. 전담 R 개발자 그룹이 있다면 연구,
+                                    프로토타이핑, 실험을 위해 텐서플로우, 케라스를 사용하는 것은 좋지만 성능과 운영 측면에 대한 우려 사항 탓에 선뜻 R을 활용한 AI 애플리케이션
+                                    개발을 추천하기는 어렵다. 서버에 배포할 수 있는 성능 좋은 R 코드를 쓸 수는 있지만 대부분의 경우 R 프로토타입을 가지고 와서 자바나 파이썬으로
+                                    다시 코딩하는 편이 수월하다.
+                                </p>
+                                <div class="date">5. R언어</div>
+                            </div>
+                        </li>
+                        <li class="day">
+                            <div class="events">
+                                <p style="overflow-y: scroll; height: 250px; text-align: left;">
+                                    머신러닝 라이브러리 중 하나인 토치 프레임워크 덕분에 인공지능 분야에서 루아 Lua가 잠시 반짝인 적이 있다. 딥러닝 모델의 역사를 공부한다면 대부분
+                                    토치에 대한 방대한 참조와 오래된 깃허브의 풍부한 루아 소스코드를 발견할 수 있다. 파이토치의 기본 API에서 멀지 않은 토치 API에 대한 실용적인
+                                    지식을 갖추면 유용할 수도 있다.
+                                </p>
+                                <div class="date">6. Lua</div>
+                            </div>
+                        </li>
+                        <li class="day">
+                            <div class="events">
+                                <p style="overflow-y: scroll; height: 250px; text-align: left;">
+                                    줄리아는 수치 계산에 초점을 둔 고성능 프로그래밍 언어인 만큼 수학 천지인 AI 세계와 잘 맞는다. 지금은 크게 인기 있는 언어는
+                                    아니지만TensorFlow.js, 모카 Macha와 같은 래퍼는 딥 러닝을 충실하게 지원한다. 비교적 작은 환경에 개의치 않으며 쉽고 빠르게
+                                    고성능 계산을 수행하는 특성을 이용하고 싶다면 줄리아를 추천하는 바이다.
+                                </p>
+                                <div class="date">7. Julia</div>
+                            </div>
+                        </li>
+
+                        <li class="day">
+                            <div class="events">
+                                <p style="overflow-y: scroll; height: 250px; text-align: left;">
+                                    파이썬(Python) ▶ 머신 러닝 개론 ▶그래프 모형 ▶인공신경망 ▶판다스(Pandas), 시각화 공부(Matplotlib, Seaborn) ▶ 머신
+                                    러닝/딥 러닝 실습공부
+                                </p>
+                                <div class="date">공부순서 추천</div>
+                            </div>
+                        </li>
+
+
+                    </ul>
+
+                    <div class="year year--end">
+                        <div class="inner">
+                            <span>A.I</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab_content" id="whitehat_content" style="width: 100%; height: 500px; overflow-y: scroll;">
+                <div class="timeline">
+                    <div class="year">
+                        <div class="inner">
+                            <span>Roadmap</span>
+                        </div>
+                    </div>
+                    <ul class="days">
+                        <li class="day">
+                            <div class="events">
+                                <p style="overflow-y: scroll; height: 250px; text-align: left;">선의의 목적으로 보안상의 취약점을 찾아내고
+                                    그에 대한 해결책(대응 전략이나 방안)을 제시하는 해커로 보안전문가로도 불린다. 주로 본인의 시스템을 대상으로 작업하거나 해킹 대상 담당자의 적법한
+                                    승인을 거쳐 공격을 수행하는 등 합법적인 범위 내에서 해킹을 한다. 화이트 해커는
+                                    운영체제나 서버 어플리케이션의 취약점을 분석 보완, 바이러스 웜 등의 악성코드 분석과 대응솔루션 개발침해를 당했을 때 피해규모를 최소화하기 위한
+                                    시스템보호 예방전략 혹시라도 있을 실제 크래커가 사용하는 해킹도구와 기법을 이용한 모의 해킹 진단 등 다양한 업무를 통해 안정적인 운영체계와 허점 없는
+                                    보안시스템을 갖추기 위한 업무를 진행하게 된다.</p>
+                                <div class="date">White-Hat (의미)</div>
+                            </div>
+                        </li>
+                        <li class="day">
+                            <div class="events">
+                                <div class="day__img">
+                                    <img src="/img/wh_info.jpg" alt=""/>
+                                    <p class="caption">
+                                        White-Hat
+                                    </p>
+                                </div>
+                                <div class="date">White-Hat (사진)</div>
+                            </div>
+                        </li>
+
+                        <li class="day">
+                            <div class="events">
+                                <div class="day__img">
+                                    <img src="/img/wh_type.jpeg" alt=""/>
+                                    <p class="caption">
+                                        Hacking Type
+                                    </p>
+                                </div>
+                                <div class="date">해킹유형</div>
+                            </div>
+                        </li>
+                        <li class="day">
+                            <div class="events">
+                                <p style="overflow-y: scroll; height: 250px; text-align: left;">
+                                    웹 해킹은 웹 사이트의 취약점을 공격하는 기술적 위협으로, 웹 페이지를 통하여 권한이 없는 시스템에 접근하거나 데이터 유출 및 파괴와
+                                    같은 행위를 말한다. 유형으로는 웹 엔진 취약점을 이용한 해킹과 웹 애플리케이션의 취약점을 이용한 해킹, 각종 웹 서버 및 미들웨어
+                                    기본 제공 샘플 파일을 이용한 해킹등이 있다. 웹 애플리케이션을 통해서 발생되는 해킹이 주로 일어나는데 이를 OWWASP에서 10대
+                                    웹 애플리케이션의 취약점을 발표하였다. 웹 애플리케이션 해킹으로 가장 빈도가 많이 발생하고, 보안상 영향을 크게 줄 수 있는 것들로는
+                                    SQL삽입, XSS, CSRF웹 셸 업로드 등이 있다.보통 국공기관 대상으로는 웹해킹, 웹취약점진단을 하지 않는다. 서비스 목적 운영이 아니기 때문에
+                                    간단한 내부 시스템 위주로 점건한다. 하지만 쇼핑몰이나 대기업 금융권은 서비스를 목적으로 운영되어 지기 때문에 대부분의 정보시스템을
+                                    Web으로 구축하고 Web Program 지식의 일반화 Web Hacking 기술의 보편화(많은 도구와 툴)웹을 개발하게 되면 촉박한
+                                    개발 일정으로 보안에 취약할 수 밖에 없다 그렇기 때문에 웹해킹에 대한 사전 보안이 중요하다.
+                                </p>
+                                <div class="date">1. 웹 해킹</div>
+                            </div>
+                        </li>
+
+                        <li class="day">
+                            <div class="events">
+                                <p style="overflow-y: scroll; height: 250px; text-align: left;">
+                                    소프트웨어 공학의 한 분야로, 이미 만들어진 시스템을 역을 추적하여 처음의 문서나 설계기법 등의 자료를
+                                    얻어내는일이다. 단순하게 어떠한 시스템은 출발점을 통해서 도착점으로 가는 도로는 하나밖에 없다고 가정한다. 방화벽만 통제한다면
+                                    아무도 들어오지 못하게 설계되어 있다. 하지만 해커에 의해서 새로운 방향에서 방화벽을 우회하여 도착점에 도달하는 방법이 발견됬다.
+                                    실제 만들어져 있던 도로가 아닌 숲을 지나고 강을 건너서 갈수있는 방향이다. 안전한 전산망과 보안접근성이 뛰어나도록 방화벽을
+                                    설치해도 보안전문가 입장에서만 방화벽을 구축하다보면 해커가 다른 루트를 찾아 방화벽을 뚫고 들어올 수 있다. 이런
+                                    사례를 미연에 방지하기 위해 리버스 기술을 통해 침입을 막는 프로그램을 개발하거나 단서를 찾는다. 결론적으로
+                                    리버스 엔지니어링은 개발이 완료되어 유지보수가 이뤄지고 있는 소프트웨어 시스템의 구성요소를 알아내고, 구성요소들 간의
+                                    관계를 식별하고 대상을 분석하는 방법이다. 프로그래밍, 서버, 네트워크 등 많은 이해지식을 바탕으로하며 정보보안 전문가에서도
+                                    상위에 속하는 직업이라 할 수 있고, 아직 국내엔 리버스엔지니어링 실력자가 드물어서 이쪽 방면 실력이 좋으면 아주 좋은 대우를
+                                    받을 수 있다. 리버스 엔지니어링을 하기 위해서 어셈블리어와 CPU등의 하드웨어에 대한 지식은 필수다. 기계어/어셈블리어로 코드를 볼 수 있고
+                                    이것을 해석하는것이 리버스 엔지니어링의 기본이다. 실제 바이너리 파일 크기가 겨우 1mb라고 하더라도 대략 800만개의 기계어 토큰을
+                                    분석해내야 하는 통찰력 또한 필요하다.
+                                </p>
+
+                                <div class="date">2. 리버스 엔지니어링</div>
+                            </div>
+                        </li>
+                        <li class="day">
+                            <div class="events">
+                                <p style="overflow-y: scroll; height: 250px; text-align: left;">
+                                    운영 체제나 소프트웨어, 하드웨어에 내재된 보안 취약점을 해킹하는 것. 흔히 리트에서 따온 pwn을 써서 포너블(Pwnable)이라고도 부른다.
+                                    시스템 해킹을 알려면 운영 체제 책부터 공부해야 한다. 운영체제마다 동작하는 방식도 다르고 프로그램의 소스코드도 달라지기 때문에 윈도우, 리눅스 등으로
+                                    나누어 공부한다. 윈도우의 경우 윈도우 시스템 프로그래밍에 대해 공부한 후 운영체제 이론, Windows API 프로그래밍, 리버싱에 대해 공부하면
+                                    된다. 리눅스의 경우 리눅스 커널을 공부해야 한다. API 역시 가장 중요한 개념이다. 어떤 일을 하든 최소한 어떤 항목의 API문서에 필요한 함수나
+                                    매크로, 객체가 기술되어 있는지는 알아야 한다.
+                                    플랫폼별로 개발용, 네이티브 reference를 모두 외우거나 최소한 기능이라도 알고 있어야 한다. 인간적으로 너무 심하다 싶겠지만 현실은 이렇다.
+                                    개발사에서 미처 찾아내지 못 한 취약점 헌팅을 위해서는 프로그램을 리버스 엔지니어링으로 뜯어봐서 구동 원리를 알아내야 한다. 이를 통해 그 프로그램을
+                                    해킹할 수 있다. 흔히 일반인들이 해킹해주길 원하는 소프트웨어 라이센스 해킹 (keygen), 게임 해킹 프로그램 역시 리버싱을 이용한 것이다.
+                                    리버싱을 위해서는 시스템 해킹에 대한 기초 외에도 어셈블리어를 잘 해야 한다. 어셈블리어는 프로세서가 이해할 수 있는 저 수준언어이다. 그 외에도
+                                    리버싱은 악성코드 분석, 해킹 대회 문제 풀이 등 많은 곳에 쓰인다. 대학교 수업에서 '시스템 해킹' 수업이 개설될 경우 칼리 리눅스를 기반으로 정보
+                                    수집, 보안 취약점 평가 및 진단, 메타스플로잇, 시스템 진단 등을
+                                    배우고 이를 활용해 모의 해킹을 하는 식으로 진행된다.
+                                </p>
+                                <div class="date">3. 시스템 해킹</div>
+                            </div>
+                        </li>
+                        <li class="day">
+                            <div class="events">
+                                <p style="overflow-y: scroll; height: 250px; text-align: left;">
+                                    가장 단순한 네트워크 해킹 기법으로는 DDoS 공격과 백도어 설치가 있다. 실력 있는 해커는 드물기 때문에 일반인이 접할 수 있는 대부분의 네트워크
+                                    해킹 기법은 DDoS, 백도어, 피싱, 사회공학 정도다.
+                                    DDoS 공격을 통해 상대 컴퓨터에서 인터넷을 못 쓰게 만드는 게 가장 널리 알려진 기법이자 가장 이해하기 쉬운 기법이다. DDoS 기법은 다수의
+                                    컴퓨터가 한 컴퓨터에게 대량의 쓰레기 트래픽을 쏟아부어서 대상의 인터넷 회선에 과부하를 주는 수법으로, 회선의 용량을 넘어가는 트래픽 수신량 때문에
+                                    인터넷 접속을 못 하게 된다.
+                                    악성 코드가 삽입된 파일을 피해자가 설치하도록 만들면 백도어를 깔 수 있다. 이를 통해 강제 원격 제어, 키로거 등의 공격을 할 수 있다. 백도어를
+                                    설치하는 과정에서는 사회공학 기법이 많이 응용된다. 채팅 프로그램, 음란물, 핵, 잘못 전송된 이메일에 포함된 개인정보나 자료가 포함된 중요한
+                                    첨부파일, 입사지원서 등 다양한 방식으로 피해자를 속여서 백도어가 담긴 프로그램을 실행하게 만든다. 또는 피싱 사이트를 만든 뒤 불특정 다수에게 문자를
+                                    보내 금융기관, 통신사 등의 홈페이지처럼 착각하게 만들어 접속하게 만든 뒤 액티브X 설치를 요구하는 방식으로 백도어를 설치하기도 한다.
+                                    무선네트워크 해킹은
+                                    무선 해킹은 기본적으로 수신 범위 내에 해커가 있어야 한다. 단독주택에 살거나, 옆집에 환갑이 넘은 노부부만 계시다면 무선 해킹을 당할 가능성은 낮다.
+                                    다만 해외 사례 중에 안테나를 개조해서 빌딩에서 나오는 전파를 캐치해, 4㎞ 범위 내에서 강 위에서 요트를 타고 해킹을 저지르다가 잡힌 사례가 있으니
+                                    주의가 필요하다. 특히 정보기관의 경우 피해자의 호텔 객실 번호를 이용해 신원을 파악한 뒤 와이파이 사용시 어도비 플래시 등의 취약점을 이용하거나
+                                    구글, 마이크로소프트 등을 사칭한 팝업창을 띄워 클릭하게 해 악성코드를 감염시키는 수법을 쓰고 있다.
+                                    이런 방법으로 보안이 약한 공유기의 권한을 탈취하기도 한다. 그 다음에는 그 IP를 범죄에 사용하려는 의도가 크다. 가령, 공유기를 해킹해 가짜
+                                    사이트로 접속되게 유도해 전기통신금융사기를 치거나 그 IP 주소로 위장해 비밀 유출, 악플, 아동 포르노 등을 주고받는 식이다. 이런 이유로 해외에서는
+                                    IP를 단독 증거로 인정하지 않는다. 그러나 대한민국에서는 아직도 IP를 단독 증거로 인정해 주기 때문에 네트워크 해킹에 방심하지 말자. MAC 주소를
+                                    증거로 제출하면 된다는 이야기가 있는데, MAC 주소를 바꾸는 것은 리눅스 명령어만 사용할 수 있어도 가능하니 의미가 없다.
+                                    모니터 모드를 지원하는 무선 네트워크 어댑터가 필요하다.
+                                </p>
+                                <div class="date">4. 네트워크해킹</div>
+                            </div>
+                        </li>
+
+
+                        <li class="day">
+                            <div class="events">
+                                <div class="day__img">
+                                    <img src="/img/wh_tec.jpeg" alt=""/>
+                                    <p class="caption">
+                                        Hacking Techniques
+                                    </p>
+                                </div>
+                                <div class="date">해킹기법</div>
+                            </div>
+                        </li>
+                        <li class="day">
+                            <div class="events">
+                                <p style="overflow-y: scroll; height: 250px; text-align: left;">
+                                    암호공격은 크게 2가지 분류로 나누는데 첫 번째로 의도적으로 내용을 조작하는 능동적 공격으로 메시지의 순서를 바꾸거나 메시지에 일부분을 다른 메시지로
+                                    대체하는 메시지 변조를 하거나, 불법적 침입자가 정당한 송신자로 가장해 메시지를 보내는 삽입 공격을 하기도 하고, 서비스 거부 공격(DOS)인 삭제
+                                    공격이 있으며, 정보를 다른 사람이 알지 못하도록 변환한 부호를 암호화해서 공격한다. 암호공격으로 대표적인 기지 평문 공격(KPA), 선택암호문
+                                    공격(CCA), 선택 평문 공격(CPA), 암호문 단독 공격(COA) 등이 있다.
+                                </p>
+                                <div class="date">1. 암호공격</div>
+                            </div>
+                        </li>
+
+                        <li class="day">
+                            <div class="events">
+                                <p style="overflow-y: scroll; height: 250px; text-align: left;">
+                                    키로깅(keylogging)은 사용자가 키보드를 통해 입력한 내용을 몰래 가로채는 기술이나 행위를 뜻한다. 키스트로크 로깅(keystroke
+                                    logging)의 약자로, 키로깅 키로거, 키로그 등으로 불린다. 키로깅는 소프트웨어 프로그램이나 하드웨어 장치를 통해 사용자의 키보드 입력을 추적,
+                                    기록하는 활동 모니터링 스파이웨어의 한 형태인 반면, 키로거는 소프트웨어 프로그램이나 하드웨어 장치를 통해 컴퓨터의 모든 키스트로크를 캡처하도록 설계된
+                                    프로그램이다. 키로깅은 공격 기법, 키로거는 사용되는 프로그램, 키로그는 생성된 로그로 각각 차이가 있기는 하지만 모두 같이 쓸 수 있다. 후킹으로
+                                    부르기도 하지만 후킹은 운영체제에서 처리하는 이벤트나 소프트웨어 프로그램 사이에서 전달되는 메시지들을 중간에서 가로채거나 바꾸는 행위를 모두 뜻하는
+                                    것으로 키로깅을 포함하는 넓은 의미의 정보 가로채기 개념으로 볼 수 있다.
+                                </p>
+
+                                <div class="date">2. 키로깅</div>
+                            </div>
+                        </li>
+                        <li class="day">
+                            <div class="events">
+                                <p style="overflow-y: scroll; height: 250px; text-align: left;">
+                                    벗어난 데이터는 인접 메모리를 덮어쓰게 되며 이때 다른 데이터가 포함되어 있을 수도 있는데, 손상을 받을 수 있는 데이터는 프로그램 변수와 프로그램
+                                    흐름 제어 데이터도 포함된다. 이로 인해 잘못된 프로그램 거동이 나타날 수 있으며, 메모리 접근 오류, 잘못된 결과, 프로그램 종료, 또는 시스템 보안
+                                    누설이 발생할 수 있다. 버퍼 오버플로가 코드를 실행시키도록 설계되거나 프로그램 작동을 변경시키도록 설계된 입력에 의해 촉발될 수 있다. 따라서 이는
+                                    많은 소프트웨어 취약점의 근간이 되며 악의적으로 이용될 수 있다. 경계 검사로 버퍼 오버플로를 방지할 수 있다. 버퍼 오버플로는 보통 데이터를 저장하는
+                                    과정에서 그 데이터를 저장할 메모리 위치가 유효한지를 검사하지 않아 발생한다. 이러한 경우 데이터가 담긴 위치 근처에 있는 값이 손상되고 그 손상이
+                                    프로그램 실행에 영향을 미칠 수도 있다. 특히 악의적인 공격으로 인해 프로그램에 취약점이 발생할 수도 있다. 흔히 버퍼 오버플로와 관련되는 프로그래밍
+                                    언어는 C와 C++로, 어떤 영역의 메모리에서도 내장된 데이터 접근 또는 덮어쓰기 보호 기능을 제공하지 않으며 어떤 배열에 기록되는 데이터가 그 배열의
+                                    범위 안에 포함되는지 자동으로 검사하지 않는다.
+                                </p>
+                                <div class="date">3. 버퍼 오버플로우</div>
+                            </div>
+                        </li>
+                        <li class="day">
+                            <div class="events">
+                                <p style="overflow-y: scroll; height: 250px; text-align: left;">
+                                    스니핑은 보안의 기본 요소 중 기밀성을 해치는 공격 방법으로, 스니핑 공격은 웹호스팅, 인터넷데이터센터(IDC) 등과 같이 여러 업체가 같은 네트워크를
+                                    공유하는 환경에서는 매우 위협적인 공격이 될 수 있다. 하나의 시스템이 공격당하게 되면 그 시스템을 이용하는 네트워크를 도청하게 되고, 다른 시스템의
+                                    사용자 아이디와 비밀번호를 알아낼 수 있기 때문이다. 네트워크 내의 패킷들은 대부분 암호화되어 있지 않아 해킹에 이용당하기가 쉽다. 비록 스위칭 환경의
+                                    네트워크를 구축하여 스니핑을 어렵게 할 수는 있지만 이를 우회할 수 있는 많은 공격 방법이 존재하고 있다.
+                                </p>
+                                <div class="date">4. 스니핑</div>
+                            </div>
+                        </li>
+                        <li class="day">
+                            <div class="events">
+                                <p style="overflow-y: scroll; height: 250px; text-align: left;">
+                                    백도어의 사전적인 정의는 '뒷문'인데, 의미도 뒷문 그대로이다. 백도어는 정상적인 인증 절차를 거치지 않고 컴퓨터와 암호 시스템 등에 접근할 수 있도록
+                                    하는 방법이다. 시스템을 설계한 시스템 설계자, 혹은 시스템을 관리하는 관리자에 의해 남겨진 시스템적인 보안 허점이다. 설계자가 허점을 일부러 남겨놓는
+                                    경우도 있는데, 이는 개발 단계에서의 테스트를 위해 혹은 유지 보수를 할 때 효율성을 위해 특수 계정을 허용하는 것이다. 하지만 이런 개발을 위한
+                                    의도를 비양심적으로 활용하여 비인가된 접근을 시도하거나, 개발이 완료된 후 삭제되지 않은 백도어를 발견하여 악용하게 될 경우는 위험하다. 그렇게 된다면
+                                    누군가 사용자의 접속 기록 및 로그인 정보 등 시스템 사용 내역을 볼 수 있는데, 더 심한 경우에는 사용자의 금융 정보를 탈취하여 금전적인 피해까지
+                                    입힐 수 있다.
+                                    백도어는 시스템에 최단 기간에 침입 가능하며 모든 패스워드를 바꾸는 등, 관리자가 아무리 안전하게 관리하려고 해도 시스템에 침입할 수 있기 때문에 더욱
+                                    위험하다. 게다가 발견되지 않고 시스템에 침입할 수 있으며 대부분의 백도어 프로그램은 로그를 남기지 않아 온라인으로 접속해도 이를 발견할 수
+                                    없다. 또한 중국 화웨이(huawei)의 스마트폰에서 사용자의 개인정보를 수집하는 백도어가 심어져 있다는 것이 밝혀져 논란이 있었다. 이런
+                                    백도어를 예방하기 위해서는 최신의 운영체제 및 소프트웨어 업데이트를 통해 보안 취약점을 제거해야 한다.
+                                </p>
+                                <div class="date">5. 백도어</div>
+                            </div>
+                        </li>
+                        <li class="day">
+                            <div class="events">
+                                <p style="overflow-y: scroll; height: 250px; text-align: left;">
+                                    사이버 공격자들은 멀쩡한 API를 자신들의 목적에 맞게 오염시키는 방법을 즐겨 사용하는데, 이를 위해 ‘코드 주입’이라는 기법을 활발히 차용하는
+                                    편이다. 이것도 모르고 오염된 API를 사용하면, 애플리케이션이나 웹 서비스가 개발자가 아니라 해커들이 원하는 방향으로 기능하게 된다. 즉, 엉뚱한
+                                    자들과 민감한 정보를 공유한다거나, 특정한 상황에서 인증 정보가 없이도 로그인이 되도록 한다거나, 추가 멀웨어를 심는 게 ‘코드가 주입된 API’를
+                                    통해 가능해진다.
+                                    API에 코드가 주입되었는지 아닌지를 확인하려면 여러 가지 ‘수동 점검’을 진행하는 것이 가장 좋다. 특히 요청 확인을 강도 높게 실시하는 것을
+                                    권장한다. 다각도로 기능을 점검함으로써 전혀 예상치 못한 반응이 나오는지 아닌지를 살피라는 것이다. 이러면 누군가 중간에서 악성 코드를 주입했더라도
+                                    알아챌 수 있게 된다.
+                                </p>
+                                <div class="date"> 6. 코드주입</div>
+                            </div>
+                        </li>
+                        <li class="day">
+                            <div class="events">
+                                <div class="day__img">
+                                    <img src="/img/wh_lan.jpeg" alt=""/>
+                                    <p class="caption">
+                                        White-Hat Language
+                                    </p>
+                                </div>
+                                <div class="date">언어</div>
+                            </div>
+                        </li>
+                        <li class="day">
+                            <div class="events">
+                                <p style="overflow-y: scroll; height: 250px; text-align: left;">
+                                    적절히 구조화된 후 여러 운영체제에서 소스 코드 변경을 최소화한 채로 프로그램을 사용할 수 있다. 시스템 하드웨어와 깊이 통합됐다는 특성 때문에
+                                    하드웨어 조작이 용이하고, 보안에 위협을 가할 수 있다. 그러나 C언어에서 생성된 소스 코드를 읽을 수 있다면 악성코드를 깊이 분석하고 코드의 취약점을
+                                    고칠 수 있어, 사이버 보안 관리자에게 도움이 된다. 소프트웨어 개발, 모의 해킹 테스트, 애플리케이션 테스트 과정에서 활용하기 좋은 언어이다.
+                                </p>
+                                <div class="date">1. C</div>
+                            </div>
+                        </li>
+                        <li class="day">
+                            <div class="events">
+                                <p style="overflow-y: scroll; height: 250px; text-align: left;">SQL(Structured Query
+                                    문법과 표현 구조가 간결해 초보자도 쉽게 배울 수 있는 언어이다. 어떤 시스템에서든 편하게 사용할 수 있으며, 여러 시스템과 통합이 가능하다. 이
+                                    때문에 사이버 보안 관리자들이 종종 스크립트 테스트 시 활용하기도 한다. 모의 해킹 테스트, 시스템 관리자, 보안 운영 등에 특히 자주 사용된다.
+
+                                </p>
+                                <div class="date">2. Python</div>
+                            </div>
+                        </li>
+                        <li class="day">
+                            <div class="events">
+                                <p style="overflow-y: scroll; height: 250px; text-align: left;">웹사이트에 접속한 사용자를 공격하는 XXS와
+                                    사용자의 의도와 상관없이 다른 사이트에 HTTP 요청을 보내는 CSRF 등과 같은 해킹 공격으로부터 코드를 보호하는데 큰 도움이 된다. 자바스크립트는
+                                    모의 해킹 테스트, 웹 개발, 개발 운영 등에 가장 적합한 프로그래밍 언어이다.
+                                </p>
+                                <div class="date">3. JavaScript</div>
+                            </div>
+                        </li>
+                        <li class="day">
+                            <div class="events">
+                                <p style="overflow-y: scroll; height: 250px; text-align: left;">많은 웹사이트에서 사용되는 언어이다. 이
+                                    때문에 PHP 언어를 기반으로 생성된 플랫폼에 대한 보안 위협이 크게 증가하고 있으며, 데이터베이스에 저장된 정보가 유출되는 피해가 발생할 수도 있다.
+                                    따라서 PHP를 미리 학습한다면 정보 유출 피해를 방지하는 데 도움이 된다. 자바스크립트와 마찬가지로 해킹 테스트, 웹 개발, 개발 운영 등에 적합한
+                                    언어이다.
+                                </p>
+                                <div class="date">4. PHP</div>
+                            </div>
+                        </li>
+                        <li class="day">
+                            <div class="events">
+                                <p style="overflow-y: scroll; height: 250px; text-align: left;">데이터가 관련 데이터베이스에 저장되는
+                                    과정에서 관리를 위해 활용되는 언어이다. 데이터베이스를 확장하고, 하드웨어가 지원 가능한 범위 내에서 최대한 많은 데이터를 저장할 수 있는 방법을
+                                    제공하는 데 도움이 된다. 그러나ㅌ 해커들에게 중요한 정보가 유출될 위험에 취약하다. 데이터가 유출될 위험성이 심각해 데이터가 규제될 경우, 데이터
+                                    유출
+                                    위험성을 낮추기 위해 SQL 코드를 강화하는 것이 중요하다. 이때, SQL 언어를 알고 있다면 데이터 유출을 최소화할 수 있다. 모의 해킹 테스트,
+                                    데이터베이스 관리, 웹 개발 과정에서 활용하기 좋다.
+                                </p>
+                                <div class="date">5. SQL</div>
+                            </div>
+                        </li>
+                        <li class="day">
+                            <div class="events">
+                                <p style="overflow-y: scroll; height: 250px; text-align: left;">리눅스(운영체제/서버)
+                                    ▶ 윈도우(운영체제/서버) ▶ 네트워크(CCNA) ▶ 프로그래밍 언어(자료구조, 알고리즘, c언어, 파이썬 등) ▶ TCP/IP(네트워크 프로그래밍
+                                    언어)
+                                    ▶ 리버싱(리버스 프로그래밍)</p>
+                                <div class="date">공부순서 추천</div>
+                            </div>
+                        </li>
+                    </ul>
+
+                    <div class="year year--end">
+                        <div class="inner">
+                            <span>White-Hat</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+    <div class="footer-box">
+        <div class="author">
+            <p><b>Creators - </b>KimLeeEum</p>
+            <p><b>email - </b>energizun1001@gamil.com</p>
+            <p><b>Domain - </b>www.cmdev.com</p>
+        </div>
+        <div class="link">
+            <ul>
+                <li><a href="https://github.com/" target="_blank"><i class="fab fa-github"> GitHub</i></a></li>
+                <li><a href="https://stackoverflow.com/" target="_blank"><i class="fab fa-stack-overflow">
+                    Stack-Overflow</i></a></li>
+            </ul>
+            <input type="hidden" id="userID" th:value="${session.id}">
+        </div>
+    </div>
+    <div class="eyebrow"><p>@2021 prod by 김이음</p></div>
+    >>>>>>> origin/master
+</div>
+
+</body>
+</html>
