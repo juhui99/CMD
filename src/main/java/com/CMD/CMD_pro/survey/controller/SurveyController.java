@@ -30,9 +30,7 @@ public class SurveyController {
 
     @RequestMapping(value = "/mainSurvey", method = RequestMethod.GET) //설문조사 메인화면
     public String mainSurvey(@ModelAttribute("cri") SearchCriteria cri, Model model, HttpSession session) throws Exception {
-
         String filename = null;
-
         if(session.getAttribute("id") != null){
             String userID = (String) session.getAttribute("id");
             UserVO user = userMapper.userLogin(userID);
@@ -46,7 +44,6 @@ public class SurveyController {
         List<SurveyVO> surveyList = surveyMapper.selectSurveyList(cri);
         model.addAttribute("surveyList", surveyList);//survey 리스트 출력
 
-//        PageMaker pageMaker = surveyMapper.selectCountPaging(cri);
         PageMaker pageMaker = new PageMaker();
         pageMaker.setCri(cri);
         pageMaker.setTotalCount(surveyMapper.selectCountPaging());
@@ -72,15 +69,13 @@ public class SurveyController {
             surveyItemList = surveyMapper.selectSurveyItems(survey_index);
             model.addAttribute("surveyVO", surveyVO); // 타이틀, 내용만 페이지에 보여지게 html 작성
             model.addAttribute("surveyItemList", surveyItemList);//진행중인 설문조사 상세 페이지
-            model.addAttribute("survey_index", survey_index);
+            model.addAttribute("survey_index", survey_index); //여기 김주한테 물어보기 surveyVO에 인덱스 있어서 아마 없어도 될거같음
 
             return "readSurvey_on";
         }
         else{ //설문조사 마감일때
             surveyItemList = surveyMapper.selectSurveyItems(survey_index);
-
             List<ResultDataSet> dataset  = surveyMapper.selectSurveyResultDataSet(survey_index);
-
 //           for (int i = 0 ; i < surveyItemList.size(); i++) {
 //                SurveyItemVO vo = surveyItemList.get(i);
 //            }
@@ -89,7 +84,6 @@ public class SurveyController {
 //                dataSet.setSurvey_item_index(vo.getSurvey_item_index());
 //                dataset.add(dataSet);
 //            }
-
             model.addAttribute("surveyItemList", surveyItemList); //설문조사 선택 리스트보기
             model.addAttribute("dataset", dataset);
             return "readSurvey_off";
@@ -97,7 +91,8 @@ public class SurveyController {
     }
 
     @RequestMapping("/closeSurvey") //설문조사 마감처리
-    public String closeSurvey(@RequestParam("survey_index") int survey_index, HttpSession session, Model model) throws Exception{
+    public String closeSurvey(@RequestParam("survey_index") int survey_index,
+                              HttpSession session, Model model) throws Exception{
         String userID = (String)session.getAttribute("id");
         if(userID == null){ //로그인 확인
             model.addAttribute("msg","로그인이 되어있지 않습니다.");
@@ -120,9 +115,7 @@ public class SurveyController {
 
     @RequestMapping(value="/insertSurvey",method = RequestMethod.GET)
     public String addSurveyGET(Model model, HttpSession session) throws Exception {
-
         String filename = null;
-
         if(session.getAttribute("id") != null){
             String userID = (String) session.getAttribute("id");
             UserVO user = userMapper.userLogin(userID);
@@ -150,10 +143,9 @@ public class SurveyController {
 
     @RequestMapping(value="insertSurvey", method = RequestMethod.POST) //설문조사 추가하기
     public String addSurvey(@RequestParam("survey_title") String survey_title, @RequestParam("survey_content") String survey_content,
-                            @RequestParam("itemcontent") String [] itemcontent, @RequestParam("survey_end") String survey_end, Model model, HttpSession session) throws Exception {
-
+                            @RequestParam("itemcontent") String [] itemcontent, @RequestParam("survey_end") String survey_end,
+                            Model model, HttpSession session) throws Exception {
         String filename = null;
-
         if(session.getAttribute("id") != null){
             String userID = (String) session.getAttribute("id");
             UserVO user = userMapper.userLogin(userID);
@@ -198,7 +190,6 @@ public class SurveyController {
         SurveyResultVO surveyResultVO = new SurveyResultVO();
         Map<String, Object> return_param = new HashMap<>();
         try {
-
             surveyResultVO.setSurvey_item_index(Integer.parseInt(survey));
             surveyResultVO.setUser_index(userIndex);
             surveyResultVO.setSurvey_index(Integer.parseInt(index));
@@ -255,17 +246,4 @@ public class SurveyController {
         model.addAttribute("surveysearch",SurveyList); //검색한 설문 리스트
         return "searchSurvey";
     }
-
-//    @RequestMapping(value = "/mainsurvey")
-//    public String main(HttpServletRequest request, Model model) throws Exception{
-//        UserVO user = (UserVO) request.getAttribute("UserVO");
-//
-//        if (user == null){
-//            return "redirect:/login";//로그인 위치
-//        }
-//        List<SurveyVO> surveyList = surveyService.getSurveyList();
-//        model.addAttribute("surveyList",surveyList);
-//        return "index";
-//    }
-
 }
