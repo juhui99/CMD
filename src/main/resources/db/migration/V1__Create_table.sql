@@ -13,33 +13,45 @@ CREATE TABLE `users` (
                          PRIMARY KEY (`user_index`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+-- CREATE TABLE `survey` (
+--                          `survey_index` int NOT NULL AUTO_INCREMENT,
+--                          `user_index` int NOT NULL,
+--                          `survey_title` varchar(200) NOT NULL,
+--                          `survey_content` varchar(1000) DEFAULT NULL,
+--                          `survey_reg_date` datetime NOT NULL DEFAULT NOW(),
+--                          `survey_end_date` datetime DEFAULT NULL,
+--                          `survey_count` int DEFAULT NULL,
+--                          `survey_duplicate` int DEFAULT NULL,
+--                          PRIMARY KEY (`survey_index`)
+-- ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 CREATE TABLE `survey` (
-                         `survey_index` int NOT NULL AUTO_INCREMENT,
-                         `user_index` int NOT NULL,
-                         `survey_title` varchar(200) NOT NULL,
-                         `survey_content` varchar(1000) DEFAULT NULL,
-                         `survey_reg_date` datetime NOT NULL DEFAULT NOW(),
-                         `survey_end_date` datetime DEFAULT NULL,
-                         `survey_count` int DEFAULT NULL,
-                         `survey_duplicate` int DEFAULT NULL,
-                         PRIMARY KEY (`survey_index`)
+                          `survey_index` int NOT NULL AUTO_INCREMENT,
+                          `user_index` int NOT NULL,
+                          `survey_title` varchar(200) NOT NULL,
+                          `survey_content` varchar(1000) DEFAULT NULL,
+                          `survey_reg` datetime NOT NULL DEFAULT NOW(),
+                          `survey_end` datetime DEFAULT NULL,
+                          `progressing` int NOT NULL DEFAULT 1,
+                          `survey_count` int NOT NULL DEFAULT 0,
+                          PRIMARY KEY (`survey_index`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-# CREATE TABLE `survey_item` (
-#                           `survey_item_index` int NOT NULL AUTO_INCREMENT,
-#                           `survey_index` int NOT NULL,
-#                           `survey_item_content` varchar(1000) DEFAULT NULL,
-#                           PRIMARY KEY (`survey_item_index`)
-# ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-#
-# CREATE TABLE `survey_result` (
-#                           `survey_result_index` int NOT NULL AUTO_INCREMENT,
-#                           `survey_index` int NOT NULL,
-#                           `survey_item_index` int NOT NULL,
-#                           `survey_result` varchar(1000) DEFAULT NULL,
-#                           `survey_result_reg_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-#                           PRIMARY KEY (`survey_result_index`)
-# ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE TABLE `surveyItem` (
+                              `survey_item_index` int NOT NULL AUTO_INCREMENT,
+                              `survey_index` int NOT NULL,
+                              `survey_item_content` varchar(1000) DEFAULT NULL,
+                              PRIMARY KEY (`survey_item_index`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `surveyResult` (
+                                `survey_result_index` int NOT NULL AUTO_INCREMENT,
+                                `survey_index` int NOT NULL,
+                                `survey_item_index` int NOT NULL,
+                                `user_index` int NOT NULL,
+                                `survey_result_reg` datetime NOT NULL DEFAULT NOW(),
+                                PRIMARY KEY (`survey_result_index`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
  CREATE TABLE `board` (
      `bno` int NOT NULL AUTO_INCREMENT,
