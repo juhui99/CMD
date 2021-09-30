@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -69,7 +70,7 @@ public class SurveyController {
             surveyItemList = surveyMapper.selectSurveyItems(survey_index);
             model.addAttribute("surveyVO", surveyVO); // 타이틀, 내용만 페이지에 보여지게 html 작성
             model.addAttribute("surveyItemList", surveyItemList);//진행중인 설문조사 상세 페이지
-
+            model.addAttribute("survey_index", survey_index);
             return "readSurvey_on";
         }
         else{ //설문조사 마감일때
@@ -179,14 +180,21 @@ public class SurveyController {
 
     @RequestMapping(value="voteSurvey", method = RequestMethod.POST) //설문조사 참여하기
     public @ResponseBody Map<String, Object> insertSurveyResult
-            (@RequestParam("itemIndex") int survey_item_index, @RequestParam("surveyIndex") int survey_index) {
-
+            ( HttpServletRequest req,HttpSession session) throws Exception{
+        String userID;
+        userID = (String) session.getAttribute("id");
+        UserVO user = userMapper.userLogin(userID);
+        int userIndex = user.getUser_index();
+        String index = req.getParameter("index");
+        String survey = req.getParameter("survey");
+        System.out.println(index + survey);
         SurveyResultVO surveyResultVO = new SurveyResultVO();
         Map<String, Object> return_param = new HashMap<>();
         try {
-            surveyResultVO.setSurvey_item_index(survey_item_index);
-//            surveyResultVO.setUser_index(surveyResultVO.getUser_index());
-            surveyResultVO.setSurvey_index(survey_index);
+
+            surveyResultVO.setSurvey_item_index(Integer.parseInt(survey));
+            surveyResultVO.setUser_index(userIndex);
+            surveyResultVO.setSurvey_index(Integer.parseInt(index));
             surveyMapper.insertSurveyResult(surveyResultVO);
             return_param.put("result", true);
             return_param.put("message", "설문에 참여하였습니다.");
