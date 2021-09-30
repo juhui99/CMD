@@ -13,58 +13,43 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
-
     <script type="text/javascript">
-        function submitChat() {
+
+        function searchRanking() {
             $.ajax({
-                url: "/submitChat",
                 type: "POST",
-                data: {
-                    content: $("#chatContent").val(),
-                    friend: $("#friendID").val()
-                },
-                success: function () {
-                    $("#chatContent").val('');
+                url: "/searchRanking",
+                success: function (data) {
+                    if (data == "") return;
+                    $('#ranking').html('');
+                    var parsed = JSON.parse(data);
+                    var result = parsed.result;
+                    var html = '';
+                    html += '<ul id="ticker" >'
+                    for (var i = 0; i < result.length; i++) {
+
+                        html += '<li>' + '<a href="/main_search?keyword=' + result[i][0].value + '"><span >' + (i + 1) + '</span>' + result[i][0].value + '</a>';
+                        html += '</li>';
+
+                    }
+                    html += '</ul>'
+                    $("#ranking").append(html);
+
+                    $('#rankingArea').html('');
+                    var html2 = '';
+                    for (var i = 0; i < result.length; i++) {
+                        html2 += '<a href="/main_search?keyword=' + result[i][0].value + '" style="color: black; font-size: 12px;"><span style="background-color: #003366d2; color: white; padding-right: 4px; padding-left: 4px; margin-left: 3px;  margin-right: 2px; margin-bottom: 3px; font-size: 12px;">' + (i + 1) + '</span>' + result[i][0].value + '</a><br>'
+                    }
+                    $('#rankingArea').append(html2);
+
                 }
             });
         }
 
-
-        var lastID = 0;
-
-        function chatList(lastId) {
-            $.ajax({
-                type: "POST",
-                url: "/getChatList",
-                data: {
-                    friend: $("#friendID").val(),
-                    id: lastId
-                },
-                success: function (data) {
-                    if (data == "") return;
-                    var parsed = JSON.parse(data);
-                    var result = parsed.result;
-                    for (var i = 0; i < result.length; i++) {
-                        var html = '';
-                        if (result[i][0].value == $('#friendID').val()) {
-                            html += '<div style="margin-left: 10px; margin-top: 20px;" align="left"><img class= "img-circle" style="width: 35px; height: 35px; border-top:  #003366d2; border-bottom: #003366d2" src="/display?filename=' + $('#friendImg').val() + '"' + '/><span style="margin-left: 4px; color: #003366d2; font-weight: bold;">'
-                                + result[i][0].value + '</span><br>' + '<div style="width: 200px;"><span>' + result[i][1].value + '</span></div>'
-                                + '<span style="font-size: 1px; color: grey;">' + result[i][2].value + '</span></div>';
-                            $("#chatContainer").append(html);
-                            $('#chatContainer').scrollTop($('#chatContainer')[0].scrollHeight);
-                        } else {
-                            html += '<div style="margin-right: 10px; margin-top: 20px;" align="right"><img class= "img-circle" style="width: 35px; height: 35px; border-top:  #003366d2; border-bottom: #003366d2;" src="/display?filename=' + $('#userImg').val() + '"' + '/><span style="margin-left: 4px; color: #003366d2; font-weight: bold;">'
-                                + result[i][0].value + '</span><br>' + '<div style="width: 200px;"><span style="word-break: break-all;">' + result[i][1].value + '</span></div>'
-                                + '<span style="font-size: 1px; color: grey;">' + result[i][2].value + '</span></div>';
-                            $("#chatContainer").append(html);
-                            $('#chatContainer').scrollTop($('#chatContainer')[0].scrollHeight);
-                        }
-
-                    }
-                    lastID = Number(parsed.last);
-                }
-            });
+        function getInfiniteSearchRanking() {
+            setInterval(function () {
+                searchRanking();
+            }, 30000);
         }
 
         function totalUnreadChat() {
@@ -85,62 +70,17 @@
             });
         }
 
-
-        function getInfiniteChat() {
-            setInterval(function () {
-                chatList(lastID);
-            }, 1000);
-        }
-
         function getInfiniteTotalUnread() {
             setInterval(function () {
                 totalUnreadChat();
-            }, 2000);
-        }
-
-
-        function searchRanking() {
-            $.ajax({
-                type: "POST",
-                url: "/searchRanking",
-                success: function (data) {
-                    if (data == "") return;
-                    $('#ranking').html('');
-                    var parsed = JSON.parse(data);
-                    var result = parsed.result;
-                    var html = '';
-                    html += '<ul id="ticker">'
-                    for (var i = 0; i < result.length; i++) {
-
-                        html += '<li style="margin-top: 1px">' + '<a href="/main_search?keyword=' + result[i][0].value + '"><span>' + (i + 1) + '</span>' + result[i][0].value + '</a>';
-                        html += '</li>';
-
-                    }
-                    html += '</ul>'
-                    $("#ranking").append(html);
-
-                    $('#rankingArea').html('');
-                    var html2 = '';
-                    for(var i = 0; i < result.length; i++){
-                        html2 += '<a href="/main_search?keyword=' + result[i][0].value + '" style="color: black; font-size: 12px;"><span style="background-color: #003366d2; color: white; padding-right: 4px; padding-left: 4px; margin-left: 3px;  margin-right: 2px; margin-bottom: 3px; font-size: 12px;">' + (i + 1) + '</span>' + result[i][0].value + '</a><br>'
-                    }
-                    $('#rankingArea').append(html2);
-
-                }
-            });
-        }
-
-        function getInfiniteSearchRanking() {
-            setInterval(function () {
-                searchRanking();
-            }, 30000);
+            }, 4000);
         }
 
 
     </script>
+
     <style>
-        /* Make the image fully
-    }responsive */
+        /* Make the image fully responsive */
 
         .frontend_board {
             display: none;
@@ -149,6 +89,7 @@
 
         .carousel {
             margin: 4% auto;
+            width: 94%;
         }
 
         .carousel-inner img {
@@ -208,40 +149,40 @@
             box-shadow: 0 0 0 0.2rem #003366d2;
         }
 
-        thead th {
-            background-color: #003366d2;
-            color: white;
-            text-align: center;
+
+        .block {
+            border: 2px solid #003366d2;
+            padding: 1px 5px;
+            height: 25px;
+            overflow: hidden;
+            background: #fff;
+            width: 100px;
+            font-size: 12px;
         }
 
-        tr td:first-child,
-        tr th:first-child {
-            border-top-left-radius: 6px;
-            border-bottom-left-radius: 6px;
-            border-top-right-radius: 6px;
-            border-bottom-right-radius: 6px;
+        .block ul, .block li {
+            margin: 0;
+            padding: 0;
+            list-style: none;
         }
 
-        tr last-child {
-            border-bottom-left-radius: 6px;
-            border-bottom-right-radius: 6px;
+        .block li a {
+            display: block;
+            height: 20px;
+            line-height: 20px;
+            color: #555;
+            text-decoration: none;
         }
 
-        table {
-            border-collapse: separate !important;
+        .block li span {
+            padding: 2px 5px;
+            background: #003366d2;
+            color: #fff;
+            font-weight: bold;
+            margin-right: 3px;
         }
 
-        #chatContainer {
-            overflow: auto;
-        }
-
-
-        .block {border:2px solid #003366d2;  padding:0 5px; height:25px; overflow:hidden; background:#fff; width:100px; font-family:Gulim; font-size:12px;}
-        .block ul, .block li {margin:0; padding:0; list-style:none;}
-        .block li a {display:block; height:20px; line-height:20px; color:#555; text-decoration:none;}
-        .block li span {padding:2px 5px; background:#003366d2; color:#fff; font-weight:bold; margin-right:3px;}
-
-        .popupLayer{
+        .popupLayer {
             display: none;
             position: absolute;
             left: 950px;
@@ -252,12 +193,9 @@
             border-radius: 5px;
         }
 
-
     </style>
 </head>
 <body>
-
-
 <div class="container" style="z-index: 1;">
     <div class="header-box">
         <div class="logo"><a href="/main"><img src="/img/CMD-logo.png" alt="logo" height="100%"></a></div>
@@ -370,12 +308,13 @@
                     <a class="nav-link" href="/cmd_roadmap">로드맵</a>
                 </li>
 
+
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbardrop3" data-toggle="dropdown">
                         설문조사
                     </a>
                     <div class="dropdown-menu">
-                        <a class="dropdown-item" href="#">설문조사 하기</a>
+                        <a class="dropdown-item" href="/mainSurvey">설문조사 하기</a>
                         <a class="dropdown-item" href="#">설문조사 통계</a>
                     </div>
                 </li>
@@ -407,48 +346,61 @@
         </nav>
     </div>
 
-    <div class="container" style="margin: 30px 30%;">
-        <div style="background: rgba(15,67,125,0.82); border: 2px solid #003366d2; border-top-left-radius: 5px; border-top-right-radius: 5px; width: 400px; text-align: center;">
-            <span style="color: white;"> 채팅창</span>
-            <div  id="chatContainer"
-                  style="background: white; border-top: 2px solid #003366d2; border-bottom: 2px solid #003366d2; width: 397px; height: 450px; padding-bottom: 20px;"></div>
-            <div style="margin: 10px 0px;">
-                <textarea th:if="${withdrawal == 0}" style="width: 300px; outline: none; resize:none; background: white; border:2px solid #003366d3; border-radius: 5px; width:300px; height: 93px; margin-top: 3px" id="chatContent"></textarea>
-                <button th:if="${withdrawal == 0}" style="outline: none; float: right;  cursor: pointer; color: honeydew!important; background: linear-gradient(to left, rgba(22, 40, 108, 0.55), #1969af ); border: 0; margin-top:30px; margin-bottom: 30px; margin-right: 3px; border-radius: 1em; padding-left: 30px; padding-right: 30px; padding-bottom: 10px; padding-top: 10px; font-family: 'Ubuntu', sans-serif; font-size: 14px;
-    box-shadow: 0 0 20px 1px rgba(0, 0, 0, 0.04);" onclick="submitChat();">전송</button>
-                <textarea th:if="${withdrawal == 1}" style="width: 300px; outline: none; resize:none; background: white; border:2px solid #003366d3; border-radius: 5px; width:300px; height: 93px; margin-top: 3px" readonly disabled>탈퇴한 회원으로 대화가 불가능한 사용자입니다.</textarea>
-                <input type="hidden" th:value="${friend}" id="friendID">
-                <input type="hidden" id="userImg" th:value="${filename}">
-                <input type="hidden" id="friendImg" th:value="${friendFile}">
-            </div>
-        </div>
+
+    <!--<label th:if="${param.progressing} != null and ${param.progressing} == 0">마감된 설문 목록</label>-->
+    <!--<label th:unless="${param.progressing} != null and ${param.progressing} == 0">진행 중인 설문</label>-->
+<div class="survey-box" style="width: 100%; height: 450px;">
+    <div style="width: auto; margin-left: 5%; margin-right: 10%; height: auto; margin-top: 5%">
+    <table>
+        <tbody style="border: solid 2px  #dddddd;">
+        <tr>
+            <!--        <th style="width: 10px">Index</th>-->
+            <th style="width: 100px; text-align: center">제목</th>
+            <th style="width: 200px">내용</th>
+            <th style="width: 150px">시작일</th>
+            <th style="width: 150px">마감일</th>
+            <th style="width: 100px">진행여부</th> <!--(1 = 진행중, 0 = 마감)-->
+        </tr>
+
+        <!--    <label th:if="${surveyList.survey_index} < 0">작성된 설문조사가 없습니다.</label>-->
+
+        <tr th:each="surveyList : ${surveyList}">
+            <!--        <td th:text="${surveyList.survey_index}"></td>-->
+            <td style="text-align: center">
+                <a th:href="@{/readSurvey(survey_index=${surveyList.survey_index},progressing=${surveyList.progressing})}"
+                   th:text="${surveyList.survey_title}"></a></td>
+            <td th:text="${surveyList.survey_content}"></td>
+            <td style="margin-left: 5px" th:text="${surveyList.survey_reg}"></td>
+            <td style="margin-left: 5px" th:text="${surveyList.survey_end}"></td>
+            <!--        <td th:if="${surveyList.progressing == 1}" >1</td>-->
+            <!--        <td th:if="${surveyList.progressing == 0}">0</td>-->
+
+
+            <td style="margin-left: 5px" th:if="${surveyList.progressing} == 1 ? 'moving' : 'cancelled'"
+                th:text="${surveyList.progressing} == 1 ? '진행중' : '마감'"></td>
+            <!--        <td th:if="${surveyList.progressing} == 1" th:text="${surveyList.progressing}"></td>-->
+            <!--        <td th:if="${surveyList.progressing} == 0" th:text="${surveyList.progressing}"></td>-->
+        </tr>
+        </tbody>
+    </table>
+
+    <ul style="margin: 0 auto; margin-top: 20px; margin-bottom: 20px;" class="pagination pagination-sm no-margin pull-right">
+        <li th:if="${pageMaker.prev} == true">
+            <a style="text-decoration:none; color: black; border: 1px solid #dddddd; margin-left: 1px;" th:href="@{/mainSurvey?(page=${pageMaker.startPage - 1},perPageNum=${pageMaker.cri.perPageNum})}"><</a>
+        </li>
+        <li th:if="${page} > 0" th:each="page,iterStat : ${#numbers.sequence(pageMaker.startPage,pageMaker.endPage)}"
+            th:classappend="${pageMaker.cri.page} == ${idx} ? active : null">
+            <a th:href="@{/mainSurvey?(page=${page},perPageNum=${pageMaker.cri.perPageNum})}" th:text="${page}" style="text-decoration:none; color: black; border: 1px solid #dddddd; margin-left: 1px;"></a>
+        </li>
+        </li>
+        <li th:if="${pageMaker.next} == true and ${pageMaker.endPage >0}">
+            <a style="text-decoration:none; color: black; border: 1px solid #dddddd; margin-left: 1px;" th:href="@{/mainSurvey?(page=${pageMaker.endPage + 1},perPageNum=${pageMaker.cri.perPageNum})}">></a>
+        </li>
+    </ul>
+
+    <button onclick="location.href='/insertSurvey'">설문조사 추가</button>
     </div>
-
-
-
-    <!--
-        <div class="container" style="margin: 30px 30%;">
-            <div style="background: rgba(15,67,125,0.82); border: 2px solid #003366d2; border-top-left-radius: 5px; border-top-right-radius: 5px; width: 400px; text-align: center;">
-                <span style="color: white;">채팅창</span></div>
-            <div id="chatContainer"
-                 style="background: white; border-top: 2px solid #003366d2; border-bottom: 2px solid #003366d2; width: 397px; height: 450px; padding-bottom: 20px;"></div>
-            <div style="margin-bottom: 30px;">
-                <textarea th:if="${withdrawal == 0}"
-                          style="outline: none; resize:none; background: white; border:2px solid #003366d3; border-radius: 5px; width:300px; height: 93px; margin-top: 3px;"
-                          id="chatContent"></textarea>
-                <button style="outline: none; float: right;  cursor: pointer; color: honeydew!important; background: linear-gradient(to left, rgba(22, 40, 108, 0.55), #1969af ); border: 0; margin-top:30px; margin-bottom: 30px; margin-right: 3px; border-radius: 1em; padding-left: 30px; padding-right: 30px; padding-bottom: 10px; padding-top: 10px; font-family: 'Ubuntu', sans-serif; font-size: 14px;
-                box-shadow: 0 0 20px 1px rgba(0, 0, 0, 0.04);" th:if="${withdrawal == 0}" onclick="submitChat();">전송
-                </button>
-
-                <textarea th:if="${withdrawal == 1}"
-                          style="outline: none; resize:none; background: white; border:2px solid #003366d3; border-radius: 5px; width:300px; height: 93px; margin-top: 3px;"
-                          readonly disabled>탈퇴한 회원으로 대화가 불가능한 사용자입니다.</textarea>
-                <input type="hidden" th:value="${friend}" id="friendID">
-                <input type="hidden" id="userImg" th:value="${filename}">
-                <input type="hidden" id="friendImg" th:value="${friendFile}">
-            </div>
-        </div>
-    -->
+</div>
     <div class="footer-box">
         <div class="author">
             <p><b>Creators - </b>KimLeeEum</p>
@@ -466,6 +418,7 @@
     </div>
     <div class="eyebrow"><p>@2021 prod by 김이음</p></div>
 </div>
+
 <div class="popupLayer" style=" z-index: 2;">
     <div style="background: #003366d2;">
         <span style=" color: white; border-radius: 5px; margin-left: 2px; margin-top: 5px; padding: 3px; font-size: 12px;">인기검색어</span><span style="color: white; float: right; margin-right: 3px; cursor: pointer;" onclick="closePopup();">x</span>
@@ -476,17 +429,13 @@
     </div>
 </div>
 <script type="text/javascript">
-
-
     $(document).ready(function () {
-        searchRanking();
-        chatList('0');
-        totalUnreadChat();
-        getInfiniteChat();
-        getInfiniteTotalUnread();
 
+        searchRanking();
+        totalUnreadChat();
+        getInfiniteSearchRanking();
+        getInfiniteTotalUnread();
         $(".board").css("display", "none");
-        $(".friendDelete").css("display", "none");
 
 
         $(".frontend").hover(function () {
@@ -533,43 +482,25 @@
             } else {
                 alert("회원탈퇴를 취소합니다.");
             }
-            var ticker = function()
-            {
-                setTimeout(function(){
-                    $('#ticker li:first').animate( {marginTop: '-20px'}, 400, function()
-                    {
-                        $(this).detach().appendTo('ul#ticker').removeAttr('style');
-                    });
-                    ticker();
-                }, 3000);
-            };
-            ticker();
-
-            $("#ranking").hover(function () {
-                $(".popupLayer").css("display","block");
-            });
-
         });
 
-        function closePopup() {
-            $(".popupLayer").css("display","none");
-        }
 
-    var ticker = function()
-    {
-        setTimeout(function(){
-            $('#ticker li:first').animate( {marginTop: '-20px'}, 400, function()
-            {
-                $(this).detach().appendTo('ul#ticker').removeAttr('style');
-            });
-            ticker();
-        }, 3000);
-    };
-    ticker();
 
-    $("#ranking").hover(function () {
-        $(".popupLayer").css("display","block");
-    });
+        var ticker = function()
+        {
+            setTimeout(function(){
+                $('#ticker li:first').animate( {marginTop: '-20px'}, 400, function()
+                {
+                    $(this).detach().appendTo('ul#ticker').removeAttr('style');
+                });
+                ticker();
+            }, 3000);
+        };
+        ticker();
+
+        $("#ranking").hover(function () {
+            $(".popupLayer").css("display","block");
+        });
 
     });
 
