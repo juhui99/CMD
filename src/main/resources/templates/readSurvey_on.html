@@ -48,6 +48,13 @@
             });
         }
 
+        function clickCheck(target) {
+            document.querySelectorAll(`input[type=checkbox]`)
+                .forEach(el => el.checked = false);
+
+            target.checked = true;
+        }
+
 
         // function surveyVote(){
         //   var form = document.getElementById("voteform");
@@ -75,7 +82,7 @@
     <h2 class="tm-block-title">목록</h2>
     <div class="form-group">
         <div th:each="surveyItemList : ${surveyItemList}" class="form-check">
-            <input type="checkbox" name="itemIndex" class="form-check-input"  th:value="${surveyItemList.survey_item_index}"/>
+            <input type="checkbox" name="itemIndex" class="form-check-input"  th:value="${surveyItemList.survey_item_index}" onclick="clickCheck(this)"/>
 
             <!--<iuput type="text" class="itemIndex" name="itemIndex" th:value="${surveyItemList.survey_item_index}"/>-->
 
