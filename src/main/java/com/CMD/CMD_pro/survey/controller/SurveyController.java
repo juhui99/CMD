@@ -28,7 +28,19 @@ public class SurveyController {
     private SurveyMapper surveyMapper;
 
     @RequestMapping(value = "/mainSurvey", method = RequestMethod.GET) //설문조사 메인화면
-    public String mainSurvey(@ModelAttribute("cri") SearchCriteria cri, Model model) throws Exception {
+    public String mainSurvey(@ModelAttribute("cri") SearchCriteria cri, Model model, HttpSession session) throws Exception {
+
+        String filename = null;
+
+        if(session.getAttribute("id") != null){
+            String userID = (String) session.getAttribute("id");
+            UserVO user = userMapper.userLogin(userID);
+            filename = user.getUser_profile();
+
+        } else {
+            filename = "non";
+        }
+        model.addAttribute("filename",filename);
 
         List<SurveyVO> surveyList = surveyMapper.selectSurveyList(cri);
         model.addAttribute("surveyList", surveyList);//survey 리스트 출력
@@ -106,6 +118,7 @@ public class SurveyController {
 
     @RequestMapping(value="/insertSurvey",method = RequestMethod.GET)
     public String addSurveyGET(Model model, HttpSession session) throws Exception {
+
         String userID = (String)session.getAttribute("id");
         if(userID == null){ //로그인 확인
             model.addAttribute("msg","로그인이 되어있지 않습니다.");
@@ -123,7 +136,20 @@ public class SurveyController {
 
     @RequestMapping(value="insertSurvey", method = RequestMethod.POST) //설문조사 추가하기
     public String addSurvey(@RequestParam("survey_title") String survey_title, @RequestParam("survey_content") String survey_content,
-                            @RequestParam("itemcontent") String [] itemcontent, @RequestParam("survey_end") String survey_end, Model model) throws Exception {
+                            @RequestParam("itemcontent") String [] itemcontent, @RequestParam("survey_end") String survey_end, Model model, HttpSession session) throws Exception {
+
+        String filename = null;
+
+        if(session.getAttribute("id") != null){
+            String userID = (String) session.getAttribute("id");
+            UserVO user = userMapper.userLogin(userID);
+            filename = user.getUser_profile();
+
+        } else {
+            filename = "non";
+        }
+        model.addAttribute("filename",filename);
+
         SurveyVO surveyVO = new SurveyVO();
 
         String pattern = "YYYY-MM-DD";
@@ -147,10 +173,24 @@ public class SurveyController {
 
     @RequestMapping(value="voteSurvey", method = RequestMethod.POST) //설문조사 참여하기
     public @ResponseBody Map<String, Object> insertSurveyResult
-            (@RequestParam("itemIndex") int survey_item_index, @RequestParam("surveyIndex") int survey_index) {
+            (@RequestParam("itemIndex") int survey_item_index, @RequestParam("surveyIndex") int survey_index, HttpSession session, Model model) throws Exception {
+
+        String filename = null;
+
+        if(session.getAttribute("id") != null){
+            String userID = (String) session.getAttribute("id");
+            UserVO user = userMapper.userLogin(userID);
+            filename = user.getUser_profile();
+
+        } else {
+            filename = "non";
+        }
+        model.addAttribute("filename",filename);
 
         SurveyResultVO surveyResultVO = new SurveyResultVO();
         Map<String, Object> return_param = new HashMap<>();
+
+
         try {
             surveyResultVO.setSurvey_item_index(survey_item_index);
 //            surveyResultVO.setUser_index(surveyResultVO.getUser_index());

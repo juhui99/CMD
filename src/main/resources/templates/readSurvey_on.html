@@ -26,7 +26,7 @@
         dataType:"json",
         // data: formData, //위에서 선언한 fromdata
         data: {
-          itemIndex:$(".itemIndex").val(),
+          itemIndex:$("#itemIndex").val(),
           surveyIndex:$("#surveyIndex").val()
         },
         // cache:false,
@@ -80,6 +80,16 @@
       <input type="text" class="itemContent" name="itemContent" th:value="${surveyItemList.survey_item_content}"/>
     </div>
   </div>
+
+<!--  <input type="checkbox" class="form-check-input" id="itemList" name="itemList"/>&ndash;&gt;-->
+
+<!--  <iuput type="text" class="itemIndex" name="itemIndex" th:value="${surveyItemList.survey_item_index}"/>-->
+<!--  -->
+<!--  <input type="text" class="itemContent" name="itemContent" th:value="${surveyItemList.survey_item_content}"/>-->
+
+<!--  <iuput type="text" class="itemIndex" name="itemIndex" th:value="${surveyItemList.survey_item_index}"/>-->
+
+<!--  <input type="text" class="itemContent" name="itemContent" th:value="${surveyItemList.survey_item_content}"/>-->
 
   <input type="hidden" th:value="${session.id}" id="id" name="id"/>
 
