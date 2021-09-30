@@ -110,6 +110,13 @@ insert into survey (`user_index`,
                     `survey_count`)
 values(1,'test10','내용10','2021-11-14',0,1);
 
+insert into survey (`user_index`,
+                    `survey_title`,
+                    `survey_content`,
+                    `survey_end`,
+                    `progressing`,
+                    `survey_count`)
+values(1,'test11','내용11','2021-11-14',0,1);
 
 insert into surveyItem (`survey_index`,
                         `survey_item_content`)
@@ -120,7 +127,6 @@ values(1,'선택2');
 insert into surveyItem (`survey_index`,
                         `survey_item_content`)
 values(1,'선택3');
-
 
 insert into surveyItem (`survey_index`,
                         `survey_item_content`)

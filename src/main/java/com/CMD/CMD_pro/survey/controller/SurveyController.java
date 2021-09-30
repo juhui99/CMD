@@ -93,16 +93,14 @@ public class SurveyController {
         UserVO user = userMapper.userLogin(userID);
         if(user.getUser_manager() == 0){ //매니저만 설문 마감 가능
             model.addAttribute("msg","접근할 수 없습니다.");
+            model.addAttribute("url","mainSurvey");
             return "alert";
         }
         try {
-            model.addAttribute("msg","설문조사를 마감하시겠습니까?");
             surveyMapper.closeSurvey(survey_index);
         } catch (Exception e) {
-            model.addAttribute("msg","ERROR");
             return "redirect:/mainSurvey"; //닫는거 실패했을때
         }
-        model.addAttribute("msg","설문조사를 마감하였습니다.");
         return "redirect:/mainSurvey"; //설문조사 마감 성공
     }
 
@@ -117,7 +115,7 @@ public class SurveyController {
         UserVO user = userMapper.userLogin(userID);
         if(user.getUser_manager() == 0){ //매니저만 추가가능
             model.addAttribute("msg","접근할 수 없는 권한입니다.");
-            model.addAttribute("url","login");
+            model.addAttribute("url","mainSurvey");
             return "alert";
         }
         return "insertSurvey";
@@ -125,19 +123,16 @@ public class SurveyController {
 
     @RequestMapping(value="insertSurvey", method = RequestMethod.POST) //설문조사 추가하기
     public String addSurvey(@RequestParam("survey_title") String survey_title, @RequestParam("survey_content") String survey_content,
-                            @RequestParam("itemcontent") String [] itemcontent, @RequestParam("survey_end") String survey_end) throws Exception {
+                            @RequestParam("itemcontent") String [] itemcontent, @RequestParam("survey_end") String survey_end, Model model) throws Exception {
         SurveyVO surveyVO = new SurveyVO();
-        SurveyWithItemVO surveyWithItemVO = new SurveyWithItemVO();
 
         String pattern = "YYYY-MM-DD";
         SimpleDateFormat sdf = new SimpleDateFormat(pattern);
         surveyVO.setSurvey_end(sdf.parse(survey_end));
         surveyVO.setSurvey_title(survey_title);
         surveyVO.setSurvey_content(survey_content);
-        //surveyVO.setUser_index(user.getUser_index());
         List<SurveyItemVO> surveyItemList = new ArrayList<>();
 
-//        surveyWithItemVO.setSurveyItemList(surveyItemList);
         surveyMapper.insertSurvey(surveyVO);
         for (int i = 0; i < itemcontent.length; i++) {
             SurveyItemVO temp  = new SurveyItemVO();
@@ -152,12 +147,13 @@ public class SurveyController {
 
     @RequestMapping(value="voteSurvey", method = RequestMethod.POST) //설문조사 참여하기
     public @ResponseBody Map<String, Object> insertSurveyResult
-            (@RequestParam("survey_item_index") int survey_item_index, @RequestParam("survey_index") int survey_index) {
+            (@RequestParam("itemIndex") int survey_item_index, @RequestParam("surveyIndex") int survey_index) {
+
         SurveyResultVO surveyResultVO = new SurveyResultVO();
         Map<String, Object> return_param = new HashMap<>();
         try {
             surveyResultVO.setSurvey_item_index(survey_item_index);
-            //surveyResultVO.setMember_seq(user.getMember_seq());
+//            surveyResultVO.setUser_index(surveyResultVO.getUser_index());
             surveyResultVO.setSurvey_index(survey_index);
             surveyMapper.insertSurveyResult(surveyResultVO);
             return_param.put("result", true);
@@ -182,20 +178,18 @@ public class SurveyController {
         UserVO user = userMapper.userLogin(userID);
         if(user.getUser_manager() == 0){ //매니저만 설문 삭제 가능
             model.addAttribute("msg","접근할 수 없습니다.");
+            model.addAttribute("url","mainSurvey");
             return "alert";
         }
-        model.addAttribute("msg","설문조사를 삭제하시겠습니까?");
         try {
             surveyMapper.removeSurvey(survey_index);
         } catch (Exception e) {
-            model.addAttribute("msg","ERROR");
             return "redirect:/mainSurvey";
         }
-        model.addAttribute("msg","설문조사가 삭제되었습니다.");
         return "redirect:/mainSurvey";
     }
 
-    @RequestMapping("/searchSurvey") // 메인 검색
+    @RequestMapping("/searchSurvey") // 검색
     public String searchSurvey(Model model, @RequestParam("searchType") String searchType, @RequestParam("keyword") String keyword) throws Exception {
         SearchCriteria cri = new SearchCriteria();
         cri.setPage(1);

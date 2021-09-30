@@ -8,37 +8,29 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>insertSurvey</title>
-    <script type="text/javascript">
-        // $(document).ready(function (){
-        //     $('.addSurveyItem_btn').on('click',function (){
-        //         var item = $("<div class='item'><span></span> " +
-        //             "<input id='name' autocomplete='off' name='survey_item_content' type='text'> " +
-        //             "<button class='minusSurveyitem_btn'> <b> x </b></button></div>");
-        //         $(this).parent().find('.items').append(item);
-        //     });
-        //
-        //     $(document).on('click', 'minusSurveyitem_btn', function (){
-        //         $(this).parent().remove();
-        //     });
-        //
-        //     $(document).on('click', 'button', function (){
-        //         $('.addsurveybox').find('.item').each(function (i){
-        //             $(this).find('span').text(i+1);
-        //         });
-        //     });
-        // });
-    </script>
-<!--</head>-->
-<body>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
+    <script type="text/javascript">
+
+        function addItemContent(){
+            $('#items').append("<div id='item'><input type='text' value='' autocomplete='off' name='itemcontent' "
+                    +"class='form-control littleq'></div>");
+        }
+
+        // function deleteItemContent(){
+        //     $('input:last-child').remove();
+        // }
+    </script>
+</head>
+<body>
 <form action="/insertSurvey" method="post" enctype="multipart/form-data" >
     <div class="form-group">
         <label for="writer">작성자</label>
         <input type="text" id="writer" name="writer" th:value="${session.id}" readonly><br>
         <label for="survey_title"> 제목</label>
-        <input type="text" id="survey_title" name="survey_title" placeholder="제목을 입력하세요"><br>
+        <input type="text" id="survey_title" name="survey_title" placeholder="제목을 입력하세요" autocomplete='off'><br>
         <label for="survey_content"> 내용</label>
-        <textarea type="text" id="survey_content" name="survey_content" maxlength="2048" placeholder="내용을 입력하세요"></textarea><br>
+        <textarea type="text" id="survey_content" name="survey_content" maxlength="2048" placeholder="내용을 입력하세요" autocomplete='off'></textarea><br>
 
         <div class="form-group mb-3 col-xs-12 col-sm-6">
             <label for="survey_end" >마감기한</label>
@@ -48,24 +40,23 @@
             <div id="addsurveybox" class="form-group mb-3 addsurveybox">
                 <label for="survey_item_content">질문</label><br>
                 <input type="text" value="" id="survey_item_content" autocomplete="off" name="survey_title" class="form-control validate survey_item_content"> <br>
-                <div class="items">
-                    <div class="item">
-                        <span>1</span> <input type="text" value="" autocomplete="off" name="itemcontent" class="form-control littleq">
+                <span>선택 리스트</span>
+                <div id="items">
+                    <div id="item">
+                        <input type="text" value="" autocomplete="off" name="itemcontent" class="form-control littleq">
                     </div>
-                    <div class="item">
-                        <span>2</span> <input type="text" value="" autocomplete="off" name="itemcontent" class="form-control littleq">
+                    <div id="item">
+                        <input type="text" value="" autocomplete="off" name="itemcontent" class="form-control littleq">
                     </div>
                 </div>
 
-                <button class="addSurveyItem_btn">
-                    <b> + </b>
-                </button>
+                <input type="button" onclick="addItemContent();" value="추가"/>
+<!--                <input type="button" onclick="deleteItemContent();" value="삭제"/>-->
+
             </div>
         </div>
-    <button type="submit">설문지등록하기</button>
+    <button id="surveyVote">설문지등록하기</button>
     </div>
-
 </form>
-
 </body>
 </html>
