@@ -14,6 +14,44 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script type="text/javascript">
+
+        function searchRanking() {
+            $.ajax({
+                type: "POST",
+                url: "/searchRanking",
+                success: function (data) {
+                    if (data == "") return;
+                    $('#ranking').html('');
+                    var parsed = JSON.parse(data);
+                    var result = parsed.result;
+                    var html = '';
+                    html += '<ul id="ticker">'
+                    for (var i = 0; i < result.length; i++) {
+
+                        html += '<li style="margin-top: 1px">' + '<a href="/main_search?keyword=' + result[i][0].value + '"><span>' + (i + 1) + '</span>' + result[i][0].value + '</a>';
+                        html += '</li>';
+
+                    }
+                    html += '</ul>'
+                    $("#ranking").append(html);
+
+                    $('#rankingArea').html('');
+                    var html2 = '';
+                    for(var i = 0; i < result.length; i++){
+                        html2 += '<a href="/main_search?keyword=' + result[i][0].value + '" style="color: black; font-size: 12px;"><span style="background-color: #003366d2; color: white; padding-right: 4px; padding-left: 4px; margin-left: 3px;  margin-right: 2px; margin-bottom: 3px; font-size: 12px;">' + (i + 1) + '</span>' + result[i][0].value + '</a><br>'
+                    }
+                    $('#rankingArea').append(html2);
+
+                }
+            });
+        }
+
+        function getInfiniteSearchRanking() {
+            setInterval(function () {
+                searchRanking();
+            }, 30000);
+        }
+
         function totalUnreadChat() {
             $.ajax({
                 type: "POST",
@@ -39,11 +77,10 @@
         }
 
         $(document).ready(function () {
-
             searchRanking();
-
             totalUnreadChat();
             getInfiniteTotalUnread();
+            getInfiniteSearchRanking();
 
             $(".board").css("display", "none");
 

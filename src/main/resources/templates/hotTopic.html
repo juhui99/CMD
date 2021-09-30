@@ -78,8 +78,8 @@
         $(document).ready(function () {
 
             searchRanking();
-
             totalUnreadChat();
+            getInfiniteSearchRanking();
             getInfiniteTotalUnread();
 
             $(".board").css("display", "none");
@@ -248,7 +248,7 @@
 
 </style>
 <body>
-<div class="container">
+<div class="container" style="z-index: 1;">
     <div class="header-box">
         <div class="logo"><a href="/main"><img src="/img/CMD-logo.png" alt="logo" height="100%"></a></div>
         <div class="search">
@@ -259,7 +259,7 @@
                 </form>
             </nav>
         </div>
-        <div class="keyword">실시간 검색</div>
+        <div style="width: 200px;" class="keyword block" id="ranking"></div>
     </div>
 
     <div class="menu-navbar">

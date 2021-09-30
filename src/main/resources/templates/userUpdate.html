@@ -209,8 +209,8 @@
     $(document).ready(function () {
 
         searchRanking();
-
         totalUnreadChat();
+        getInfiniteSearchRanking();
         getInfiniteTotalUnread();
 
         $(".filebox").css("display", "none");
@@ -295,34 +295,15 @@
             $(".frontend_board").css("display", "none");
 
         });
-        $("#withdrawal").click(function () {
+        $("#withdrawal").click(function (){
             var id = $("#userID").val();
-            if (confirm("정말로 회원탈퇴를 하시겠습니까?")) {
+            if(confirm("정말로 회원탈퇴를 하시겠습니까?")){
                 location.href = "/withdrawalCheck";
             } else {
                 alert("회원탈퇴를 취소합니다.");
             }
-            var ticker = function()
-            {
-                setTimeout(function(){
-                    $('#ticker li:first').animate( {marginTop: '-20px'}, 400, function()
-                    {
-                        $(this).detach().appendTo('ul#ticker').removeAttr('style');
-                    });
-                    ticker();
-                }, 3000);
-            };
-            ticker();
-
-            $("#ranking").hover(function () {
-                $(".popupLayer").css("display","block");
-            });
-
         });
 
-        function closePopup() {
-            $(".popupLayer").css("display","none");
-        }
 
         $("#file").on('change',function(){
 
@@ -333,6 +314,21 @@
                 var filename = $(this).val().split('/').pop().split('\\').pop();
             };
             $(".upload-name").val(filename);
+        });
+        var ticker = function()
+        {
+            setTimeout(function(){
+                $('#ticker li:first').animate( {marginTop: '-20px'}, 400, function()
+                {
+                    $(this).detach().appendTo('ul#ticker').removeAttr('style');
+                });
+                ticker();
+            }, 3000);
+        };
+        ticker();
+
+        $("#ranking").hover(function () {
+            $(".popupLayer").css("display","block");
         });
 
     });
@@ -382,6 +378,10 @@
             return true;
         }
 
+    }
+
+    function closePopup() {
+        $(".popupLayer").css("display","none");
     }
 
 
