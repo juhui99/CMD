@@ -137,12 +137,12 @@
     </select>
 
     <select id="selectSurveyResultDataSet" parameterType="int" resultMap="resultDataSet">
-        SELECT users.user_age, users.user_gender
+        SELECT users.user_age, users.user_gender, users.user_name, surveyItem.survey_item_index
         FROM surveyItem
-            INNER JOIN surveyResult ON surveyResult.survey_item_index = surveyItem.survey_item_index
-            LEFT JOIN users ON surveyResult.user_index = users.user_index
+                 INNER JOIN surveyResult ON surveyResult.survey_item_index = surveyItem.survey_item_index
+                 LEFT JOIN users ON surveyResult.user_index = users.user_index
         WHERE
-            surveyItem.survey_item_index = #{survey_item_index}
+            surveyItem.survey_index = #{survey_index}
     </select>
 
 <!--    <select id="mainSearch" parameterType="map" resultMap="surveyVO">-->
