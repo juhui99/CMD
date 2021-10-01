@@ -18,10 +18,11 @@
 
   <script type="text/javascript">
 
-    function addItemContent(){
+    function addItemContent() {
       $('#items').append("<div id='item'><input type='text' value='' autocomplete='off' name='itemcontent' "
-              +"class='form-control littleq'></div>");
+              + "class='form-control littleq'></div>");
     }
+
     function searchRanking() {
       $.ajax({
         type: "POST",
@@ -210,7 +211,7 @@
       <nav class="navbar navbar-expand-sm  navbar-dark">
         <form class="form-inline" action="/main_search" method="post">
           <input class="form-control mr-sm-2" name="keyword" type="text" placeholder="Search">
-          <button class="btn btn-success" type="submit">Search</button>
+          <button class="btn btn-success" type="submit">검색</button>
         </form>
       </nav>
     </div>
@@ -316,14 +317,9 @@
         </li>
 
 
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navbardrop3" data-toggle="dropdown">
-            설문조사
-          </a>
-          <div class="dropdown-menu">
-            <a class="dropdown-item" href="/mainSurvey">설문조사 하기</a>
-            <a class="dropdown-item" href="#">설문조사 통계</a>
-          </div>
+        <li class="nav-item">
+          <a class="nav-link" href="/mainSurvey" id="navbardrop3">
+            설문조사</a>
         </li>
       </ul>
       <ul class="login-box">
@@ -352,127 +348,160 @@
 
     </nav>
   </div>
-  <form action="/insertSurvey" method="post" enctype="multipart/form-data" >
-    <div class="form-group">
-      <label for="writer">작성자</label>
-      <input type="text" id="writer" name="writer" th:value="${session.id}" readonly><br>
-      <label for="survey_title"> 제목</label>
-      <input type="text" id="survey_title" name="survey_title" placeholder="제목을 입력하세요" autocomplete='off'><br>
-      <label for="survey_content"> 내용</label>
-      <textarea type="text" id="survey_content" name="survey_content" maxlength="2048" placeholder="내용을 입력하세요" autocomplete='off'></textarea><br>
+  <div class="insert-box"
+       style="margin-left: 5%; border-radius: 5px; margin-top: 40px; margin-bottom: 40px; padding-top: 40px; border: 2px solid #dddddd; width: 90%;">
+    <form action="/insertSurvey" method="post" enctype="multipart/form-data">
+      <div style="margin-left: 5%; margin-right: 5%" class="form-group">
+        <div class="form-group">
+          <label style="padding: 3.8px 8px; color: white; border: 0; border-radius: 5px; background: #003366d2;"
+                 for="survey_title"> 제목</label>
+          <input type="text" id="survey_title" name="survey_title" placeholder="제목을 입력하세요" autocomplete='off'>
+          <label style="padding: 3.8px 8px; color: white; border: 0; border-radius: 5px; background: #003366d2; margin-left:20%"
+                 for="survey_end">마감기한</label>
+          <input type="text" id="survey_end" name="survey_end" autocomplete="off"
+                 placeholder="YYYY-MM-DD"/>
+        </div>
+        <div style="border-top: 1px solid #003366d2; padding-bottom:30px; margin-bottom: 20px;">
+                <textarea type="text" id="survey_content" name="survey_content" maxlength="2048" placeholder="내용을 입력하세요"
+                          style="resize:none; width: 60%; height: 100px; margin-top: 30px; margin-bottom: 20px"
+                          autocomplete='off'></textarea><br>
 
-      <div class="form-group mb-3 col-xs-12 col-sm-6">
-        <label for="survey_end" >마감기한</label>
-        <input type="text" id="survey_end" name="survey_end" autocomplete="off" placeholder="YYYY-MM-DD"/>
-      </div>
-      <div class="col-xl-6 col-lg-6 col-md-12 bigbox surveybox">
-        <div id="addsurveybox" class="form-group mb-3 addsurveybox">
-          <label for="survey_item_content">질문</label><br>
-          <input type="text" value="" id="survey_item_content" autocomplete="off" name="survey_title" class="form-control validate survey_item_content"> <br>
-          <span>선택 리스트</span>
-          <div id="items">
-            <div id="item1">
-              <input type="text" value="" autocomplete="off" name="itemcontent" class="form-control littleq">
-            </div>
-            <div id="item2">
-              <input type="text" value="" autocomplete="off" name="itemcontent" class="form-control littleq">
+          <div class="bigbox surveybox">
+            <div id="addsurveybox" class="form-group mb-3 addsurveybox">
+
+
+              <label style="padding: 3.8px 8px; color: white; border: 0; border-radius: 5px; background: #003366d2;">선택
+                리스트</label>
+              <div id="items">
+                <input style="border: 1px solid rgb(133, 133,133)" type="text" value=""
+                       autocomplete="off" name="itemcontent" class="form-control">
+                <input style="margin-top: 4px; border: 1px solid rgb(133, 133,133)" type="text" value=""
+                       autocomplete="off" name="itemcontent" class="form-control">
+              </div>
+
+              <input style=" margin-top: 10px;margin-left: 7%; border: 0; color: white; border-radius: 5px; background: #003366d2;"
+                     type="button" onclick="addItemContent();" value="추가"/>
+
+
+              <!--                <input type="button" onclick="deleteItemContent();" value="삭제"/>-->
+              <button style="float:right; margin-top: 10px;margin-right: 7%; border: 0; color: white; border-radius: 5px; background: #003366d2;"
+                      type="submit">설문지 등록하기
+              </button>
             </div>
           </div>
 
-          <input type="button" onclick="addItemContent();" value="추가"/>
-          <!--                <input type="button" onclick="deleteItemContent();" value="삭제"/>-->
-
         </div>
       </div>
-      <button type="submit">설문지 등록하기</button>
+    </form>
+    <div class="footer-box">
+      <div class="author">
+        <p><b>Creators - </b>KimLeeEum</p>
+        <p><b>email - </b>energizun1001@gamil.com</p>
+        <p><b>Domain - </b>www.cmdev.com</p>
+      </div>
+      <div class="link">
+        <ul>
+          <li><a href="https://github.com/" target="_blank"><i class="fab fa-github"> GitHub</i></a></li>
+          <li><a href="https://stackoverflow.com/" target="_blank"><i class="fab fa-stack-overflow">
+            Stack-Overflow</i></a></li>
+        </ul>
+        <input type="hidden" id="userID" th:value="${session.id}">
+      </div>
     </div>
-  </form>
-  <div class="footer-box">
-  <div class="author">
-    <p><b>Creators - </b>KimLeeEum</p>
-    <p><b>email - </b>energizun1001@gamil.com</p>
-    <p><b>Domain - </b>www.cmdev.com</p>
-  </div>
-  <div class="link">
-    <ul>
-      <li><a href="https://github.com/" target="_blank"><i class="fab fa-github"> GitHub</i></a></li>
-      <li><a href="https://stackoverflow.com/" target="_blank"><i class="fab fa-stack-overflow">
-        Stack-Overflow</i></a></li>
-    </ul>
-    <input type="hidden" id="userID" th:value="${session.id}">
+    <div class="eyebrow"><p>@2021 prod by 김이음</p></div>
   </div>
 </div>
-  <div class="eyebrow"><p>@2021 prod by 김이음</p></div>
-</div>
 
-<div class="popupLayer" style=" z-index: 2;">
-  <div style="background: #003366d2;">
-    <span style=" color: white; border-radius: 5px; margin-left: 2px; margin-top: 5px; padding: 3px; font-size: 12px;">인기검색어</span><span style="color: white; float: right; margin-right: 3px; cursor: pointer;" onclick="closePopup();">x</span>
-    <hr style="margin-top: 5px; margin-bottom: 2px; background-color: #003366d2;">
+
+  <div class="popupLayer" style=" z-index: 2;">
+    <div style="background: #003366d2;">
+      <span style=" color: white; border-radius: 5px; margin-left: 2px; margin-top: 5px; padding: 3px; font-size: 12px;">인기검색어</span><span
+            style="color: white; float: right; margin-right: 3px; cursor: pointer;" onclick="closePopup();">x</span>
+      <hr style="margin-top: 5px; margin-bottom: 2px; background-color: #003366d2;">
+    </div>
+    <div id="rankingArea">
+
+    </div>
   </div>
-  <div id="rankingArea">
 
-  </div>
-</div>
-<script type="text/javascript">
-  $(document).ready(function () {
+  <script type="text/javascript">
+    $(document).ready(function () {
 
-    searchRanking();
-    totalUnreadChat();
-    getInfiniteSearchRanking();
-    getInfiniteTotalUnread();
-    $(".board").css("display", "none");
+      searchRanking();
+      totalUnreadChat();
+      getInfiniteSearchRanking();
+      getInfiniteTotalUnread();
+      $(".board").css("display", "none");
 
 
-    $(".frontend").hover(function () {
-      $(".frontend_board").css("display", "block");
-      $(".backend_board").css("display", "none");
-      $(".DBA_board").css("display", "none");
-      $(".AI_board").css("display", "none");
-      $(".WH_board").css("display", "none");
+      $(".frontend").hover(function () {
+        $(".frontend_board").css("display", "block");
+        $(".backend_board").css("display", "none");
+        $(".DBA_board").css("display", "none");
+        $(".AI_board").css("display", "none");
+        $(".WH_board").css("display", "none");
 
-    });
-    $(".backend").hover(function () {
-      $(".backend_board").css("display", "block");
-      $(".frontend_board").css("display", "none");
-      $(".DBA_board").css("display", "none");
-      $(".AI_board").css("display", "none");
-      $(".WH_board").css("display", "none");
-    });
-    $(".DBA").hover(function () {
-      $(".DBA_board").css("display", "block");
-      $(".backend_board").css("display", "none");
-      $(".frontend_board").css("display", "none");
-      $(".AI_board").css("display", "none");
-      $(".WH_board").css("display", "none");
-    });
-    $(".AI").hover(function () {
-      $(".AI_board").css("display", "block");
-      $(".DBA_board").css("display", "none");
-      $(".backend_board").css("display", "none");
-      $(".frontend_board").css("display", "none");
-      $(".WH_board").css("display", "none");
-    });
-    $(".WH").hover(function () {
-      $(".WH_board").css("display", "block");
-      $(".AI_board").css("display", "none");
-      $(".DBA_board").css("display", "none");
-      $(".backend_board").css("display", "none");
-      $(".frontend_board").css("display", "none");
+      });
+      $(".backend").hover(function () {
+        $(".backend_board").css("display", "block");
+        $(".frontend_board").css("display", "none");
+        $(".DBA_board").css("display", "none");
+        $(".AI_board").css("display", "none");
+        $(".WH_board").css("display", "none");
+      });
+      $(".DBA").hover(function () {
+        $(".DBA_board").css("display", "block");
+        $(".backend_board").css("display", "none");
+        $(".frontend_board").css("display", "none");
+        $(".AI_board").css("display", "none");
+        $(".WH_board").css("display", "none");
+      });
+      $(".AI").hover(function () {
+        $(".AI_board").css("display", "block");
+        $(".DBA_board").css("display", "none");
+        $(".backend_board").css("display", "none");
+        $(".frontend_board").css("display", "none");
+        $(".WH_board").css("display", "none");
+      });
+      $(".WH").hover(function () {
+        $(".WH_board").css("display", "block");
+        $(".AI_board").css("display", "none");
+        $(".DBA_board").css("display", "none");
+        $(".backend_board").css("display", "none");
+        $(".frontend_board").css("display", "none");
 
-    });
-    $("#withdrawal").click(function () {
-      var id = $("#userID").val();
-      if (confirm("정말로 회원탈퇴를 하시겠습니까?")) {
-        location.href = "/withdrawalCheck";
-      } else {
-        alert("회원탈퇴를 취소합니다.");
+      });
+      $("#withdrawal").click(function () {
+        var id = $("#userID").val();
+        if (confirm("정말로 회원탈퇴를 하시겠습니까?")) {
+          location.href = "/withdrawalCheck";
+        } else {
+          alert("회원탈퇴를 취소합니다.");
+        }
+        var ticker = function () {
+          setTimeout(function () {
+            $('#ticker li:first').animate({marginTop: '-20px'}, 400, function () {
+              $(this).detach().appendTo('ul#ticker').removeAttr('style');
+            });
+            ticker();
+          }, 3000);
+        };
+        ticker();
+
+        $("#ranking").hover(function () {
+          $(".popupLayer").css("display", "block");
+        });
+
+      });
+
+      function closePopup() {
+        $(".popupLayer").css("display", "none");
       }
-      var ticker = function()
-      {
-        setTimeout(function(){
-          $('#ticker li:first').animate( {marginTop: '-20px'}, 400, function()
-          {
+
+
+      var ticker = function () {
+        setTimeout(function () {
+          $('#ticker li:first').animate({marginTop: '-20px'}, 400, function () {
             $(this).detach().appendTo('ul#ticker').removeAttr('style');
           });
           ticker();
@@ -481,37 +510,14 @@
       ticker();
 
       $("#ranking").hover(function () {
-        $(".popupLayer").css("display","block");
+        $(".popupLayer").css("display", "block");
       });
 
     });
 
     function closePopup() {
-      $(".popupLayer").css("display","none");
+      $(".popupLayer").css("display", "none");
     }
-
-
-    var ticker = function()
-    {
-      setTimeout(function(){
-        $('#ticker li:first').animate( {marginTop: '-20px'}, 400, function()
-        {
-          $(this).detach().appendTo('ul#ticker').removeAttr('style');
-        });
-        ticker();
-      }, 3000);
-    };
-    ticker();
-
-    $("#ranking").hover(function () {
-      $(".popupLayer").css("display","block");
-    });
-
-  });
-
-  function closePopup() {
-    $(".popupLayer").css("display","none");
-  }
-</script>
+  </script>
 </body>
 </html>
