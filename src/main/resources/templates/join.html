@@ -85,12 +85,40 @@
         }
 
 
-        .block {border:2px solid #003366d2;  padding:0 5px; height:25px; overflow:hidden; background:#fff; width:100px; font-family:Gulim; font-size:12px;}
-        .block ul, .block li {margin:0; padding:0; list-style:none;}
-        .block li a {display:block; height:20px; line-height:20px; color:#555; text-decoration:none;}
-        .block li span {padding:2px 5px; background:#003366d2; color:#fff; font-weight:bold; margin-right:3px;}
+        .block {
+            border: 2px solid #003366d2;
+            padding: 0 5px;
+            height: 25px;
+            overflow: hidden;
+            background: #fff;
+            width: 100px;
+            font-family: Gulim;
+            font-size: 12px;
+        }
 
-        .popupLayer{
+        .block ul, .block li {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .block li a {
+            display: block;
+            height: 20px;
+            line-height: 20px;
+            color: #555;
+            text-decoration: none;
+        }
+
+        .block li span {
+            padding: 2px 5px;
+            background: #003366d2;
+            color: #fff;
+            font-weight: bold;
+            margin-right: 3px;
+        }
+
+        .popupLayer {
             display: none;
             position: absolute;
             left: 950px;
@@ -100,7 +128,6 @@
             width: 200px;
             border-radius: 5px;
         }
-
 
 
     </style>
@@ -128,7 +155,7 @@
 
                 $('#rankingArea').html('');
                 var html2 = '';
-                for(var i = 0; i < result.length; i++){
+                for (var i = 0; i < result.length; i++) {
                     html2 += '<a href="/main_search?keyword=' + result[i][0].value + '" style="color: black; font-size: 12px;"><span style="background-color: #003366d2; color: white; padding-right: 4px; padding-left: 4px; margin-left: 3px;  margin-right: 2px; margin-bottom: 3px; font-size: 12px;">' + (i + 1) + '</span>' + result[i][0].value + '</a><br>'
                 }
                 $('#rankingArea').append(html2);
@@ -303,11 +330,9 @@
                 alert("회원탈퇴를 취소합니다.");
             }
         });
-        var ticker = function()
-        {
-            setTimeout(function(){
-                $('#ticker li:first').animate( {marginTop: '-20px'}, 400, function()
-                {
+        var ticker = function () {
+            setTimeout(function () {
+                $('#ticker li:first').animate({marginTop: '-20px'}, 400, function () {
                     $(this).detach().appendTo('ul#ticker').removeAttr('style');
                 });
                 ticker();
@@ -316,13 +341,13 @@
         ticker();
 
         $("#ranking").hover(function () {
-            $(".popupLayer").css("display","block");
+            $(".popupLayer").css("display", "block");
         });
 
     });
 
     function closePopup() {
-        $(".popupLayer").css("display","none");
+        $(".popupLayer").css("display", "none");
     }
 </script>
 <body>
@@ -333,7 +358,7 @@
             <nav class="navbar navbar-expand-sm  navbar-dark">
                 <form class="form-inline" action="/main_search" method="post">
                     <input class="form-control mr-sm-2" name="keyword" type="text" placeholder="Search">
-                    <button class="btn btn-success" type="submit">Search</button>
+                    <button class="btn btn-success" type="submit">검색</button>
                 </form>
             </nav>
         </div>
@@ -437,15 +462,9 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/cmd_roadmap">로드맵</a>
                 </li>
-
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbardrop3" data-toggle="dropdown">
-                        설문조사
-                    </a>
-                    <div class="dropdown-menu">
-                        <a class="dropdown-item" href="#">설문조사 하기</a>
-                        <a class="dropdown-item" href="#">설문조사 통계</a>
-                    </div>
+                <li class="nav-item">
+                    <a class="nav-link" href="/mainSurvey" id="navbardrop3">
+                        설문조사</a>
                 </li>
             </ul>
             <ul class="login-box">
@@ -523,7 +542,7 @@
                         <hr style="margin-left: 0; width: 84%; background-color: #003366d2;">
                     </div>
                     <div class="eye">
-                        <input class ="smbutt2" type="submit" id="submit" name="submit" value="가입">
+                        <input class="smbutt2" type="submit" id="submit" name="submit" value="가입">
                     </div>
                 </div>
             </div>
@@ -551,14 +570,14 @@
 </div>
 <div class="popupLayer" style=" z-index: 2;">
     <div style="background: #003366d2;">
-        <span style=" color: white; border-radius: 5px; margin-left: 2px; margin-top: 5px; padding: 3px; font-size: 12px;">인기검색어</span><span style="color: white; float: right; margin-right: 3px; cursor: pointer;" onclick="closePopup();">x</span>
+        <span style=" color: white; border-radius: 5px; margin-left: 2px; margin-top: 5px; padding: 3px; font-size: 12px;">인기검색어</span><span
+            style="color: white; float: right; margin-right: 3px; cursor: pointer;" onclick="closePopup();">x</span>
         <hr style="margin-top: 5px; margin-bottom: 2px; background-color: #003366d2;">
     </div>
     <div id="rankingArea">
 
     </div>
 </div>
-
 
 
 </body>
