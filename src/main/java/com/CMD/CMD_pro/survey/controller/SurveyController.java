@@ -84,6 +84,7 @@ public class SurveyController {
             return "readSurvey_on";
         }
         else{ //설문조사 마감일때
+            SurveyVO surveyVO = surveyMapper.selectSurvey(survey_index);
             surveyItemList = surveyMapper.selectSurveyItems(survey_index);
 
             List<ResultDataSet> dataset  = surveyMapper.selectSurveyResultDataSet(survey_index);
@@ -97,6 +98,7 @@ public class SurveyController {
 //                dataset.add(dataSet);
 //            }
 
+            model.addAttribute("surveyVO", surveyVO); // 타이틀, 내용만 페이지에 보여지게 html 작성
             model.addAttribute("surveyItemList", surveyItemList); //설문조사 선택 리스트보기
             model.addAttribute("dataset", dataset);
             model.addAttribute("filename",filename);

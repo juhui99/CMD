@@ -9,103 +9,15 @@
     <title>readSurvey_off</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
-    <script type="text/javascript" th:inline="javascript">
-
-        let ctxLine, ctxBar, ctxPie, optionsLine, optionsBar, optionsPie, configLine, configBar, configPie, lineChart,
-            barChart, pieChart;
-
-        // DOM is ready
-        /*<![CDATA[*/
-        var dataset = /*[[ ${dataset} ]]*/;
-        /*]]*/
-        /*<![CDATA[*/
-        var itemList = /*[[ ${surveyItemList} ]]*/;
-        /*]]*/
-
-        $(function() {
-            drawPieChart(dataset, itemList); // Pie Chart
-
-            $(window).resize(function() {
-                updatePieChart();
-            });
-        })
-
-        var count = getTotalCountList(dataset, itemList);
-        if (count.length != 0) {
-            $.each($("label.tm-hide-sm"), function(index) {
-                $(this).append("count[index]=" +
-                    "" +
-                    "=undefined?'0':'' " + "표")
-            });
-        } else {
-            $.each($("label.tm-hide-sm"), function(index) {
-                $(this).append("투표결과X")
-            });
-        }
-
-        // 위에 들어가는 차트함수
-
-        function drawPieChart(dataset, itemList) {
-            if ($("#pieChart").length) {
-                var chartHeight = 300;
-                $("#pieChartContainer").css("height", chartHeight + "px");
-                ctxPie = document.getElementById("pieChart").getContext("2d");
-
-                optionsPie = {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    layout: {
-                        padding: {
-                            left: 10,
-                            right: 10,
-                            top: 10,
-                            bottom: 10
-                        }
-                    },
-                    legend: {
-                        position: "top"
-                    }
-                };
-                configPie = {
-                    type: "pie",
-                    data: {
-                        datasets: [
-                            {
-                                data: getTotalCountList(dataset, itemList),
-                                backgroundColor: ["#F7604D", "#4ED6B8", "#D7D768", "#DB9C3F"],
-                                label: "총 투표 현황"
-                            }
-                        ],
-                        labels: itemList.map(function(elt, i, array) {return i+1 + ". " + elt.content;}),
-                    },
-                    options: optionsPie
-                };
-                pieChart = new Chart(ctxPie, configPie);
-            }
-        }
-
-        function getTotalCountList(dataset, itemList) {
-            var result = [];
-            var itemIndexList = itemList.map(itemList => itemList.survey_item_index);
-            for (var i = 0; i < itemIndexList.length; i++) {
-                result[i] = dataset.filter(surveyObj => surveyObj.survey_item_index == itemIndexList[i]).length;
-            }
-            return result;
-        }
-        function updatePieChart() {
-            if (pieChart) {
-                pieChart.options = optionsPie;
-                pieChart.update();
-            }
-        }
+    <script type="text/javascript">
 
     </script>
-
 </head>
 <body>
 <table>
     <tbody>
     <tr th:each="surveyVO : ${surveyVO}">
+        <td th:text="${surveyVO.survey_index}"></td>
         <td th:text="${surveyVO.survey_title}"></td>
         <td th:text="${surveyVO.survey_content}"></td>
     </tr>
@@ -114,37 +26,25 @@
 
 <table>
     <tbody>
+    <h1>투표내용</h1>
     <tr th:each="surveyItemList : ${surveyItemList}">
         <td th:text="${surveyItemList.survey_item_content}"></td>
-        <td class="tm-hide-sm" th:text="${status.count}-${surveyItemList.count}"></td>
+        <!--        <td class="tm-hide-sm" th:text="${status.count}-${surveyItemList.count}"></td>-->
     </tr>
     </tbody>
 </table>
-<div>
-    <h1>투표결과</h1>
-    <canvas id="pieChart"></canvas>
-
-    <!--    <h2 class="tm-block-title">성별 투표결과</h2>-->
-    <!--    <canvas id="lineChart"></canvas>-->
-
-    <!--    <h2 class="tm-block-title">나이별 투표결과</h2>-->
-    <!--    <canvas id="barChart"></canvas>-->
-
-</div>
-
-
-
 
 <table>
     <tbody>
+    <h1>투표결과</h1>
     <tr th:each="dataset : ${dataset}">
+        <td th:text="${dataset.user_name}"></td>
         <td th:text="${dataset.user_age}"></td>
         <td th:text="${dataset.user_gender}"></td>
+        <td th:text="${dataset.survey_item_index}"></td>
     </tr>
     </tbody>
 </table>
-
-
 
 </body>
 </html>
