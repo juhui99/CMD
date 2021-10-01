@@ -62,6 +62,17 @@ public class SurveyController {
 //            model.addAttribute("url","login");
 //            return "alert";
 //        }
+        String filename = null;
+
+        if(session.getAttribute("id") != null){
+            String userID = (String) session.getAttribute("id");
+            UserVO user = userMapper.userLogin(userID);
+            filename = user.getUser_profile();
+
+        } else {
+            filename = "non";
+        }
+        model.addAttribute("filename",filename);
 
         boolean isProgressing = progressing == 1 ? true : false;
         List<SurveyItemVO> surveyItemList = null;
@@ -181,6 +192,7 @@ public class SurveyController {
     @RequestMapping(value="voteSurvey", method = RequestMethod.POST) //설문조사 참여하기
     public @ResponseBody Map<String, Object> insertSurveyResult
             ( HttpServletRequest req,HttpSession session) throws Exception{
+
         String userID;
         userID = (String) session.getAttribute("id");
         UserVO user = userMapper.userLogin(userID);
