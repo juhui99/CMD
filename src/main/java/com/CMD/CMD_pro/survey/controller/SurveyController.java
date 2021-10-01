@@ -56,12 +56,21 @@ public class SurveyController {
     @RequestMapping(value = "/readSurvey") //진행중인 설문조사 읽기
     public String readSurvey(@RequestParam("survey_index") int survey_index, @RequestParam("progressing") int progressing,
                              @ModelAttribute("cri") SearchCriteria cri, Model model, HttpSession session) throws Exception{
-//        String userID = (String)session.getAttribute("id");
-//        if(userID == null){ //로그인 확인
-//            model.addAttribute("message","로그인이 되어있지 않습니다.");
-//            model.addAttribute("url","login");
-//            return "alert";
-//        }
+        String filename;
+        String userID;
+        if(session.getAttribute("id") == null){
+            model.addAttribute("msg","로그인이 되어있지 않습니다.");
+            model.addAttribute("url","main");
+            return "alert";
+        }
+        if((String) session.getAttribute("id") != null){
+            userID = (String) session.getAttribute("id");
+            UserVO user = userMapper.userLogin(userID);
+            filename = user.getUser_profile();
+
+        } else {
+            filename = "non";
+        }
 
         boolean isProgressing = progressing == 1 ? true : false;
         List<SurveyItemVO> surveyItemList = null;
@@ -71,6 +80,7 @@ public class SurveyController {
             model.addAttribute("surveyVO", surveyVO); // 타이틀, 내용만 페이지에 보여지게 html 작성
             model.addAttribute("surveyItemList", surveyItemList);//진행중인 설문조사 상세 페이지
             model.addAttribute("survey_index", survey_index);
+            model.addAttribute("filename",filename);
             return "readSurvey_on";
         }
         else{ //설문조사 마감일때
@@ -89,6 +99,7 @@ public class SurveyController {
 
             model.addAttribute("surveyItemList", surveyItemList); //설문조사 선택 리스트보기
             model.addAttribute("dataset", dataset);
+            model.addAttribute("filename",filename);
             return "readSurvey_off";
         }
     }
@@ -146,19 +157,19 @@ public class SurveyController {
     @RequestMapping(value="insertSurvey", method = RequestMethod.POST) //설문조사 추가하기
     public String addSurvey(@RequestParam("survey_title") String survey_title, @RequestParam("survey_content") String survey_content,
                             @RequestParam("itemcontent") String [] itemcontent, @RequestParam("survey_end") String survey_end, Model model, HttpSession session) throws Exception {
-        String filename = null;
 
-        if(session.getAttribute("id") != null){
-            String userID = (String) session.getAttribute("id");
+        String filename;
+        String userID;
+        if((String) session.getAttribute("id") != null){
+            userID = (String) session.getAttribute("id");
             UserVO user = userMapper.userLogin(userID);
             filename = user.getUser_profile();
 
         } else {
             filename = "non";
         }
-        model.addAttribute("filename",filename);
-        SurveyVO surveyVO = new SurveyVO();
 
+        SurveyVO surveyVO = new SurveyVO();
         String pattern = "YYYY-MM-DD";
         SimpleDateFormat sdf = new SimpleDateFormat(pattern);
         surveyVO.setSurvey_end(sdf.parse(survey_end));
@@ -174,6 +185,7 @@ public class SurveyController {
             surveyItemList.add(temp);
         }
         surveyMapper.insertSurveyItem(surveyItemList);
+        model.addAttribute("filename",filename);
 
         return "redirect:/mainSurvey";
     }
@@ -181,6 +193,7 @@ public class SurveyController {
     @RequestMapping(value="voteSurvey", method = RequestMethod.POST) //설문조사 참여하기
     public @ResponseBody Map<String, Object> insertSurveyResult
             ( HttpServletRequest req,HttpSession session) throws Exception{
+
         String userID;
         userID = (String) session.getAttribute("id");
         UserVO user = userMapper.userLogin(userID);
@@ -262,3 +275,6 @@ public class SurveyController {
 //    }
 
 }
+
+
+
