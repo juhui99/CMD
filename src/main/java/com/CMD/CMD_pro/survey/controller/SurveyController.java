@@ -55,13 +55,22 @@ public class SurveyController {
 
     @RequestMapping(value = "/readSurvey") //진행중인 설문조사 읽기
     public String readSurvey(@RequestParam("survey_index") int survey_index, @RequestParam("progressing") int progressing,
-                             @ModelAttribute("cri") SearchCriteria cri, Model model, HttpSession session) throws Exception{
-//        String userID = (String)session.getAttribute("id");
-//        if(userID == null){ //로그인 확인
-//            model.addAttribute("message","로그인이 되어있지 않습니다.");
-//            model.addAttribute("url","login");
-//            return "alert";
-//        }
+                             @ModelAttribute("cri") SearchCriteria cri, Model model, HttpSession session) throws Exception {
+        if(session.getAttribute("id") == null){
+            model.addAttribute("msg","로그인이 되어있지 않습니다.");
+            model.addAttribute("url","main");
+            return "alert";
+        }
+        String filename;
+        String userID;
+        if((String) session.getAttribute("id") != null){
+            userID = (String) session.getAttribute("id");
+            UserVO user = userMapper.userLogin(userID);
+            filename = user.getUser_profile();
+
+        } else {
+            filename = "non";
+        }
 
         boolean isProgressing = progressing == 1 ? true : false;
         List<SurveyItemVO> surveyItemList = null;
@@ -71,6 +80,7 @@ public class SurveyController {
             model.addAttribute("surveyVO", surveyVO); // 타이틀, 내용만 페이지에 보여지게 html 작성
             model.addAttribute("surveyItemList", surveyItemList);//진행중인 설문조사 상세 페이지
             model.addAttribute("survey_index", survey_index);
+            model.addAttribute("filename",filename);
             return "readSurvey_on";
         }
         else{ //설문조사 마감일때
@@ -89,6 +99,7 @@ public class SurveyController {
 
             model.addAttribute("surveyItemList", surveyItemList); //설문조사 선택 리스트보기
             model.addAttribute("dataset", dataset);
+            model.addAttribute("filename",filename);
             return "readSurvey_off";
         }
     }

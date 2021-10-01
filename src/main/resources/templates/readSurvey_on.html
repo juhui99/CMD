@@ -6,8 +6,17 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://kit.fontawesome.com/717793cb2b.js" crossorigin="anonymous"></script>
     <title>readSurvey_on</title>
+    <link rel="stylesheet" href="/libs/css/style.css">
+    <link rel="stylesheet" href="/libs/css/bootstrap.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+
 
     <script type="text/javascript">
 
@@ -34,9 +43,8 @@
                 // cache:false,
                 // timeout: 600000,
                 success: function(data) {
-                    $("#result").text(data);
                     console.log("SUCCESS : ", data);
-                    alert("실행성공");
+                    alert("투표를 완료하였습니다.");
                     $("#surveyVote").prop("disabled", false);
                 },
                 error: function(e) {
@@ -54,20 +62,314 @@
 
             target.checked = true;
         }
+        function searchRanking() {
+            $.ajax({
+                type: "POST",
+                url: "/searchRanking",
+                success: function (data) {
+                    if (data == "") return;
+                    $('#ranking').html('');
+                    var parsed = JSON.parse(data);
+                    var result = parsed.result;
+                    var html = '';
+                    html += '<ul id="ticker">'
+                    for (var i = 0; i < result.length; i++) {
 
+                        html += '<li style="margin-top: 1px">' + '<a href="/main_search?keyword=' + result[i][0].value + '"><span>' + (i + 1) + '</span>' + result[i][0].value + '</a>';
+                        html += '</li>';
 
-        // function surveyVote(){
-        //   var form = document.getElementById("voteform");
-        //   document.voteform.submit();
-        //   alert('투표가 완료되었습니다.');
-        //
-        // }
+                    }
+                    html += '</ul>'
+                    $("#ranking").append(html);
+
+                    $('#rankingArea').html('');
+                    var html2 = '';
+                    for(var i = 0; i < result.length; i++){
+                        html2 += '<a href="/main_search?keyword=' + result[i][0].value + '" style="color: black; font-size: 12px;"><span style="background-color: #003366d2; color: white; padding-right: 4px; padding-left: 4px; margin-left: 3px;  margin-right: 2px; margin-bottom: 3px; font-size: 12px;">' + (i + 1) + '</span>' + result[i][0].value + '</a><br>'
+                    }
+                    $('#rankingArea').append(html2);
+
+                }
+            });
+        }
+
+        function getInfiniteSearchRanking() {
+            setInterval(function () {
+                searchRanking();
+            }, 30000);
+        }
+
+        function totalUnreadChat() {
+            $.ajax({
+                type: "POST",
+                url: "/getTotalUnreadChat",
+                dataType: "json",
+                data: {
+                    id: $("#userID").val()
+                },
+                success: function (result) {
+                    if (result >= 1) {
+                        $('#totalUnread').html(result);
+                    } else {
+                        $('#totalUnread').html('');
+                    }
+                }
+            });
+        }
+
+        function getInfiniteTotalUnread() {
+            setInterval(function () {
+                totalUnreadChat();
+            }, 4000);
+        }
+
 
     </script>
+
+    <style>
+        /* Make the image fully responsive */
+
+        .frontend_board {
+            display: none;
+        }
+
+
+        .carousel {
+            margin: 4% auto;
+            width: 94%;
+        }
+
+        .carousel-inner img {
+            width: 100%;
+            height: auto;
+            border-radius: 25px;
+        }
+
+        .carousel-inner {
+            border-radius: 25px;
+
+        }
+
+        .carousel-caption {
+            font-size: 25px;
+        }
+
+        .btn-success {
+            color: #fff;
+            background-color: #003366d2;
+            border-color: #003366d2;
+        }
+
+        .btn-success:hover {
+            color: #fff;
+            background-color: #003366d2;
+            border-color: #003366d2;
+        }
+
+        .btn-success:focus, .btn-success.focus {
+            color: #fff;
+            background-color: #003366d2;
+            border-color: #003366d2;
+            box-shadow: 0 0 0 0.2rem #003366d2;
+        }
+
+        .btn-success.disabled, .btn-success:disabled {
+            color: #fff;
+            background-color: #003366d2;
+            border-color: #003366d2;
+        }
+
+        .btn-success:not(:disabled):not(.disabled):active, .btn-success:not(:disabled):not(.disabled).active,
+        .show > .btn-success.dropdown-toggle {
+            color: #fff;
+            background-color: #003366d2;
+            border-color: #003366d2;
+        }
+
+        .img-circle {
+            border-radius: 50%;
+            border: 1px solid #003366d2;
+        }
+
+        .btn-success:not(:disabled):not(.disabled):active:focus, .btn-success:not(:disabled):not(.disabled).active:focus,
+        .show > .btn-success.dropdown-toggle:focus {
+            box-shadow: 0 0 0 0.2rem #003366d2;
+        }
+
+
+
+        .block {border:2px solid #003366d2;  padding:0 5px; height:25px; overflow:hidden; background:#fff; width:100px; font-family:Gulim; font-size:12px;}
+        .block ul, .block li {margin:0; padding:0; list-style:none;}
+        .block li a {display:block; height:20px; line-height:20px; color:#555; text-decoration:none;}
+        .block li span {padding:2px 5px; background:#003366d2; color:#fff; font-weight:bold; margin-right:3px;}
+
+        .popupLayer{
+            display: none;
+            position: absolute;
+            left: 950px;
+            top: 55px;
+            border: solid 1px #003366d2;
+            background-color: #fff;
+            width: 200px;
+            border-radius: 5px;
+        }
+
+    </style>
 </head>
 <body>
+<div class="container" style="z-index: 1;">
+    <div class="header-box">
+        <div class="logo"><a href="/main"><img src="/img/CMD-logo.png" alt="logo" height="100%"></a></div>
+        <div class="search">
+            <nav class="navbar navbar-expand-sm  navbar-dark">
+                <form class="form-inline" action="/main_search" method="post">
+                    <input class="form-control mr-sm-2" name="keyword" type="text" placeholder="Search">
+                    <button class="btn btn-success" type="submit">Search</button>
+                </form>
+            </nav>
+        </div>
+        <div style="width: 200px;" class="keyword block" id="ranking"></div>
+    </div>
+
+    <div class="menu-navbar">
+        <nav class="navbar navbar-expand-sm ">
+            <!-- Links -->
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="/main">메인</a>
+                </li>
+                <!-- Dropdown -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="/cmd_community">
+                        커뮤니티
+                    </a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item frontend" href="/cmdDetail?realm=Frontend">Frontend</a>
+                        <a class="dropdown-item frontend_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/totalHotTopic?kind=HOT게시판&realm=Frontend">HOT게시판</a>
+                        <a class="dropdown-item frontend_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=정보팁게시판&realm=Frontend">정보&팁게시판</a>
+                        <a class="dropdown-item frontend_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=자유게시판&realm=Frontend">자유게시판</a>
+                        <a class="dropdown-item frontend_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=질문게시판&realm=Frontend">질문게시판</a>
+                        <a class="dropdown-item frontend_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=협업게시판&realm=Frontend">협업게시판</a>
+                        <a class="dropdown-item frontend_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=로드맵공유게시판&realm=Frontend">로드맵공유게시판</a>
+                        <a class="dropdown-item backend" href="/cmdDetail?realm=Backend">Backend</a>
+                        <a class="dropdown-item backend_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/totalHotTopic?kind=HOT게시판&realm=Backend">HOT게시판</a>
+                        <a class="dropdown-item backend_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=정보팁게시판&realm=Backend">정보&팁게시판</a>
+                        <a class="dropdown-item backend_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=자유게시판&realm=Backend">자유게시판</a>
+                        <a class="dropdown-item backend_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=질문게시판&realm=Backend">질문게시판</a>
+                        <a class="dropdown-item backend_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=협업게시판&realm=Backend">협업게시판</a>
+                        <a class="dropdown-item backend_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=로드맵공유게시판&realm=Backend">로드맵공유게시판</a>
+                        <a class="dropdown-item DBA" href="/cmdDetail?realm=DBA">DBA</a>
+                        <a class="dropdown-item DBA_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/totalHotTopic?kind=HOT게시판&realm=DBA">HOT게시판</a>
+                        <a class="dropdown-item DBA_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=정보팁게시판&realm=DBA">정보&팁게시판</a>
+                        <a class="dropdown-item DBA_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=자유게시판&realm=DBA">자유게시판</a>
+                        <a class="dropdown-item DBA_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=질문게시판&realm=DBA">질문게시판</a>
+                        <a class="dropdown-item DBA_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=협업게시판&realm=DBA">협업게시판</a>
+                        <a class="dropdown-item DBA_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=로드맵공유게시판&realm=DBA">로드맵공유게시판</a>
+                        <a class="dropdown-item AI" href="/cmdDetail?realm=AI">A.I</a>
+                        <a class="dropdown-item AI_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/totalHotTopic?kind=HOT게시판&realm=AI">HOT게시판</a>
+                        <a class="dropdown-item AI_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=정보팁게시판&realm=AI">정보&팁게시판</a>
+                        <a class="dropdown-item AI_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=자유게시판&realm=AI">자유게시판</a>
+                        <a class="dropdown-item AI_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=질문게시판&realm=AI">질문게시판</a>
+                        <a class="dropdown-item AI_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=협업게시판&realm=AI">협업게시판</a>
+                        <a class="dropdown-item AI_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=로드맵공유게시판&realm=AI">로드맵공유게시판</a>
+                        <a class="dropdown-item WH" href="/cmdDetail?realm=WhiteHat">White-Hat</a>
+                        <a class="dropdown-item WH_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/totalHotTopic?kind=HOT게시판&realm=WhiteHat">HOT게시판</a>
+                        <a class="dropdown-item WH_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=정보팁게시판&realm=WhiteHat">정보&팁게시판</a>
+                        <a class="dropdown-item WH_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=자유게시판&realm=WhiteHat">자유게시판</a>
+                        <a class="dropdown-item WH_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=질문게시판&realm=WhiteHat">질문게시판</a>
+                        <a class="dropdown-item WH_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=협업게시판&realm=WhiteHat">협업게시판</a>
+                        <a class="dropdown-item WH_board board" style="color: #003366d2; font-size: 13px;"
+                           href="/board?kind=로드맵공유게시판&realm=WhiteHat">로드맵공유게시판</a>
+
+                    </div>
+                </li>
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbardrop1" data-toggle="dropdown">
+                        채팅
+                        <span id="totalUnread" class="badge badge-info"></span>
+                    </a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="/friendsFind">친구 찾기</a>
+                        <a class="dropdown-item" href="/friendsList">친구 목록</a>
+                        <a class="dropdown-item" href="/chatBox">채팅 목록</a>
+                    </div>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="/cmd_roadmap">로드맵</a>
+                </li>
+
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbardrop3" data-toggle="dropdown">
+                        설문조사
+                    </a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="/mainSurvey">설문조사 하기</a>
+                        <a class="dropdown-item" href="#">설문조사 통계</a>
+                    </div>
+                </li>
+            </ul>
+            <ul class="login-box">
+                <li class="nav-item">
+                    <a th:if="${session.id == null}" href="/login"><i class="far fa-user"></i> 로그인</a>
+                    <a style="margin-left: 10px;" th:if="${session.id == null}" href="/join">회원가입</a>
+                </li>
+
+                <li class="nav-item dropdown" th:if="${session.id != null}">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+                        <img th:if="${!filename.equals('non') and session.id != null}" class="img-circle"
+                             style="width: 35px; height: 35px; border-color:  #003366d2;"
+                             th:src="@{/display?(filename=${filename})}"/>
+                        <img th:if="${filename.equals('non') and session.id != null}" class="img-circle"
+                             style="width: 35px; height: 35px; border-color:  #003366d2;"
+                             src="/display?filename=default.png"/>
+                        <span th:if="${session.id != null}" th:text="|${session.id}님|" style="margin-left: 3px;"></span>
+                    </a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" th:if="${session.id != null}" href="/userUpdateCheck">회원정보 수정</a>
+                        <a class="dropdown-item" th:if="${session.id != null}" href="/logoutAction">로그아웃</a>
+                        <a class="dropdown-item" th:if="${session.id != null}" href="#" id="withdrawal">회원탈퇴</a>
+                    </div>
+                </li>
+            </ul>
+
+        </nav>
+    </div>
+    <div>
 <!--enctype="multipart/form-data"-->
-<form id="voteform" method="post" class="tm-signup-form row">
+<form id="voteform" method="post" >
+   <div>
     <table>
         <tbody>
         <tr th:each="surveyVO : ${surveyVO}">
@@ -76,24 +378,20 @@
         </tr>
         </tbody>
     </table>
+   </div>
 
-    <!--<input type="hidden" th:value="${surveyVO.survey_index}" id="surveyIndex" name="surveyIndex"/>-->
-
-    <h2 class="tm-block-title">목록</h2>
-    <div class="form-group">
+    <h5>목록</h5>
+    <div>
         <div th:each="surveyItemList : ${surveyItemList}" class="form-check">
             <input type="checkbox" name="itemIndex" class="form-check-input"  th:value="${surveyItemList.survey_item_index}" onclick="clickCheck(this)"/>
 
-            <!--<iuput type="text" class="itemIndex" name="itemIndex" th:value="${surveyItemList.survey_item_index}"/>-->
 
             <input type="text" class="itemContent" name="itemContent" th:value="${surveyItemList.survey_item_content}"/>
         </div>
     </div>
     <input type="hidden" th:value="${session.id}" id="id" name="id"/>
-    <input type="text" th:value="${survey_index}" id="surveyIndex" name="survey_index"/>
+    <input type="hidden" th:value="${survey_index}" id="surveyIndex" name="survey_index"/>
 
-    <!--  <button id="surveyVote" class="btn btn-primary text-uppercase btn-show">투표</button>-->
-    <!--  <button onclick="surveyVote();">투표</button>-->
     <input type="button" onclick="vote();" value="투표"/>
 
 </form>
@@ -101,6 +399,113 @@
 <a th:href="@{/removeSurvey(survey_index=${surveyVO.survey_index})}"><button>삭제</button></a><br>
 <button onclick="location.href= '/mainSurvey'">목록</button>
 
-<span id="result"></span>
+
+    </div>
+    <div class="footer-box">
+        <div class="author">
+            <p><b>Creators - </b>KimLeeEum</p>
+            <p><b>email - </b>energizun1001@gamil.com</p>
+            <p><b>Domain - </b>www.cmdev.com</p>
+        </div>
+        <div class="link">
+            <ul>
+                <li><a href="https://github.com/" target="_blank"><i class="fab fa-github"> GitHub</i></a></li>
+                <li><a href="https://stackoverflow.com/" target="_blank"><i class="fab fa-stack-overflow">
+                    Stack-Overflow</i></a></li>
+            </ul>
+            <input type="hidden" id="userID" th:value="${session.id}">
+        </div>
+    </div>
+    <div class="eyebrow"><p>@2021 prod by 김이음</p></div>
+</div>
+<div class="popupLayer" style=" z-index: 2;">
+    <div style="background: #003366d2;">
+        <span style=" color: white; border-radius: 5px; margin-left: 2px; margin-top: 5px; padding: 3px; font-size: 12px;">인기검색어</span><span style="color: white; float: right; margin-right: 3px; cursor: pointer;" onclick="closePopup();">x</span>
+        <hr style="margin-top: 5px; margin-bottom: 2px; background-color: #003366d2;">
+    </div>
+    <div id="rankingArea">
+
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        searchRanking();
+        totalUnreadChat();
+        getInfiniteSearchRanking();
+        getInfiniteTotalUnread();
+        $(".board").css("display", "none");
+
+
+        $(".frontend").hover(function () {
+            $(".frontend_board").css("display", "block");
+            $(".backend_board").css("display", "none");
+            $(".DBA_board").css("display", "none");
+            $(".AI_board").css("display", "none");
+            $(".WH_board").css("display", "none");
+
+        });
+        $(".backend").hover(function () {
+            $(".backend_board").css("display", "block");
+            $(".frontend_board").css("display", "none");
+            $(".DBA_board").css("display", "none");
+            $(".AI_board").css("display", "none");
+            $(".WH_board").css("display", "none");
+        });
+        $(".DBA").hover(function () {
+            $(".DBA_board").css("display", "block");
+            $(".backend_board").css("display", "none");
+            $(".frontend_board").css("display", "none");
+            $(".AI_board").css("display", "none");
+            $(".WH_board").css("display", "none");
+        });
+        $(".AI").hover(function () {
+            $(".AI_board").css("display", "block");
+            $(".DBA_board").css("display", "none");
+            $(".backend_board").css("display", "none");
+            $(".frontend_board").css("display", "none");
+            $(".WH_board").css("display", "none");
+        });
+        $(".WH").hover(function () {
+            $(".WH_board").css("display", "block");
+            $(".AI_board").css("display", "none");
+            $(".DBA_board").css("display", "none");
+            $(".backend_board").css("display", "none");
+            $(".frontend_board").css("display", "none");
+
+        });
+        $("#withdrawal").click(function () {
+            var id = $("#userID").val();
+            if (confirm("정말로 회원탈퇴를 하시겠습니까?")) {
+                location.href = "/withdrawalCheck";
+            } else {
+                alert("회원탈퇴를 취소합니다.");
+            }
+        });
+
+
+
+        var ticker = function()
+        {
+            setTimeout(function(){
+                $('#ticker li:first').animate( {marginTop: '-20px'}, 400, function()
+                {
+                    $(this).detach().appendTo('ul#ticker').removeAttr('style');
+                });
+                ticker();
+            }, 3000);
+        };
+        ticker();
+
+        $("#ranking").hover(function () {
+            $(".popupLayer").css("display","block");
+        });
+
+    });
+
+    function closePopup() {
+        $(".popupLayer").css("display","none");
+    }
+</script>
 </body>
 </html>
