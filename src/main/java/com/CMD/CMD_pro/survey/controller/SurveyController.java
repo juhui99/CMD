@@ -77,6 +77,9 @@ public class SurveyController {
             SurveyVO surveyVO = surveyMapper.selectSurvey(survey_index);
             surveyItemList = surveyMapper.selectSurveyItems(survey_index);
             List<ResultDataSet> dataset  = surveyMapper.selectSurveyResultDataSet(survey_index);
+
+//            int itemIndex;
+//            int resultCount = surveyMapper.resultCount();
 //           for (int i = 0 ; i < surveyItemList.size(); i++) {
 //                SurveyItemVO vo = surveyItemList.get(i);
 //            }

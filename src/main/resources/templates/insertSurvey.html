@@ -13,7 +13,7 @@
     <script type="text/javascript">
 
         function addItemContent(){
-            $('#items').append("<div id='item'><input type='text' value='' autocomplete='off' name='itemcontent' "
+            $('#items').append("<input type='text' value='' autocomplete='off' name='itemcontent' "
                     +"class='form-control littleq'></div>");
         }
 
@@ -42,12 +42,8 @@
 <!--                <input type="text" value="" id="survey_item_content" autocomplete="off" name="survey_title" class="form-control validate survey_item_content"> <br>-->
                 <span>선택 리스트</span>
                 <div id="items">
-                    <div id="item">
                         <input type="text" value="" autocomplete="off" name="itemcontent" class="form-control littleq">
-                    </div>
-                    <div id="item">
                         <input type="text" value="" autocomplete="off" name="itemcontent" class="form-control littleq">
-                    </div>
                 </div>
 
                 <input type="button" onclick="addItemContent();" value="추가"/>

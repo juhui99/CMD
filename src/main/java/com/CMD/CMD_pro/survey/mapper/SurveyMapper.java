@@ -12,6 +12,7 @@ public interface SurveyMapper {
 //    public PageMaker selectCountPaging(SearchCriteria cri) throws Exception;
     public int selectCountPaging() throws Exception;
     public List<ResultDataSet> selectSurveyResultDataSet(int survey_index);
+    public int resultCount(int survey_item_index);
     public List<SurveyItemVO> selectSurveyItems(int survey_index);
     public SurveyVO selectSurvey(int survey_index);
     public SurveyItemVO selectMySurveyResult(int survey_index, int user_index);

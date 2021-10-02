@@ -61,6 +61,11 @@ public class SurveyMapperimpl implements SurveyMapper{
     }
 
     @Override
+    public int resultCount(int survey_item_index){
+        return sqlSession.selectOne(namespace+".resultCount", survey_item_index);
+    }
+
+    @Override
     public SurveyVO selectSurvey(int survey_index) {
         logger.info("selectSurvey");
         return sqlSession.selectOne(namespace+".selectSurvey", survey_index);
@@ -81,10 +86,7 @@ public class SurveyMapperimpl implements SurveyMapper{
         params.put("member_seq", user_index);
         return sqlSession.selectOne(namespace+".selectMySurveyResult", params);
     }
-//    @Override
-//    public int maxSurveyIndex(SurveyVO surveyVO){
-//        return sqlSession.selectOne(namespace+".maxSurveyIndex");
-//    }
+
 
     @Override
     public void insertSurveyItem(List<SurveyItemVO> itemlist) {
@@ -106,7 +108,6 @@ public class SurveyMapperimpl implements SurveyMapper{
     }
 
 
-
     // 설문조사 보기 선택
     @Override
     public void insertSurveyResult(SurveyResultVO srvo) {
@@ -114,12 +115,6 @@ public class SurveyMapperimpl implements SurveyMapper{
         sqlSession.insert(namespace+".insertSurveyResult", srvo);
     }
 
-//    @Override
-//    public List<SurveyVO> selectSearchSurvey(SearchCriteria cri) {
-//        logger.info("selectSearchSurvey");
-//        List<SurveyVO> list = sqlSession.selectList(namespace+".selectSearchSurvey", cri);
-//        return list;
-//    }
 
     @Override
     public void closeSurvey(int survey_index) {
@@ -133,16 +128,5 @@ public class SurveyMapperimpl implements SurveyMapper{
         sqlSession.delete(namespace+".removeSurvey", survey_index);
     }
 
-//    public void mainSearch(HttpServletRequest request, String keyword) throws Exception {
-//        String keyWord = "non";
-//        if (request.getParameter("keyword") != null){
-//            keyWord = request.getParameter("keyword");
-//        }
-//    }
-//
-//    @Override
-//    public int mainSearchCount(String keyword) throws Exception {
-//        return 0;
-//    }
 
 }
