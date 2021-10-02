@@ -431,7 +431,7 @@
             <h2 style="color: #003366d2; font-weight: bold;">커뮤니티</h2>
             <table style="text-align: center; border: 1px solid #dddddd" width="90%">
                 <thead>
-                <tr>
+                <tr style="width:auto;font-size: 23px; border-bottom: 2px solid #dddddd;">
                     <th style="padding-top: 10px; padding-bottom: 10px">글 제목</th>
                     <th>글 작성자</th>
                     <th>날짜</th>
@@ -439,10 +439,10 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="board : ${board}">
-                    <td>
-                        <a th:href="@{/view(bno=${board.bno},kind=${board.kind},realm=${board.realm},pageNumber=${page},mainSearch='mainSearch',keyword=${keyword})}"
-                           th:text="${board.subject}"></a></td>
+                <tr style="border-bottom: 2px solid #dddddd;" th:each="board : ${board}">
+                    <td  style="padding-top: 7px; padding-bottom: 7px; font-size: 15px;">
+                        <a  style="text-decoration: none; color: black;" th:href="@{/view(bno=${board.bno},kind=${board.kind},realm=${board.realm},pageNumber=${page},mainSearch='mainSearch',keyword=${keyword})}"
+                            th:text="${board.subject}"></a></td>
                     <td th:text="${board.writer}"></td>
                     <td th:text="${board.real_date}"></td>
                     <td th:if="${board.notice == 1}" style="color: red;">공지글</td>

@@ -11,6 +11,7 @@ public class CommentVO {
     private String writer;
     private String content;
     private int delete_option;
+    private String real_date;
 
     public int getBno() {
         return bno;
@@ -74,5 +75,13 @@ public class CommentVO {
 
     public void setDelete_option(int delete_option) {
         this.delete_option = delete_option;
+    }
+
+    public String getReal_date() {
+        return real_date;
+    }
+
+    public void setReal_date(String real_date) {
+        this.real_date = real_date;
     }
 }
