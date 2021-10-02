@@ -1,6 +1,5 @@
 package com.CMD.CMD_pro.survey.controller;
 
-
 import com.CMD.CMD_pro.survey.domain.*;
 import com.CMD.CMD_pro.survey.mapper.SurveyMapper;
 import com.CMD.CMD_pro.user.domain.UserVO;
@@ -69,7 +68,6 @@ public class SurveyController {
             surveyItemList = surveyMapper.selectSurveyItems(survey_index);
             model.addAttribute("surveyVO", surveyVO); // 타이틀, 내용만 페이지에 보여지게 html 작성
             model.addAttribute("surveyItemList", surveyItemList);//진행중인 설문조사 상세 페이지
-            model.addAttribute("survey_index", survey_index); //여기 김주한테 물어보기 surveyVO에 인덱스 있어서 아마 없어도 될거같음
 
             return "readSurvey_on";
         }
@@ -87,17 +85,6 @@ public class SurveyController {
                 countList.add(resultCount);
             }
 
-//            int resultCount = surveyMapper.resultCount();
-
-
-//           for (int i = 0 ; i < surveyItemList.size(); i++) {
-//                SurveyItemVO vo = surveyItemList.get(i);
-//            }
-//            for (SurveyItemVO vo : surveyItemList) {
-//                ResultDataSet dataSet = new ResultDataSet();
-//                dataSet.setSurvey_item_index(vo.getSurvey_item_index());
-//                dataset.add(dataSet);
-//            }
             model.addAttribute("surveyVO", surveyVO); // 타이틀, 내용만 페이지에 보여지게 html 작성
             model.addAttribute("surveyItemList", surveyItemList); //설문조사 선택 리스트보기
             model.addAttribute("dataset", dataset);
