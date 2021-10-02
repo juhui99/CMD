@@ -5,6 +5,7 @@
 <mapper namespace="com.CMD.CMD_pro.survey.mapper.SurveyMapper">
     <parameterMap id="surveyVO" type="com.CMD.CMD_pro.survey.domain.SurveyVO"/>
     <parameterMap id="surveyItemVO" type="com.CMD.CMD_pro.survey.domain.SurveyItemVO"/>
+    <parameterMap id="surveyWithItemVO" type="com.CMD.CMD_pro.survey.domain.SurveyWithItemVO"/>
     <parameterMap id="surveyResultVO" type="com.CMD.CMD_pro.survey.domain.SurveyResultVO"/>
     <parameterMap id="searchCriteria" type="com.CMD.CMD_pro.survey.domain.SearchCriteria"/>
     <parameterMap id="resultDataSet" type="com.CMD.CMD_pro.survey.domain.ResultDataSet"/>
@@ -16,128 +17,143 @@
 
     <!-- 검색기능을 위한 동적SQL -->
     <sql id="search">
-        <choose>
-            <when test="progressing == null or progressing.isEmpty()">
-                AND progressing = 1
-            </when>
-            <otherwise>
-                AND progressing = #{progressing}
-            </otherwise>
-        </choose>
         <if test="searchType != null and !searchType.isEmpty()">
-            <bind name="pattern" value="'%' +  searchType  + '%'" />
+            <bind name="keyword" value="'%' +  keyword  + '%'" />
             <!-- SearchCriteria.keyword로 넘어옴 -->
             <choose>
-                <when test="type eq 'writer'">
-                    AND name LIKE #{pattern}
+                <when test="searchType eq 'title'">
+                    AND survey_title LIKE #{keyword}
                 </when>
-                <when test="type eq 'title'">
-                    AND survey_title LIKE #{pattern} OR survey_content LIKE #{pattern}
+                <when test="searchType eq 'content'">
+                    AND survey_content LIKE #{keyword}
                 </when>
+                <otherwise>
+                    AND survey_title LIKE #{keyword} OR survey_content LIKE #{keyword}
+                </otherwise>
             </choose>
         </if>
     </sql>
 
-<!--    &lt;!&ndash; 검색기능을 위한 동적SQL &ndash;&gt;-->
-<!--    <sql id="search">-->
-<!--        <choose>-->
-<!--            <when test="progressing == null or progressing.isEmpty()">-->
-<!--                AND progressing = 1-->
-<!--            </when>-->
-<!--            <otherwise>-->
-<!--                AND progressing = #{progressing}-->
-<!--            </otherwise>-->
-<!--        </choose>-->
-<!--        <if test="searchType != null and !searchType.isEmpty()">-->
-<!--            <if test="searchType == 't'.toString()">AND survey.surveyTitle LIKE CONCAT('%',#{keyword},'%')</if>-->
-<!--            <if test="searchType == 'c'.toString()">AND survey.surveyContent LIKE CONCAT('%',#{keyword},'%')</if>-->
-<!--            <if test="searchType == 'w'.toString()">AND users.user_name LIKE CONCAT('%',#{keyword},'%')</if>-->
-<!--            <if test="searchType == 'tc'.toString()">AND (survey.surveyTitle LIKE CONCAT('%',#{keyword},'%')) or (survey.surveyContent LIKE CONCAT('%',#{keyword},'%'))</if>-->
-<!--        </if>-->
-<!--    </sql>-->
+    <!--    &lt;!&ndash; 검색기능을 위한 동적SQL &ndash;&gt;-->
+    <!--    <sql id="search">-->
+    <!--        <if test="searchType != null and !searchType.isEmpty()">-->
+    <!--            <if test="searchType == 'title'.toString()">AND survey.surveyTitle LIKE CONCAT('%',#{keyword},'%')</if>-->
+    <!--&lt;!&ndash;            <if test="searchType == 'c'.toString()">AND survey.surveyContent LIKE CONCAT('%',#{keyword},'%')</if>&ndash;&gt;-->
+    <!--            <if test="searchType == 'writer'.toString()">AND users.user_name LIKE CONCAT('%',#{keyword},'%')</if>-->
+    <!--&lt;!&ndash;            <if test="searchType == 'tc'.toString()">AND (survey.surveyTitle LIKE CONCAT('%',#{keyword},'%')) or (survey.surveyContent LIKE CONCAT('%',#{keyword},'%'))</if>&ndash;&gt;-->
+    <!--        </if>-->
+    <!--    </sql>-->
 
-    <insert id="insertSurvey" parameterMap="surveyVO">
-        insert into survey (survey_index, user_index, survey_title, survey_content, survey_end)
-        values (surveyIndex.nextval, #{user_index}, #{survey_title}, #{survey_content}, #{survey_end})
+    <insert id="insertSurvey" parameterMap="surveyVO" useGeneratedKeys="true"
+            keyColumn="survey_index"
+            keyProperty="survey_index">
+        INSERT INTO survey (user_index, survey_title, survey_content, survey_end)
+        VALUES (#{user_index}, #{survey_title}, #{survey_content}, #{survey_end})
     </insert>
+
+    <!--    <select id="maxSurveyIndex" resultType="int">-->
+    <!--        SELECT MAX(survey_index)-->
+    <!--        FROM survey-->
+    <!--    </select>-->
 
     <insert id="insertSurveyItem" parameterMap="surveyItemVO">
-        insert into surveyItem
-        values
-            (survey_item_index.nextval, survey_index.currval, #{survey_item_content})
+        INSERT INTO surveyItem (survey_item_index, survey_index, survey_item_content)
+        VALUES
+        <foreach collection="list" item="item" separator=" , ">
+            (#{item.survey_item_index}, #{item.survey_index}, #{item.survey_item_content})
+        </foreach>
     </insert>
 
-    <insert id="addSurveyResult" parameterMap="surveyResultVO">
+    <insert id="insertSurveyResult" parameterMap="surveyResultVO">
         INSERT INTO surveyResult (survey_result_index, survey_index, survey_item_index, user_index)
-        VALUES (survey_result_index.nextval, #{survey_index}, #{survey_item_index}, #{user_index})
+        VALUES (#{survey_result_index}, #{survey_index}, #{survey_item_index}, #{user_index})
     </insert>
 
-    <select id="selectSurvey" parameterMap="surveyVO" resultMap="surveyVO">
-        SELECT survey_index, survey_title, user_index, survey_reg, survey_content, progressing, survey_end,
-               (
-                   SELECT COUNT(survey_result_index)
-                   FROM surveyResult
-                            JOIN surveyItem ON surveyResult.survey_item_index = surveyItem.survey_item_index
-                   WHERE surveyItem.survey_index = survey.survey_index
+    <select id="selectSurvey" parameterType="int" resultMap="surveyVO">
+        SELECT survey.*,
+               (SELECT COUNT(survey_result_index)
+                FROM surveyResult
+                         JOIN surveyItem ON surveyResult.survey_item_index = surveyItem.survey_item_index
+                WHERE surveyItem.survey_index = survey.survey_index
                ) survey_count
         FROM survey
-                 JOIN users ON survey.user_index = users.user_index
+                 LEFT JOIN users ON survey.user_index = users.user_index
         WHERE survey_index = #{survey_index}
     </select>
 
-    <select id="selectSurveyItems" parameterMap="surveyVO" resultMap="surveyItemVO">
+    <select id="selectSurveyItems" parameterType="int" resultMap="surveyItemVO">
         SELECT
             survey_item_index, survey_index, survey_item_content
         FROM surveyItem
         WHERE survey_index = #{survey_index}
     </select>
 
-    <update id="closeSurvey" parameterMap="surveyVO">
-        UPDATE survey set PROGRESSING = 0
+    <update id="closeSurvey" parameterType="int">
+        UPDATE survey set progressing = 0
         WHERE survey_index = #{survey_index}
     </update>
 
-    <delete id="removeSurvey" parameterMap="surveyVO">
+    <delete id="removeSurvey" parameterType="int">
         DELETE FROM survey
         WHERE survey_index = #{survey_index}
     </delete>
 
-    <!-- 리스트 + 페이징 + 검색 -->
+    <!-- 리스트 + 페이징  -->
     <select id="selectSurveyList" parameterMap="searchCriteria" resultMap="surveyVO">
         SELECT
-        survey_index, user_index, survey_title, survey_content, survey_reg, survey_end, progressing,
-               (
-                   SELECT COUNT(survey_result_index)
-                   FROM surveyResult
-                       JOIN surveyItem ON surveyResult.survey_item_index = surveyItem.survey_item_index
-                   WHERE surveyItem.survey_index = survey.survey_index
-                )survey_count
+        survey_index, survey_title, survey.user_index, survey_reg, survey_content, progressing, survey_end,
+        (
+        SELECT COUNT(survey_result_index)
+        FROM surveyResult
+        JOIN surveyItem ON surveyResult.survey_item_index = surveyItem.survey_item_index
+        WHERE surveyItem.survey_index = survey.survey_index
+        )survey_count
         FROM survey
-            JOIN users ON survey.user_index = users.user_index
+        LEFT JOIN users ON survey.user_index = users.user_index
         WHERE survey_index > 0
         <include refid="search"/>
-        ORDER BY survey_index desc
+        ORDER BY survey_index desc, survey_reg desc
         LIMIT #{pageStart}, #{perPageNum}
     </select>
 
-    <!-- 총 게시물 개수 구하기 -->
-    <select id="selectCountPaging" parameterMap="searchCriteria" resultMap="pageMaker" resultType="int">
+    <!--    &lt;!&ndash; 총 게시물 개수 구하기 &ndash;&gt;-->
+    <!--    <select id="selectCountPaging" parameterMap="searchCriteria" resultMap="pageMaker">-->
+    <!--        <![CDATA[-->
+    <!--		SELECT COUNT(survey_index)-->
+    <!--		FROM survey-->
+    <!--		    LEFT JOIN users ON users.user_index = survey.user_index-->
+    <!--		WHERE survey_index > 0-->
+    <!--		]]>-->
+    <!--        <include refid="search"></include>-->
+    <!--    </select>-->
+
+    <select id="selectCountPaging" parameterMap="searchCriteria" resultType="int">
         <![CDATA[
-		SELECT COUNT(survey_index)
-		FROM survey
-		    JOIN users ON users.user_index = survey.user_index
-		WHERE survey_index > 0
-		]]>
-        <include refid="search"></include>
+        SELECT COUNT(survey_index)
+        FROM survey
+                 LEFT JOIN users ON users.user_index = survey.user_index
+        WHERE survey_index > 0
+        ]]>
     </select>
 
-    <select id="selectSurveyResultDataSet" parameterMap="surveyItemVO" resultMap="resultDataSet">
-        SELECT users.user_gender, users.user_name, surveyItem.survey_item_index
+    <select id="selectSurveyResultDataSet" parameterType="int" resultMap="resultDataSet">
+        SELECT users.user_age, users.user_gender, users.user_name, surveyItem.survey_item_index
         FROM surveyItem
-            JOIN surveyResult ON surveyResult.survey_item_index = surveyItem.survey_item_index
-            JOIN users ON surveyResult.user_index = users.user_index
+                 INNER JOIN surveyResult ON surveyResult.survey_item_index = surveyItem.survey_item_index
+                 LEFT JOIN users ON surveyResult.user_index = users.user_index
         WHERE
             surveyItem.survey_index = #{survey_index}
     </select>
+
+    <!--    <select id="mainSearch" parameterType="map" resultMap="surveyVO">-->
+    <!--        select * from survey-->
+    <!--        where (writer like CONCAT('%',#{keyword},'%') and progressing = 1)-->
+    <!--           or (subject like CONCAT('%',#{keyword},'%') and progressing = 1)-->
+    <!--           or (content like CONCAT('%',#{keyword},'%') and progressing = 1)-->
+    <!--    </select>-->
+
+    <!--    <insert id="searchInsert" parameterType="map">-->
+    <!--        insert into search (keyword,search_date) values(#{keyword},now());-->
+    <!--    </insert>-->
 
 </mapper>

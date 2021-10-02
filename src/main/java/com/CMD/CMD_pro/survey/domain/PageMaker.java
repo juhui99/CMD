@@ -20,7 +20,7 @@ public class PageMaker {
     private boolean prev; // 페이징 이전 버튼 활성화 여부
     private boolean next; // 페이징 다음 버튼 활성화 여부
     private int totalPage; //총 출력되는 페이지수
-    private int displayPageNum = 5; //총 출력할 페이지수 // 1,2,3,4,5
+    private int displayPageNum = 3; //총 출력할 페이지수 // 1,2,3,4,5
 
     @Override
     public String toString() {
@@ -29,17 +29,30 @@ public class PageMaker {
                 + displayPageNum + "]";
     }
 
-    public int getTotalCount() {return totalCount;}
+    public Criteria getCri() {
+        return cri;
+    }
+    public void setCriteria(Criteria cri) {
+        this.cri = cri;
+    }
+
+    public int getTotalCount() {
+        return totalCount;
+    }
+
     public void setTotalCount(int totalCount) {
         this.totalCount = totalCount;
         calcData();
     }
 
     private void calcData() {
+        //마지막 번호
         endPage = (int) (Math.ceil(cri.getPage() / (double) displayPageNum) * displayPageNum);
+        //시작 번호
         startPage = (endPage - displayPageNum) + 1;
         if(startPage <= 0) startPage = 1;
 
+        //마지막번호 재계산
         int tempEndPage = (int) (Math.ceil(totalCount / (double) cri.getPerPageNum()));
         if (endPage > tempEndPage) {
             endPage = tempEndPage;
@@ -64,6 +77,7 @@ public class PageMaker {
                 .build();
         return uri.toUriString();
     }
+
     private String encoding(String keyword) {
         if(keyword == null || keyword.trim().length() == 0) {
             return "";
@@ -76,12 +90,11 @@ public class PageMaker {
     }
 
     // 리스트 + 검색 + 페이징
-    public String makeSearch(int page) {
+    public String makeSearch(SearchCriteria cri) {
         UriComponents uriComponents = UriComponentsBuilder.newInstance()
-                .queryParam("page", page)
                 .queryParam("perPageNum", cri.getPerPageNum())
-                .queryParam("searchType", ((SearchCriteria)cri).getSearchType())
-                .queryParam("keyword", encoding(((SearchCriteria)cri).getKeyword()))
+                .queryParam("searchType", cri.getSearchType())
+                .queryParam("keyword", cri.getKeyword())
                 .build();
         return uriComponents.toUriString();
     }
