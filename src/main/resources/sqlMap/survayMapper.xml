@@ -14,6 +14,7 @@
     <resultMap id="surveyItemVO" type="com.CMD.CMD_pro.survey.domain.SurveyItemVO"/>
     <resultMap id="pageMaker" type="com.CMD.CMD_pro.survey.domain.PageMaker"/>
     <resultMap id="resultDataSet" type="com.CMD.CMD_pro.survey.domain.ResultDataSet"/>
+    <resultMap id="surveyResultVO" type="com.CMD.CMD_pro.survey.domain.SurveyResultVO"/>
 
     <!-- 검색기능을 위한 동적SQL -->
     <sql id="search">
@@ -145,18 +146,15 @@
             surveyItem.survey_index = #{survey_index}
     </select>
 
+    <select id="selectSurveyResult" parameterType="int" resultType="int">
+        SELECT DISTINCT survey_item_index
+        FROM surveyResult
+        WHERE survey_index = #{survey_index};
+    </select>
+
     <select id="resultCount" parameterType="int" resultType="int">
         SELECT COUNT(survey_item_index)
         FROM surveyResult
         WHERE surveyResult.survey_item_index = #{survey_item_index};
-
     </select>
-
-<!--    <select id="mainSearch" parameterType="map" resultMap="surveyVO">-->
-<!--        select * from survey-->
-<!--        where (writer like CONCAT('%',#{keyword},'%') and progressing = 1)-->
-<!--           or (subject like CONCAT('%',#{keyword},'%') and progressing = 1)-->
-<!--           or (content like CONCAT('%',#{keyword},'%') and progressing = 1)-->
-<!--    </select>-->
-
 </mapper>

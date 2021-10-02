@@ -77,9 +77,19 @@ public class SurveyController {
             SurveyVO surveyVO = surveyMapper.selectSurvey(survey_index);
             surveyItemList = surveyMapper.selectSurveyItems(survey_index);
             List<ResultDataSet> dataset  = surveyMapper.selectSurveyResultDataSet(survey_index);
+            List<Integer> resultIndexList = surveyMapper.selectSurveyResult(survey_index);
 
-//            int itemIndex;
+            List<Integer> countList = new ArrayList<>();
+
+            for (int i = 0; i < resultIndexList.size(); i++){
+                int surveyItemIndex = resultIndexList.get(i);
+                int resultCount = surveyMapper.resultCount(surveyItemIndex);
+                countList.add(resultCount);
+            }
+
 //            int resultCount = surveyMapper.resultCount();
+
+
 //           for (int i = 0 ; i < surveyItemList.size(); i++) {
 //                SurveyItemVO vo = surveyItemList.get(i);
 //            }
@@ -91,6 +101,7 @@ public class SurveyController {
             model.addAttribute("surveyVO", surveyVO); // 타이틀, 내용만 페이지에 보여지게 html 작성
             model.addAttribute("surveyItemList", surveyItemList); //설문조사 선택 리스트보기
             model.addAttribute("dataset", dataset);
+            model.addAttribute("countList", countList);
             return "readSurvey_off";
         }
     }
@@ -184,7 +195,7 @@ public class SurveyController {
 
     @RequestMapping(value="voteSurvey", method = RequestMethod.POST) //설문조사 참여하기
     public @ResponseBody Map<String, Object> insertSurveyResult
-            ( HttpServletRequest req,HttpSession session) throws Exception{
+            (HttpServletRequest req,HttpSession session) throws Exception{
         String userID;
         userID = (String) session.getAttribute("id");
         UserVO user = userMapper.userLogin(userID);
