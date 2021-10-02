@@ -102,7 +102,7 @@
 
                         html += '<br><span style="font-size: 1px; height: auto; color: grey; margin-left: 40px;">' + result[i][3].value + '</span></p>';
                         $("#chatContainer").append(html);
-                        $('#chatContainer').scrollTop($('#chatContainer')[0].scrollHeight);
+                        $("#chatContainer").scrollTop($("#chatContainer")[0].scrollHeight);
 
                     }
 
@@ -261,6 +261,10 @@
             background-color: #fff;
             width: 200px;
             border-radius: 5px;
+        }
+
+        #chatContainer {
+            overflow: auto;
         }
 
 
@@ -525,9 +529,6 @@
 
         });
 
-        function closePopup() {
-            $(".popupLayer").css("display","none");
-        }
     var ticker = function()
     {
         setTimeout(function(){
