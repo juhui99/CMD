@@ -112,6 +112,23 @@ public class SurveyController {
             model.addAttribute("dataset", dataset);
             model.addAttribute("countList", countList);
             model.addAttribute("filename",filename);
+
+
+
+            int number = 0;
+            for(int i=0; i<countList.size(); i++){
+                number += countList.get(i);
+            }
+            List<Double> doubleList = new ArrayList<>();
+            for(int i=0; i<countList.size(); i++){
+                //testList.set(i, testList.get(i) / number * 100);
+
+                double a = countList.get(i) / (double)number * 100.0;
+                a = Math.round(a);
+                doubleList.add(a);
+            }
+
+            model.addAttribute("testList",doubleList);
             return "readSurvey_off";
         }
     }
@@ -270,5 +287,31 @@ public class SurveyController {
 
         model.addAttribute("surveysearch",SurveyList); //검색한 설문 리스트
         return "searchSurvey";
+    }
+
+    @GetMapping("/test")
+    public String test(Model model){
+        List<Integer> testList = new ArrayList<>();
+        testList.add(1);
+        testList.add(3);
+        testList.add(5);
+        int number = 0;
+        for(int i=0; i<testList.size(); i++){
+            number += testList.get(i);
+        }
+        List<Double> doubleList = new ArrayList<>();
+        for(int i=0; i<testList.size(); i++){
+            //testList.set(i, testList.get(i) / number * 100);
+
+            double a = testList.get(i) / (double)number * 100.0;
+            a = Math.round(a);
+            System.out.println(a);
+            doubleList.add(a);
+        }
+
+        System.out.println(number);
+        System.out.println(doubleList);
+        model.addAttribute("testList",doubleList);
+        return "test";
     }
 }
