@@ -109,7 +109,7 @@ public class SurveyController {
     }
 
     @RequestMapping("/closeSurvey") //설문조사 마감처리
-    public String closeSurvey(@RequestParam("survey_index") int survey_index) {
+    public String closeSurvey(@RequestParam("survey_index") int survey_index, HttpSession session, Model model) throws Exception{
         String userID = (String)session.getAttribute("id");
         if(userID == null){ //로그인 확인
             model.addAttribute("msg","로그인이 되어있지 않습니다.");
