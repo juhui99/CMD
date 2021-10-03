@@ -341,7 +341,7 @@
                     <th style="padding-top: 10px; padding-bottom: 10px;text-align: center">제목</th>
                     <th>내용</th>
                     <th>시작일</th>
-<!--                    <th>마감일</th>-->
+                    <!--                    <th>마감일</th>-->
                     <th >진행여부</th> <!--(1 = 진행중, 0 = 마감)-->
                 </tr>
                 </thead>
@@ -355,7 +355,7 @@
                            th:text="${surveyList.survey_title}"></a></td>
                     <td style="font-size: 12px;" th:text="${surveyList.survey_content}"></td>
                     <td style="font-size: 12px; margin-left: 5px" th:text="${surveyList.real_date}"></td>
-<!--                    <td style="font-size: 12px; margin-left: 3px" th:text="${surveyList.survey_end}"></td>-->
+                    <!--                    <td style="font-size: 12px; margin-left: 3px" th:text="${surveyList.survey_end}"></td>-->
                     <td style="font-size: 12px;margin-left: 3px"
                         th:if="${surveyList.progressing} == 1 ? 'moving' : 'cancelled'"
                         th:text="${surveyList.progressing} == 1 ? '진행중' : '마감'"></td>
@@ -371,7 +371,7 @@
                     class="pagination pagination-sm no-margin pull-right">
                     <li th:if="${pageMaker.prev} == true">
                         <a  class="page-link" style="text-decoration:none; color: black; border: 1px solid #dddddd; margin-left: 1px;"
-                           th:href="@{/mainSurvey?(page=${pageMaker.startPage - 1},perPageNum=${pageMaker.cri.perPageNum})}"><</a>
+                            th:href="@{/mainSurvey?(page=${pageMaker.startPage - 1},perPageNum=${pageMaker.cri.perPageNum})}"><</a>
                     </li>
                     <li th:if="${page} > 0"
                         th:each="page,iterStat : ${#numbers.sequence(pageMaker.startPage,pageMaker.endPage)}"

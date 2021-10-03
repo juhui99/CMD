@@ -16,11 +16,12 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
+
+
     <script type="text/javascript">
         function vote() {
             $.ajax({
                 url: "/voteSurvey",
-                // enctype: "multipart/form-data",
                 //processData: false, // 데이터 객체를 문자열로 바꿀지에 대한 값이다. true면 일반문자
                 //contentType: false, // 해당 타입을 true로 하면 일반 text로 구분
                 type: "POST",
@@ -49,9 +50,9 @@
         function clickCheck(target) {
             document.querySelectorAll(`input[type=checkbox]`)
                 .forEach(el => el.checked = false);
+
             target.checked = true;
         }
-
         function searchRanking() {
             $.ajax({
                 type: "POST",
@@ -78,6 +79,7 @@
                         html2 += '<a href="/main_search?keyword=' + result[i][0].value + '" style="color: black; font-size: 12px;"><span style="background-color: #003366d2; color: white; padding-right: 4px; padding-left: 4px; margin-left: 3px;  margin-right: 2px; margin-bottom: 3px; font-size: 12px;">' + (i + 1) + '</span>' + result[i][0].value + '</a><br>'
                     }
                     $('#rankingArea').append(html2);
+
                 }
             });
         }
@@ -111,6 +113,8 @@
                 totalUnreadChat();
             }, 4000);
         }
+
+
     </script>
 
     <style>
@@ -119,6 +123,7 @@
         .frontend_board {
             display: none;
         }
+
 
         .carousel {
             margin: 4% auto;
@@ -133,6 +138,7 @@
 
         .carousel-inner {
             border-radius: 25px;
+
         }
 
         .carousel-caption {
@@ -214,7 +220,7 @@
             margin-right: 3px;
         }
 
-        .popupLayer {
+        .popupLayer{
             display: none;
             position: absolute;
             left: 950px;
@@ -224,6 +230,7 @@
             width: 200px;
             border-radius: 5px;
         }
+
     </style>
 </head>
 <body>
@@ -319,6 +326,7 @@
                            href="/board?kind=협업게시판&realm=WhiteHat">협업게시판</a>
                         <a class="dropdown-item WH_board board" style="color: #003366d2; font-size: 13px;"
                            href="/board?kind=로드맵공유게시판&realm=WhiteHat">로드맵공유게시판</a>
+
                     </div>
                 </li>
 
@@ -338,9 +346,15 @@
                     <a class="nav-link" href="/cmd_roadmap">로드맵</a>
                 </li>
 
-                <li class="nav-item">
-                    <a class="nav-link" href="/mainSurvey" id="navbardrop3">
-                        설문조사</a>
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbardrop3" data-toggle="dropdown">
+                        설문조사
+                    </a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="/mainSurvey">설문조사 하기</a>
+                        <a class="dropdown-item" href="#">설문조사 통계</a>
+                    </div>
                 </li>
             </ul>
             <ul class="login-box">
@@ -369,56 +383,36 @@
 
         </nav>
     </div>
-    <div style="background-color: #FFFFFF; width: 70%; height:450px; margin: 5em auto; border-radius: 1.5em; box-shadow: 5px 5px 5px 5px rgba(0, 0, 0, 0.14);">
-        <!--enctype="multipart/form-data"-->
-        <form id="voteform" method="post">
+    <div>
+        <form id="voteform" method="post" >
             <div>
                 <table>
                     <tbody>
                     <tr th:each="surveyVO : ${surveyVO}">
-                        <td style="width:60%; text-align: center; font-size:25px; color: #003366d2; font-weight: bold;"
-                            th:text="${surveyVO.survey_title}"></td>
-                        <br>
-                        <td style=" margin-left: 20%; text-align: center; font-size: 20px"
-                            th:text="${surveyVO.survey_content}"></td>
+                        <td th:text="${surveyVO.survey_title}"></td>
+                        <td th:text="${surveyVO.survey_content}"></td>
                     </tr>
                     </tbody>
                 </table>
-                <hr style=" width:80%; margin-top: 5px; margin-bottom: 2px; background-color: #003366d2;">
             </div>
+
+            <h5>목록</h5>
             <div>
-                <h5 style="padding-left:30%;  width:100%; margin-top: 2%;">목록</h5>
-            </div>
-            <div style="padding-left: 10%;">
                 <div th:each="surveyItemList : ${surveyItemList}" class="form-check">
-                    <input type="checkbox" name="itemIndex" class="form-check-input"
-                           th:value="${surveyItemList.survey_item_index}" onclick="clickCheck(this)"/>
-                    <input style="margin-top: 7px; width: 50%; border: 1px solid rgb(133, 133,133); background: white"
-                           type="text" class="form-control" name="itemContent"
-                           th:value="${surveyItemList.survey_item_content}" readonly/>
+                    <input type="checkbox" name="itemIndex" class="form-check-input"  th:value="${surveyItemList.survey_item_index}" onclick="clickCheck(this)"/>
+                                        <input type="text" class="itemContent" name="itemContent" th:value="${surveyItemList.survey_item_content}"/>
                 </div>
             </div>
-            <hr style="margin-top: 19px; width:80%; margin-bottom: 2px; background-color: #003366d2;">
-            <div style="padding-left: 10%;">
-                <input type="hidden" th:value="${session.id}" id="id" name="id"/>
-                <input type="hidden" th:value="${surveyVO.survey_index}" id="surveyIndex" name="survey_index"/>
-                <input style="float:left; margin-top: 20px;margin-right: 7%; border: 0; color: white; border-radius: 5px; background: #003366d2;"
-                       type="button" onclick="vote();" value="투표"/>
-                <a th:href="@{/closeSurvey(survey_index=${surveyVO.survey_index})}">
-                    <button th:if="${manager == 1}" style="float:left; margin-top: 20px;margin-right: 7%; border: 0; color: white; border-radius: 5px; background: #003366d2;">
-                        마감
-                    </button>
-                </a>
-                <a th:href="@{/removeSurvey(survey_index=${surveyVO.survey_index})}">
-                    <button th:if="${manager == 1}" style="float:left; margin-top: 20px;margin-right: 7%; border: 0; color: white; border-radius: 5px; background: #003366d2;">
-                        삭제
-                    </button>
-                </a>
-                <button style="float:left; margin-top: 20px;margin-right: 7%; border: 0; color: white; border-radius: 5px; background: #003366d2;"
-                        onclick="location.href= '/mainSurvey'">목록
-                </button>
-            </div>
+            <input type="hidden" th:value="${session.id}" id="id" name="id"/>
+            <input type="hidden" th:value="${surveyVO.survey_index}" id="surveyIndex" name="survey_index"/>
+            <input type="button" onclick="vote();" value="투표"/>
+
         </form>
+        <a th:href="@{/closeSurvey(survey_index=${surveyVO.survey_index})}"><button>마감</button></a><br>
+        <a th:href="@{/removeSurvey(survey_index=${surveyVO.survey_index})}"><button>삭제</button></a><br>
+        <button onclick="location.href= '/mainSurvey'">목록</button>
+
+
     </div>
     <div class="footer-box">
         <div class="author">
@@ -439,8 +433,7 @@
 </div>
 <div class="popupLayer" style=" z-index: 2;">
     <div style="background: #003366d2;">
-        <span style=" color: white; border-radius: 5px; margin-left: 2px; margin-top: 5px; padding: 3px; font-size: 12px;">인기검색어</span><span
-            style="color: white; float: right; margin-right: 3px; cursor: pointer;" onclick="closePopup();">x</span>
+        <span style=" color: white; border-radius: 5px; margin-left: 2px; margin-top: 5px; padding: 3px; font-size: 12px;">인기검색어</span><span style="color: white; float: right; margin-right: 3px; cursor: pointer;" onclick="closePopup();">x</span>
         <hr style="margin-top: 5px; margin-bottom: 2px; background-color: #003366d2;">
     </div>
     <div id="rankingArea">
@@ -456,12 +449,14 @@
         getInfiniteTotalUnread();
         $(".board").css("display", "none");
 
+
         $(".frontend").hover(function () {
             $(".frontend_board").css("display", "block");
             $(".backend_board").css("display", "none");
             $(".DBA_board").css("display", "none");
             $(".AI_board").css("display", "none");
             $(".WH_board").css("display", "none");
+
         });
         $(".backend").hover(function () {
             $(".backend_board").css("display", "block");
@@ -490,6 +485,7 @@
             $(".DBA_board").css("display", "none");
             $(".backend_board").css("display", "none");
             $(".frontend_board").css("display", "none");
+
         });
         $("#withdrawal").click(function () {
             var id = $("#userID").val();
@@ -500,9 +496,13 @@
             }
         });
 
-        var ticker = function () {
-            setTimeout(function () {
-                $('#ticker li:first').animate({marginTop: '-20px'}, 400, function () {
+
+
+        var ticker = function()
+        {
+            setTimeout(function(){
+                $('#ticker li:first').animate( {marginTop: '-20px'}, 400, function()
+                {
                     $(this).detach().appendTo('ul#ticker').removeAttr('style');
                 });
                 ticker();
@@ -511,12 +511,13 @@
         ticker();
 
         $("#ranking").hover(function () {
-            $(".popupLayer").css("display", "block");
+            $(".popupLayer").css("display","block");
         });
+
     });
 
     function closePopup() {
-        $(".popupLayer").css("display", "none");
+        $(".popupLayer").css("display","none");
     }
 </script>
 </body>

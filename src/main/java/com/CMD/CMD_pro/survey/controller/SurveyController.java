@@ -243,8 +243,6 @@ public class SurveyController {
     @RequestMapping("/removeSurvey") //설문조사 지우기
     public String removeSurvey(@RequestParam("survey_index") int survey_index,
                                Model model, HttpSession session) throws Exception{
-
-
         String userID = (String)session.getAttribute("id");
         if(userID == null){ //로그인 확인
             model.addAttribute("msg","로그인이 되어있지 않습니다.");
