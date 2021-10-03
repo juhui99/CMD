@@ -36,7 +36,7 @@
 
                     $('#rankingArea').html('');
                     var html2 = '';
-                    for(var i = 0; i < result.length; i++){
+                    for (var i = 0; i < result.length; i++) {
                         html2 += '<a href="/main_search?keyword=' + result[i][0].value + '" style="color: black; font-size: 12px;"><span style="background-color: #003366d2; color: white; padding-right: 4px; padding-left: 4px; margin-left: 3px;  margin-right: 2px; margin-bottom: 3px; font-size: 12px;">' + (i + 1) + '</span>' + result[i][0].value + '</a><br>'
                     }
                     $('#rankingArea').append(html2);
@@ -129,11 +129,9 @@
                     alert("회원탈퇴를 취소합니다.");
                 }
             });
-            var ticker = function()
-            {
-                setTimeout(function(){
-                    $('#ticker li:first').animate( {marginTop: '-20px'}, 400, function()
-                    {
+            var ticker = function () {
+                setTimeout(function () {
+                    $('#ticker li:first').animate({marginTop: '-20px'}, 400, function () {
                         $(this).detach().appendTo('ul#ticker').removeAttr('style');
                     });
                     ticker();
@@ -142,13 +140,13 @@
             ticker();
 
             $("#ranking").hover(function () {
-                $(".popupLayer").css("display","block");
+                $(".popupLayer").css("display", "block");
             });
 
         });
 
         function closePopup() {
-            $(".popupLayer").css("display","none");
+            $(".popupLayer").css("display", "none");
         }
 
         function submitAction() {
@@ -223,12 +221,40 @@
         border: 1px solid #003366d2;
     }
 
-    .block {border:2px solid #003366d2;  padding:0 5px; height:25px; overflow:hidden; background:#fff; width:100px; font-family:Gulim; font-size:12px;}
-    .block ul, .block li {margin:0; padding:0; list-style:none;}
-    .block li a {display:block; height:20px; line-height:20px; color:#555; text-decoration:none;}
-    .block li span {padding:2px 5px; background:#003366d2; color:#fff; font-weight:bold; margin-right:3px;}
+    .block {
+        border: 2px solid #003366d2;
+        padding: 0 5px;
+        height: 25px;
+        overflow: hidden;
+        background: #fff;
+        width: 100px;
+        font-family: Gulim;
+        font-size: 12px;
+    }
 
-    .popupLayer{
+    .block ul, .block li {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    .block li a {
+        display: block;
+        height: 20px;
+        line-height: 20px;
+        color: #555;
+        text-decoration: none;
+    }
+
+    .block li span {
+        padding: 2px 5px;
+        background: #003366d2;
+        color: #fff;
+        font-weight: bold;
+        margin-right: 3px;
+    }
+
+    .popupLayer {
         display: none;
         position: absolute;
         left: 950px;
@@ -238,7 +264,6 @@
         width: 200px;
         border-radius: 5px;
     }
-
 
 
 </style>
@@ -435,10 +460,10 @@
         <h2 class="text-center" th:text="|${kind}-${realm}|"></h2>
         <!-- Nav pills -->
 
-        <div class="container">
-            <h2 th:text="|${kind}-${realm}|"></h2>
+        <div class="find_container" style="margin-top: 20px; border-top: 1px solid  #03305e81; padding-top: 20px;">
             <form action="/search_list" method="post" onsubmit="return submitAction();">
-                <select name="search_option" id="search_option">
+                <select name="search_option" id="search_option"
+                        style="margin-top:3%; border-radius: 5px; margin-left: 5%; padding: 6px 4px;">
                     <option value="" selected disabled hidden>선택해주세요</option>
                     <option value="writer">작성자</option>
                     <option value="subject">제목</option>
@@ -447,70 +472,70 @@
                 </select>
                 <input type="hidden" name="kind" id="kind" th:value="${kind}">
                 <input type="hidden" name="realm" id="realm" th:value="${realm}">
-                <input type="text" name="keyword" id="keyword" placeholder="검색" th:value="${keyword}">
-                <input type="submit" value="조회">
+                <input style="border: 1px solid; border-radius: 5px; padding: 3.8px 4px;" type="text" name="keyword"
+                       id="keyword" placeholder="검색" th:value="${keyword}">
+                <input style="padding: 3.8px 8px; color: white; border: 0; border-radius: 5px; background: #003366d2;"
+                       type="submit" value="조회">
             </form>
         </div>
 
-        <div class="container">
-            <div>
-                <table style="text-align: center; border: 1px solid #dddddd" width="90%">
-                    <thead>
-                    <tr>
-                        <th>글 제목</th>
-                        <th>글 작성자</th>
-                        <th>날짜</th>
-                        <th></th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr th:each="board : ${board}">
-                        <td>
-                            <a th:href="@{/view(bno=${board.bno},kind=${kind},realm=${realm},pageNumber=${page},search='search',search_option=${search_option},keyword=${keyword})}"
-                               th:text="${board.subject}"></a></td>
-                        <td th:text="${board.writer}"></td>
-                        <td th:text="${board.real_date}"></td>
-                        <td th:if="${board.notice == 1}" style="color: red;">공지글</td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-            <button type="button" th:onclick="'location.href=\''+@{/write(kind=${kind},realm=${realm})}+'\''">글쓰기
+        <div>
+            <table style="margin-top: 20px; margin-left: 5%; text-align: center; border: 2px solid #dddddd; width:90%">
+                <thead>
+                <tr style="width:auto;font-size: 23px; border-bottom: 2px solid #dddddd;">
+                    <th style="padding-top: 10px; padding-bottom: 10px">글 제목</th>
+                    <th>글 작성자</th>
+                    <th>날짜</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr style="border-bottom: 2px solid #dddddd;" th:each="board : ${board}">
+                    <td style="padding-top: 7px; padding-bottom: 7px; font-size: 15px;">
+                        <a style="text-decoration: none; color: black;"
+                           th:href="@{/view(bno=${board.bno},kind=${kind},realm=${realm},pageNumber=${page},search='search',search_option=${search_option},keyword=${keyword})}"
+                           th:text="${board.subject}"></a></td>
+                    <td style="font-size: 15px;" th:text="${board.writer}"></td>
+                    <td style="font-size: 15px;" th:text="${board.real_date}"></td>
+                    <td th:if="${board.notice == 1}" style="color: red; width:auto; font-size: 15px;">공지글</td>
+                </tr>
+                </tbody>
+            </table>
+            <button style="float:right; margin-top: 20px;margin-right: 7%; border: 0; color: white; border-radius: 5px; background: #003366d2;"
+                    type="button" th:onclick="'location.href=\''+@{/write(kind=${kind},realm=${realm})}+'\''">글쓰기
             </button>
+        </div>
 
-            <div style="display: block; text-align: center;">
-                <ul class="pagination pagination-sm" style="margin: 0 auto; margin-top: 20px; margin-bottom: 20px;">
-                    <li class="page-item" th:if="${startPage != 1}"><a class="page-link"
-                                                                       th:href="@{/search_list(pageNumber=${startPage} - 1,search_option=${search_option},keyword=${keyword},kind=${kind},realm=${realm})}">&lt;</a>
-                    </li>
-                    <li class="page-item" th:if="${startPage == 1}"><a class="page-link" style="color: gray;">&lt;</a>
-                    </li>
-                    <li class="page-item" th:if="${startPage >0 and page != 1 and page > startPage}"
-                        th:each="idx,iterStat : ${#numbers.sequence(startPage, page - 1)}">
-                        <a class="page-link" th:if="${idx > 0 and page != 1}"
-                           th:href="@{/search_list(pageNumber=${idx},search_option=${search_option},keyword=${keyword},kind=${kind},realm=${realm})}"
-                           th:text="${idx}"> </a>
-                    </li>
-                    <li class="page-item"><a class="page-link"
-                                             th:href="@{/search_list(pageNumber=${page},search_option=${search_option},keyword=${keyword},kind=${kind},realm=${realm})}"
-                                             th:text="${page}" style="background-color: #006DCC;"></a></li>
-                    <li class="page-item" th:if="${count > 0}"
-                        th:each="idx,iterStat : ${#numbers.sequence(page + 1, target2 + page )}">
-                        <a class="page-link" th:if="${idx < startPage + 10 and idx > page}"
-                           th:href="@{/search_list(pageNumber=${idx},search_option=${search_option},keyword=${keyword},kind=${kind},realm=${realm})}"
-                           th:text="${idx}"></a>
-                    </li>
-                    <li class="page-item" th:if="${target2 >= 1 and target2 + page > startPage + 9}">
-                        <a class="page-link"
-                           th:href="@{/search_list(pageNumber=${startPage + 10},search_option=${search_option},keyword=${keyword},kind=${kind},realm=${realm})}">></a>
-                    </li>
-                    <li class="page-item" th:if="${target2 + page <= startPage + 9}">
-                        <a class="page-link" style="color: gray;">></a>
-                    </li>
-                </ul>
-            </div>
-
-
+        <div style="display: block; text-align: center;">
+            <ul class="pagination pagination-sm" style="margin: 0 auto; margin-top: 20px; margin-bottom: 20px;  margin-left: 5%;">
+                <li class="page-item" th:if="${startPage != 1}"><a class="page-link"
+                                                                   th:href="@{/search_list(pageNumber=${startPage} - 1,search_option=${search_option},keyword=${keyword},kind=${kind},realm=${realm})}">&lt;</a>
+                </li>
+                <li class="page-item" th:if="${startPage == 1}"><a class="page-link" style="color: gray;">&lt;</a>
+                </li>
+                <li class="page-item" th:if="${startPage >0 and page != 1 and page > startPage}"
+                    th:each="idx,iterStat : ${#numbers.sequence(startPage, page - 1)}">
+                    <a class="page-link" th:if="${idx > 0 and page != 1}"
+                       th:href="@{/search_list(pageNumber=${idx},search_option=${search_option},keyword=${keyword},kind=${kind},realm=${realm})}"
+                       th:text="${idx}"> </a>
+                </li>
+                <li class="page-item"><a class="page-link"
+                                         th:href="@{/search_list(pageNumber=${page},search_option=${search_option},keyword=${keyword},kind=${kind},realm=${realm})}"
+                                         th:text="${page}"  style="background-color: #006DCC; color: white"></a></li>
+                <li class="page-item" th:if="${count > 0}"
+                    th:each="idx,iterStat : ${#numbers.sequence(page + 1, target2 + page )}">
+                    <a class="page-link" th:if="${idx < startPage + 10 and idx > page}"
+                       th:href="@{/search_list(pageNumber=${idx},search_option=${search_option},keyword=${keyword},kind=${kind},realm=${realm})}"
+                       th:text="${idx}"></a>
+                </li>
+                <li class="page-item" th:if="${target2 >= 1 and target2 + page > startPage + 9}">
+                    <a class="page-link"
+                       th:href="@{/search_list(pageNumber=${startPage + 10},search_option=${search_option},keyword=${keyword},kind=${kind},realm=${realm})}">></a>
+                </li>
+                <li class="page-item" th:if="${target2 + page <= startPage + 9}">
+                    <a class="page-link" style="color: gray;">></a>
+                </li>
+            </ul>
         </div>
 
 
@@ -535,7 +560,8 @@
 </div>
 <div class="popupLayer" style=" z-index: 2;">
     <div style="background: #003366d2;">
-        <span style=" color: white; border-radius: 5px; margin-left: 2px; margin-top: 5px; padding: 3px; font-size: 12px;">인기검색어</span><span style="color: white; float: right; margin-right: 3px; cursor: pointer;" onclick="closePopup();">x</span>
+        <span style=" color: white; border-radius: 5px; margin-left: 2px; margin-top: 5px; padding: 3px; font-size: 12px;">인기검색어</span><span
+            style="color: white; float: right; margin-right: 3px; cursor: pointer;" onclick="closePopup();">x</span>
         <hr style="margin-top: 5px; margin-bottom: 2px; background-color: #003366d2;">
     </div>
     <div id="rankingArea">

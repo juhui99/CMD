@@ -147,18 +147,6 @@
 
             });
 
-            function closePopup() {
-                $(".popupLayer").css("display","none");
-            }
-
-        function submitAction() {
-            if ($("#search_option").val() != "writer" && $("#search_option").val() != "subject"
-                && $("#search_option").val() != "content" && $("#search_option").val() != "all") {
-                alert("검색옵션을 선택해주세요.");
-                $("#search_option").focus();
-                return false;
-            }
-        }
 
 
 
@@ -182,6 +170,15 @@
 
         function closePopup() {
             $(".popupLayer").css("display","none");
+        }
+
+        function submitAction() {
+            if ($("#search_option").val() != "writer" && $("#search_option").val() != "subject"
+                && $("#search_option").val() != "content" && $("#search_option").val() != "all") {
+                alert("검색옵션을 선택해주세요.");
+                $("#search_option").focus();
+                return false;
+            }
         }
     </script>
 </head>

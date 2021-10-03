@@ -255,6 +255,13 @@ public class BoardListController {
         }
 
         List<CommentVO> commentList = boardMapper.CommentList(bno);
+
+        for(int i = 0; i < commentList.size(); i++){
+            Date date = commentList.get(i).getReg_date();
+            String real_date2 = format.format(date);
+            commentList.get(i).setReal_date(real_date2);
+        }
+
         int commentCount = boardMapper.CommentCount(bno);
         filename = user.getUser_profile();
         model.addAttribute("commentCount",commentCount);

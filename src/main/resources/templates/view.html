@@ -587,25 +587,25 @@
                         <span style="margin-left:6px; font-size: 13px; margin-top: 3px;"
                               th:text="${comment.content}"></span><br>
                         <span style="margin-left:6px; color: grey; font-size: 6px;"
-                              th:text="${comment.reg_date}"></span>
+                              th:text="${comment.real_date}"></span>
                     </td>
                     <td>
-                        <button th:if="${comment.level == 0}" class="btn" data-toggle="modal" id="modalButton"
-                                th:data-id="${comment.c_bno}" data-target="#modal1">답글
+                        <button  style="padding: 1px 6px; margin-bottom: 2.5px; border: 0; color: white; border-radius: 5px; background: #003366d2;" th:if="${comment.level == 0}" class="btn" data-toggle="modal" id="modalButton"
+                                 th:data-id="${comment.c_bno}" data-target="#modal1">답글
                         </button>
-                        <button th:if="${session.id == comment.writer}" class="btn" data-toggle="modal"
-                                id="modalButton2" th:data-content="${comment.content}" th:data-bno="${comment.c_bno}"
-                                data-target="#modal2">수정
+                        <button  style="padding: 1px 6px;  margin-bottom: 2.5px; border: 0; color: white; border-radius: 5px; background: #003366d2;" th:if="${session.id == comment.writer}" class="btn" data-toggle="modal"
+                                 id="modalButton2" th:data-content="${comment.content}" th:data-bno="${comment.c_bno}"
+                                 data-target="#modal2">수정
                         </button>
                         <a th:if="${(session.id == comment.writer and comment.level == 0) or (user.user_manager == 1 and comment.level == 0)}"
                            th:href="@{/commentDelete(bno=${board.bno},kind=${board.kind},realm=${board.realm},writer=${comment.writer},commentSequence=${comment.c_sequence},pageNumber=${page},option=${option},search=${search},search_option=${search_option},keyword=${keyword},mainSearch=${mainSearch})}">
-                            <button style=" border: 0; color: white; border-radius: 5px; background: #003366d2;"
+                            <button style=" border: 0; color: white; margin-top: 0.5px; border-radius: 5px; background: #003366d2;"
                                     type="button">삭제
                             </button>
                         </a>
                         <a th:if="${(session.id == comment.writer and comment.level == 1) or (user.user_manager == 1 and comment.level == 1)}"
                            th:href="@{/replyDelete(bno=${board.bno},kind=${board.kind},realm=${board.realm},writer=${comment.writer},commentBno=${comment.c_bno},pageNumber=${page},option=${option},search=${search},search_option=${search_option},keyword=${keyword},mainSearch=${mainSearch})}">
-                            <button style=" border: 0; color: white; border-radius: 5px; background: #003366d2;"
+                            <button style=" border: 0; margin-top: 0.5px; color: white; border-radius: 5px; background: #003366d2;"
                                     type="button">삭제
                             </button>
                         </a>
