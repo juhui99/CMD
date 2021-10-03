@@ -20,7 +20,7 @@ public class PageMaker {
     private boolean prev; // 페이징 이전 버튼 활성화 여부
     private boolean next; // 페이징 다음 버튼 활성화 여부
     private int totalPage; //총 출력되는 페이지수
-    private int displayPageNum = 3; //총 출력할 페이지수 // 1,2,3,4,5
+    private int displayPageNum = 5; //총 출력할 페이지수 // 1,2,3,4,5
 
     @Override
     public String toString() {

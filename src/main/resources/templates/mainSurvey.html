@@ -75,7 +75,6 @@
             }, 4000);
         }
 
-
     </script>
 
     <style>
@@ -84,7 +83,6 @@
         .frontend_board {
             display: none;
         }
-
 
         .carousel {
             margin: 4% auto;
@@ -99,7 +97,6 @@
 
         .carousel-inner {
             border-radius: 25px;
-
         }
 
         .carousel-caption {
@@ -148,7 +145,6 @@
             box-shadow: 0 0 0 0.2rem #003366d2;
         }
 
-
         .block {
             border: 2px solid #003366d2;
             padding: 1px 5px;
@@ -191,7 +187,6 @@
             width: 200px;
             border-radius: 5px;
         }
-
     </style>
 </head>
 <body>
@@ -287,7 +282,6 @@
                            href="/board?kind=협업게시판&realm=WhiteHat">협업게시판</a>
                         <a class="dropdown-item WH_board board" style="color: #003366d2; font-size: 13px;"
                            href="/board?kind=로드맵공유게시판&realm=WhiteHat">로드맵공유게시판</a>
-
                     </div>
                 </li>
 
@@ -306,7 +300,6 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/cmd_roadmap">로드맵</a>
                 </li>
-
 
                 <li class="nav-item">
                     <a class="nav-link" href="/mainSurvey" id="navbardrop3">
@@ -336,13 +329,9 @@
                     </div>
                 </li>
             </ul>
-
         </nav>
     </div>
 
-
-    <!--<label th:if="${param.progressing} != null and ${param.progressing} == 0">마감된 설문 목록</label>-->
-    <!--<label th:unless="${param.progressing} != null and ${param.progressing} == 0">진행 중인 설문</label>-->
     <div class="survey-box" style="width: 100%; height: 500px;">
         <div style="width: auto; margin-left: 5%; margin-right: 10%; height: auto; margin-top: 5%">
             <table style="margin-top: 20px; margin-left: 5%; text-align: center; border: 2px solid #dddddd" width="90%">
@@ -356,7 +345,7 @@
                     <th >진행여부</th> <!--(1 = 진행중, 0 = 마감)-->
                 </tr>
                 </thead>
-                <!--    <label th:if="${surveyList.survey_index} < 0">작성된 설문조사가 없습니다.</label>-->
+
                 <tbody>
                 <tr th:each="surveyList : ${surveyList}">
                     <!--        <td th:text="${surveyList.survey_index}"></td>-->
@@ -397,7 +386,6 @@
                            th:href="@{/mainSurvey?(page=${pageMaker.endPage + 1},perPageNum=${pageMaker.cri.perPageNum})}">></a>
                     </li>
                 </ul>
-
             </div>
         </div>
 
@@ -438,14 +426,12 @@
         getInfiniteTotalUnread();
         $(".board").css("display", "none");
 
-
         $(".frontend").hover(function () {
             $(".frontend_board").css("display", "block");
             $(".backend_board").css("display", "none");
             $(".DBA_board").css("display", "none");
             $(".AI_board").css("display", "none");
             $(".WH_board").css("display", "none");
-
         });
         $(".backend").hover(function () {
             $(".backend_board").css("display", "block");
@@ -474,7 +460,6 @@
             $(".DBA_board").css("display", "none");
             $(".backend_board").css("display", "none");
             $(".frontend_board").css("display", "none");
-
         });
         $("#withdrawal").click(function () {
             var id = $("#userID").val();
@@ -484,7 +469,6 @@
                 alert("회원탈퇴를 취소합니다.");
             }
         });
-
 
         var ticker = function () {
             setTimeout(function () {
@@ -499,7 +483,6 @@
         $("#ranking").hover(function () {
             $(".popupLayer").css("display", "block");
         });
-
     });
 
     function closePopup() {
