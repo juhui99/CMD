@@ -1,7 +1,6 @@
 package com.CMD.CMD_pro.survey.mapper;
 
 import com.CMD.CMD_pro.survey.domain.*;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -9,7 +8,7 @@ import java.util.List;
 @Repository
 public interface SurveyMapper {
     public List<SurveyVO> selectSurveyList(SearchCriteria cri) throws Exception;
-//    public PageMaker selectCountPaging(SearchCriteria cri) throws Exception;
+    //    public PageMaker selectCountPaging(SearchCriteria cri) throws Exception;
     public int selectCountPaging() throws Exception;
     public SurveyVO selectSurvey(int survey_index);
     public List<SurveyItemVO> selectSurveyItems(int survey_index);

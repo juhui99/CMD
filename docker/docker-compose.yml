@@ -5,7 +5,7 @@ services: # 이 항목 밑에 실행하려는 컨테이너 들을 정의
     container_name: Cmd_pro_mysql # 컨테이너 이름 설정
     ports:
       - "33301:3306" # 접근 포트 설정 (컨테이너 외부:컨테이너 내부)
-    environment: # -e 옵션
+    environment:
       MYSQL_ROOT_PASSWORD: "02010850"  # MYSQL 패스워드 설정 옵션
       MYSQL_DATABASE: cmd_db
     command: # 명령어 실행

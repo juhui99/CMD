@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://thymeleaf.org">
+      xmlns:th="http://thymeleaf.org" lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>CMD</title>
 </head>
 <body>
 
@@ -14,8 +14,13 @@
     /*<![CDATA[*/
     var url = /*[[ ${url} ]]*/;
     /*]]*/
-    alert(message);
-    document.location.href = url;
+    if(url != "back") {
+        alert(message);
+        document.location.href = url;
+    } else{
+        alert(message);
+        history.back();
+    }
 
 </script>
 </body>

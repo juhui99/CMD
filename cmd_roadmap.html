@@ -19,43 +19,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@500&display=swap" rel="stylesheet">
     <script type="text/javascript">
-        function searchRanking() {
-            $.ajax({
-                type: "POST",
-                url: "/searchRanking",
-                success: function (data) {
-                    if (data == "") return;
-                    $('#ranking').html('');
-                    var parsed = JSON.parse(data);
-                    var result = parsed.result;
-                    var html = '';
-                    html += '<ul id="ticker">'
-                    for (var i = 0; i < result.length; i++) {
-
-                        html += '<li style="margin-top: 1px">' + '<a href="/main_search?keyword=' + result[i][0].value + '"><span>' + (i + 1) + '</span>' + result[i][0].value + '</a>';
-                        html += '</li>';
-
-                    }
-                    html += '</ul>'
-                    $("#ranking").append(html);
-
-                    $('#rankingArea').html('');
-                    var html2 = '';
-                    for(var i = 0; i < result.length; i++){
-                        html2 += '<a href="/main_search?keyword=' + result[i][0].value + '" style="color: black; font-size: 12px;"><span style="background-color: #003366d2; color: white; padding-right: 4px; padding-left: 4px; margin-left: 3px;  margin-right: 2px; margin-bottom: 3px; font-size: 12px;">' + (i + 1) + '</span>' + result[i][0].value + '</a><br>'
-                    }
-                    $('#rankingArea').append(html2);
-
-                }
-            });
-        }
-
-        function getInfiniteSearchRanking() {
-            setInterval(function () {
-                searchRanking();
-            }, 30000);
-        }
-
         function totalUnreadChat() {
             $.ajax({
                 type: "POST",
@@ -81,10 +44,7 @@
         }
 
         $(document).ready(function () {
-
-            searchRanking();
             totalUnreadChat();
-            getInfiniteSearchRanking();
             getInfiniteTotalUnread();
 
             $(".board").css("display", "none");
@@ -134,27 +94,7 @@
                     alert("회원탈퇴를 취소합니다.");
                 }
             });
-            var ticker = function()
-            {
-                setTimeout(function(){
-                    $('#ticker li:first').animate( {marginTop: '-20px'}, 400, function()
-                    {
-                        $(this).detach().appendTo('ul#ticker').removeAttr('style');
-                    });
-                    ticker();
-                }, 3000);
-            };
-            ticker();
-
-            $("#ranking").hover(function () {
-                $(".popupLayer").css("display","block");
-            });
-
         });
-
-        function closePopup() {
-            $(".popupLayer").css("display","none");
-        }
     </script>
 
     <style>
@@ -227,39 +167,21 @@
             box-shadow: 0 0 0 0.2rem #003366d2;
         }
 
-        .block {border:2px solid #003366d2;  padding:0 5px; height:25px; overflow:hidden; background:#fff; width:100px; font-family:Gulim; font-size:12px;}
-        .block ul, .block li {margin:0; padding:0; list-style:none;}
-        .block li a {display:block; height:20px; line-height:20px; color:#555; text-decoration:none;}
-        .block li span {padding:2px 5px; background:#003366d2; color:#fff; font-weight:bold; margin-right:3px;}
-
-        .popupLayer{
-            display: none;
-            position: absolute;
-            left: 950px;
-            top: 55px;
-            border: solid 1px #003366d2;
-            background-color: #fff;
-            width: 200px;
-            border-radius: 5px;
-        }
-
-
-
     </style>
 </head>
 <body>
-<div class="container" style="z-index: 1;">
+<div class="container">
     <div class="header-box">
         <div class="logo"><a href="/main"><img src="/img/CMD-logo.png" alt="logo" height="100%"></a></div>
         <div class="search">
             <nav class="navbar navbar-expand-sm  navbar-dark">
                 <form class="form-inline" action="/main_search" method="post">
                     <input class="form-control mr-sm-2" name="keyword" type="text" placeholder="Search">
-                    <button class="btn btn-success" type="submit">검색</button>
+                    <button class="btn btn-success" type="submit">Search</button>
                 </form>
             </nav>
         </div>
-        <div style="width: 200px;" class="keyword block" id="ranking"></div>
+        <div class="keyword">실시간 검색</div>
     </div>
 
     <div class="menu-navbar">
@@ -361,9 +283,14 @@
                 </li>
 
 
-                <li class="nav-item">
-                    <a class="nav-link" href="/mainSurvey" id="navbardrop3">
-                        설문조사</a>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbardrop3" data-toggle="dropdown">
+                        설문조사
+                    </a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="#">설문조사 하기</a>
+                        <a class="dropdown-item" href="#">설문조사 통계</a>
+                    </div>
                 </li>
             </ul>
             <ul class="login-box">
@@ -675,7 +602,7 @@
                                     오류를 발견할 수 있다. 이에 반해 타입스크립트는 정적 타입의 컴파일 언어이며 타입스크립트 컴파일러 또는 바벨(Babel)을 통해 자바스크립트 코드로
                                     변환된다. 코드 작성 단계에서 타입을 체크해 오류를 확인할 수 있고 미리 타입을 결정하기 때문에 실행 속도가 매우 빠르다는 장점이 있다. 하지만 코드
                                     작성 시 매번 타입을 결정해야 하기 때문에 번거롭고 코드량이 증가하며 컴파일 시간이 오래 걸린다는 단점이 있다. 그래도 타입스크립트 사용을 고려해야
-                                    하는 이유는<br>
+                                    하는 이유는
                                     - 높은 수준의 코드 탐색과 디버깅
                                     타입스크립트는 코드에 목적을 명시하고 목적에 맞지 않는 타입의 변수나 함수들에서 에러를 발생시켜 버그를 사전에 제거한다. 또한 코드 자동완성이나 실행
                                     전 피드백을 제공하여 작업과 동시에 디버깅이 가능해 생산성을 높일 수 있다. 실제로 한 연구에 따르면 모든 자바스크립트 버그의 15%가 사전에
@@ -2080,19 +2007,8 @@
         </div>
     </div>
     <div class="eyebrow"><p>@2021 prod by 김이음</p></div>
-
+    >>>>>>> origin/master
 </div>
-<div class="popupLayer" style=" z-index: 2;">
-    <div style="background: #003366d2;">
-        <span style=" color: white; border-radius: 5px; margin-left: 2px; margin-top: 5px; padding: 3px; font-size: 12px;">인기검색어</span><span style="color: white; float: right; margin-right: 3px; cursor: pointer;" onclick="closePopup();">x</span>
-        <hr style="margin-top: 5px; margin-bottom: 2px; background-color: #003366d2;">
-    </div>
-    <div id="rankingArea">
-
-    </div>
-</div>
-
-
 
 </body>
 </html>

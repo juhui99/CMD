@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="/libs/css/style.css">
     <link rel="stylesheet" href="/libs/css/bootstrap.css">
-    <link rel="stylesheet" href="/libs/css/login.css">
+    <link rel="stylesheet" href="/libs/css/join.css">
     <script src="https://kit.fontawesome.com/717793cb2b.js" crossorigin="anonymous"></script>
     <title>CMD</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
@@ -85,9 +85,102 @@
             box-shadow: 0 0 0 0.2rem #003366d2;
         }
 
+
+        .filebox input[type="file"] {
+            position: absolute;
+            width: 0;
+            height: 0;
+            padding: 0;
+            overflow: hidden;
+            border: 0;
+        }
+
+        .filebox label {
+            display: inline-block;
+            padding: 10px 20px;
+            color: #fff;
+            vertical-align: middle;
+            background-color: rgba(57, 103, 144, 0.82);
+            cursor: pointer;
+            border: 1px solid rgba(57, 103, 144, 0.82);
+            border-radius: 5px;
+            height: 35px;
+        }
+
+        /* named upload */
+        .filebox .upload-name {
+            display: inline-block;
+            height: 35px;
+            background-color: #f5f5f5;
+            border: 1px solid #ebebeb;
+            border-radius: 5px;
+
+        }
+
+        .block {border:2px solid #003366d2;  padding:0 5px; height:25px; overflow:hidden; background:#fff; width:100px; font-family:Gulim; font-size:12px;}
+        .block ul, .block li {margin:0; padding:0; list-style:none;}
+        .block li a {display:block; height:20px; line-height:20px; color:#555; text-decoration:none;}
+        .block li span {padding:2px 5px; background:#003366d2; color:#fff; font-weight:bold; margin-right:3px;}
+
+        .popupLayer{
+            display: none;
+            position: absolute;
+            left: 950px;
+            top: 55px;
+            border: solid 1px #003366d2;
+            background-color: #fff;
+            width: 200px;
+            border-radius: 5px;
+        }
+
+
+
     </style>
 </head>
 <script type="text/javascript">
+    function searchRanking() {
+        $.ajax({
+            type: "POST",
+            url: "/searchRanking",
+            success: function (data) {
+                if (data == "") return;
+                $('#ranking').html('');
+                var parsed = JSON.parse(data);
+                var result = parsed.result;
+                var html = '';
+                html += '<ul id="ticker">'
+                for (var i = 0; i < result.length; i++) {
+
+                    html += '<li style="margin-top: 1px">' + '<a href="/main_search?keyword=' + result[i][0].value + '"><span>' + (i + 1) + '</span>' + result[i][0].value + '</a>';
+                    html += '</li>';
+
+                }
+                html += '</ul>'
+                $("#ranking").append(html);
+
+                $('#rankingArea').html('');
+                var html2 = '';
+                for(var i = 0; i < result.length; i++){
+                    html2 += '<a href="/main_search?keyword=' + result[i][0].value + '" style="color: black; font-size: 12px;"><span style="background-color: #003366d2; color: white; padding-right: 4px; padding-left: 4px; margin-left: 3px;  margin-right: 2px; margin-bottom: 3px; font-size: 12px;">' + (i + 1) + '</span>' + result[i][0].value + '</a><br>'
+                }
+                $('#rankingArea').append(html2);
+
+            }
+        });
+    }
+
+    function getInfiniteSearchRanking() {
+        setInterval(function () {
+            searchRanking();
+        }, 30000);
+    }
+
+    function clickCheck(target) {
+        document.querySelectorAll(`input[type=checkbox]`)
+            .forEach(el => el.checked = false);
+
+        target.checked = true;
+    }
 
     function totalUnreadChat() {
         $.ajax({
@@ -114,17 +207,20 @@
     }
 
     $(document).ready(function () {
+
+        searchRanking();
         totalUnreadChat();
+        getInfiniteSearchRanking();
         getInfiniteTotalUnread();
 
-        $("#file").css("display", "none");
+        $(".filebox").css("display", "none");
         $("#defaultImgBtn").css("display", "none");
         $("#defaultMessage").css("display", "none");
 
         if ($("#user_gender").val() == "W") {
-            $("#woman").attr("checked", true);
+            $("#w").attr("checked", true);
         } else if ($("#user_gender").val() == "M") {
-            $("#man").attr("checked", true);
+            $("#m").attr("checked", true);
         }
         if ($("#user_selected_major").val() == "Frontend") {
             $("#Frontend").attr("selected", true);
@@ -136,12 +232,12 @@
             $("#AI").attr("selected", true);
         } else if ($("#user_selected_major").val() == "WhiteHat") {
             $("#WhiteHat").attr("selected", true);
-        } else if ($("#user_selected_major").val() == "선택사항없음") {
-            $("#non").attr("selected", true);
+        } else if ($("#user_selected_major").val() == "None") {
+            $("#None").attr("selected", true);
         }
 
         $("#profile").click(function () {
-            $("#file").css("display", "block");
+            $(".filebox").css("display", "block");
             $("#defaultImgBtn").css("display", "block");
             $("#profile").css("display", "none");
             $("#profile").attr("value", "Y");
@@ -151,10 +247,12 @@
         $("#defaultImgBtn").click(function () {
             $("#defaultImgCheck").val("Y");
             $("#file").val("");
+            $(".upload-name").val("파일선택");
             $("#defaultMessage").css("display", "block");
         });
-        $("#file").click(function () {
+        $("#file_label").click(function () {
             $("#defaultMessage").css("display", "none");
+            $("#defaultImgCheck").val("N");
         });
 
         $(".board").css("display", "none");
@@ -197,17 +295,57 @@
             $(".frontend_board").css("display", "none");
 
         });
-        $("#withdrawal").click(function () {
+        $("#withdrawal").click(function (){
             var id = $("#userID").val();
-            if (confirm("정말로 회원탈퇴를 하시겠습니까?")) {
+            if(confirm("정말로 회원탈퇴를 하시겠습니까?")){
                 location.href = "/withdrawalCheck";
             } else {
                 alert("회원탈퇴를 취소합니다.");
             }
         });
+
+
+        $("#file").on('change',function(){
+
+            if(window.FileReader){
+                var filename = $("#file")[0].files[0].name;
+            }
+            else {
+                var filename = $(this).val().split('/').pop().split('\\').pop();
+            };
+            $(".upload-name").val(filename);
+        });
+        var ticker = function()
+        {
+            setTimeout(function(){
+                $('#ticker li:first').animate( {marginTop: '-20px'}, 400, function()
+                {
+                    $(this).detach().appendTo('ul#ticker').removeAttr('style');
+                });
+                ticker();
+            }, 3000);
+        };
+        ticker();
+
+        $("#ranking").hover(function () {
+            $(".popupLayer").css("display","block");
+        });
+
     });
 
     function submitAction() {
+
+        var fileCheck = $("#file").val();
+        var profileModify = $("#profile").val();
+        var defaultImgCheck = $("#defaultImgCheck").val();
+        if (!fileCheck &&  profileModify == "Y" && defaultImgCheck == "N") {
+            alert("프로필 사진을 첨부해주세요.");
+            return false;
+        }
+        if (fileCheck && defaultImgCheck == "Y") {
+            $("#defaultImgCheck").val("N");
+        }
+
         if ($("#user_pwd").val() == "") {
             alert("비밀번호를 입력해주세요.");
             $("#user_pwd").focus();
@@ -229,32 +367,39 @@
             return false;
         }
 
-        var fileCheck = $("#file").val();
-        var profileModify = $("#profile").val();
-        var defaultImgCheck = $("#defaultImgCheck").val();
-        if (!fileCheck && profileModify == "Y" && defaultImgCheck == "N") {
-            alert("프로필 사진을 첨부해주세요.");
+        var pwd = $("#user_pwd").val();
+        var pwd_pattern = /[`~!@#$%^&*()_+|<>?{}]/;
+        var pwd_pattern2 = /[a-zA-Z]/;
+        var pwd_pattern3 = /[0-9]/;
+        if (!pwd_pattern.test(pwd) || !pwd_pattern2.test(pwd) || !pwd_pattern3.test(pwd) || pwd.length < 8) {
+            alert("비밀번호는 문자, 숫자, 특수문자를 포함하여 8자리 이상으로 구성해야 합니다.");
             return false;
+        } else {
+            return true;
         }
-        if (fileCheck && defaultImgCheck == "Y") {
-            $("#defaultImgCheck").val("N");
-        }
+
     }
+
+    function closePopup() {
+        $(".popupLayer").css("display","none");
+    }
+
+
 </script>
 <body>
 
-<div class="container">
+<div class="container" style="z-index: 1;">
     <div class="header-box">
         <div class="logo"><a href="/main"><img src="/img/CMD-logo.png" alt="logo" height="100%"></a></div>
         <div class="search">
             <nav class="navbar navbar-expand-sm  navbar-dark">
                 <form class="form-inline" action="/main_search" method="post">
                     <input class="form-control mr-sm-2" name="keyword" type="text" placeholder="Search">
-                    <button class="btn btn-success" type="submit">Search</button>
+                    <button class="btn btn-success" type="submit">검색</button>
                 </form>
             </nav>
         </div>
-        <div class="keyword" id="ranking"></div>
+        <div style="width: 200px;" class="keyword block" id="ranking"></div>
     </div>
 
     <div class="menu-navbar">
@@ -355,25 +500,9 @@
                     <a class="nav-link" href="/cmd_roadmap">로드맵</a>
                 </li>
 
-
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbardrop2" data-toggle="dropdown">
-                        D-MBTI
-                    </a>
-                    <div class="dropdown-menu">
-                        <a class="dropdown-item" href="#">D-MBTI 하기</a>
-                        <a class="dropdown-item" href="#">D-MBTI 통계</a>
-                    </div>
-                </li>
-
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbardrop3" data-toggle="dropdown">
-                        설문조사
-                    </a>
-                    <div class="dropdown-menu">
-                        <a class="dropdown-item" href="#">설문조사 하기</a>
-                        <a class="dropdown-item" href="#">설문조사 통계</a>
-                    </div>
+                <li class="nav-item">
+                    <a class="nav-link" href="/mainSurvey" id="navbardrop3">
+                        설문조사</a>
                 </li>
             </ul>
             <ul class="login-box">
@@ -393,10 +522,9 @@
                         <span th:if="${session.id != null}" th:text="|${session.id}님|" style="margin-left: 3px;"></span>
                     </a>
                     <div class="dropdown-menu">
-                        <a style="margin-left: 10px;" th:if="${session.id != null}" href="/userUpdateCheck">회원정보
-                            수정</a></br>
-                        <a style="margin-left: 10px;" th:if="${session.id != null}" href="/logoutAction">로그아웃</a><br>
-                        <a style="margin-left: 10px;" th:if="${session.id != null}" href="#" id="withdrawal">회원탈퇴</a>
+                        <a class="dropdown-item" th:if="${session.id != null}" href="/userUpdateCheck">회원정보 수정</a>
+                        <a class="dropdown-item" th:if="${session.id != null}" href="/logoutAction">로그아웃</a>
+                        <a class="dropdown-item" th:if="${session.id != null}" href="#" id="withdrawal">회원탈퇴</a>
                     </div>
                 </li>
             </ul>
@@ -404,47 +532,78 @@
         </nav>
     </div>
     <div>
-        <form action="/userUpdateAction" method="post" enctype="multipart/form-data" onsubmit="return submitAction();">
-
-            <h4>회원정보 수정 양식</h4>
-
+        <form class="form-box" action="/userUpdateAction" method="post" enctype="multipart/form-data"
+              onsubmit="return submitAction();">
             <div class="form-group">
-                <label for="user_id">*아이디</label>
-                <input type="text" id="user_id" name="user_id" th:value="${session.id}" readonly><br>
-                <label for="user_pwd">*비밀번호</label>
-                <input type="password" id="user_pwd" name="user_pwd" placeholder="비밀번호" th:value="${user.user_pwd}"><br>
-                <label for="pwd_check">*비밀번호 확인</label>
-                <input type="password" id="pwd_check" name="pwd_check" placeholder="비밀번호 확인"><br>
-                <label for="user_name">*이름</label>
-                <input type="text" id="user_name" name="user_name" placeholder="이름" th:value="${user.user_name}"><br>
-                <label for="user_age">나이</label>
-                <input type="number" id="user_age" name="user_age" placeholder="나이" th:value="${user.user_age}"><br>
-                <label for="user_major">분야</label>
-                <select id="user_major" name="user_major">
-                    <option value="" selected disabled hidden>분야</option>
-                    <option id="non" value="선택사항없음">선택사항없음</option>
-                    <option id="Frontend" value="Frontend">Frontend</option>
-                    <option id="Backend" value="Backend">Backend</option>
-                    <option id="DBA" value="DBA">DBA</option>
-                    <option id="AI" value="AI">AI</option>
-                    <option id="WhiteHat" value="WhiteHat">White-Hat</option>
-                </select>
-                <label for="user_email">*이메일</label>
-                <input type="email" id="user_email" name="user_email" placeholder="이메일"
-                       th:value="${user.user_email}"><br>
-                <input type="checkbox" id="woman" name="user_gender" value="W">여성
-                <input type="checkbox" id="man" name="user_gender" value="M">남성
-                <br>
-                <button type="button" id="profile" value="N">프로필 수정</button>
-                <div><input id="file" type="file" name="files">
-                    <button id="defaultImgBtn" type="button">기본 이미지로 변경</button>
-                    <span id="defaultMessage" style="font-size: 5px; color: #003366d2;">기본이미지 선택완료</span>
+                <p class="sign-up text-center"><i class="far fa-address-card"></i> 정보수정</p>
+                <div class="eyeopen">
+                    <label for="user_id"><b>* </b><i class="fas fa-user"></i> 아이디</label>
+                    <input type="text" id="user_id" name="user_id" th:value="${session.id}" readonly>
+                    <hr style="margin-left: 0; width: 82%; background-color:  #003366d2;">
+                    <div class="eye">
+                        <label for="user_pwd"><b>* </b><i class="fas fa-key"></i> 비밀번호</label>
+                        <input type="password" id="user_pwd" name="user_pwd" placeholder="Password"
+                               th:value="${user.user_pwd}">
+                        <div id="pwdCheckMessage"></div>
+                        <label for="pwd_check"><b>* </b><i class="fas fa-key"></i> 비밀번호 확인</label>
+                        <input type="password" id="pwd_check" name="pwd_check" placeholder="Password_Check">
+                        <hr style="margin-left: 0; width: 82%; background-color:  #003366d2;">
+                    </div>
+                    <div class="eye">
+                        <label for="user_name"><b>* </b><i class="far fa-user"></i> 이름</label>
+                        <input type="text" id="user_name" name="user_name" placeholder="Name"
+                               th:value="${user.user_name}">
+                        <label class="tab1" for="user_age"><i class="fas fa-seedling"></i> 나이</label>
+                        <input type="number" id="user_age" name="user_age" placeholder="Age"
+                               th:value="${user.user_age}">
+                    </div>
+                    <div class="eye">
+                        <label class="tab2" for="user_major"><i class="fas fa-briefcase"></i> 분야</label>
+                        <select id="user_major" name="user_major">
+                            <option value="" selected disabled hidden>분야</option>
+                            <option id="None" value="None">None</option>
+                            <option id="Frontend" value="Frontend">Frontend</option>
+                            <option id="Backend" value="Backend">Backend</option>
+                            <option id="DBA" value="DBA">DBA</option>
+                            <option id="AI" value="AI">AI</option>
+                            <option id="WhiteHat" value="WhiteHat">White-Hat</option>
+                        </select>
+                        <label class="tab2" for="w"><i class="fas fa-venus"></i> 여성 </label>
+                        <input style="border-radius: 5px" type="checkbox" id="w" name="user_gender" value="W"
+                               onclick="clickCheck(this)">
+                        <label for="m" style="margin-left: 3%"><i class="fas fa-mars"></i> 남성 </label>
+                        <input style="border-radius: 5px" type="checkbox" id="m" name="user_gender" value="M"
+                               onclick="clickCheck(this)">
+                        <hr style="margin-left: 0; width: 84%; background-color: #003366d2;">
+                    </div>
+                    <div class="eye">
+                        <label for="user_email"><b>* </b><i class="fas fa-envelope"></i> 이메일</label>
+                        <input type="email" id="user_email" name="user_email" placeholder="이메일"
+                               th:value="${user.user_email}">
+                        <hr style="margin-left: 0; width: 84%; background-color: #003366d2;">
+                    </div>
+                    <div class="eye">
+                        <button class="smbutt2" type="button" id="profile" value="N">프로필 수정</button>
+                        <div>
+                            <div class="filebox">
+                                <input type="file" id="file" name="files">
+                                <input class="upload-name" value="파일선택" style="margin-left: 20%; width: 172px;">
+                                <label id="file_label" for="file" style="text-align: center; padding-top: 2.5px; margin-right: 20%; margin-bottom: 6px;">업로드</label>
+                            </div>
+                            <button class="smbutt2" id="defaultImgBtn" type="button" style="margin-top: 9px;">기본 이미지로 변경</button>
+                            <span class="text-center" id="defaultMessage" style="font-size: 5px; color: #003366d2; margin-right: 20%;">기본이미지 선택완료</span>
+                        </div>
+                    </div>
+
+                    <div class="eye">
+                        <input class="smbutt2" type="submit" id="submit" name="submit" value="수정">
+                        <input type="hidden" id="user_gender" th:value="${user.user_gender}">
+                        <input type="hidden" id="user_selected_major" th:value="${user.user_major}">
+                        <input type="hidden" id="modifyChek" name="modify" value="N">
+                        <input class="sbm" type="hidden" id="defaultImgCheck" name="default_img" value="N">
+                    </div>
+
                 </div>
-                <input type="submit" id="submit" name="submit" value="수정">
-                <input type="hidden" id="user_gender" th:value="${user.user_gender}">
-                <input type="hidden" id="user_selected_major" th:value="${user.user_major}">
-                <input type="hidden" id="modifyChek" name="modify" value="N">
-                <input type="hidden" id="defaultImgCheck" name="default_img" value="N">
             </div>
 
         </form>
@@ -467,6 +626,16 @@
     </div>
     <div class="eyebrow"><p>@2021 prod by 김이음</p></div>
 
+</div>
+
+<div class="popupLayer" style=" z-index: 2;">
+    <div style="background: #003366d2;">
+        <span style=" color: white; border-radius: 5px; margin-left: 2px; margin-top: 5px; padding: 3px; font-size: 12px;">인기검색어</span><span style="color: white; float: right; margin-right: 3px; cursor: pointer;" onclick="closePopup();">x</span>
+        <hr style="margin-top: 5px; margin-bottom: 2px; background-color: #003366d2;">
+    </div>
+    <div id="rankingArea">
+
+    </div>
 </div>
 
 

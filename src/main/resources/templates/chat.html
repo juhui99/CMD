@@ -48,8 +48,8 @@
                     for (var i = 0; i < result.length; i++) {
                         var html = '';
                         if (result[i][0].value == $('#friendID').val()) {
-                            html += '<div style="margin-left: 10px; margin-top: 20px;"><img class= "img-circle" style="width: 35px; height: 35px; border-top:  #003366d2; border-bottom: #003366d2" src="/display?filename=' + $('#friendImg').val() + '"' + '/><span style="margin-left: 4px; color: #003366d2; font-weight: bold;">'
-                                + result[i][0].value + '</span><br>' + '<div style="width: 200px;"><span style="word-break: break-all;">' + result[i][1].value + '</span></div>'
+                            html += '<div style="margin-left: 10px; margin-top: 20px;" align="left"><img class= "img-circle" style="width: 35px; height: 35px; border-top:  #003366d2; border-bottom: #003366d2" src="/display?filename=' + $('#friendImg').val() + '"' + '/><span style="margin-left: 4px; color: #003366d2; font-weight: bold;">'
+                                + result[i][0].value + '</span><br>' + '<div style="width: 200px;"><span>' + result[i][1].value + '</span></div>'
                                 + '<span style="font-size: 1px; color: grey;">' + result[i][2].value + '</span></div>';
                             $("#chatContainer").append(html);
                             $('#chatContainer').scrollTop($('#chatContainer')[0].scrollHeight);
@@ -97,6 +97,45 @@
                 totalUnreadChat();
             }, 2000);
         }
+
+
+        function searchRanking() {
+            $.ajax({
+                type: "POST",
+                url: "/searchRanking",
+                success: function (data) {
+                    if (data == "") return;
+                    $('#ranking').html('');
+                    var parsed = JSON.parse(data);
+                    var result = parsed.result;
+                    var html = '';
+                    html += '<ul id="ticker">'
+                    for (var i = 0; i < result.length; i++) {
+
+                        html += '<li style="margin-top: 1px">' + '<a href="/main_search?keyword=' + result[i][0].value + '"><span>' + (i + 1) + '</span>' + result[i][0].value + '</a>';
+                        html += '</li>';
+
+                    }
+                    html += '</ul>'
+                    $("#ranking").append(html);
+
+                    $('#rankingArea').html('');
+                    var html2 = '';
+                    for(var i = 0; i < result.length; i++){
+                        html2 += '<a href="/main_search?keyword=' + result[i][0].value + '" style="color: black; font-size: 12px;"><span style="background-color: #003366d2; color: white; padding-right: 4px; padding-left: 4px; margin-left: 3px;  margin-right: 2px; margin-bottom: 3px; font-size: 12px;">' + (i + 1) + '</span>' + result[i][0].value + '</a><br>'
+                    }
+                    $('#rankingArea').append(html2);
+
+                }
+            });
+        }
+
+        function getInfiniteSearchRanking() {
+            setInterval(function () {
+                searchRanking();
+            }, 30000);
+        }
+
 
     </script>
     <style>
@@ -197,23 +236,40 @@
         }
 
 
+        .block {border:2px solid #003366d2;  padding:0 5px; height:25px; overflow:hidden; background:#fff; width:100px; font-family:Gulim; font-size:12px;}
+        .block ul, .block li {margin:0; padding:0; list-style:none;}
+        .block li a {display:block; height:20px; line-height:20px; color:#555; text-decoration:none;}
+        .block li span {padding:2px 5px; background:#003366d2; color:#fff; font-weight:bold; margin-right:3px;}
+
+        .popupLayer{
+            display: none;
+            position: absolute;
+            left: 950px;
+            top: 55px;
+            border: solid 1px #003366d2;
+            background-color: #fff;
+            width: 200px;
+            border-radius: 5px;
+        }
+
+
     </style>
 </head>
 <body>
 
 
-<div class="container">
+<div class="container" style="z-index: 1;">
     <div class="header-box">
         <div class="logo"><a href="/main"><img src="/img/CMD-logo.png" alt="logo" height="100%"></a></div>
         <div class="search">
             <nav class="navbar navbar-expand-sm  navbar-dark">
                 <form class="form-inline" action="/main_search" method="post">
                     <input class="form-control mr-sm-2" name="keyword" type="text" placeholder="Search">
-                    <button class="btn btn-success" type="submit">Search</button>
+                    <button class="btn btn-success" type="submit">검색</button>
                 </form>
             </nav>
         </div>
-        <div class="keyword">실시간 검색</div>
+        <div style="width: 200px;" class="keyword block" id="ranking"></div>
     </div>
 
     <div class="menu-navbar">
@@ -314,25 +370,9 @@
                     <a class="nav-link" href="/cmd_roadmap">로드맵</a>
                 </li>
 
-
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbardrop2" data-toggle="dropdown">
-                        D-MBTI
-                    </a>
-                    <div class="dropdown-menu">
-                        <a class="dropdown-item" href="#">D-MBTI 하기</a>
-                        <a class="dropdown-item" href="#">D-MBTI 통계</a>
-                    </div>
-                </li>
-
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbardrop3" data-toggle="dropdown">
-                        설문조사
-                    </a>
-                    <div class="dropdown-menu">
-                        <a class="dropdown-item" href="#">설문조사 하기</a>
-                        <a class="dropdown-item" href="#">설문조사 통계</a>
-                    </div>
+                <li class="nav-item">
+                    <a class="nav-link" href="/mainSurvey" id="navbardrop3">
+                        설문조사</a>
                 </li>
             </ul>
             <ul class="login-box">
@@ -352,10 +392,9 @@
                         <span th:if="${session.id != null}" th:text="|${session.id}님|" style="margin-left: 3px;"></span>
                     </a>
                     <div class="dropdown-menu">
-                        <a style="margin-left: 10px;" th:if="${session.id != null}" href="/userUpdateCheck">회원정보
-                            수정</a></br>
-                        <a style="margin-left: 10px;" th:if="${session.id != null}" href="/logoutAction">로그아웃</a><br>
-                        <a style="margin-left: 10px;" th:if="${session.id != null}" href="#" id="withdrawal">회원탈퇴</a>
+                        <a class="dropdown-item" th:if="${session.id != null}" href="/userUpdateCheck">회원정보 수정</a>
+                        <a class="dropdown-item" th:if="${session.id != null}" href="/logoutAction">로그아웃</a>
+                        <a class="dropdown-item" th:if="${session.id != null}" href="#" id="withdrawal">회원탈퇴</a>
                     </div>
                 </li>
             </ul>
@@ -366,45 +405,45 @@
     <div class="container" style="margin: 30px 30%;">
         <div style="background: rgba(15,67,125,0.82); border: 2px solid #003366d2; border-top-left-radius: 5px; border-top-right-radius: 5px; width: 400px; text-align: center;">
             <span style="color: white;"> 채팅창</span>
-        <div  id="chatContainer"
-              style="background: white; border-top: 2px solid #003366d2; border-bottom: 2px solid #003366d2; width: 397px; height: 450px; padding-bottom: 20px;"></div>
-        <div style="margin: 10px 0px;">
-            <textarea th:if="${withdrawal == 0}" style="width: 300px; outline: none; resize:none; background: white; border:2px solid #003366d3; border-radius: 5px; width:300px; height: 93px; margin-top: 3px" id="chatContent"></textarea>
-            <button th:if="${withdrawal == 0}" style="outline: none; float: right;  cursor: pointer; color: honeydew!important; background: linear-gradient(to left, rgba(22, 40, 108, 0.55), #1969af ); border: 0; margin-top:30px; margin-bottom: 30px; margin-right: 3px; border-radius: 1em; padding-left: 30px; padding-right: 30px; padding-bottom: 10px; padding-top: 10px; font-family: 'Ubuntu', sans-serif; font-size: 14px;
+            <div  id="chatContainer"
+                  style="background: white; border-top: 2px solid #003366d2; border-bottom: 2px solid #003366d2; width: 397px; height: 450px; padding-bottom: 20px;"></div>
+            <div style="margin: 10px 0px;">
+                <textarea th:if="${withdrawal == 0}" style="width: 300px; outline: none; resize:none; background: white; border:2px solid #003366d3; border-radius: 5px; width:300px; height: 93px; margin-top: 3px" id="chatContent"></textarea>
+                <button th:if="${withdrawal == 0}" style="outline: none; float: right;  cursor: pointer; color: honeydew!important; background: linear-gradient(to left, rgba(22, 40, 108, 0.55), #1969af ); border: 0; margin-top:30px; margin-bottom: 30px; margin-right: 3px; border-radius: 1em; padding-left: 30px; padding-right: 30px; padding-bottom: 10px; padding-top: 10px; font-family: 'Ubuntu', sans-serif; font-size: 14px;
     box-shadow: 0 0 20px 1px rgba(0, 0, 0, 0.04);" onclick="submitChat();">전송</button>
-            <textarea th:if="${withdrawal == 1}" style="width: 300px; outline: none; resize:none; background: white; border:2px solid #003366d3; border-radius: 5px; width:300px; height: 93px; margin-top: 3px" readonly disabled>탈퇴한 회원으로 대화가 불가능한 사용자입니다.</textarea>
-            <input type="hidden" th:value="${friend}" id="friendID">
-            <input type="hidden" id="userImg" th:value="${filename}">
-            <input type="hidden" id="friendImg" th:value="${friendFile}">
+                <textarea th:if="${withdrawal == 1}" style="width: 300px; outline: none; resize:none; background: white; border:2px solid #003366d3; border-radius: 5px; width:300px; height: 93px; margin-top: 3px" readonly disabled>탈퇴한 회원으로 대화가 불가능한 사용자입니다.</textarea>
+                <input type="hidden" th:value="${friend}" id="friendID">
+                <input type="hidden" id="userImg" th:value="${filename}">
+                <input type="hidden" id="friendImg" th:value="${friendFile}">
+            </div>
         </div>
     </div>
-    </div>
 
 
 
-<!--
-    <div class="container" style="margin: 30px 30%;">
-        <div style="background: rgba(15,67,125,0.82); border: 2px solid #003366d2; border-top-left-radius: 5px; border-top-right-radius: 5px; width: 400px; text-align: center;">
-            <span style="color: white;">채팅창</span></div>
-        <div id="chatContainer"
-             style="background: white; border-top: 2px solid #003366d2; border-bottom: 2px solid #003366d2; width: 397px; height: 450px; padding-bottom: 20px;"></div>
-        <div style="margin-bottom: 30px;">
-            <textarea th:if="${withdrawal == 0}"
-                      style="outline: none; resize:none; background: white; border:2px solid #003366d3; border-radius: 5px; width:300px; height: 93px; margin-top: 3px;"
-                      id="chatContent"></textarea>
-            <button style="outline: none; float: right;  cursor: pointer; color: honeydew!important; background: linear-gradient(to left, rgba(22, 40, 108, 0.55), #1969af ); border: 0; margin-top:30px; margin-bottom: 30px; margin-right: 3px; border-radius: 1em; padding-left: 30px; padding-right: 30px; padding-bottom: 10px; padding-top: 10px; font-family: 'Ubuntu', sans-serif; font-size: 14px;
-            box-shadow: 0 0 20px 1px rgba(0, 0, 0, 0.04);" th:if="${withdrawal == 0}" onclick="submitChat();">전송
-            </button>
+    <!--
+        <div class="container" style="margin: 30px 30%;">
+            <div style="background: rgba(15,67,125,0.82); border: 2px solid #003366d2; border-top-left-radius: 5px; border-top-right-radius: 5px; width: 400px; text-align: center;">
+                <span style="color: white;">채팅창</span></div>
+            <div id="chatContainer"
+                 style="background: white; border-top: 2px solid #003366d2; border-bottom: 2px solid #003366d2; width: 397px; height: 450px; padding-bottom: 20px;"></div>
+            <div style="margin-bottom: 30px;">
+                <textarea th:if="${withdrawal == 0}"
+                          style="outline: none; resize:none; background: white; border:2px solid #003366d3; border-radius: 5px; width:300px; height: 93px; margin-top: 3px;"
+                          id="chatContent"></textarea>
+                <button style="outline: none; float: right;  cursor: pointer; color: honeydew!important; background: linear-gradient(to left, rgba(22, 40, 108, 0.55), #1969af ); border: 0; margin-top:30px; margin-bottom: 30px; margin-right: 3px; border-radius: 1em; padding-left: 30px; padding-right: 30px; padding-bottom: 10px; padding-top: 10px; font-family: 'Ubuntu', sans-serif; font-size: 14px;
+                box-shadow: 0 0 20px 1px rgba(0, 0, 0, 0.04);" th:if="${withdrawal == 0}" onclick="submitChat();">전송
+                </button>
 
-            <textarea th:if="${withdrawal == 1}"
-                      style="outline: none; resize:none; background: white; border:2px solid #003366d3; border-radius: 5px; width:300px; height: 93px; margin-top: 3px;"
-                      readonly disabled>탈퇴한 회원으로 대화가 불가능한 사용자입니다.</textarea>
-            <input type="hidden" th:value="${friend}" id="friendID">
-            <input type="hidden" id="userImg" th:value="${filename}">
-            <input type="hidden" id="friendImg" th:value="${friendFile}">
+                <textarea th:if="${withdrawal == 1}"
+                          style="outline: none; resize:none; background: white; border:2px solid #003366d3; border-radius: 5px; width:300px; height: 93px; margin-top: 3px;"
+                          readonly disabled>탈퇴한 회원으로 대화가 불가능한 사용자입니다.</textarea>
+                <input type="hidden" th:value="${friend}" id="friendID">
+                <input type="hidden" id="userImg" th:value="${filename}">
+                <input type="hidden" id="friendImg" th:value="${friendFile}">
+            </div>
         </div>
-    </div>
--->
+    -->
     <div class="footer-box">
         <div class="author">
             <p><b>Creators - </b>KimLeeEum</p>
@@ -422,10 +461,20 @@
     </div>
     <div class="eyebrow"><p>@2021 prod by 김이음</p></div>
 </div>
+<div class="popupLayer" style=" z-index: 2;">
+    <div style="background: #003366d2;">
+        <span style=" color: white; border-radius: 5px; margin-left: 2px; margin-top: 5px; padding: 3px; font-size: 12px;">인기검색어</span><span style="color: white; float: right; margin-right: 3px; cursor: pointer;" onclick="closePopup();">x</span>
+        <hr style="margin-top: 5px; margin-bottom: 2px; background-color: #003366d2;">
+    </div>
+    <div id="rankingArea">
 
+    </div>
+</div>
 <script type="text/javascript">
 
+
     $(document).ready(function () {
+        searchRanking();
         chatList('0');
         totalUnreadChat();
         getInfiniteChat();
@@ -479,9 +528,49 @@
             } else {
                 alert("회원탈퇴를 취소합니다.");
             }
+            var ticker = function()
+            {
+                setTimeout(function(){
+                    $('#ticker li:first').animate( {marginTop: '-20px'}, 400, function()
+                    {
+                        $(this).detach().appendTo('ul#ticker').removeAttr('style');
+                    });
+                    ticker();
+                }, 3000);
+            };
+            ticker();
+
+            $("#ranking").hover(function () {
+                $(".popupLayer").css("display","block");
+            });
+
         });
+
+        function closePopup() {
+            $(".popupLayer").css("display","none");
+        }
+
+    var ticker = function()
+    {
+        setTimeout(function(){
+            $('#ticker li:first').animate( {marginTop: '-20px'}, 400, function()
+            {
+                $(this).detach().appendTo('ul#ticker').removeAttr('style');
+            });
+            ticker();
+        }, 3000);
+    };
+    ticker();
+
+    $("#ranking").hover(function () {
+        $(".popupLayer").css("display","block");
     });
+
+    });
+
+    function closePopup() {
+        $(".popupLayer").css("display","none");
+    }
 </script>
-</div>
 </body>
 </html>

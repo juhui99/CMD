@@ -8,12 +8,49 @@
     <link rel="stylesheet" href="/libs/css/style.css">
     <link rel="stylesheet" href="/libs/css/bootstrap.css">
     <link rel="stylesheet" href="/libs/css/community.css">
+    <link rel="stylesheet" href="/libs/css/community-sub.css">
     <script src="https://kit.fontawesome.com/717793cb2b.js" crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <title>CMD</title>
     <script type="text/javascript">
+        function searchRanking() {
+            $.ajax({
+                type: "POST",
+                url: "/searchRanking",
+                success: function (data) {
+                    if (data == "") return;
+                    $('#ranking').html('');
+                    var parsed = JSON.parse(data);
+                    var result = parsed.result;
+                    var html = '';
+                    html += '<ul id="ticker">'
+                    for (var i = 0; i < result.length; i++) {
+
+                        html += '<li style="margin-top: 1px">' + '<a href="/main_search?keyword=' + result[i][0].value + '"><span>' + (i + 1) + '</span>' + result[i][0].value + '</a>';
+                        html += '</li>';
+
+                    }
+                    html += '</ul>'
+                    $("#ranking").append(html);
+
+                    $('#rankingArea').html('');
+                    var html2 = '';
+                    for(var i = 0; i < result.length; i++){
+                        html2 += '<a href="/main_search?keyword=' + result[i][0].value + '" style="color: black; font-size: 12px;"><span style="background-color: #003366d2; color: white; padding-right: 4px; padding-left: 4px; margin-left: 3px;  margin-right: 2px; margin-bottom: 3px; font-size: 12px;">' + (i + 1) + '</span>' + result[i][0].value + '</a><br>'
+                    }
+                    $('#rankingArea').append(html2);
+
+                }
+            });
+        }
+
+        function getInfiniteSearchRanking() {
+            setInterval(function () {
+                searchRanking();
+            }, 30000);
+        }
 
         function totalUnreadChat() {
             $.ajax({
@@ -41,7 +78,9 @@
 
 
         $(document).ready(function () {
+            searchRanking();
             totalUnreadChat();
+            getInfiniteSearchRanking();
             getInfiniteTotalUnread();
             $(".board").css("display", "none");
 
@@ -90,8 +129,27 @@
                 } else {
                     alert("회원탈퇴를 취소합니다.");
                 }
+                var ticker = function()
+                {
+                    setTimeout(function(){
+                        $('#ticker li:first').animate( {marginTop: '-20px'}, 400, function()
+                        {
+                            $(this).detach().appendTo('ul#ticker').removeAttr('style');
+                        });
+                        ticker();
+                    }, 3000);
+                };
+                ticker();
+
+                $("#ranking").hover(function () {
+                    $(".popupLayer").css("display","block");
+                });
+
             });
-        });
+
+            function closePopup() {
+                $(".popupLayer").css("display","none");
+            }
 
         function submitAction() {
             if ($("#search_option").val() != "writer" && $("#search_option").val() != "subject"
@@ -101,12 +159,33 @@
                 return false;
             }
         }
+
+
+
+        var ticker = function()
+        {
+            setTimeout(function(){
+                $('#ticker li:first').animate( {marginTop: '-20px'}, 400, function()
+                {
+                    $(this).detach().appendTo('ul#ticker').removeAttr('style');
+                });
+                ticker();
+            }, 3000);
+        };
+        ticker();
+
+        $("#ranking").hover(function () {
+            $(".popupLayer").css("display","block");
+        });
+
+        });
+
+        function closePopup() {
+            $(".popupLayer").css("display","none");
+        }
     </script>
 </head>
 <style>
-    h1 {
-        margin: auto 44%;
-    }
 
 
     /* Make the image fully responsive */
@@ -118,7 +197,7 @@
 
     .carousel-inner .carouselImg {
         width: 100%;
-        height: 200px;
+        height: 250px;
         border-radius: 25px;
     }
 
@@ -169,20 +248,38 @@
         border: 1px solid #003366d2;
     }
 
+    .block {border:2px solid #003366d2;  padding:0 5px; height:25px; overflow:hidden; background:#fff; width:100px; font-family:Gulim; font-size:12px;}
+    .block ul, .block li {margin:0; padding:0; list-style:none;}
+    .block li a {display:block; height:20px; line-height:20px; color:#555; text-decoration:none;}
+    .block li span {padding:2px 5px; background:#003366d2; color:#fff; font-weight:bold; margin-right:3px;}
+
+    .popupLayer{
+        display: none;
+        position: absolute;
+        left: 950px;
+        top: 55px;
+        border: solid 1px #003366d2;
+        background-color: #fff;
+        width: 200px;
+        border-radius: 5px;
+    }
+
+
+
 </style>
 <body>
-<div class="container">
+<div class="container" style="z-index: 1;">
     <div class="header-box">
         <div class="logo"><a href="/main"><img src="/img/CMD-logo.png" alt="logo" height="100%"></a></div>
         <div class="search">
             <nav class="navbar navbar-expand-sm  navbar-dark">
                 <form class="form-inline" action="/main_search" method="post">
                     <input class="form-control mr-sm-2" type="text" name="keyword" placeholder="Search">
-                    <button class="btn btn-success" type="submit">Search</button>
+                    <button class="btn btn-success" type="submit">검색</button>
                 </form>
             </nav>
         </div>
-        <div class="keyword">실시간 검색</div>
+        <div style="width: 200px;" class="keyword block" id="ranking"></div>
     </div>
 
     <div class="menu-navbar">
@@ -280,28 +377,12 @@
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link" href="cmd_roadmap.html">로드맵</a>
+                    <a class="nav-link" href="/cmd_roadmap">로드맵</a>
                 </li>
 
-
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbardrop2" data-toggle="dropdown">
-                        D-MBTI
-                    </a>
-                    <div class="dropdown-menu">
-                        <a class="dropdown-item" href="#">D-MBTI 하기</a>
-                        <a class="dropdown-item" href="#">D-MBTI 통계</a>
-                    </div>
-                </li>
-
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbardrop3" data-toggle="dropdown">
-                        설문조사
-                    </a>
-                    <div class="dropdown-menu">
-                        <a class="dropdown-item" href="#">설문조사 하기</a>
-                        <a class="dropdown-item" href="#">설문조사 통계</a>
-                    </div>
+                <li class="nav-item">
+                    <a class="nav-link" href="/mainSurvey" id="navbardrop3">
+                        설문조사</a>
                 </li>
             </ul>
             <ul class="login-box">
@@ -322,10 +403,9 @@
                         <span th:if="${session.id != null}" th:text="|${session.id}님|" style="margin-left: 3px;"></span>
                     </a>
                     <div class="dropdown-menu">
-                        <a style="margin-left: 10px;" th:if="${session.id != null}" href="/userUpdateCheck">회원정보
-                            수정</a></br>
-                        <a style="margin-left: 10px;" th:if="${session.id != null}" href="/logoutAction">로그아웃</a><br>
-                        <a style="margin-left: 10px;" th:if="${session.id != null}" href="#" id="withdrawal">회원탈퇴</a>
+                        <a class="dropdown-item" th:if="${session.id != null}" href="/userUpdateCheck">회원정보 수정</a>
+                        <a class="dropdown-item" th:if="${session.id != null}" href="/logoutAction">로그아웃</a>
+                        <a class="dropdown-item" th:if="${session.id != null}" href="#" id="withdrawal">회원탈퇴</a>
                     </div>
                 </li>
             </ul>
@@ -335,44 +415,22 @@
 
     <div th:if="${realm == 'AI'}" class="community_ai_info">
         <h1 class="text-center">A.I</h1>
-        <h6 class="text-center">< 인공지능(A.I) 개발자는 ></h6>
-        <p class="text-center"><span>인공지능 엔지니어는 데이터를 추출해 알고리즘을 설계하고 머신러닝 모델을 실제로 구축하는 기술자입니다. <br>이들은 수학과 알고리즘 등 복잡한 로직에 익숙해야 하고, 컴퓨터 알고리즘의 설계 및 분석 최적화, 실험 평가를 반복하면서<br> 알고리즘의 이론과 실제 응용 사이의 격차를 해소하는 직업입니다.</span>
-        </p>
     </div>
 
     <div th:if="${realm == 'Frontend'}" class="community_frontend_info">
         <h1 class="text-center">Frontend</h1>
-        <h6 class="text-center">< 프론트엔드(Frontend) 개발자는 ></h6>
-        <p class="text-center"><span>
-                웹사이트에서 보여지는 글꼴, 생각, 메뉴 등 사용자에게 시각적으로 보여지는 부분을 구축하고 배치하는 역할을 합니다.<br>
-                즉, 사용자가 웹사이트를 이용할 때, 사이트와 직접적으로 상호작용하여 접촉하는 부분을 프론트 엔드라고 합니다.</span>
-        </p>
     </div>
 
     <div th:if="${realm == 'Backend'}" class="community_backend_info">
         <h1 class="text-center">Backend</h1>
-        <h6 class="text-center">< 백엔드(Back end)개발자는 ></h6>
-        <p class="text-center">
-              <span>웹사이트나 웹 애플리케이션 또는 모바일 솔루션의
-               프로세스와 관련된 서버측(server-side)과 데이터베이스를 관리해주는 테크놀로지입니다.
-              <br>
-               프론트엔드가 눈에 직접적으로 보여지는 영역이였다면, 백엔드는 눈에 보이지 않는 서버에서 작용하는 기술을 다룹니다.</span>
-        </p>
     </div>
 
-    <div th:if="${realm == 'DBA'}" class="community_frontend_info">
+    <div th:if="${realm == 'DBA'}" class="community_dba_info">
         <h1 class="text-center">DBA</h1>
-        <h6 class="text-center">< 데이터베이스관리자(Data Base Administration) ></h6>
-        <p class="text-center"><span>한 조직 내에서 데이터베이스를 설치, 구성 업그레이드, 관리, 감시 하는일을 하는 사람입니다. <br>
-              보통 자료를 복구(백업)하거나, 데이터를 보전하고, 보안을 위해 데이터에 접근을 제어하는 업무를 하게됩니다.</span>
-        </p>
     </div>
 
-    <div th:if="${realm == 'WhiteHat'}" class="community_eis_info">
+    <div th:if="${realm == 'WhiteHat'}" class="community_whh_info">
         <h1 class="text-center">White-Hat</h1>
-        <h6 class="text-center">< White-Hat은 ></h6>
-        <p class="text-center"><span>컴퓨터 온라인 보안취약점을 연구해 해킹을 방어하는 전문가를 말합니다. 사이버 공간에서 중요한 정보를 훔치거나 <br> 국가 기반 시설을 마비시키는이를 블랙 해커 또는 크래커(cracker)라 하는 반면 화이트 해커는 이와 반대되는 개념입니다.</span>
-        </p>
     </div>
     <div class="community_ai_box">
         <h2 class="text-center" th:text="|${kind}-${realm}|"></h2>
@@ -402,7 +460,7 @@
                             <img th:if="${!hotTopic1.equals('non')}" src="/img/user.png" style="width:13px;"><span
                                 th:if="${!hotTopic1.equals('non')}" th:text="|${hotTopic1.writer}님|"></span>
                             <p th:if="${!hotTopic1.equals('non')}" th:text="|${hotContent1}...|"></p>
-                            <p th:if="${hotTopic1.equals('non')}">인기게시물이 아직 존재하지 않습니다.</p>
+                            <p style="font-weight: 200" th:if="${hotTopic1.equals('non')}">인기게시물이 아직 존재하지 않습니다.</p>
                         </div>
                     </div>
                 </div>
@@ -421,7 +479,7 @@
                             <img th:if="${!hotTopic2.equals('non')}" src="/img/user.png" style="width:13px;"><span
                                 th:if="${!hotTopic2.equals('non')}" th:text="|${hotTopic2.writer}님|"></span>
                             <p th:if="${!hotTopic2.equals('non')}" th:text="|${hotContent2}...|"></p>
-                            <p th:if="${hotTopic2.equals('non')}">인기게시물이 아직 존재하지 않습니다.</p>
+                            <p style="font-weight: 200" th:if="${hotTopic2.equals('non')}">인기게시물이 아직 존재하지 않습니다.</p>
                         </div>
                     </div>
                 </div>
@@ -441,7 +499,7 @@
                             <img th:if="${!hotTopic3.equals('non')}" src="/img/user.png" style="width:13px;"><span
                                 th:if="${!hotTopic3.equals('non')}" th:text="|${hotTopic3.writer}님|"></span>
                             <p th:if="${!hotTopic3.equals('non')}" th:text="|${hotContent3}...|"></p>
-                            <p th:if="${hotTopic3.equals('non')}">인기게시물이 아직 존재하지 않습니다.</p>
+                            <p style="font-weight: 200" th:if="${hotTopic3.equals('non')}">인기게시물이 아직 존재하지 않습니다.</p>
                         </div>
                     </div>
                 </div>
@@ -460,7 +518,7 @@
                             <img th:if="${!hotTopic4.equals('non')}" src="/img/user.png" style="width:13px;"><span
                                 th:if="${!hotTopic4.equals('non')}" th:text="|${hotTopic4.writer}님|"></span>
                             <p th:if="${!hotTopic4.equals('non')}" th:text="|${hotContent4}...|"></p>
-                            <p th:if="${hotTopic4.equals('non')}">인기게시물이 아직 존재하지 않습니다.</p>
+                            <p style="font-weight: 200" th:if="${hotTopic4.equals('non')}">인기게시물이 아직 존재하지 않습니다.</p>
                         </div>
                     </div>
                 </div>
@@ -480,7 +538,7 @@
                             <img th:if="${!hotTopic5.equals('non')}" src="/img/user.png" style="width:13px;"><span
                                 th:if="${!hotTopic5.equals('non')}" th:text="|${hotTopic5.writer}님|"></span>
                             <p th:if="${!hotTopic5.equals('non')}" th:text="|${hotContent5}...|"></p>
-                            <p th:if="${hotTopic5.equals('non')}">인기게시물이 아직 존재하지 않습니다.</p>
+                            <p style="font-weight: 200" th:if="${hotTopic5.equals('non')}">인기게시물이 아직 존재하지 않습니다.</p>
                         </div>
                     </div>
                 </div>
@@ -495,10 +553,9 @@
         </div>
 
 
-        <div class="container">
-
+        <div class="find_container" style="margin-top: 20px; border-top: 1px solid  #03305e81; padding-top: 20px;">
             <form action="/search_list" method="post" onsubmit="return submitAction();">
-                <select name="search_option" id="search_option">
+                <select name="search_option" id="search_option" style="border-radius: 5px; margin-left: 5%; padding: 6px 4px;">
                     <option value="" selected disabled hidden>선택해주세요</option>
                     <option value="writer">작성자</option>
                     <option value="subject">제목</option>
@@ -507,39 +564,38 @@
                 </select>
                 <input type="hidden" name="kind" id="kind" th:value="${kind}">
                 <input type="hidden" name="realm" id="realm" th:value="${realm}">
-                <input type="text" name="keyword" id="keyword" placeholder="검색">
-                <input type="submit" value="조회">
+                <input style="border: 1px solid; border-radius: 5px; padding: 3.8px 4px;" type="text" name="keyword" id="keyword" placeholder="검색">
+                <input style="padding: 3.8px 8px; color: white; border: 0; border-radius: 5px; background: #003366d2;" type="submit" value="조회">
             </form>
-        </div>
-        <div class="container">
+
             <div>
-                <table style="text-align: center; border: 1px solid #dddddd" width="90%">
+                <table style="margin-top: 20px; margin-left: 5%; text-align: center; border: 2px solid #dddddd" width="90%">
                     <thead>
-                    <tr>
-                        <th>글 제목</th>
+                    <tr style="width:auto;font-size: 23px; border-bottom: 2px solid #dddddd;">
+                        <th style="padding-top: 10px; padding-bottom: 10px">글 제목</th>
                         <th>글 작성자</th>
                         <th>날짜</th>
                         <th></th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr th:each="board : ${board}">
-                        <td><a th:href="@{/view(bno=${board.bno},kind=${kind},realm=${realm},pageNumber=${page})}"
-                               th:text="${board.subject}"></a></td>
-                        <td th:text="${board.writer}"></td>
-                        <td th:text="${board.reg_date}"></td>
-                        <td th:if="${board.notice == 1}" style="color: #ff0000;">공지글</td>
+                    <tr style="border-bottom: 2px solid #dddddd;" th:each="board : ${board}">
+                        <td style="padding-top: 7px; padding-bottom: 7px; font-size: 15px;"><a style="text-decoration: none; color: black;" th:href="@{/view(bno=${board.bno},kind=${kind},realm=${realm},pageNumber=${page})}"x
+                                                                                               th:text="${board.subject}"></a></td>
+                        <td style="font-size: 15px;" th:text="${board.writer}"></td>
+                        <td style=" font-size: 15px;" th:text="${board.real_date}"></td>
+                        <td class="ttd" th:if="${board.notice == 1}" style="color: red; width:auto; font-size: 15px;">공지글</td>
                     </tr>
 
                     </tbody>
                 </table>
-                <button type="button" th:onclick="'location.href=\''+@{/write(kind=${kind},realm=${realm})}+'\''">글쓰기
+                <button style="float:right; margin-top: 20px;margin-right: 7%; border: 0; color: white; border-radius: 5px; background: #003366d2;" type="button" th:onclick="'location.href=\''+@{/write(kind=${kind},realm=${realm})}+'\''">글쓰기
                 </button>
             </div>
 
             <div style="display: block; text-align: center;">
                 <ul class="pagination pagination-sm"
-                    style="margin: 0 auto; margin-top: 20px; margin-bottom: 20px; margin-left: auto;">
+                    style="margin: 0 auto; margin-top: 20px; margin-bottom: 20px; margin-left: 5%;">
                     <li class="page-item" th:if="${startPage != 1}"><a class="page-link"
                                                                        th:href="@{/board(pageNumber=${startPage} - 1,kind=${kind},realm=${realm})}">&lt;</a>
                     </li>
@@ -552,7 +608,7 @@
                     </li>
                     <li class="page-item"><a class="page-link"
                                              th:href="@{/board(pageNumber=${page},kind=${kind},realm=${realm})}"
-                                             th:text="${page}" style="background-color: #006DCC;"></a></li>
+                                             th:text="${page}" style="background-color: #006DCC; color: white"></a></li>
                     <li class="page-item" th:if="${count > 0}"
                         th:each="idx,iterStat : ${#numbers.sequence(page + 1, target2 + page )}">
                         <a class="page-link" th:if="${idx < startPage + 10 and idx > page}"
@@ -569,22 +625,33 @@
             </div>
         </div>
 
-        <div class="footer-box">
-            <div class="author">
-                <p><b>Creators - </b>KimLeeEum</p>
-                <p><b>email - </b>energizun1001@gamil.com</p>
-                <p><b>Domain - </b>www.cmdev.com</p>
-            </div>
-            <div class="link">
-                <ul>
-                    <li><a href="https://github.com/" target="_blank"><i class="fab fa-github"> GitHub</i></a></li>
-                    <li><a href="https://stackoverflow.com/" target="_blank"><i class="fab fa-stack-overflow">
-                        Stack-Overflow</i></a></li>
-                </ul>
-                <input type="hidden" id="userID" th:value="${session.id}">
-            </div>
+    </div>
+    <div class="footer-box">
+        <div class="author">
+            <p><b>Creators - </b>KimLeeEum</p>
+            <p><b>email - </b>energizun1001@gamil.com</p>
+            <p><b>Domain - </b>www.cmdev.com</p>
         </div>
-        <div class="eyebrow"><p>@2021 prod by 김이음</p></div>
+        <div class="link">
+            <ul>
+                <li><a href="https://github.com/" target="_blank"><i class="fab fa-github"> GitHub</i></a></li>
+                <li><a href="https://stackoverflow.com/" target="_blank"><i class="fab fa-stack-overflow">
+                    Stack-Overflow</i></a></li>
+            </ul>
+            <input type="hidden" id="userID" th:value="${session.id}">
+        </div>
+    </div>
+    <div class="eyebrow"><p>@2021 prod by 김이음</p></div>
+</div>
+
+    <div class="popupLayer" style=" z-index: 2;">
+        <div style="background: #003366d2;">
+            <span style=" color: white; border-radius: 5px; margin-left: 2px; margin-top: 5px; padding: 3px; font-size: 12px;">인기검색어</span><span style="color: white; float: right; margin-right: 3px; cursor: pointer;" onclick="closePopup();">x</span>
+            <hr style="margin-top: 5px; margin-bottom: 2px; background-color: #003366d2;">
+        </div>
+        <div id="rankingArea">
+
+        </div>
     </div>
 </body>
 </html>

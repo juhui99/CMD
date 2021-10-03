@@ -1,0 +1,132 @@
+body {
+    background-color: #FFFFFF;
+    font-family: 'Ubuntu', sans-serif;
+}
+.form-group {
+    background-color: #FFFFFF;
+    width: 70%;
+    height:auto;
+    margin: 5em auto;
+    border-radius: 1.5em;
+    box-shadow: 5px 5px 5px 5px rgba(0, 0, 0, 0.14);
+}
+
+
+.form-box{
+    margin-bottom: 80px;
+}
+
+.eyeopen{
+    background: rgba(3, 48, 94, 0.34);
+    width: 100%;
+    border: 0 outset;
+    border-bottom-left-radius: 1.5em;
+    border-bottom-right-radius: 1.5em;
+    padding-top: 5%;
+    padding-bottom: 5%;
+
+    padding-left: 13%;
+
+}
+
+.sign-up{
+    padding-top: 40px;
+    padding-bottom: 20px;
+    color:  #003366d2;
+    font-family: 'Ubuntu', sans-serif;
+    font-weight: bold;
+    font-size: 23px;
+}
+
+.sign-up1{
+    padding-bottom: 20px;
+    color:  #003366d2;
+    font-family: 'Ubuntu', sans-serif;
+    font-weight: bold;
+    font-size: 23px;
+}
+
+
+.sign-up2{
+    padding-top: 40px;
+    color:  #003366d2;
+    font-family: 'Ubuntu', sans-serif;
+    font-weight: bold;
+    font-size: 23px;
+}
+.eye{
+    margin-top: 15px;
+}
+
+.eyeopen label{
+    color: white;
+    font-family: 'Ubuntu', sans-serif;
+    font-size: 18px;
+    font-weight: 400;
+    margin-right: 4px;
+}
+
+.eyeopen b{
+    font-weight: 450;
+    color:  #003366d2;
+}
+
+.tab1{
+    margin-left: 10.3%;
+}
+.tab2 {
+    margin-left: 12%;
+}
+
+.eyeopen input{
+    border-radius: 5px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+}
+
+.eyeopen select{
+    border-radius: 5px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+}
+
+.smbutt1{
+    font-size: 15px;
+    padding: 2px 4px;
+
+    color: white;
+    border: 0;
+    border-radius: 5px;
+    background: rgba(57, 103, 144, 0.82);
+}
+
+.smbutt2{
+    padding: 8px 12px;
+    color: white;
+    border: 0;
+    border-radius: 5px;
+    background: rgba(57, 103, 144, 0.82);
+    width: 40%;
+    margin-left: 20%;
+    margin-right: 20%;
+}
+
+.checkbtt{
+    width: 40%;
+    margin-left: 30%;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+}
+
+.checkbtts {
+    width: 30%;
+    margin-left: 35%;
+    margin-bottom: 15px;
+    padding: 8px 12px;
+    color: white;
+    border: 0;
+    border-radius: 5px;
+    background: rgba(57, 103, 144, 0.82);
+}

@@ -84,9 +84,91 @@
             box-shadow: 0 0 0 0.2rem #003366d2;
         }
 
+
+        .block {
+            border: 2px solid #003366d2;
+            padding: 0 5px;
+            height: 25px;
+            overflow: hidden;
+            background: #fff;
+            width: 100px;
+            font-family: Gulim;
+            font-size: 12px;
+        }
+
+        .block ul, .block li {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .block li a {
+            display: block;
+            height: 20px;
+            line-height: 20px;
+            color: #555;
+            text-decoration: none;
+        }
+
+        .block li span {
+            padding: 2px 5px;
+            background: #003366d2;
+            color: #fff;
+            font-weight: bold;
+            margin-right: 3px;
+        }
+
+        .popupLayer {
+            display: none;
+            position: absolute;
+            left: 950px;
+            top: 55px;
+            border: solid 1px #003366d2;
+            background-color: #fff;
+            width: 200px;
+            border-radius: 5px;
+        }
+
+
     </style>
 </head>
 <script type="text/javascript">
+    function searchRanking() {
+        $.ajax({
+            type: "POST",
+            url: "/searchRanking",
+            success: function (data) {
+                if (data == "") return;
+                $('#ranking').html('');
+                var parsed = JSON.parse(data);
+                var result = parsed.result;
+                var html = '';
+                html += '<ul id="ticker">'
+                for (var i = 0; i < result.length; i++) {
+
+                    html += '<li style="margin-top: 1px">' + '<a href="/main_search?keyword=' + result[i][0].value + '"><span>' + (i + 1) + '</span>' + result[i][0].value + '</a>';
+                    html += '</li>';
+
+                }
+                html += '</ul>'
+                $("#ranking").append(html);
+
+                $('#rankingArea').html('');
+                var html2 = '';
+                for (var i = 0; i < result.length; i++) {
+                    html2 += '<a href="/main_search?keyword=' + result[i][0].value + '" style="color: black; font-size: 12px;"><span style="background-color: #003366d2; color: white; padding-right: 4px; padding-left: 4px; margin-left: 3px;  margin-right: 2px; margin-bottom: 3px; font-size: 12px;">' + (i + 1) + '</span>' + result[i][0].value + '</a><br>'
+                }
+                $('#rankingArea').append(html2);
+
+            }
+        });
+    }
+
+    function getInfiniteSearchRanking() {
+        setInterval(function () {
+            searchRanking();
+        }, 30000);
+    }
 
     function clickCheck(target) {
         document.querySelectorAll(`input[type=checkbox]`)
@@ -152,7 +234,7 @@
         var pwd_pattern = /[`~!@#$%^&*()_+|<>?{}]/;
         var pwd_pattern2 = /[a-zA-Z]/;
         var pwd_pattern3 = /[0-9]/;
-        if(!pwd_pattern.test(pwd) || !pwd_pattern2.test(pwd) || !pwd_pattern3.test(pwd) || pwd.length < 8){
+        if (!pwd_pattern.test(pwd) || !pwd_pattern2.test(pwd) || !pwd_pattern3.test(pwd) || pwd.length < 8) {
             alert("비밀번호는 문자, 숫자, 특수문자를 포함하여 8자리 이상으로 구성해야 합니다.");
             return false;
         } else {
@@ -160,15 +242,15 @@
         }
     }
 
-    function passwordCheckFunction(){
+    function passwordCheckFunction() {
         var pwd = $("#user_pwd").val();
         var pwd_pattern = /[`~!@#$%^&*()_+|<>?{}]/;
         var pwd_pattern2 = /[a-zA-Z]/;
         var pwd_pattern3 = /[0-9]/;
-        if(!pwd_pattern.test(pwd) || !pwd_pattern2.test(pwd) || !pwd_pattern3.test(pwd) || pwd.length < 8){
-            $("#pwdCheckMessage").html('<span style="color: red; font-size: 4px;">비밀번호는 문자, 숫자, 특수문자를 포함하여 8자리 이상으로 구성해야 합니다.</span>');
-        } else{
-            $("#pwdCheckMessage").html('<span style="color: green; font-size: 4px;">사용가능한 비밀번호입니다.</span>');
+        if (!pwd_pattern.test(pwd) || !pwd_pattern2.test(pwd) || !pwd_pattern3.test(pwd) || pwd.length < 8) {
+            $("#pwdCheckMessage").html('<span style="color: red; font-size: 10px; font-weight: 550; ">비밀번호는 문자, 숫자, 특수문자를 포함하여 8자리 이상으로 구성해야 합니다.</span>');
+        } else {
+            $("#pwdCheckMessage").html('<span style="color: blue; font-size: 6px;">사용가능한 비밀번호입니다.</span>');
         }
     }
 
@@ -196,7 +278,9 @@
 
     $(document).ready(function () {
 
+        searchRanking();
         totalUnreadChat();
+        getInfiniteSearchRanking();
         getInfiniteTotalUnread();
         $(".board").css("display", "none");
 
@@ -246,21 +330,39 @@
                 alert("회원탈퇴를 취소합니다.");
             }
         });
+        var ticker = function () {
+            setTimeout(function () {
+                $('#ticker li:first').animate({marginTop: '-20px'}, 400, function () {
+                    $(this).detach().appendTo('ul#ticker').removeAttr('style');
+                });
+                ticker();
+            }, 3000);
+        };
+        ticker();
+
+        $("#ranking").hover(function () {
+            $(".popupLayer").css("display", "block");
+        });
+
     });
+
+    function closePopup() {
+        $(".popupLayer").css("display", "none");
+    }
 </script>
 <body>
-<div class="container">
+<div class="container" style="z-index: 1;">
     <div class="header-box">
         <div class="logo"><a href="/main"><img src="/img/CMD-logo.png" alt="logo" height="100%"></a></div>
         <div class="search">
             <nav class="navbar navbar-expand-sm  navbar-dark">
                 <form class="form-inline" action="/main_search" method="post">
                     <input class="form-control mr-sm-2" name="keyword" type="text" placeholder="Search">
-                    <button class="btn btn-success" type="submit">Search</button>
+                    <button class="btn btn-success" type="submit">검색</button>
                 </form>
             </nav>
         </div>
-        <div class="keyword" id="ranking"></div>
+        <div style="width: 200px;" class="keyword block" id="ranking"></div>
     </div>
 
     <div class="menu-navbar">
@@ -360,26 +462,9 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/cmd_roadmap">로드맵</a>
                 </li>
-
-
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbardrop2" data-toggle="dropdown">
-                        D-MBTI
-                    </a>
-                    <div class="dropdown-menu">
-                        <a class="dropdown-item" href="#">D-MBTI 하기</a>
-                        <a class="dropdown-item" href="#">D-MBTI 통계</a>
-                    </div>
-                </li>
-
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbardrop3" data-toggle="dropdown">
-                        설문조사
-                    </a>
-                    <div class="dropdown-menu">
-                        <a class="dropdown-item" href="#">설문조사 하기</a>
-                        <a class="dropdown-item" href="#">설문조사 통계</a>
-                    </div>
+                <li class="nav-item">
+                    <a class="nav-link" href="/mainSurvey" id="navbardrop3">
+                        설문조사</a>
                 </li>
             </ul>
             <ul class="login-box">
@@ -400,10 +485,9 @@
                         <span th:if="${session.id != null}" th:text="|${session.id}님|" style="margin-left: 3px;"></span>
                     </a>
                     <div class="dropdown-menu">
-                        <a style="margin-left: 10px;" th:if="${session.id != null}" href="/userUpdateCheck">회원정보
-                            수정</a></br>
-                        <a style="margin-left: 10px;" th:if="${session.id != null}" href="/logoutAction">로그아웃</a><br>
-                        <a style="margin-left: 10px;" th:if="${session.id != null}" href="#" id="withdrawal">회원탈퇴</a>
+                        <a class="dropdown-item" th:if="${session.id != null}" href="/userUpdateCheck">회원정보 수정</a>
+                        <a class="dropdown-item" th:if="${session.id != null}" href="/logoutAction">로그아웃</a>
+                        <a class="dropdown-item" th:if="${session.id != null}" href="#" id="withdrawal">회원탈퇴</a>
                     </div>
                 </li>
             </ul>
@@ -411,40 +495,57 @@
         </nav>
     </div>
     <div>
-        <form action="/JoinAction" method="post" onsubmit="return submitAction();">
-            <h4>회원 등록 양식</h4>
+        <form class="form-box" action="/JoinAction" method="post" onsubmit="return submitAction();">
             <div class="form-group">
-                <label for="user_id">*아이디</label>
-                <input type="text" id="user_id" name="user_id" placeholder="아이디">
-                <button type="button" class="idChk" id="idChk" onclick="idCheck();" value="N">중복확인</button>
-                <br>
-                <label for="user_pwd">*비밀번호</label>
-                <input type="password" id="user_pwd" name="user_pwd" placeholder="비밀번호" onkeyup="passwordCheckFunction()">
-                <div id="pwdCheckMessage"></div>
-                <label for="pwd_check">*비밀번호 확인</label>
-                <input type="password" id="pwd_check" name="pwd_check" placeholder="비밀번호 확인"><br>
-                <label for="user_name">*이름</label>
-                <input type="text" id="user_name" name="user_name" placeholder="이름"><br>
-                <label for="user_age">나이</label>
-                <input type="number" id="user_age" name="user_age" placeholder="나이" value=""><br>
-                <label for="user_major">분야</label>
-                <select id="user_major" name="user_major">
-                    <option value="선택사항없음">선택사항없음</option>
-                    <option value="Frontend">Frontend</option>
-                    <option value="Backend">Backend</option>
-                    <option value="DBA">DBA</option>
-                    <option value="AI">AI</option>
-                    <option value="WhiteHat">White-Hat</option>
-                </select>
-                <label for="user_email">*이메일</label>
-                <input type="email" id="user_email" name="user_email" placeholder="이메일"><br>
-                <label for="w">여성</label>
-                <input type="checkbox" name="user_gender" id="w" value="W" onclick="clickCheck(this)">
-                <label for="m">남성</label>
-                <input type="checkbox" name="user_gender" id="m" value="M" onclick="clickCheck(this)">
-                <input type="submit" id="submit" name="submit" value="가입">
-            </div>
+                <p class="sign-up text-center"><i class="far fa-address-card"></i> 회원가입</p>
 
+                <div class="eyeopen">
+                    <label for="user_id"><b>* </b><i class="fas fa-user"></i> 아이디</label>
+                    <input type="text" id="user_id" name="user_id" placeholder=" ID">
+                    <button type="button" class="idChk smbutt1" id="idChk" onclick="idCheck();" value="N">중복확인</button>
+                    <hr style="margin-left: 0; width: 82%; background-color:  #003366d2;">
+                    <div class="eye">
+                        <label for="user_pwd"><b>* </b><i class="fas fa-key"></i> 비밀번호</label>
+                        <input type="password" id="user_pwd" name="user_pwd" placeholder=" Password"
+                               onkeyup="passwordCheckFunction()">
+                        <div id="pwdCheckMessage"></div>
+                        <label for="pwd_check"><b>* </b><i class="fas fa-key"></i> 비밀번호 확인</label>
+                        <input type="password" id="pwd_check" name="pwd_check" placeholder=" Password_Check">
+                        <hr style="margin-left: 0; width: 84%; background-color:  #003366d2;">
+                    </div>
+                    <div class="eye">
+                        <label for="user_name"><b>* </b><i class="far fa-user"></i> 이름</label>
+                        <input type="text" id="user_name" name="user_name" placeholder=" Name">
+                        <label class="tab1" for="user_age"><i class="fas fa-seedling"></i> 나이</label>
+                        <input type="number" id="user_age" name="user_age" placeholder=" Age" value="">
+                    </div>
+                    <div class="eye">
+                        <label class="tab2" for="user_major"><i class="fas fa-briefcase"></i> 분야</label>
+                        <select id="user_major" name="user_major">
+                            <option value="None">None</option>
+                            <option value="Frontend">Frontend</option>
+                            <option value="Backend">Backend</option>
+                            <option value="DBA">DBA</option>
+                            <option value="AI">AI</option>
+                            <option value="WhiteHat">White-Hat</option>
+                        </select>
+                        <label class="tab2" for="w"><i class="fas fa-venus"></i> 여성</label>
+                        <input style="border-radius: 5px" type="checkbox" name="user_gender" id="w" value="W"
+                               onclick="clickCheck(this)">
+                        <label for="m" style="margin-left: 3%"><i class="fas fa-mars"></i> 남성</label>
+                        <input type="checkbox" name="user_gender" id="m" value="M" onclick="clickCheck(this)">
+                        <hr style="margin-left: 0; width: 84%; background-color: #003366d2;">
+                    </div>
+                    <div class="eye">
+                        <label for="user_email"><b>* </b><i class="fas fa-envelope"></i> 이메일</label>
+                        <input style="width: 50%" type="email" id="user_email" name="user_email" placeholder=" Email">
+                        <hr style="margin-left: 0; width: 84%; background-color: #003366d2;">
+                    </div>
+                    <div class="eye">
+                        <input class="smbutt2" type="submit" id="submit" name="submit" value="가입">
+                    </div>
+                </div>
+            </div>
         </form>
     </div>
 
@@ -465,7 +566,19 @@
     </div>
     <div class="eyebrow"><p>@2021 prod by 김이음</p></div>
 
+
 </div>
+<div class="popupLayer" style=" z-index: 2;">
+    <div style="background: #003366d2;">
+        <span style=" color: white; border-radius: 5px; margin-left: 2px; margin-top: 5px; padding: 3px; font-size: 12px;">인기검색어</span><span
+            style="color: white; float: right; margin-right: 3px; cursor: pointer;" onclick="closePopup();">x</span>
+        <hr style="margin-top: 5px; margin-bottom: 2px; background-color: #003366d2;">
+    </div>
+    <div id="rankingArea">
+
+    </div>
+</div>
+
 
 </body>
 </html>

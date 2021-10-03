@@ -14,6 +14,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.Callable;
 
@@ -187,6 +189,12 @@ public class ChatController {
         String userID = (String) session.getAttribute("id");
         List<ChatVO> chatList = chatMapper.chatList(userID,friendID,chatID);
         chatMapper.readChat(userID,friendID);
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        for (int i = 0; i < chatList.size(); i++){
+            Date chatTime = chatList.get(i).getChat_time();
+            String realTime = format.format(chatTime);
+            chatList.get(i).setReal_time(realTime);
+        }
         if(chatList.size() == 0){
             try{
                 response.getWriter().print("");
@@ -203,7 +211,7 @@ public class ChatController {
             for (int i = 0; i < chatList.size(); i++) {
                 result.append("[{\"value\": \"" + chatList.get(i).getUser_id() + "\"},");
                 result.append("{\"value\": \"" + chatList.get(i).getChat_content() + "\"},");
-                result.append("{\"value\": \"" + chatList.get(i).getChat_time() + "\"}]");
+                result.append("{\"value\": \"" + chatList.get(i).getReal_time() + "\"}]");
                 if (i != chatList.size() - 1) result.append(",");
 
             }
@@ -246,6 +254,12 @@ public class ChatController {
         response.setContentType("text/html;charset=UTF-8");
         String userID = req.getParameter("id");
         List<ChatVO> chatList = chatMapper.chatBox(userID);
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        for (int i = 0; i < chatList.size(); i++){
+            Date chatTime = chatList.get(i).getChat_time();
+            String realTime = format.format(chatTime);
+            chatList.get(i).setReal_time(realTime);
+        }
         if(chatList.size() == 0){
             try{
                 response.getWriter().print("");
@@ -300,7 +314,7 @@ public class ChatController {
                 result.append("[{\"value\": \"" + chatList.get(i).getUser_id() + "\"},");
                 result.append("{\"value\": \"" + chatList.get(i).getFriend_id() + "\"},");
                 result.append("{\"value\": \"" + chatList.get(i).getChat_content() + "\"},");
-                result.append("{\"value\": \"" + chatList.get(i).getChat_time() + "\"},");
+                result.append("{\"value\": \"" + chatList.get(i).getReal_time() + "\"},");
                 result.append("{\"value\": \"" + userProfile + "\"},");
                 result.append("{\"value\": \"" + unread + "\"},");
                 result.append("{\"value\": \"" + userWithdrawal + "\"}]");

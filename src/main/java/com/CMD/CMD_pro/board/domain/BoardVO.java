@@ -13,6 +13,7 @@ public class BoardVO {
     private String kind;
     private String realm;
     private int recommend;
+    private String real_date;
 
     public int getBno() {
         return bno;
@@ -88,5 +89,13 @@ public class BoardVO {
 
     public void setRecommend(int recommend) {
         this.recommend = recommend;
+    }
+
+    public String getReal_date() {
+        return real_date;
+    }
+
+    public void setReal_date(String real_date) {
+        this.real_date = real_date;
     }
 }

@@ -9,14 +9,63 @@ body {
     height: auto;
 }
 
-h1{
+.community h1{
     font-size: 50px;
     font-weight: 300;
     padding: 20px 0px 5px 0px;
     border-bottom: 3px solid #03305e81;;
     border-radius: 20px;
-    margin: auto 27%;
+    margin: auto 26%;
 }
+
+.community_ai_info h1{
+    font-size: 50px;
+    font-weight: 300;
+    padding: 20px 0px 5px 0px;
+    border-bottom: 3px solid #03305e81;;
+    border-radius: 20px;
+    margin: auto 44%;
+}
+
+.community_backend_info h1{
+    font-size: 50px;
+    font-weight: 300;
+    padding: 20px 0px 5px 0px;
+    border-bottom: 3px solid #03305e81;;
+    border-radius: 20px;
+    margin: auto 37.5%;
+
+}
+
+.community_whh_info h1{
+    font-size: 50px;
+    font-weight: 300;
+    padding: 20px 0px 5px 0px;
+    border-bottom: 3px solid #03305e81;;
+    border-radius: 20px;
+    margin: auto 35.5%;
+}
+
+.community_frontend_info h1{
+    font-size: 50px;
+    font-weight: 300;
+    padding: 20px 0px 5px 0px;
+    border-bottom: 3px solid #03305e81;;
+    border-radius: 20px;
+    margin: auto 37%;
+
+}
+
+.community_dba_info h1{
+    font-size: 50px;
+    font-weight: 300;
+    padding: 20px 0px 5px 0px;
+    border-bottom: 3px solid #03305e81;;
+    border-radius: 20px;
+    margin: auto 41.5%;
+
+}
+
 
 #comm1, #comm2, #comm3, #comm4,#comm5, #comm6{
     font-weight: 450;
@@ -39,8 +88,12 @@ p{
     padding: 10px 0px 10px 0px;
 
 }
-span{
+.community span{
     font-weight: 500 !important;
+}
+
+.bld{
+    font-weight: 350;
 }
 
 h2{

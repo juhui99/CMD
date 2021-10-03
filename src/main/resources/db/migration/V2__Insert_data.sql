@@ -117,7 +117,6 @@ insert into survey (`user_index`,
                     `progressing`,
                     `survey_count`)
 values(1,'test11','내용11','2021-11-14',0,1);
-
 insert into surveyItem (`survey_index`,
                         `survey_item_content`)
 values(1,'선택1');
@@ -160,51 +159,29 @@ values(3,'선택3');
 -- values(1,1,1);
 
 insert into board       (`subject`,
-                       `content`,
-                       `writer`,
-                       `reg_date`,
-                       `hit`,
-                       `notice`,
-                       `kind`,
-                       `realm`,
-                       `recommend`,
-                       `delete_option`)
+                         `content`,
+                         `writer`,
+                         `reg_date`,
+                         `hit`,
+                         `notice`,
+                         `kind`,
+                         `realm`,
+                         `recommend`,
+                         `delete_option`)
 values('글제목','글내용1입니다.','ehfehfdl0927',now(),0,0,'자유게시판','Backend',0,0);
 
 insert into board       (`subject`,
-                       `content`,
-                       `writer`,
-                       `reg_date`,
-                       `hit`,
-                       `notice`,
-                       `kind`,
-                       `realm`,
-                       `recommend`,
-                       `delete_option`)
+                         `content`,
+                         `writer`,
+                         `reg_date`,
+                         `hit`,
+                         `notice`,
+                         `kind`,
+                         `realm`,
+                         `recommend`,
+                         `delete_option`)
 values('글제목2','글내용2입니다.안녕하세요.','aaaa',now(),0,0,'정보팁게시판','Frontend',0,0);
 
 insert into friends(`user_id`,
                     `friend_id`)
 values('aaaa','bbbb11');
-
-
-
-
-
-
-
-
-
-
-
-
-
--- insert into survey_item ( `survey_item_index`,
---                     `survey_index`,
---                     `survey_item_content`)
---
--- insert into survey_result ( `survey_result_index`,
---                     `survey_index`,
---                     `survey_item_index`,
---                     `survey_result`,
---                     `survey_result_reg_date`)
