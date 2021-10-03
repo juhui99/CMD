@@ -127,11 +127,6 @@
                 $(".popupLayer").css("display","block");
             });
 
-        });
-
-        function closePopup() {
-            $(".popupLayer").css("display","none");
-        }
             $("#files").on('change',function(){
 
                 if(window.FileReader){
@@ -143,6 +138,8 @@
                 $(".upload-name").val(filename);
             });
         });
+
+
 
         function deleteFile() {
 

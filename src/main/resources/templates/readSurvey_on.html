@@ -21,16 +21,8 @@
     <script type="text/javascript">
 
         function vote(){
-            // //Get form
-            // var form = $("#voteform");
-            // // Create an FormData object
-            // var formData = new FormData(form);
-
-
             $.ajax({
-
                 url: "/voteSurvey",
-                // enctype: "multipart/form-data",
                 //processData: false, // 데이터 객체를 문자열로 바꿀지에 대한 값이다. true면 일반문자
                 //contentType: false, // 해당 타입을 true로 하면 일반 text로 구분
                 type: "POST",
@@ -367,7 +359,6 @@
         </nav>
     </div>
     <div>
-        <!--enctype="multipart/form-data"-->
         <form id="voteform" method="post" >
             <div>
                 <table>
@@ -384,14 +375,11 @@
             <div>
                 <div th:each="surveyItemList : ${surveyItemList}" class="form-check">
                     <input type="checkbox" name="itemIndex" class="form-check-input"  th:value="${surveyItemList.survey_item_index}" onclick="clickCheck(this)"/>
-
-
                     <input type="text" class="itemContent" name="itemContent" th:value="${surveyItemList.survey_item_content}"/>
                 </div>
             </div>
             <input type="hidden" th:value="${session.id}" id="id" name="id"/>
-            <input type="hidden" th:value="${survey_index}" id="surveyIndex" name="survey_index"/>
-
+            <input type="hidden" th:value="${surveyVO.survey_index}" id="surveyIndex" name="survey_index"/>
             <input type="button" onclick="vote();" value="투표"/>
 
         </form>

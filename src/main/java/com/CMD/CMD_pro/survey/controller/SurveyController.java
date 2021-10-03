@@ -1,11 +1,9 @@
 package com.CMD.CMD_pro.survey.controller;
 
-
 import com.CMD.CMD_pro.survey.domain.*;
 import com.CMD.CMD_pro.survey.mapper.SurveyMapper;
 import com.CMD.CMD_pro.user.domain.UserVO;
 import com.CMD.CMD_pro.user.mapper.UserMapper;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,10 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 //@RequestMapping("/survey/*") //현재 믈래스의 모든 메서드들의 기본적인 URL경로
@@ -31,25 +26,41 @@ public class SurveyController {
     @RequestMapping(value = "/mainSurvey", method = RequestMethod.GET) //설문조사 메인화면
     public String mainSurvey(@ModelAttribute("cri") SearchCriteria cri, Model model, HttpSession session) throws Exception {
         String filename = null;
+        int manager = 0;
+        UserVO user = new UserVO();
 
         if(session.getAttribute("id") != null){
             String userID = (String) session.getAttribute("id");
-            UserVO user = userMapper.userLogin(userID);
+            user = userMapper.userLogin(userID);
             filename = user.getUser_profile();
 
         } else {
             filename = "non";
         }
         model.addAttribute("filename",filename);
+
         List<SurveyVO> surveyList = surveyMapper.selectSurveyList(cri);
+
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        for (int i = 0; i < surveyList.size(); i++){
+            Date survey_reg = surveyList.get(i).getSurvey_reg();
+            String real_date = format.format(survey_reg);
+            surveyList.get(i).setReal_date(real_date);
+        }
+
         model.addAttribute("surveyList", surveyList);//survey 리스트 출력
 
-//        PageMaker pageMaker = surveyMapper.selectCountPaging(cri);
         PageMaker pageMaker = new PageMaker();
         pageMaker.setCri(cri);
         pageMaker.setTotalCount(surveyMapper.selectCountPaging());
 
         model.addAttribute("pageMaker", pageMaker); // 게시판 하단의 페이징 관련, 이전페이지, 페이지 링크 , 다음 페이지
+        if(session.getAttribute("id") != null){
+            manager = user.getUser_manager();
+            model.addAttribute("manager",manager);
+        } else {
+            model.addAttribute("manager",manager);
+        }
         return "mainSurvey";
     }
 
@@ -77,30 +88,29 @@ public class SurveyController {
         if(isProgressing) { //설문조사가 실행중일때
             SurveyVO surveyVO = surveyMapper.selectSurvey(survey_index);
             surveyItemList = surveyMapper.selectSurveyItems(survey_index);
+
             model.addAttribute("surveyVO", surveyVO); // 타이틀, 내용만 페이지에 보여지게 html 작성
             model.addAttribute("surveyItemList", surveyItemList);//진행중인 설문조사 상세 페이지
-            model.addAttribute("survey_index", survey_index);
             model.addAttribute("filename",filename);
             return "readSurvey_on";
         }
         else{ //설문조사 마감일때
             SurveyVO surveyVO = surveyMapper.selectSurvey(survey_index);
             surveyItemList = surveyMapper.selectSurveyItems(survey_index);
-
             List<ResultDataSet> dataset  = surveyMapper.selectSurveyResultDataSet(survey_index);
+            List<Integer> resultIndexList = surveyMapper.selectSurveyResult(survey_index);
+            List<Integer> countList = new ArrayList<>();
 
-//           for (int i = 0 ; i < surveyItemList.size(); i++) {
-//                SurveyItemVO vo = surveyItemList.get(i);
-//            }
-//            for (SurveyItemVO vo : surveyItemList) {
-//                ResultDataSet dataSet = new ResultDataSet();
-//                dataSet.setSurvey_item_index(vo.getSurvey_item_index());
-//                dataset.add(dataSet);
-//            }
+            for (int i = 0; i < resultIndexList.size(); i++){
+                int surveyItemIndex = resultIndexList.get(i);
+                int resultCount = surveyMapper.resultCount(surveyItemIndex);
+                countList.add(resultCount);
+            }
 
             model.addAttribute("surveyVO", surveyVO); // 타이틀, 내용만 페이지에 보여지게 html 작성
             model.addAttribute("surveyItemList", surveyItemList); //설문조사 선택 리스트보기
             model.addAttribute("dataset", dataset);
+            model.addAttribute("countList", countList);
             model.addAttribute("filename",filename);
             return "readSurvey_off";
         }
@@ -131,8 +141,7 @@ public class SurveyController {
     @RequestMapping(value="/insertSurvey",method = RequestMethod.GET)
     public String addSurveyGET(Model model, HttpSession session) throws Exception {
         String filename = null;
-
-        if(session.getAttribute("id") != null){
+        if (session.getAttribute("id") != null) {
             String userID = (String) session.getAttribute("id");
             UserVO user = userMapper.userLogin(userID);
             filename = user.getUser_profile();
@@ -140,7 +149,7 @@ public class SurveyController {
         } else {
             filename = "non";
         }
-        model.addAttribute("filename",filename);
+        model.addAttribute("filename", filename);
         String userID = (String)session.getAttribute("id");
         if(userID == null){ //로그인 확인
             model.addAttribute("msg","로그인이 되어있지 않습니다.");
@@ -158,18 +167,19 @@ public class SurveyController {
 
     @RequestMapping(value="insertSurvey", method = RequestMethod.POST) //설문조사 추가하기
     public String addSurvey(@RequestParam("survey_title") String survey_title, @RequestParam("survey_content") String survey_content,
-                            @RequestParam("itemcontent") String [] itemcontent, @RequestParam("survey_end") String survey_end, Model model, HttpSession session) throws Exception {
+                            @RequestParam("itemcontent") String [] itemcontent, @RequestParam("survey_end") String survey_end,
+                            Model model, HttpSession session) throws Exception {
+        String filename = null;
 
-        String filename;
-        String userID;
-        if((String) session.getAttribute("id") != null){
-            userID = (String) session.getAttribute("id");
+        if(session.getAttribute("id") != null){
+            String userID = (String) session.getAttribute("id");
             UserVO user = userMapper.userLogin(userID);
             filename = user.getUser_profile();
 
         } else {
             filename = "non";
         }
+        model.addAttribute("filename",filename);
 
         SurveyVO surveyVO = new SurveyVO();
         String pattern = "YYYY-MM-DD";
@@ -187,7 +197,6 @@ public class SurveyController {
             surveyItemList.add(temp);
         }
         surveyMapper.insertSurveyItem(surveyItemList);
-        model.addAttribute("filename",filename);
 
         return "redirect:/mainSurvey";
     }
@@ -206,7 +215,6 @@ public class SurveyController {
         SurveyResultVO surveyResultVO = new SurveyResultVO();
         Map<String, Object> return_param = new HashMap<>();
         try {
-
             surveyResultVO.setSurvey_item_index(Integer.parseInt(survey));
             surveyResultVO.setUser_index(userIndex);
             surveyResultVO.setSurvey_index(Integer.parseInt(index));
@@ -263,20 +271,4 @@ public class SurveyController {
         model.addAttribute("surveysearch",SurveyList); //검색한 설문 리스트
         return "searchSurvey";
     }
-
-//    @RequestMapping(value = "/mainsurvey")
-//    public String main(HttpServletRequest request, Model model) throws Exception{
-//        UserVO user = (UserVO) request.getAttribute("UserVO");
-//
-//        if (user == null){
-//            return "redirect:/login";//로그인 위치
-//        }
-//        List<SurveyVO> surveyList = surveyService.getSurveyList();
-//        model.addAttribute("surveyList",surveyList);
-//        return "index";
-//    }
-
 }
-
-
-

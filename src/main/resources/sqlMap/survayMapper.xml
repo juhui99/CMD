@@ -14,6 +14,7 @@
     <resultMap id="surveyItemVO" type="com.CMD.CMD_pro.survey.domain.SurveyItemVO"/>
     <resultMap id="pageMaker" type="com.CMD.CMD_pro.survey.domain.PageMaker"/>
     <resultMap id="resultDataSet" type="com.CMD.CMD_pro.survey.domain.ResultDataSet"/>
+    <resultMap id="surveyResultVO" type="com.CMD.CMD_pro.survey.domain.SurveyResultVO"/>
 
     <!-- 검색기능을 위한 동적SQL -->
     <sql id="search">
@@ -34,27 +35,12 @@
         </if>
     </sql>
 
-    <!--    &lt;!&ndash; 검색기능을 위한 동적SQL &ndash;&gt;-->
-    <!--    <sql id="search">-->
-    <!--        <if test="searchType != null and !searchType.isEmpty()">-->
-    <!--            <if test="searchType == 'title'.toString()">AND survey.surveyTitle LIKE CONCAT('%',#{keyword},'%')</if>-->
-    <!--&lt;!&ndash;            <if test="searchType == 'c'.toString()">AND survey.surveyContent LIKE CONCAT('%',#{keyword},'%')</if>&ndash;&gt;-->
-    <!--            <if test="searchType == 'writer'.toString()">AND users.user_name LIKE CONCAT('%',#{keyword},'%')</if>-->
-    <!--&lt;!&ndash;            <if test="searchType == 'tc'.toString()">AND (survey.surveyTitle LIKE CONCAT('%',#{keyword},'%')) or (survey.surveyContent LIKE CONCAT('%',#{keyword},'%'))</if>&ndash;&gt;-->
-    <!--        </if>-->
-    <!--    </sql>-->
-
     <insert id="insertSurvey" parameterMap="surveyVO" useGeneratedKeys="true"
             keyColumn="survey_index"
             keyProperty="survey_index">
         INSERT INTO survey (user_index, survey_title, survey_content, survey_end)
         VALUES (#{user_index}, #{survey_title}, #{survey_content}, #{survey_end})
     </insert>
-
-    <!--    <select id="maxSurveyIndex" resultType="int">-->
-    <!--        SELECT MAX(survey_index)-->
-    <!--        FROM survey-->
-    <!--    </select>-->
 
     <insert id="insertSurveyItem" parameterMap="surveyItemVO">
         INSERT INTO surveyItem (survey_item_index, survey_index, survey_item_content)
@@ -116,17 +102,6 @@
         LIMIT #{pageStart}, #{perPageNum}
     </select>
 
-    <!--    &lt;!&ndash; 총 게시물 개수 구하기 &ndash;&gt;-->
-    <!--    <select id="selectCountPaging" parameterMap="searchCriteria" resultMap="pageMaker">-->
-    <!--        <![CDATA[-->
-    <!--		SELECT COUNT(survey_index)-->
-    <!--		FROM survey-->
-    <!--		    LEFT JOIN users ON users.user_index = survey.user_index-->
-    <!--		WHERE survey_index > 0-->
-    <!--		]]>-->
-    <!--        <include refid="search"></include>-->
-    <!--    </select>-->
-
     <select id="selectCountPaging" parameterMap="searchCriteria" resultType="int">
         <![CDATA[
         SELECT COUNT(survey_index)
@@ -145,15 +120,16 @@
             surveyItem.survey_index = #{survey_index}
     </select>
 
-    <!--    <select id="mainSearch" parameterType="map" resultMap="surveyVO">-->
-    <!--        select * from survey-->
-    <!--        where (writer like CONCAT('%',#{keyword},'%') and progressing = 1)-->
-    <!--           or (subject like CONCAT('%',#{keyword},'%') and progressing = 1)-->
-    <!--           or (content like CONCAT('%',#{keyword},'%') and progressing = 1)-->
-    <!--    </select>-->
+    <select id="selectSurveyResult" parameterType="int" resultType="int">
+        SELECT DISTINCT survey_item_index
+        FROM surveyResult
+        WHERE survey_index = #{survey_index};
+    </select>
 
-    <!--    <insert id="searchInsert" parameterType="map">-->
-    <!--        insert into search (keyword,search_date) values(#{keyword},now());-->
-    <!--    </insert>-->
+    <select id="resultCount" parameterType="int" resultType="int">
+        SELECT COUNT(survey_item_index)
+        FROM surveyResult
+        WHERE surveyResult.survey_item_index = #{survey_item_index};
+    </select>
 
 </mapper>

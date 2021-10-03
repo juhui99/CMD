@@ -266,9 +266,6 @@
 
     });
 
-    function closePopup() {
-        $(".popupLayer").css("display","none");
-    }
     function recommendChek() {
         $.ajax({
             url: "/recommend",
@@ -290,6 +287,9 @@
                 }
             }
         });
+    }
+    function closePopup() {
+        $(".popupLayer").css("display","none");
     }
 
 
@@ -599,13 +599,13 @@
                         </button>
                         <a th:if="${(session.id == comment.writer and comment.level == 0) or (user.user_manager == 1 and comment.level == 0)}"
                            th:href="@{/commentDelete(bno=${board.bno},kind=${board.kind},realm=${board.realm},writer=${comment.writer},commentSequence=${comment.c_sequence},pageNumber=${page},option=${option},search=${search},search_option=${search_option},keyword=${keyword},mainSearch=${mainSearch})}">
-                            <button style=" border: 0; color: white; margin-top: 0.5px; border-radius: 5px; background: #003366d2;"
+                            <button th:if="${(session.id == comment.writer and comment.level == 0) or (user.user_manager == 1 and comment.level == 0)}" style=" border: 0; color: white; margin-top: 0.5px; border-radius: 5px; background: #003366d2;"
                                     type="button">삭제
                             </button>
                         </a>
                         <a th:if="${(session.id == comment.writer and comment.level == 1) or (user.user_manager == 1 and comment.level == 1)}"
                            th:href="@{/replyDelete(bno=${board.bno},kind=${board.kind},realm=${board.realm},writer=${comment.writer},commentBno=${comment.c_bno},pageNumber=${page},option=${option},search=${search},search_option=${search_option},keyword=${keyword},mainSearch=${mainSearch})}">
-                            <button style=" border: 0; margin-top: 0.5px; color: white; border-radius: 5px; background: #003366d2;"
+                            <button th:if="${(session.id == comment.writer and comment.level == 1) or (user.user_manager == 1 and comment.level == 1)}" style=" border: 0; margin-top: 0.5px; color: white; border-radius: 5px; background: #003366d2;"
                                     type="button">삭제
                             </button>
                         </a>

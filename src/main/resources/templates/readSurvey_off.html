@@ -29,7 +29,6 @@
     <h1>투표내용</h1>
     <tr th:each="surveyItemList : ${surveyItemList}">
         <td th:text="${surveyItemList.survey_item_content}"></td>
-        <!--        <td class="tm-hide-sm" th:text="${status.count}-${surveyItemList.count}"></td>-->
     </tr>
     </tbody>
 </table>
@@ -45,6 +44,9 @@
     </tr>
     </tbody>
 </table>
-
+<h1>결과 리스트 카운트</h1>
+<div th:each="countList : ${countList}">
+    <input type="text" th:value="${countList}"/><br>
+</div>
 </body>
 </html>
