@@ -54,8 +54,7 @@ public class SurveyController {
         pageMaker.setCri(cri);
         pageMaker.setTotalCount(surveyMapper.selectCountPaging());
 
-        model.addAttribute("pageMaker", pageMaker);// 게시판 하단의 페이징 관련, 이전페이지, 페이지 링크 , 다음 페이지
-
+        model.addAttribute("pageMaker", pageMaker); // 게시판 하단의 페이징 관련, 이전페이지, 페이지 링크 , 다음 페이지
         if(session.getAttribute("id") != null){
             manager = user.getUser_manager();
             model.addAttribute("manager",manager);
@@ -70,9 +69,6 @@ public class SurveyController {
                              @ModelAttribute("cri") SearchCriteria cri, Model model, HttpSession session) throws Exception{
         String filename;
         String userID;
-        int manager = 0;
-        UserVO user = new UserVO();
-
         if(session.getAttribute("id") == null){
             model.addAttribute("msg","로그인이 되어있지 않습니다.");
             model.addAttribute("url","main");
@@ -80,18 +76,11 @@ public class SurveyController {
         }
         if((String) session.getAttribute("id") != null){
             userID = (String) session.getAttribute("id");
-            user = userMapper.userLogin(userID);
+            UserVO user = userMapper.userLogin(userID);
             filename = user.getUser_profile();
 
         } else {
             filename = "non";
-        }
-
-        if(session.getAttribute("id") != null){
-            manager = user.getUser_manager();
-            model.addAttribute("manager",manager);
-        } else {
-            model.addAttribute("manager",manager);
         }
 
         boolean isProgressing = progressing == 1 ? true : false;
@@ -123,6 +112,23 @@ public class SurveyController {
             model.addAttribute("dataset", dataset);
             model.addAttribute("countList", countList);
             model.addAttribute("filename",filename);
+
+
+
+            int number = 0;
+            for(int i=0; i<countList.size(); i++){
+                number += countList.get(i);
+            }
+            List<Double> doubleList = new ArrayList<>();
+            for(int i=0; i<countList.size(); i++){
+                //testList.set(i, testList.get(i) / number * 100);
+
+                double a = countList.get(i) / (double)number * 100.0;
+                a = Math.round(a);
+                doubleList.add(a);
+            }
+
+            model.addAttribute("testList",doubleList);
             return "readSurvey_off";
         }
     }
@@ -333,5 +339,31 @@ public class SurveyController {
 
         model.addAttribute("surveysearch",SurveyList); //검색한 설문 리스트
         return "searchSurvey";
+    }
+
+    @GetMapping("/test")
+    public String test(Model model){
+        List<Integer> testList = new ArrayList<>();
+        testList.add(1);
+        testList.add(3);
+        testList.add(5);
+        int number = 0;
+        for(int i=0; i<testList.size(); i++){
+            number += testList.get(i);
+        }
+        List<Double> doubleList = new ArrayList<>();
+        for(int i=0; i<testList.size(); i++){
+            //testList.set(i, testList.get(i) / number * 100);
+
+            double a = testList.get(i) / (double)number * 100.0;
+            a = Math.round(a);
+            System.out.println(a);
+            doubleList.add(a);
+        }
+
+        System.out.println(number);
+        System.out.println(doubleList);
+        model.addAttribute("testList",doubleList);
+        return "test";
     }
 }
