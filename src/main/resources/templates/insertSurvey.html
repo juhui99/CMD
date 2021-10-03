@@ -14,7 +14,6 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-
   <script type="text/javascript">
 
     function addItemContent() {
@@ -48,7 +47,6 @@
             html2 += '<a href="/main_search?keyword=' + result[i][0].value + '" style="color: black; font-size: 12px;"><span style="background-color: #003366d2; color: white; padding-right: 4px; padding-left: 4px; margin-left: 3px;  margin-right: 2px; margin-bottom: 3px; font-size: 12px;">' + (i + 1) + '</span>' + result[i][0].value + '</a><br>'
           }
           $('#rankingArea').append(html2);
-
         }
       });
     }
@@ -83,7 +81,6 @@
       }, 4000);
     }
 
-
   </script>
 
   <style>
@@ -92,7 +89,6 @@
     .frontend_board {
       display: none;
     }
-
 
     .carousel {
       margin: 4% auto;
@@ -107,7 +103,6 @@
 
     .carousel-inner {
       border-radius: 25px;
-
     }
 
     .carousel-caption {
@@ -155,7 +150,6 @@
     .show > .btn-success.dropdown-toggle:focus {
       box-shadow: 0 0 0 0.2rem #003366d2;
     }
-
 
     .block {
       border: 2px solid #003366d2;
@@ -295,7 +289,6 @@
                href="/board?kind=협업게시판&realm=WhiteHat">협업게시판</a>
             <a class="dropdown-item WH_board board" style="color: #003366d2; font-size: 13px;"
                href="/board?kind=로드맵공유게시판&realm=WhiteHat">로드맵공유게시판</a>
-
           </div>
         </li>
 
@@ -314,7 +307,6 @@
         <li class="nav-item">
           <a class="nav-link" href="/cmd_roadmap">로드맵</a>
         </li>
-
 
         <li class="nav-item">
           <a class="nav-link" href="/mainSurvey" id="navbardrop3">
@@ -344,7 +336,6 @@
           </div>
         </li>
       </ul>
-
     </nav>
   </div>
   <div class="insert-box"
@@ -368,7 +359,6 @@
           <div class="bigbox surveybox">
             <div id="addsurveybox" class="form-group mb-3 addsurveybox">
 
-
               <label style="padding: 3.8px 8px; color: white; border: 0; border-radius: 5px; background: #003366d2;">선택
                 리스트</label>
               <div id="items">
@@ -380,7 +370,6 @@
 
               <input style=" margin-top: 10px;margin-left: 7%; border: 0; color: white; border-radius: 5px; background: #003366d2;"
                      type="button" onclick="addItemContent();" value="추가"/>
-
               <button style="float:right; margin-top: 10px;margin-right: 7%; border: 0; color: white; border-radius: 5px; background: #003366d2;"
                       type="submit">설문지 등록하기
               </button>
@@ -409,7 +398,6 @@
   </div>
 </div>
 
-
   <div class="popupLayer" style=" z-index: 2;">
     <div style="background: #003366d2;">
       <span style=" color: white; border-radius: 5px; margin-left: 2px; margin-top: 5px; padding: 3px; font-size: 12px;">인기검색어</span><span
@@ -423,13 +411,11 @@
 
   <script type="text/javascript">
     $(document).ready(function () {
-
       searchRanking();
       totalUnreadChat();
       getInfiniteSearchRanking();
       getInfiniteTotalUnread();
       $(".board").css("display", "none");
-
 
       $(".frontend").hover(function () {
         $(".frontend_board").css("display", "block");
@@ -437,7 +423,6 @@
         $(".DBA_board").css("display", "none");
         $(".AI_board").css("display", "none");
         $(".WH_board").css("display", "none");
-
       });
       $(".backend").hover(function () {
         $(".backend_board").css("display", "block");
@@ -466,7 +451,6 @@
         $(".DBA_board").css("display", "none");
         $(".backend_board").css("display", "none");
         $(".frontend_board").css("display", "none");
-
       });
       $("#withdrawal").click(function () {
         var id = $("#userID").val();
@@ -488,13 +472,11 @@
         $("#ranking").hover(function () {
           $(".popupLayer").css("display", "block");
         });
-
       });
 
       function closePopup() {
         $(".popupLayer").css("display", "none");
       }
-
 
       var ticker = function () {
         setTimeout(function () {
@@ -509,7 +491,6 @@
       $("#ranking").hover(function () {
         $(".popupLayer").css("display", "block");
       });
-
     });
 
     function closePopup() {

@@ -16,7 +16,6 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-
     <script type="text/javascript">
         function vote() {
             $.ajax({
@@ -121,7 +120,6 @@
             display: none;
         }
 
-
         .carousel {
             margin: 4% auto;
             width: 94%;
@@ -135,7 +133,6 @@
 
         .carousel-inner {
             border-radius: 25px;
-
         }
 
         .carousel-caption {
@@ -184,7 +181,6 @@
             box-shadow: 0 0 0 0.2rem #003366d2;
         }
 
-
         .block {
             border: 2px solid #003366d2;
             padding: 0 5px;
@@ -228,7 +224,6 @@
             width: 200px;
             border-radius: 5px;
         }
-
     </style>
 </head>
 <body>
@@ -324,7 +319,6 @@
                            href="/board?kind=협업게시판&realm=WhiteHat">협업게시판</a>
                         <a class="dropdown-item WH_board board" style="color: #003366d2; font-size: 13px;"
                            href="/board?kind=로드맵공유게시판&realm=WhiteHat">로드맵공유게시판</a>
-
                     </div>
                 </li>
 
@@ -343,7 +337,6 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/cmd_roadmap">로드맵</a>
                 </li>
-
 
                 <li class="nav-item">
                     <a class="nav-link" href="/mainSurvey" id="navbardrop3">
@@ -412,12 +405,12 @@
                 <input style="float:left; margin-top: 20px;margin-right: 7%; border: 0; color: white; border-radius: 5px; background: #003366d2;"
                        type="button" onclick="vote();" value="투표"/>
                 <a th:href="@{/closeSurvey(survey_index=${surveyVO.survey_index})}">
-                    <button style="float:left; margin-top: 20px;margin-right: 7%; border: 0; color: white; border-radius: 5px; background: #003366d2;">
+                    <button th:if="${manager == 1}" style="float:left; margin-top: 20px;margin-right: 7%; border: 0; color: white; border-radius: 5px; background: #003366d2;">
                         마감
                     </button>
                 </a>
                 <a th:href="@{/removeSurvey(survey_index=${surveyVO.survey_index})}">
-                    <button style="float:left; margin-top: 20px;margin-right: 7%; border: 0; color: white; border-radius: 5px; background: #003366d2;">
+                    <button th:if="${manager == 1}" style="float:left; margin-top: 20px;margin-right: 7%; border: 0; color: white; border-radius: 5px; background: #003366d2;">
                         삭제
                     </button>
                 </a>
@@ -463,14 +456,12 @@
         getInfiniteTotalUnread();
         $(".board").css("display", "none");
 
-
         $(".frontend").hover(function () {
             $(".frontend_board").css("display", "block");
             $(".backend_board").css("display", "none");
             $(".DBA_board").css("display", "none");
             $(".AI_board").css("display", "none");
             $(".WH_board").css("display", "none");
-
         });
         $(".backend").hover(function () {
             $(".backend_board").css("display", "block");
@@ -499,7 +490,6 @@
             $(".DBA_board").css("display", "none");
             $(".backend_board").css("display", "none");
             $(".frontend_board").css("display", "none");
-
         });
         $("#withdrawal").click(function () {
             var id = $("#userID").val();
@@ -509,7 +499,6 @@
                 alert("회원탈퇴를 취소합니다.");
             }
         });
-
 
         var ticker = function () {
             setTimeout(function () {
@@ -524,7 +513,6 @@
         $("#ranking").hover(function () {
             $(".popupLayer").css("display", "block");
         });
-
     });
 
     function closePopup() {

@@ -26,10 +26,12 @@ public class SurveyController {
     @RequestMapping(value = "/mainSurvey", method = RequestMethod.GET) //설문조사 메인화면
     public String mainSurvey(@ModelAttribute("cri") SearchCriteria cri, Model model, HttpSession session) throws Exception {
         String filename = null;
+        int manager = 0;
+        UserVO user = new UserVO();
 
         if(session.getAttribute("id") != null){
             String userID = (String) session.getAttribute("id");
-            UserVO user = userMapper.userLogin(userID);
+            user = userMapper.userLogin(userID);
             filename = user.getUser_profile();
 
         } else {
@@ -52,7 +54,14 @@ public class SurveyController {
         pageMaker.setCri(cri);
         pageMaker.setTotalCount(surveyMapper.selectCountPaging());
 
-        model.addAttribute("pageMaker", pageMaker); // 게시판 하단의 페이징 관련, 이전페이지, 페이지 링크 , 다음 페이지
+        model.addAttribute("pageMaker", pageMaker);// 게시판 하단의 페이징 관련, 이전페이지, 페이지 링크 , 다음 페이지
+
+        if(session.getAttribute("id") != null){
+            manager = user.getUser_manager();
+            model.addAttribute("manager",manager);
+        } else {
+            model.addAttribute("manager",manager);
+        }
         return "mainSurvey";
     }
 
@@ -61,6 +70,9 @@ public class SurveyController {
                              @ModelAttribute("cri") SearchCriteria cri, Model model, HttpSession session) throws Exception{
         String filename;
         String userID;
+        int manager = 0;
+        UserVO user = new UserVO();
+
         if(session.getAttribute("id") == null){
             model.addAttribute("msg","로그인이 되어있지 않습니다.");
             model.addAttribute("url","main");
@@ -68,11 +80,18 @@ public class SurveyController {
         }
         if((String) session.getAttribute("id") != null){
             userID = (String) session.getAttribute("id");
-            UserVO user = userMapper.userLogin(userID);
+            user = userMapper.userLogin(userID);
             filename = user.getUser_profile();
 
         } else {
             filename = "non";
+        }
+
+        if(session.getAttribute("id") != null){
+            manager = user.getUser_manager();
+            model.addAttribute("manager",manager);
+        } else {
+            model.addAttribute("manager",manager);
         }
 
         boolean isProgressing = progressing == 1 ? true : false;
@@ -224,6 +243,8 @@ public class SurveyController {
     @RequestMapping("/removeSurvey") //설문조사 지우기
     public String removeSurvey(@RequestParam("survey_index") int survey_index,
                                Model model, HttpSession session) throws Exception{
+
+
         String userID = (String)session.getAttribute("id");
         if(userID == null){ //로그인 확인
             model.addAttribute("msg","로그인이 되어있지 않습니다.");
