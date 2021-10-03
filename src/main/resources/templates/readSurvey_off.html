@@ -32,6 +32,13 @@
                 }
             });
         }(jQuery));
+
+
+        $(document).ready(function () {
+            for(var i = 0; i < $("tr").length; i++){
+                $('.option').eq(i).text($(".item").eq(i).text());
+            }
+        });
     </script>
     <style>
         .zt-skill-bar {
@@ -117,31 +124,15 @@
     <tbody>
     <h1>투표내용</h1>
     <tr th:each="surveyItemList : ${surveyItemList}">
-        <td th:text="${surveyItemList.survey_item_content}"></td>
+        <td class="item" th:text="${surveyItemList.survey_item_content}"></td>
     </tr>
     </tbody>
 </table>
-
-<table>
-    <tbody>
-    <h1>투표결과</h1>
-    <tr th:each="dataset : ${dataset}">
-        <td th:text="${dataset.user_name}"></td>
-        <td th:text="${dataset.user_age}"></td>
-        <td th:text="${dataset.user_gender}"></td>
-        <td th:text="${dataset.survey_item_index}"></td>
-    </tr>
-    </tbody>
-</table>
-<h1>결과 리스트 카운트</h1>
-<div th:each="countList : ${countList}">
-    <input type="text" th:value="${countList}"/><br>
-</div>
 
 <div class="zt-span6 last" th:each="testList : ${testList}">
     <p>&nbsp;</p>
     <p>&nbsp;</p>
-    <div class="zt-skill-bar"><div th:data-width="${testList}" style="">투표율<span th:text="${testList}"></span></div></div>
+    <div class="zt-skill-bar"><div th:data-width="${testList}" style=""><a class="option"></a><span th:text="${testList}"></span></div></div>
 
 </div>
 </body>
