@@ -29,5 +29,4 @@ public class SurveyResultVO {
         return "SurveyResultVO [survey_result_index=" + survey_result_index + ", survey_item_index=" + survey_item_index
                 + ", user_index=" + user_index + ", survey_result_reg=" + survey_result_reg + "]";
     }
-
 }

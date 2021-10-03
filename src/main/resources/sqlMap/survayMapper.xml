@@ -55,6 +55,13 @@
         VALUES (#{survey_result_index}, #{survey_index}, #{survey_item_index}, #{user_index})
     </insert>
 
+    <select id="surveyResultDuplicate" parameterType="int" resultType="int">
+        SELECT DISTINCT survey_index
+        FROM surveyResult
+        WHERE surveyResult.user_index = #{user_index}
+
+    </select>
+
     <select id="selectSurvey" parameterType="int" resultMap="surveyVO">
         SELECT survey.*,
                (SELECT COUNT(survey_result_index)

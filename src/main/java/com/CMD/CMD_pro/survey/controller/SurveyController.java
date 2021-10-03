@@ -212,10 +212,55 @@ public class SurveyController {
         return "redirect:/mainSurvey";
     }
 
+//    @RequestMapping(value="voteSurvey", method = RequestMethod.POST) //설문조사 참여하기
+//    public @ResponseBody Map<String, Object> insertSurveyResult
+//            (HttpServletRequest req,HttpSession session, Model model) throws Exception{
+//
+//        String userID;
+//        userID = (String) session.getAttribute("id");
+//        UserVO user = userMapper.userLogin(userID);
+//        int userIndex = user.getUser_index();
+//        String index = req.getParameter("index");
+//        String survey = req.getParameter("survey");
+//        System.out.println(index + survey);
+//        SurveyResultVO surveyResultVO = new SurveyResultVO();
+//        Map<String, Object> return_param = new HashMap<>();
+////        try {
+////            surveyResultVO.setSurvey_index(Integer.parseInt(index));
+////            surveyResultVO.setSurvey_item_index(Integer.parseInt(survey));
+////            surveyResultVO.setUser_index(userIndex);
+////            surveyMapper.insertSurveyResult(surveyResultVO);
+////            return_param.put("result", true);
+////            return_param.put("message", "설문에 참여하였습니다.");
+////        } catch (Exception e) {
+////            return_param.put("result", false);
+////            return_param.put("message", "이미 설문에 참여하였습니다.");
+////            return return_param;
+////        }
+//
+//
+//        List<Integer> duplicate = surveyMapper.surveyResultDuplicate(userIndex);
+////
+//        for(int i = 0; i < duplicate.size(); i++) {
+//            if (surveyResultVO.getSurvey_index() == duplicate.get(i)) {
+//                return return_param;
+//            }
+//        }
+//        surveyResultVO.setSurvey_index(Integer.parseInt(index));
+//        surveyResultVO.setSurvey_item_index(Integer.parseInt(survey));
+//        surveyResultVO.setUser_index(userIndex);
+//        surveyMapper.insertSurveyResult(surveyResultVO);
+////        }
+////        else {
+////
+////        }
+//
+//        return return_param;
+//    }
+
     @RequestMapping(value="voteSurvey", method = RequestMethod.POST) //설문조사 참여하기
     public @ResponseBody Map<String, Object> insertSurveyResult
-            ( HttpServletRequest req,HttpSession session) throws Exception{
-
+            (HttpServletRequest req,HttpSession session, Model model) throws Exception{
         String userID;
         userID = (String) session.getAttribute("id");
         UserVO user = userMapper.userLogin(userID);
@@ -225,17 +270,24 @@ public class SurveyController {
         System.out.println(index + survey);
         SurveyResultVO surveyResultVO = new SurveyResultVO();
         Map<String, Object> return_param = new HashMap<>();
-        try {
+
+        List<Integer> duplicate = surveyMapper.surveyResultDuplicate(userIndex);
+
+        if (duplicate.size() == 0) {
+            surveyResultVO.setSurvey_index(Integer.parseInt(index));
             surveyResultVO.setSurvey_item_index(Integer.parseInt(survey));
             surveyResultVO.setUser_index(userIndex);
-            surveyResultVO.setSurvey_index(Integer.parseInt(index));
             surveyMapper.insertSurveyResult(surveyResultVO);
-            return_param.put("result", true);
-            return_param.put("message", "설문에 참여하였습니다.");
-        } catch (Exception e) {
-            return_param.put("result", false);
-            return_param.put("message", "이미 설문에 참여하였습니다.");
-            return return_param;
+        }
+        else{
+            for(int i = 0; i < duplicate.size(); i++){
+                if (duplicate.get(i) != Integer.parseInt(index)) {
+                    surveyResultVO.setSurvey_index(Integer.parseInt(index));
+                    surveyResultVO.setSurvey_item_index(Integer.parseInt(survey));
+                    surveyResultVO.setUser_index(userIndex);
+                    surveyMapper.insertSurveyResult(surveyResultVO);
+                }
+            }
         }
         return return_param;
     }

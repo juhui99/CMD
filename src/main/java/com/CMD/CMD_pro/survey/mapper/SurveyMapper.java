@@ -13,6 +13,7 @@ public interface SurveyMapper {
     public SurveyVO selectSurvey(int survey_index);
     public List<SurveyItemVO> selectSurveyItems(int survey_index);
     public List<Integer> selectSurveyResult(int survey_index);
+    public List<Integer> surveyResultDuplicate(int user_index);
     public List<ResultDataSet> selectSurveyResultDataSet(int survey_index);
     public int resultCount(int survey_item_index);
     public void insertSurvey(SurveyVO surveyVO);

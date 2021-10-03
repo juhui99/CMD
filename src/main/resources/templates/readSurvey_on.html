@@ -53,6 +53,7 @@
 
             target.checked = true;
         }
+
         function searchRanking() {
             $.ajax({
                 type: "POST",
@@ -400,7 +401,7 @@
             <div>
                 <div th:each="surveyItemList : ${surveyItemList}" class="form-check">
                     <input type="checkbox" name="itemIndex" class="form-check-input"  th:value="${surveyItemList.survey_item_index}" onclick="clickCheck(this)"/>
-                                        <input type="text" class="itemContent" name="itemContent" th:value="${surveyItemList.survey_item_content}"/>
+                    <input type="text" class="itemContent" name="itemContent" th:value="${surveyItemList.survey_item_content}"/>
                 </div>
             </div>
             <input type="hidden" th:value="${session.id}" id="id" name="id"/>
