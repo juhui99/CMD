@@ -46,6 +46,8 @@
     </tbody>
 </table>
 <h1>결과 리스트 카운트</h1>
-<input type="text" th:value="${countList}">
+<div th:each="countList : ${countList}">
+    <input type="text" th:value="${countList}"/><br>
+</div>
 </body>
 </html>
