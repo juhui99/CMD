@@ -46,7 +46,7 @@
         INSERT INTO surveyItem (survey_item_index, survey_index, survey_item_content)
         VALUES
         <foreach collection="list" item="item" separator=" , ">
-            (#{item.survey_item_index}, #{item.survey_index}, #{item.survey_item_content})
+               (#{item.survey_item_index}, #{item.survey_index}, #{item.survey_item_content})
         </foreach>
     </insert>
 
@@ -58,12 +58,12 @@
     <select id="selectSurvey" parameterType="int" resultMap="surveyVO">
         SELECT survey.*,
                (SELECT COUNT(survey_result_index)
-                FROM surveyResult
-                         JOIN surveyItem ON surveyResult.survey_item_index = surveyItem.survey_item_index
-                WHERE surveyItem.survey_index = survey.survey_index
+                   FROM surveyResult
+                            JOIN surveyItem ON surveyResult.survey_item_index = surveyItem.survey_item_index
+                   WHERE surveyItem.survey_index = survey.survey_index
                ) survey_count
         FROM survey
-                 LEFT JOIN users ON survey.user_index = users.user_index
+            LEFT JOIN users ON survey.user_index = users.user_index
         WHERE survey_index = #{survey_index}
     </select>
 
@@ -87,15 +87,15 @@
     <!-- 리스트 + 페이징  -->
     <select id="selectSurveyList" parameterMap="searchCriteria" resultMap="surveyVO">
         SELECT
-        survey_index, survey_title, survey.user_index, survey_reg, survey_content, progressing, survey_end,
-        (
-        SELECT COUNT(survey_result_index)
-        FROM surveyResult
-        JOIN surveyItem ON surveyResult.survey_item_index = surveyItem.survey_item_index
-        WHERE surveyItem.survey_index = survey.survey_index
-        )survey_count
+            survey_index, survey_title, survey.user_index, survey_reg, survey_content, progressing, survey_end,
+               (
+                   SELECT COUNT(survey_result_index)
+                   FROM surveyResult
+                       JOIN surveyItem ON surveyResult.survey_item_index = surveyItem.survey_item_index
+                   WHERE surveyItem.survey_index = survey.survey_index
+                )survey_count
         FROM survey
-        LEFT JOIN users ON survey.user_index = users.user_index
+            LEFT JOIN users ON survey.user_index = users.user_index
         WHERE survey_index > 0
         <include refid="search"/>
         ORDER BY survey_index desc, survey_reg desc
@@ -106,7 +106,7 @@
         <![CDATA[
         SELECT COUNT(survey_index)
         FROM survey
-                 LEFT JOIN users ON users.user_index = survey.user_index
+            LEFT JOIN users ON users.user_index = survey.user_index
         WHERE survey_index > 0
         ]]>
     </select>

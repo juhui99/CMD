@@ -6,9 +6,7 @@ insert into users ( `user_id`,
                     `user_email`,
                     `user_gender`,
                     `user_manager`)
-values('aaaa', '0a0a0a0a*','이주희', '24', 'DBA', 'aaaa@gmail.com', 'W',1);
-
-
+values('aaaa', '0a0a','이주희', '24', 'DBA', 'aaaa@gmail.com', 'W',1);
 
 insert into users ( `user_id`,
                     `user_pwd`,
@@ -18,7 +16,7 @@ insert into users ( `user_id`,
                     `user_email`,
                     `user_gender`,
                     `user_manager`)
-values('ehfehfdl0927', 'eeeeeeee8*','김주희', '23', 'Backend', 'kimjoohe10@naver.com', 'W',1);
+values('aaaaa', '0a0a0','주희', '23', '보안', 'aaaaa@gmail.com', 'W',0);
 
 insert into users ( `user_id`,
                     `user_pwd`,
@@ -28,7 +26,17 @@ insert into users ( `user_id`,
                     `user_email`,
                     `user_gender`,
                     `user_manager`)
-values('bbbb11', 'b1b1b1b1*','음성준', '25', 'Frontend', 'bbbb@gmail.com', 'M',1);
+values('ehfehfdl0927', '0927','김주희', '23', 'Backend', 'kimjoohe10@naver.com', 'W',1);
+
+insert into users ( `user_id`,
+                    `user_pwd`,
+                    `user_name`,
+                    `user_age`,
+                    `user_major`,
+                    `user_email`,
+                    `user_gender`,
+                    `user_manager`)
+values('bbbb11', '1111','음성준', '25', 'Frontend', 'bbbb@gmail.com', 'M',1);
 
 insert into survey (`user_index`,
                     `survey_title`,
@@ -109,7 +117,6 @@ insert into survey (`user_index`,
                     `progressing`,
                     `survey_count`)
 values(1,'test11','내용11','2021-11-14',0,1);
-
 insert into surveyItem (`survey_index`,
                         `survey_item_content`)
 values(1,'선택1');
@@ -178,25 +185,3 @@ values('글제목2','글내용2입니다.안녕하세요.','aaaa',now(),0,0,'정
 insert into friends(`user_id`,
                     `friend_id`)
 values('aaaa','bbbb11');
-
-
-
-
-
-
-
-
-
-
-
-
-
--- insert into survey_item ( `survey_item_index`,
---                     `survey_index`,
---                     `survey_item_content`)
---
--- insert into survey_result ( `survey_result_index`,
---                     `survey_index`,
---                     `survey_item_index`,
---                     `survey_result`,
---                     `survey_result_reg_date`)

@@ -18,7 +18,7 @@
   <script type="text/javascript">
 
     function addItemContent() {
-      $('#items').append("<div id='item'><input type='text' value='' autocomplete='off' name='itemcontent' "
+      $('#items').append("<input type='text' value='' autocomplete='off' name='itemcontent' "
               + "class='form-control littleq'></div>");
     }
 
@@ -373,16 +373,14 @@
                 리스트</label>
               <div id="items">
                 <input style="border: 1px solid rgb(133, 133,133)" type="text" value=""
-                       autocomplete="off" name="itemcontent" class="form-control">
+                       autocomplete="off" name="itemcontent" class="form-control littleq">
                 <input style="margin-top: 4px; border: 1px solid rgb(133, 133,133)" type="text" value=""
-                       autocomplete="off" name="itemcontent" class="form-control">
+                       autocomplete="off" name="itemcontent" class="form-control littleq">
               </div>
 
               <input style=" margin-top: 10px;margin-left: 7%; border: 0; color: white; border-radius: 5px; background: #003366d2;"
                      type="button" onclick="addItemContent();" value="추가"/>
 
-
-              <!--                <input type="button" onclick="deleteItemContent();" value="삭제"/>-->
               <button style="float:right; margin-top: 10px;margin-right: 7%; border: 0; color: white; border-radius: 5px; background: #003366d2;"
                       type="submit">설문지 등록하기
               </button>
