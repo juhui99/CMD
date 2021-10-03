@@ -120,4 +120,16 @@
             surveyItem.survey_index = #{survey_index}
     </select>
 
+    <select id="selectSurveyResult" parameterType="int" resultType="int">
+        SELECT DISTINCT survey_item_index
+        FROM surveyResult
+        WHERE survey_index = #{survey_index};
+    </select>
+
+    <select id="resultCount" parameterType="int" resultType="int">
+        SELECT COUNT(survey_item_index)
+        FROM surveyResult
+        WHERE surveyResult.survey_item_index = #{survey_item_index};
+    </select>
+
 </mapper>
