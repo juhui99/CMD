@@ -67,7 +67,7 @@
     </div>
   </div>
   <input type="hidden" th:value="${session.id}" id="id" name="id"/>
-  <input type="text" th:value="${surveyVO.survey_index}" id="surveyIndex" name="survey_index"/>
+  <input type="hidden" th:value="${surveyVO.survey_index}" id="surveyIndex" name="survey_index"/>
   <input type="button" onclick="vote();" value="투표"/>
 
 </form>

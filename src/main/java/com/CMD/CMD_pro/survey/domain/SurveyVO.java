@@ -18,6 +18,7 @@ public class SurveyVO {
     private Date survey_end; //종료시간
     private int progressing; //진행여부 1:진행중인, 0:마감된 설문
     private int survey_count;
+    private String real_date;
 
     public SurveyVO(SurveyVO surveyCopy) {
         this.survey_index = surveyCopy.survey_index;

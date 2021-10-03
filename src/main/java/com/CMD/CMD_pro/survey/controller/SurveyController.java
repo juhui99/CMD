@@ -13,10 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 //@RequestMapping("/survey/*") //현재 믈래스의 모든 메서드들의 기본적인 URL경로
@@ -41,6 +38,14 @@ public class SurveyController {
         model.addAttribute("filename",filename);
 
         List<SurveyVO> surveyList = surveyMapper.selectSurveyList(cri);
+
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        for (int i = 0; i < surveyList.size(); i++){
+            Date survey_reg = surveyList.get(i).getSurvey_reg();
+            String real_date = format.format(survey_reg);
+            surveyList.get(i).setReal_date(real_date);
+        }
+
         model.addAttribute("surveyList", surveyList);//survey 리스트 출력
 
         PageMaker pageMaker = new PageMaker();
@@ -66,6 +71,7 @@ public class SurveyController {
         if(isProgressing) { //설문조사가 실행중일때
             SurveyVO surveyVO = surveyMapper.selectSurvey(survey_index);
             surveyItemList = surveyMapper.selectSurveyItems(survey_index);
+
             model.addAttribute("surveyVO", surveyVO); // 타이틀, 내용만 페이지에 보여지게 html 작성
             model.addAttribute("surveyItemList", surveyItemList);//진행중인 설문조사 상세 페이지
 
